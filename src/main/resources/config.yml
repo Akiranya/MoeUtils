@@ -1,0 +1,12 @@
+mobarena-addon:
+  enable: false
+  whilelist:
+    - PLAYER
+    - WOLF
+    - OCELOT
+    - IRON_GOLEM
+    - HORSE
+safe-portal:
+  enable: false
+  messages:
+    cancelled: Sorry, but the teleportation has been cancelled due to the destination is out of border.
