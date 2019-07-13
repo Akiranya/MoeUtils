@@ -29,7 +29,7 @@ public class HealthBar {
             obj.setDisplaySlot(DisplaySlot.BELOW_NAME);
             player.setScoreboard(scoreboard);
         } catch (IllegalArgumentException | IllegalStateException e) {
-            e.printStackTrace();
+            // Suppress exception "An objective of name 'showhealth' already exists"
         }
         Bukkit.getScheduler().runTaskLater(plugin, () -> player.setHealth(player.getHealth()), 20);
     }

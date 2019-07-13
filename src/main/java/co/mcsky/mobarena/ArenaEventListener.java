@@ -20,8 +20,8 @@ public class ArenaEventListener implements Listener {
 
     private final MoeUtils plugin;
     private MobArena mobArena;
-    private Listener healthUpdate;
-    private Listener noCollision;
+    private Listener PlayerHealthListener;
+    private Listener ProjectileCollideListener;
     private HealthBar healthBar;
     private CustomPlayerName custom;
 
@@ -42,8 +42,8 @@ public class ArenaEventListener implements Listener {
                 healthBar.showHealth(p);
             }
             // 当竞技场开始后，开始监听玩家的血量变化
-            healthUpdate = new PlayerHealthListener(plugin, custom);
-            noCollision = new ProjectileCollideListener(plugin, mobArena);
+            PlayerHealthListener = new PlayerHealthListener(plugin, custom);
+            ProjectileCollideListener = new ProjectileCollideListener(plugin, mobArena);
         }, 20);
     }
 
@@ -52,12 +52,12 @@ public class ArenaEventListener implements Listener {
         // 游戏结束，清空计分板
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             for (Player p : event.getArena().getAllPlayers()) {
-                custom.change(p, "bla", "bla", REMOVE);
+                custom.change(p, "", "", REMOVE);
                 healthBar.removeHealth(p);
             }
             // Unregister listener when arena ends
-            HandlerList.unregisterAll(healthUpdate);
-            HandlerList.unregisterAll(noCollision);
+            HandlerList.unregisterAll(PlayerHealthListener);
+            HandlerList.unregisterAll(ProjectileCollideListener);
         }, 20);
     }
 
@@ -66,7 +66,7 @@ public class ArenaEventListener implements Listener {
         // 玩家死亡，清空计分板
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             Player p = event.getPlayer();
-            custom.change(p, "bla", "bla", REMOVE);
+            custom.change(p, "", "", REMOVE);
             healthBar.removeHealth(p);
         }, 20);
     }
@@ -76,7 +76,7 @@ public class ArenaEventListener implements Listener {
         // 玩家离开，清空计分板
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             Player p = event.getPlayer();
-            custom.change(event.getPlayer(), "bla", "bla", REMOVE);
+            custom.change(event.getPlayer(), "", "", REMOVE);
             healthBar.removeHealth(p);
         }, 20);
     }

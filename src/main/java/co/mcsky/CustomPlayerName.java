@@ -50,8 +50,8 @@ public class CustomPlayerName {
             case REMOVE:
                 try {
                     teams.remove(player).unregister();
-                } catch (IllegalStateException | NullPointerException e) {
-                    e.printStackTrace();
+                } catch (IllegalStateException | NullPointerException ignored) {
+
                 }
                 break;
             default:

@@ -1,6 +1,6 @@
 mobarena-addon:
   enable: false
-  whilelist:
+  whitelist:
     - PLAYER
     - WOLF
     - OCELOT
@@ -10,3 +10,6 @@ safe-portal:
   enable: false
   messages:
     cancelled: Sorry, but the teleportation has been cancelled due to the destination is out of border.
+global:
+  messages:
+    reloaded: MoeUtils has been reloaded.

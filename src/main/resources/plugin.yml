@@ -5,5 +5,12 @@ api-version: 1.13
 description: A all-in-one plugin for Anciage Server
 author: Nailm
 website: https://mimaru.me
+prefix: MoeUtils
 softdepend:
   - MobArena
+commands:
+  moeutils:
+    description: Entry to MoeUtils
+    usage: /<command>
+    permission: moeutils
+    aliases: [moe]
