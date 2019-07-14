@@ -38,6 +38,7 @@ public class Configuration {
         whiteList = entityTypes.stream()
                 .map(e -> EntityType.valueOf(e.toUpperCase()))
                 .collect(Collectors.toSet());
+        // Print out whiteList for double-checking
         whiteList.forEach(e -> plugin.getLogger().info(e.name()));
 
         // Safe Portal initialization
