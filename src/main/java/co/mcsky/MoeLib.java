@@ -17,4 +17,13 @@ public class MoeLib {
         double x = loc.getX() - center.getX(), z = loc.getZ() - center.getZ();
         return ((x > size || (-x) > size) || (z > size || (-z) > size));
     }
+
+    /**
+     * Converts seconds to minecraft tick.
+     * @param seconds Seconds
+     * @return Minecraft ticks
+     */
+    public static int toTick(int seconds) {
+        return seconds * 20;
+    }
 }

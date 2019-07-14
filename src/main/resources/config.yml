@@ -1,5 +1,20 @@
+magictime:
+  prefix: ">>"
+  cost: 300
+  cooldown: 600
+  messages:
+    timetoday: '&bA magician has changed the time of all worlds to&d magic day&b.'
+    timetonight: '&bA magician has changed the time of all worlds to&d magic night&b.'
+    dayended: '&dThe magic day&b of magician has ended!'
+    nightended: '&dThe magic night&b of magician has ended!'
+    timerreset: '&aTimer for magic time has been reset.'
+    cost: '&fYou are charged %d.'
+    status: >
+      &aStatus:&7 %s&a.
+      &aPlayer:&7 %s&a.
+      &aRemained:&7 %d&a.
 mobarena-addon:
-  enable: false
+  enable: true
   whitelist:
     - PLAYER
     - WOLF
@@ -7,9 +22,17 @@ mobarena-addon:
     - IRON_GOLEM
     - HORSE
 safe-portal:
-  enable: false
+  enable: true
+  debug: true
+  event-priority: MONITOR
   messages:
-    cancelled: Sorry, but the teleportation has been cancelled due to the destination is out of border.
+    cancelled: '&eSorry, but the teleportation has been cancelled due to the destination is out of border.'
+    debug: '&ePlayerPortalEvent has been cancelled for %s.'
 global:
   messages:
-    reloaded: MoeUtils has been reloaded.
+    noperms: '&cYou dont have the permission to use this command:&e %s&c.'
+    reloaded: '&cMoeUtils has been reloaded.'
+    notenoughmoney: '&7You dont have enough money.'
+    cooldown: '&7Cooldown:&b %d&7.'
+    yes: 'Yes'
+    no: 'No'

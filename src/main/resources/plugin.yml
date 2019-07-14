@@ -1,6 +1,6 @@
 name: MoeUtils
 main: co.mcsky.MoeUtils
-version: 1.0
+version: 1.1
 api-version: 1.13
 description: A all-in-one plugin for Anciage Server
 author: Nailm
@@ -8,9 +8,37 @@ website: https://mimaru.me
 prefix: MoeUtils
 softdepend:
   - MobArena
+depend:
+  - Vault
+  - Essentials
+  - HamsterEcoHelper
 commands:
   moeutils:
     description: Entry to MoeUtils
-    usage: /<command>
+    usage: /<command> {subCmds}
     permission: moeutils
     aliases: [moe]
+permissions:
+  moe.*:
+    description: Gives access to all MoeUtils commands
+    default: false
+    children:
+      moe.admin: true
+      moe.user: true
+  moe.admin:
+    description: Permission nodes for operators
+    default: op
+    children:
+      moe.user: true
+      moe.reload: true
+      moe.magic.status: true
+      moe.magic.reset: true
+  moe.user:
+    description: Basic permission nodes for players
+    default: true
+    children:
+      moe.magic.time.day: true
+      moe.magic.time.night: true
+      moe.magic.weather.rain: true
+      moe.magic.weather.clear: true
+      moe.magic.weather.thunder: true
