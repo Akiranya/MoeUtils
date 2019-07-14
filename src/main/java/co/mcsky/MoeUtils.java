@@ -30,9 +30,7 @@ public class MoeUtils extends JavaPlugin {
         // Set up MobArena-Addon
         if (configuration.isMobArenaEnable) {
             setupMobArena();
-            if (mobarena != null) {
-                new ArenaEventListener(this, mobarena, new CustomPlayerName());
-            }
+            if (mobarena != null) new ArenaEventListener(this, mobarena, new CustomPlayerName());
         }
 
         // Set up Safe-Portal
