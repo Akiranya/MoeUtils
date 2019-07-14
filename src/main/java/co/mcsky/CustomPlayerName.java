@@ -26,7 +26,7 @@ public class CustomPlayerName {
      */
     public void change(Player player, String prefix, String suffix, ACTION action) {
         if (player == null || prefix == null || suffix == null || action == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Method arguments cannot be null.");
         }
         Scoreboard scoreboard = player.getScoreboard();
         Team team;
@@ -55,7 +55,7 @@ public class CustomPlayerName {
                 }
                 break;
             default:
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Unknown ACTION.");
         }
     }
 

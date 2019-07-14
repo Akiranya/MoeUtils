@@ -12,13 +12,16 @@ import static co.mcsky.MoeLib.isOutsideOfBorder;
 
 public class PlayerTeleportListener implements Listener {
 
-    MoeUtils plugin;
+    private final MoeUtils plugin;
 
     public PlayerTeleportListener(MoeUtils plugin) {
         this.plugin = plugin;
+        if (plugin.getMoeConfig().SAFEPORTAL_ON) {
+            plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerTeleport(PlayerPortalEvent e) {
         final Player player = e.getPlayer();
 
@@ -27,8 +30,11 @@ public class PlayerTeleportListener implements Listener {
         // 就取消传送事件
         Location to = e.getTo();
         if (isOutsideOfBorder(to)) {
-            player.sendMessage(plugin.getMoeConfig().SafePortalMessage);
             e.setCancelled(true);
+            player.sendMessage(plugin.getMoeConfig().SAFEPORTAL_MESSAGE_PLAYER);
+            if (plugin.getMoeConfig().SAFEPORTAL_DEBUG_ON) {
+                plugin.getLogger().info(plugin.getMoeConfig().SAFEPORTAL_MESSAGE_DEBUG);
+            }
         }
     }
 }

@@ -19,18 +19,21 @@ import static co.mcsky.CustomPlayerName.ACTION.UPDATE;
 public class ArenaEventListener implements Listener {
 
     private final MoeUtils plugin;
-    private MobArena mobArena;
+    private final MobArena mobArena;
     private Listener PlayerHealthListener;
     private Listener ProjectileCollideListener;
-    private HealthBar healthBar;
-    private CustomPlayerName custom;
+    private final HealthBar healthBar;
+    private final CustomPlayerName custom;
 
     public ArenaEventListener(MoeUtils plugin, MobArena mobArena, CustomPlayerName custom) {
         this.plugin = plugin;
         this.mobArena = mobArena;
         this.custom = custom;
         this.healthBar = new HealthBar(this.custom, plugin);
-        this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        // Only if this feature is enabled do we register this listener
+        if (plugin.getMoeConfig().MOBARENA_ON) {
+            this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        }
     }
 
     @EventHandler

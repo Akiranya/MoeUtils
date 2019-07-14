@@ -19,17 +19,17 @@ public class ProjectileCollideListener implements Listener {
     public ProjectileCollideListener(MoeUtils plugin, MobArena mobArena) {
         this.mobArena = mobArena;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        whiteList = plugin.getMoeConfig().whiteList;
+        whiteList = plugin.getMoeConfig().MOBARENA_WHITELIST;
     }
 
     @EventHandler
     public void onProjectileCollide(ProjectileCollideEvent event) {
         ProjectileSource shooter = event.getEntity().getShooter();
 
-        // Ignores projectiles which are not from players
+        // Ignore if projectiles are not from players
         if (!(shooter instanceof Player)) return;
 
-        // Ignores if player is not in arena
+        // Ignore if player is not in arena
         if (!mobArena.getArenaMaster().getAllLivingPlayers().contains(shooter)) return;
 
         if (whiteList.contains(event.getCollidedWith().getType())) {

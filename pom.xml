@@ -24,7 +24,11 @@
         </repository>
         <repository>
             <id>ess-repo</id>
-            <url>https://ci.ender.zone/plugin/repository/everything/</url>
+            <url>https://ci.ender.zone/pl/repository/everything/</url>
+        </repository>
+        <repository>
+            <id>vault-repo</id>
+            <url>http://nexus.hc.to/content/repositories/pub_releases</url>
         </repository>
     </repositories>
 
@@ -45,7 +49,12 @@
             <artifactId>MobArena</artifactId>
             <version>0.103</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.MilkBowl</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.7</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
-
 
 </project>
