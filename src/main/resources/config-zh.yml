@@ -1,0 +1,56 @@
+magictime:
+  prefix: ">>"
+  cost: 100
+  cooldown: 600
+  messages:
+    day: '魔法白天'
+    night: '魔法夜晚'
+    changed: '&b一位神秘的魔法师把所有世界的时间变成了 &d%s&b.'
+    ended: '&d%s&b 结束了! &7(冷却就绪)'
+    reset: '&a魔法时间的冷却已重置.'
+    cost: '&f你花掉了 &e%d&f软妹币.'
+    status: >
+      &aStatus:&7 %s&a.
+      &aPlayer:&7 %s&a.
+      &aRemained:&7 %d&a second(s).
+magicweather:
+  prefix: ">>"
+  cost: 100
+  cooldown: 600
+  messages:
+    clear: '魔法晴天'
+    rain: '魔法阴天'
+    thunder: '魔法雷雨'
+    changed: '&b一位神秘法师把世界 &e%s&b 的天气变成了 &d%s&b.'
+    ended: '&b神秘法师的 &e%s&b (世界 &e%s&b) 结束了!'
+    reset: '&a魔法天气的冷却已重置.'
+    cost: '&f你花掉了 &e%d&f软妹币.'
+    none: '无'
+    status: >
+      &a%s:&7 %s&a.
+      &aPlayer:&7 %s&a.
+      &aRemained:&7 %d&a second(s).
+mobarena-addon:
+  enable: true
+  whitelist:
+    - PLAYER
+    - WOLF
+    - OCELOT
+    - IRON_GOLEM
+    - HORSE
+safe-portal:
+  enable: true
+  debug: true
+  event-priority: MONITOR
+  messages:
+    cancelled: '&e监测到该地狱门的目的地在世界边界外,为了您的安全,本次传送已取消.'
+    debug: '&ePlayerPortalEvent has been cancelled for &b%s&e.'
+global:
+  messages:
+    active: '&eYes'
+    deactivated: '&eNo'
+    noperms: '&c你没有权限使用这个指令:&e %s&c.'
+    reloaded: '&cMoeUtils 已重新载入.'
+    notenoughmoney: '&7你没有足够的软妹币.'
+    cooldown: '&7冷却中:&b %d&7 秒.'
+    playeronly: '只有玩家才可以使用这个指令.'
