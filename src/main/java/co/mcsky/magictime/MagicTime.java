@@ -84,8 +84,9 @@ public class MagicTime {
         lastUsedTime = now; // In millisecond
 
         /* Wait and broadcast */
+        final String fTimeName =timeType.getName(pl);
         broadcastTask = Bukkit.getScheduler().runTaskLaterAsynchronously(pl, () -> pl.getServer().broadcastMessage(
-                String.format(pl.getMoeConfig().MAGICTIME_MESSAGE_ENDED, timeType.getName(pl))
+                String.format(pl.getMoeConfig().MAGICTIME_MESSAGE_ENDED, fTimeName)
         ), MoeLib.toTick(cooldown)).getTaskId();
     }
 

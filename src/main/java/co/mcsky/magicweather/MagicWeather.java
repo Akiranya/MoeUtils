@@ -29,7 +29,7 @@ public class MagicWeather {
      * V = Status of the world.
      */
     private Map<String, Status> lastUsedMap;
-    private BukkitTask broadcastTask;
+    private int broadcastTask;
 
     /**
      * Outer world has no access to the constructor.
@@ -50,12 +50,9 @@ public class MagicWeather {
     public void setWeather(Player player, WeatherType weatherType) {
         /* Check cooldown */
         final String worldName = player.getWorld().getName();
-
-        // If there is no record, simply returns
-        Status value = lastUsedMap.get(worldName);
-        if (value == null) return;
-
-        final long lastUsedTime = value.lastUsedTime;
+        Status status = lastUsedMap.get(worldName);
+        // If there is no record in map, simply set lastUsedTime to 0
+        final long lastUsedTime = status != null ? status.lastUsedTime : 0;
         final long now = System.currentTimeMillis(); // In millisecond
         Cooldown cd = MoeLib.cooldown(now, lastUsedTime, cooldown);
         if (!cd.isReady()) { // Note that cooldown is in second
@@ -97,7 +94,7 @@ public class MagicWeather {
                     String.format(pl.getMoeConfig().MAGICWEATHER_MESSAGE_ENDED,
                             weatherName, worldName)
             );
-        }, MoeLib.toTick(cooldown));
+        }, MoeLib.toTick(cooldown)).getTaskId();
     }
 
     /**
@@ -142,9 +139,7 @@ public class MagicWeather {
     }
 
     public void cancelBroadcastTask() {
-        if (broadcastTask != null) {
-            broadcastTask.cancel();
-        }
+        Bukkit.getScheduler().cancelTask(broadcastTask);
     }
 
     private class Status {
