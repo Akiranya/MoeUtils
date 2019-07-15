@@ -43,8 +43,8 @@ safe-portal:
   debug: true
   event-priority: MONITOR
   messages:
-    cancelled: '&eSorry, but the teleportation has been cancelled due to the destination is out of border.'
-    debug: '&ePlayerPortalEvent has been cancelled for %s.'
+    cancelled: '&eSorry, but we found that the destination is out of world border. In case you die, the teleportation has been cancelled.'
+    debug: '&ePlayerPortalEvent has been cancelled for &b%s&e.'
 global:
   messages:
     active: '&eYes'

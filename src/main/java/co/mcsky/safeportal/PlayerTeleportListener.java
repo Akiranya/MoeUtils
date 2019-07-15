@@ -33,7 +33,9 @@ public class PlayerTeleportListener implements Listener {
             e.setCancelled(true);
             player.sendMessage(plugin.getMoeConfig().SAFEPORTAL_MESSAGE_PLAYER);
             if (plugin.getMoeConfig().SAFEPORTAL_DEBUG_ON) {
-                plugin.getLogger().info(plugin.getMoeConfig().SAFEPORTAL_MESSAGE_DEBUG);
+                plugin.getLogger().info(
+                        String.format(plugin.getMoeConfig().SAFEPORTAL_MESSAGE_DEBUG, player.getName())
+                );
             }
         }
     }

@@ -80,7 +80,12 @@ public class Configuration {
                 .map(e -> EntityType.valueOf(e.toUpperCase()))
                 .collect(Collectors.toSet());
         // Print out MOBARENA_WHITELIST for double-checking
-        MOBARENA_WHITELIST.forEach(e -> plugin.getLogger().info(e.name()));
+        StringBuilder sb = new StringBuilder();
+        MOBARENA_WHITELIST.forEach(e -> {
+            sb.append(e);
+            sb.append(" ");
+        });
+        plugin.getLogger().info(sb.toString());
 
         // Safe Portal initialization
         SAFEPORTAL_ON = plugin.getConfig().getBoolean("safe-portal.enable");
