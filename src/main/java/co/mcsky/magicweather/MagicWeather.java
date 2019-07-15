@@ -1,6 +1,7 @@
 package co.mcsky.magicweather;
 
-import co.mcsky.MoeLib;
+import co.mcsky.utils.Cooldown;
+import co.mcsky.utils.MoeLib;
 import co.mcsky.MoeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -56,11 +57,12 @@ public class MagicWeather {
 
         final long lastUsedTime = value.lastUsedTime;
         final long now = System.currentTimeMillis(); // In millisecond
-        final long diff = TimeUnit.MILLISECONDS.toSeconds(now - lastUsedTime); // In second
-        if (diff <= cooldown) { // Note that cooldown is in second
-            // If cooldown is not ready yet, simple returns
-            int remained = (int) (cooldown - diff);
-            player.sendMessage(String.format(pl.getMoeConfig().GLOBAL_MESSAGE_COOLDOWN, remained));
+        Cooldown cd = MoeLib.cooldown(now, lastUsedTime, cooldown);
+        if (!cd.isReady()) { // Note that cooldown is in second
+            // If cooldown is not ready yet...
+            player.sendMessage(
+                    String.format(pl.getMoeConfig().GLOBAL_MESSAGE_COOLDOWN, cd.getRemaining())
+            );
             return;
         }
 

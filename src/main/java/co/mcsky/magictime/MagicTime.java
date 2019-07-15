@@ -1,6 +1,7 @@
 package co.mcsky.magictime;
 
-import co.mcsky.MoeLib;
+import co.mcsky.utils.Cooldown;
+import co.mcsky.utils.MoeLib;
 import co.mcsky.MoeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -47,12 +48,13 @@ public class MagicTime {
 
     public void setTime(Player player, TimeType timeType) {
         /* Check cooldown */
-        long now = System.currentTimeMillis(); // In millisecond
-        long diff = TimeUnit.MILLISECONDS.toSeconds(now - lastUsedTime); // In second
-        if (diff <= cooldown) { // Note that cooldown is in second
-            // If cooldown is not ready yet, simple returns
-            int remained = (int) (cooldown - diff);
-            player.sendMessage(String.format(pl.getMoeConfig().GLOBAL_MESSAGE_COOLDOWN, remained));
+        long now = System.currentTimeMillis();
+        Cooldown cd = MoeLib.cooldown(now, lastUsedTime, cooldown);
+        if (!cd.isReady()) { // Note that cooldown is in second
+            // If cooldown is not ready yet...
+            player.sendMessage(
+                    String.format(pl.getMoeConfig().GLOBAL_MESSAGE_COOLDOWN, cd.getRemaining())
+            );
             return;
         }
 

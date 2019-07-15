@@ -8,7 +8,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPortalEvent;
 
-import static co.mcsky.MoeLib.isOutsideOfBorder;
+import static co.mcsky.utils.MoeLib.isOutsideOfBorder;
 
 public class PlayerTeleportListener implements Listener {
 

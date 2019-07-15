@@ -1,6 +1,6 @@
 package co.mcsky.magicweather;
 
-import co.mcsky.MoeLib;
+import co.mcsky.utils.MoeLib;
 import co.mcsky.MoeUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
