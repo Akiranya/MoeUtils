@@ -7,6 +7,7 @@ public class MoeLib {
 
     /**
      * Check if the location is out of border of the world of given location.
+     *
      * @param loc The location to be checked.
      * @return True if the location is out of border, otherwise false.
      */
@@ -20,6 +21,7 @@ public class MoeLib {
 
     /**
      * Converts seconds to minecraft tick.
+     *
      * @param seconds Seconds
      * @return Minecraft ticks
      */

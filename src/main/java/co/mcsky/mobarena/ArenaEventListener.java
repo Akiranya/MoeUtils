@@ -20,10 +20,10 @@ public class ArenaEventListener implements Listener {
 
     private final MoeUtils plugin;
     private final MobArena mobArena;
-    private Listener PlayerHealthListener;
-    private Listener ProjectileCollideListener;
     private final HealthBar healthBar;
     private final CustomPlayerName custom;
+    private Listener PlayerHealthListener;
+    private Listener ProjectileCollideListener;
 
     public ArenaEventListener(MoeUtils plugin, MobArena mobArena, CustomPlayerName custom) {
         this.plugin = plugin;

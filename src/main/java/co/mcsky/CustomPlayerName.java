@@ -61,6 +61,7 @@ public class CustomPlayerName {
 
     /**
      * Get players who have custom prefix or suffix.
+     *
      * @return Players who have custom prefix or suffix.
      */
     public Set<Player> getPlayers() {

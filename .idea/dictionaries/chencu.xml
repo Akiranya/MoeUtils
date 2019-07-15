@@ -2,6 +2,8 @@
   <dictionary name="chencu">
     <words>
       <w>cooldown</w>
+      <w>magictime</w>
+      <w>magicweather</w>
       <w>minecraft</w>
       <w>mobarena</w>
       <w>safeportal</w>

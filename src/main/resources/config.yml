@@ -3,16 +3,33 @@ magictime:
   cost: 300
   cooldown: 600
   messages:
-    timetoday: '&bA magician has changed the time of all worlds to&d magic day&b.'
-    timetonight: '&bA magician has changed the time of all worlds to&d magic night&b.'
-    dayended: '&dThe magic day&b of magician has ended!'
-    nightended: '&dThe magic night&b of magician has ended!'
-    timerreset: '&aTimer for magic time has been reset.'
-    cost: '&fYou are charged %d.'
+    day: 'Magic Day'
+    night: 'Magic Night'
+    changed: '&bA magician has changed the time of all worlds to &d%s&b.'
+    ended: '&d%s&b has ended!'
+    reset: '&aTimer for magic time has been reset.'
+    cost: '&fYou are charged &e%d&f dollars.'
     status: >
       &aStatus:&7 %s&a.
       &aPlayer:&7 %s&a.
-      &aRemained:&7 %d&a.
+      &aRemained:&7 %d&a second(s).
+magicweather:
+  prefix: ">>"
+  cost: 300
+  cooldown: 600
+  messages:
+    clear: 'Magic Clear'
+    rain: 'Magic Rain'
+    thunder: 'Magic Thunder'
+    changed: '&bA magician has changed the weather of world &e%s&b to &d%s&b.'
+    ended: '&bThe magic weather &e%s&b in world &e%s&b has ended!'
+    reset: '&aTimer for magic weather has been reset.'
+    cost: '&fYou are charged &e%d&f dollars.'
+    none: 'None'
+    status: >
+      &a%s:&7 %s&a.
+      &aPlayer:&7 %s&a.
+      &aRemained:&7 %d&a second(s).
 mobarena-addon:
   enable: true
   whitelist:
@@ -30,9 +47,10 @@ safe-portal:
     debug: '&ePlayerPortalEvent has been cancelled for %s.'
 global:
   messages:
+    active: '&eYes'
+    deactivated: '&eNo'
     noperms: '&cYou dont have the permission to use this command:&e %s&c.'
     reloaded: '&cMoeUtils has been reloaded.'
     notenoughmoney: '&7You dont have enough money.'
-    cooldown: '&7Cooldown:&b %d&7.'
-    yes: 'Yes'
-    no: 'No'
+    cooldown: '&7Cooldown:&b %d&7 second(s).'
+    playeronly: 'Only player may use this command.'

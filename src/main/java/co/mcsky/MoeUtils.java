@@ -1,5 +1,7 @@
 package co.mcsky;
 
+import co.mcsky.magictime.MagicTime;
+import co.mcsky.magicweather.MagicWeather;
 import co.mcsky.mobarena.ArenaEventListener;
 import co.mcsky.safeportal.PlayerTeleportListener;
 import com.garbagemule.MobArena.MobArena;
@@ -12,18 +14,22 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MoeUtils extends JavaPlugin {
-    private MobArena mobarena;
-    private Configuration configuration;
-
     public static Permission permission = null;
     public static Economy economy = null;
     public static Chat chat = null;
-
+    private MobArena mobarena;
+    private Configuration configuration;
 
     @Override
     public void onDisable() {
         // Save configuration to disk. It will destroy any data in memory.
+        this.saveConfig();
+
         HandlerList.unregisterAll(this);
+
+        /* Cancel 'postponed broadcast' task */
+        MagicTime.getInstance(this).cancelBroadcastTask();
+        MagicWeather.getInstance(this).cancelBroadcastTask();
     }
 
     @Override
