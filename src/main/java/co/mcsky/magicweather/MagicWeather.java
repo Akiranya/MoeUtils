@@ -92,7 +92,7 @@ public class MagicWeather {
 
         /* Wait and broadcast */
         final String weatherName = weatherType.getName(pl);
-        broadcastTask = Bukkit.getScheduler().runTaskLater(pl, () -> {
+        broadcastTask = Bukkit.getScheduler().runTaskLaterAsynchronously(pl, () -> {
             pl.getServer().broadcastMessage(
                     String.format(pl.getMoeConfig().MAGICWEATHER_MESSAGE_ENDED,
                             weatherName, worldName)

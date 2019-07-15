@@ -16,7 +16,7 @@ commands:
   moeutils:
     description: Entry to MoeUtils
     usage: /<command> {subCmds}
-    permission: moeutils
+    permission: moe.user
     aliases: [moe]
 permissions:
   moe.*:
