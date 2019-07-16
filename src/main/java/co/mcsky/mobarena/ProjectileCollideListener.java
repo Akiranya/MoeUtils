@@ -19,7 +19,7 @@ public class ProjectileCollideListener implements Listener {
     public ProjectileCollideListener(MoeUtils plugin, MobArena mobArena) {
         this.mobArena = mobArena;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        whiteList = plugin.getMoeConfig().MOBARENA_WHITELIST;
+        whiteList = plugin.getMoeConfig().mobarena_whitelist;
     }
 
     @EventHandler

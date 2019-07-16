@@ -31,7 +31,7 @@ public class ArenaEventListener implements Listener {
         this.custom = custom;
         this.healthBar = new HealthBar(this.custom, plugin);
         // Only if this feature is enabled do we register this listener
-        if (plugin.getMoeConfig().MOBARENA_ON) {
+        if (plugin.getMoeConfig().mobarena_on) {
             this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
         }
     }

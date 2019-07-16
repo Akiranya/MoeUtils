@@ -23,11 +23,11 @@ public enum WeatherType {
     public String getName(MoeUtils pl) {
         switch (this) {
             case CLEAR:
-                return pl.getMoeConfig().MAGICWEATHER_MESSAGE_CLEAR;
+                return pl.getMoeConfig().magicweather_message_clear;
             case RAIN:
-                return pl.getMoeConfig().MAGICWEATHER_MESSAGE_RAIN;
+                return pl.getMoeConfig().magicweather_message_rain;
             case THUNDER:
-                return pl.getMoeConfig().MAGICWEATHER_MESSAGE_THUNDER;
+                return pl.getMoeConfig().magicweather_message_thunder;
             default:
                 throw new IllegalStateException("Unknown weather value.");
         }

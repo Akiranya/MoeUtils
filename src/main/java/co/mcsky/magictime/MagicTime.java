@@ -35,7 +35,7 @@ public class MagicTime {
      */
     private MagicTime(MoeUtils pl) {
         this.pl = pl;
-        cooldown = pl.getMoeConfig().MAGICTIME_COOLDOWN; // In second
+        cooldown = pl.getMoeConfig().magictime_cooldown; // In second
     }
 
     public static MagicTime getInstance(MoeUtils pl) {
@@ -53,15 +53,15 @@ public class MagicTime {
         if (!cd.isReady()) { // Note that cooldown is in second
             // If cooldown is not ready yet...
             player.sendMessage(
-                    String.format(pl.getMoeConfig().GLOBAL_MESSAGE_COOLDOWN, cd.getRemaining())
+                    String.format(pl.getMoeConfig().global_message_cooldown, cd.getRemaining())
             );
             return;
         }
 
         /* Check balance */
-        int cost = pl.getMoeConfig().MAGICTIME_COST;
+        int cost = pl.getMoeConfig().magictime_cost;
         if (!economy.has(player, cost)) {
-            player.sendMessage(pl.getMoeConfig().GLOBAL_MESSAGE_NOTENOUGHMONEY);
+            player.sendMessage(pl.getMoeConfig().global_message_notenoughmoney);
             return;
         }
 
@@ -70,14 +70,14 @@ public class MagicTime {
         timeType.setTime(pl);
         // Broadcast it!
         pl.getServer().broadcastMessage(
-                String.format(pl.getMoeConfig().MAGICTIME_MESSAGE_CHANGED, timeType.getName(pl))
+                String.format(pl.getMoeConfig().magictime_message_changed, timeType.getName(pl))
         );
 
         /* Charge player */
         CommandSender console = pl.getServer().getConsoleSender();
         String commandCharge = String.format("hamsterecohelper:heh balance take %s %d", player.getName(), cost);
         pl.getServer().dispatchCommand(console, commandCharge);
-        player.sendMessage(String.format(pl.getMoeConfig().MAGICTIME_MESSAGE_COST, cost));
+        player.sendMessage(String.format(pl.getMoeConfig().magictime_message_cost, cost));
 
         // Only if after all operations do we set lastUsedVariables
         lastUsedPlayer = player.getUniqueId();
@@ -86,7 +86,7 @@ public class MagicTime {
         /* Wait and broadcast */
         final String fTimeName = timeType.getName(pl);
         broadcastTask = Bukkit.getScheduler().runTaskLaterAsynchronously(pl, () -> pl.getServer().broadcastMessage(
-                String.format(pl.getMoeConfig().MAGICTIME_MESSAGE_ENDED, fTimeName)
+                String.format(pl.getMoeConfig().magictime_message_ended, fTimeName)
         ), MoeLib.toTick(cooldown)).getTaskId();
     }
 
@@ -94,14 +94,14 @@ public class MagicTime {
         long now = System.currentTimeMillis();
         long waited = TimeUnit.MILLISECONDS.toSeconds(now - lastUsedTime); // In second
         if (waited <= cooldown) {
-            String status = pl.getMoeConfig().GLOBAL_MESSAGE_ON;
+            String status = pl.getMoeConfig().global_message_on;
             String lastUsedPlayer = pl.getServer().getOfflinePlayer(this.lastUsedPlayer).getName();
             int remained = cooldown - (int) waited;
-            player.sendMessage(String.format(pl.getMoeConfig().MAGICTIME_MESSAGE_STATUS, status, lastUsedPlayer, remained));
+            player.sendMessage(String.format(pl.getMoeConfig().magictime_message_status, status, lastUsedPlayer, remained));
         } else {
-            String status = pl.getMoeConfig().GLOBAL_MESSAGE_OFF;
-            String none = pl.getMoeConfig().MAGICWEATHER_MESSAGE_NONE;
-            player.sendMessage(String.format(pl.getMoeConfig().MAGICTIME_MESSAGE_STATUS, status, none, 0));
+            String status = pl.getMoeConfig().global_message_off;
+            String none = pl.getMoeConfig().magicweather_message_none;
+            player.sendMessage(String.format(pl.getMoeConfig().magictime_message_status, status, none, 0));
         }
     }
 
@@ -112,7 +112,7 @@ public class MagicTime {
      */
     public void reset(Player player) {
         lastUsedTime -= TimeUnit.SECONDS.toMillis(cooldown);
-        player.sendMessage(pl.getMoeConfig().MAGICTIME_MESSAGE_RESET);
+        player.sendMessage(pl.getMoeConfig().magictime_message_reset);
     }
 
     public void cancelBroadcastTask() {

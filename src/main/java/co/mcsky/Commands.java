@@ -35,12 +35,12 @@ public class Commands implements CommandExecutor {
             plugin.getMoeConfig().loadFile();
             plugin.onDisable();
             plugin.onEnable();
-            sender.sendMessage(plugin.getMoeConfig().GLOBAL_RELOADED);
+            sender.sendMessage(plugin.getMoeConfig().global_reloaded);
             return true;
         }
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(plugin.getMoeConfig().GLOBAL_MESSAGE_PLAYERONLY);
+            sender.sendMessage(plugin.getMoeConfig().global_message_playeronly);
             return true;
         }
         Player player = (Player) sender;
@@ -105,7 +105,7 @@ public class Commands implements CommandExecutor {
 
     private boolean hasPermission(CommandSender sender, String perm) {
         if (!permission.has(sender, perm)) {
-            sender.sendMessage(String.format(plugin.getMoeConfig().GLOBAL_MESSAGE_NOPERMS, perm));
+            sender.sendMessage(String.format(plugin.getMoeConfig().global_message_noperms, perm));
             return false;
         }
         return true;

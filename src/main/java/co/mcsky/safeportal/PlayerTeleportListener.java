@@ -16,7 +16,7 @@ public class PlayerTeleportListener implements Listener {
 
     public PlayerTeleportListener(MoeUtils plugin) {
         this.plugin = plugin;
-        if (plugin.getMoeConfig().SAFEPORTAL_ON) {
+        if (plugin.getMoeConfig().safeportal_on) {
             plugin.getServer().getPluginManager().registerEvents(this, plugin);
         }
     }
@@ -31,10 +31,10 @@ public class PlayerTeleportListener implements Listener {
         Location to = e.getTo();
         if (isOutsideOfBorder(to)) {
             e.setCancelled(true);
-            player.sendMessage(plugin.getMoeConfig().SAFEPORTAL_MESSAGE_PLAYER);
-            if (plugin.getMoeConfig().SAFEPORTAL_DEBUG_ON) {
+            player.sendMessage(plugin.getMoeConfig().safeportal_message_player);
+            if (plugin.getMoeConfig().safeportal_debug_on) {
                 plugin.getLogger().info(
-                        String.format(plugin.getMoeConfig().SAFEPORTAL_MESSAGE_DEBUG, player.getName())
+                        String.format(plugin.getMoeConfig().safeportal_message_debug, player.getName())
                 );
             }
         }

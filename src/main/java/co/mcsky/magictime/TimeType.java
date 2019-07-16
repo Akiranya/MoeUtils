@@ -16,9 +16,9 @@ public enum TimeType {
     public String getName(MoeUtils pl) {
         switch (this) {
             case DAY:
-                return pl.getMoeConfig().MAGICTIME_MESSAGE_DAY;
+                return pl.getMoeConfig().magictime_message_day;
             case NIGHT:
-                return pl.getMoeConfig().MAGICTIME_MESSAGE_NIGHT;
+                return pl.getMoeConfig().magictime_message_night;
             default:
                 throw new IllegalStateException("Unknown time value.");
         }
