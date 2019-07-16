@@ -2,6 +2,7 @@ package co.mcsky.mobarena;
 
 import co.mcsky.MoeUtils;
 import co.mcsky.TagHandler;
+import co.mcsky.utils.HealthBar;
 import com.garbagemule.MobArena.MobArena;
 import com.garbagemule.MobArena.events.ArenaEndEvent;
 import com.garbagemule.MobArena.events.ArenaPlayerDeathEvent;

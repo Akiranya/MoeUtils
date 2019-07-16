@@ -1,4 +1,4 @@
-package co.mcsky.mobarena;
+package co.mcsky.utils;
 
 import co.mcsky.MoeUtils;
 import co.mcsky.TagHandler;
@@ -18,7 +18,7 @@ public class HealthBar {
         this.moe = moe;
     }
 
-    void showHealth(Player player) {
+    public void showHealth(Player player) {
         // Use the already-existing scoreboard of player instead of creating new one
         Scoreboard scoreboard = player.getScoreboard();
         try {
@@ -34,7 +34,7 @@ public class HealthBar {
         Bukkit.getScheduler().runTaskLater(moe, () -> player.setHealth(player.getHealth()), 20);
     }
 
-    void removeHealth(Player player) {
+    public void removeHealth(Player player) {
         try {
             // Reset player's scoreboard by setting back to the main scoreboard
             player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());

@@ -90,7 +90,8 @@ public class MagicWeather {
                 moe, () -> moe.getServer().broadcastMessage(
                         String.format(moe.config.magicweather_message_ended,
                                 weatherName, worldName)
-                ), MoeLib.toTick(cooldown)).getTaskId();
+                ), MoeLib.toTick(cooldown)
+        ).getTaskId();
     }
 
     /**
