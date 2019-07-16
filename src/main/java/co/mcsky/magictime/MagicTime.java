@@ -84,9 +84,11 @@ public class MagicTime {
 
         /* Wait and broadcast */
         final String fTimeName = timeType.getName(moe);
-        broadcastTask = Bukkit.getScheduler().runTaskLaterAsynchronously(moe, () -> moe.getServer().broadcastMessage(
-                String.format(moe.config.magictime_message_ended, fTimeName)
-        ), MoeLib.toTick(cooldown)).getTaskId();
+        broadcastTask = Bukkit.getScheduler().runTaskLaterAsynchronously(
+                moe, () -> moe.getServer().broadcastMessage(
+                        String.format(moe.config.magictime_message_ended, fTimeName)
+                ), MoeLib.toTick(cooldown)
+        ).getTaskId();
     }
 
     public void getStatus(Player player) {
