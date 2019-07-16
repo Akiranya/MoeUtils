@@ -17,12 +17,12 @@ public class MoeUtils extends JavaPlugin {
     public static Permission permission = null;
     public static Economy economy = null;
     public static Chat chat = null;
+    public MoeConfig config;
     private MobArena mobarena;
-    private Configuration configuration;
 
     @Override
     public void onDisable() {
-        // Save configuration to disk. It will destroy any data in memory.
+        // Save config to disk. It will destroy any data in memory.
         this.saveConfig();
 
         HandlerList.unregisterAll(this);
@@ -34,9 +34,9 @@ public class MoeUtils extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Save a copy of the default configuration.yml if one is not there
+        // Save a copy of the default config.yml if one is not there
         this.saveDefaultConfig();
-        configuration = Configuration.getInstance(this);
+        config = MoeConfig.getInstance(this);
 
         // Set up Vault
         if (!setupEconomy()) {
@@ -60,8 +60,8 @@ public class MoeUtils extends JavaPlugin {
         new PlayerTeleportListener(this);
     }
 
-    public Configuration getMoeConfig() {
-        return configuration;
+    public MoeConfig getMoeConfig() {
+        return config;
     }
 
     private void setupMobArena() {

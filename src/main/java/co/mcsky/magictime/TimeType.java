@@ -13,12 +13,12 @@ public enum TimeType {
         this.commandName = commandName;
     }
 
-    public String getName(MoeUtils pl) {
+    public String getName(MoeUtils moe) {
         switch (this) {
             case DAY:
-                return pl.getMoeConfig().magictime_message_day;
+                return moe.config.magictime_message_day;
             case NIGHT:
-                return pl.getMoeConfig().magictime_message_night;
+                return moe.config.magictime_message_night;
             default:
                 throw new IllegalStateException("Unknown time value.");
         }
@@ -28,9 +28,9 @@ public enum TimeType {
         return commandName;
     }
 
-    public void setTime(MoeUtils pl) {
-        CommandSender console = pl.getServer().getConsoleSender();
+    public void setTime(MoeUtils moe) {
+        CommandSender console = moe.getServer().getConsoleSender();
         String command = String.format("essentials:time %s all", getCommandName());
-        pl.getServer().dispatchCommand(console, command);
+        moe.getServer().dispatchCommand(console, command);
     }
 }

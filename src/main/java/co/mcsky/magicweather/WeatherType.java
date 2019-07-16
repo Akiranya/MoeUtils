@@ -20,14 +20,14 @@ public enum WeatherType {
         return commandName;
     }
 
-    public String getName(MoeUtils pl) {
+    public String getName(MoeUtils moe) {
         switch (this) {
             case CLEAR:
-                return pl.getMoeConfig().magicweather_message_clear;
+                return moe.config.magicweather_message_clear;
             case RAIN:
-                return pl.getMoeConfig().magicweather_message_rain;
+                return moe.config.magicweather_message_rain;
             case THUNDER:
-                return pl.getMoeConfig().magicweather_message_thunder;
+                return moe.config.magicweather_message_thunder;
             default:
                 throw new IllegalStateException("Unknown weather value.");
         }
@@ -36,17 +36,17 @@ public enum WeatherType {
     /**
      * Depending on the enum value, changes the weather for world where player runs the command.
      *
-     * @param pl     MoeUtils.
+     * @param moe     MoeUtils.
      * @param player Who changes the weather.
      */
-    public void setWeather(MoeUtils pl, Player player) {
-        CommandSender console = pl.getServer().getConsoleSender();
+    public void setWeather(MoeUtils moe, Player player) {
+        CommandSender console = moe.getServer().getConsoleSender();
         String world = player.getWorld().getName();
         int duration = 3600;
         switch (this) {
             case CLEAR:
             case RAIN:
-                pl.getServer().dispatchCommand(
+                moe.getServer().dispatchCommand(
                         console, String.format("essentials:weather %s %s %d", world, getCommandName(), duration)
                 );
                 break;

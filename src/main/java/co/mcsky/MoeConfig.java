@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
  * This is a singleton class, i.e. there is only one instance existing at the same time.<br>
  * All configurations should be listed here as members of this class.
  */
-public class Configuration {
+public class MoeConfig {
 
-    private static Configuration configuration = null;
+    private static MoeConfig moeConfig = null;
     private MoeUtils plugin;
     /* MobArena Addon */
     public boolean mobarena_on;
@@ -59,16 +59,16 @@ public class Configuration {
     public String global_message_off;
     public String global_message_playeronly;
 
-    private Configuration(MoeUtils plugin) {
+    private MoeConfig(MoeUtils plugin) {
         this.plugin = plugin;
         loadFile();
     }
 
-    public static Configuration getInstance(MoeUtils plugin) {
-        if (configuration == null) {
-            configuration = new Configuration(plugin);
+    public static MoeConfig getInstance(MoeUtils plugin) {
+        if (moeConfig == null) {
+            moeConfig = new MoeConfig(plugin);
         }
-        return configuration;
+        return moeConfig;
     }
 
     public void loadFile() {
