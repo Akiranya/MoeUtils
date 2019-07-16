@@ -1,8 +1,8 @@
 package co.mcsky.magictime;
 
+import co.mcsky.MoeUtils;
 import co.mcsky.utils.Cooldown;
 import co.mcsky.utils.MoeLib;
-import co.mcsky.MoeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -84,7 +84,7 @@ public class MagicTime {
         lastUsedTime = now; // In millisecond
 
         /* Wait and broadcast */
-        final String fTimeName =timeType.getName(pl);
+        final String fTimeName = timeType.getName(pl);
         broadcastTask = Bukkit.getScheduler().runTaskLaterAsynchronously(pl, () -> pl.getServer().broadcastMessage(
                 String.format(pl.getMoeConfig().MAGICTIME_MESSAGE_ENDED, fTimeName)
         ), MoeLib.toTick(cooldown)).getTaskId();

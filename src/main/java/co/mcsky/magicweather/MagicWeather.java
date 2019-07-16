@@ -1,11 +1,10 @@
 package co.mcsky.magicweather;
 
+import co.mcsky.MoeUtils;
 import co.mcsky.utils.Cooldown;
 import co.mcsky.utils.MoeLib;
-import co.mcsky.MoeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -89,12 +88,11 @@ public class MagicWeather {
 
         /* Wait and broadcast */
         final String weatherName = weatherType.getName(pl);
-        broadcastTask = Bukkit.getScheduler().runTaskLaterAsynchronously(pl, () -> {
-            pl.getServer().broadcastMessage(
-                    String.format(pl.getMoeConfig().MAGICWEATHER_MESSAGE_ENDED,
-                            weatherName, worldName)
-            );
-        }, MoeLib.toTick(cooldown)).getTaskId();
+        broadcastTask = Bukkit.getScheduler().runTaskLaterAsynchronously(
+                pl, () -> pl.getServer().broadcastMessage(
+                        String.format(pl.getMoeConfig().MAGICWEATHER_MESSAGE_ENDED,
+                                weatherName, worldName)
+                ), MoeLib.toTick(cooldown)).getTaskId();
     }
 
     /**
