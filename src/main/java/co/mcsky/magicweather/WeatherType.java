@@ -36,7 +36,7 @@ public enum WeatherType {
     /**
      * Depending on the enum value, changes the weather for world where player runs the command.
      *
-     * @param moe     MoeUtils.
+     * @param moe    MoeUtils.
      * @param player Who changes the weather.
      */
     public void setWeather(MoeUtils moe, Player player) {

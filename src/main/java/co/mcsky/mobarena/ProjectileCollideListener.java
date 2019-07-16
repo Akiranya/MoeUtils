@@ -13,13 +13,13 @@ import java.util.Set;
 
 public class ProjectileCollideListener implements Listener {
 
-    private MobArena mobArena;
-    private Set<EntityType> whiteList;
+    private final MobArena ma;
+    private final Set<EntityType> whiteList;
 
-    public ProjectileCollideListener(MoeUtils plugin, MobArena mobArena) {
-        this.mobArena = mobArena;
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        whiteList = plugin.getMoeConfig().mobarena_whitelist;
+    public ProjectileCollideListener(MoeUtils moe, MobArena ma) {
+        this.ma = ma;
+        moe.getServer().getPluginManager().registerEvents(this, moe);
+        whiteList = moe.config.mobarena_whitelist;
     }
 
     @EventHandler
@@ -30,7 +30,7 @@ public class ProjectileCollideListener implements Listener {
         if (!(shooter instanceof Player)) return;
 
         // Ignore if player is not in arena
-        if (!mobArena.getArenaMaster().getAllLivingPlayers().contains(shooter)) return;
+        if (!ma.getArenaMaster().getAllLivingPlayers().contains(shooter)) return;
 
         if (whiteList.contains(event.getCollidedWith().getType())) {
             event.setCancelled(true);

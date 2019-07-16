@@ -18,7 +18,7 @@ public class MoeUtils extends JavaPlugin {
     public static Economy economy = null;
     public static Chat chat = null;
     public MoeConfig config;
-    private MobArena mobarena;
+    private MobArena ma;
 
     @Override
     public void onDisable() {
@@ -48,25 +48,21 @@ public class MoeUtils extends JavaPlugin {
         setupChat();
 
         // Register commands
-        new Commands(this);
+        new CommandHandler(this);
 
         // Set up MobArena-Addon
         setupMobArena();
-        if (mobarena != null) {
-            new ArenaEventListener(this, mobarena, new CustomPlayerName());
+        if (ma != null) {
+            new ArenaEventListener(this, ma, new TagHandler());
         }
 
         // Set up Safe-Portal
         new PlayerTeleportListener(this);
     }
 
-    public MoeConfig getMoeConfig() {
-        return config;
-    }
-
     private void setupMobArena() {
-        Plugin plugin = getServer().getPluginManager().getPlugin("MobArena");
-        this.mobarena = plugin != null ? (MobArena) plugin : null;
+        Plugin ma = getServer().getPluginManager().getPlugin("MobArena");
+        this.ma = ma != null ? (MobArena) ma : null;
     }
 
     private boolean setupPermissions() {

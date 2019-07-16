@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class MoeConfig {
 
     private static MoeConfig moeConfig = null;
-    private MoeUtils plugin;
+    private final MoeUtils moe;
     /* MobArena Addon */
     public boolean mobarena_on;
     public Set<EntityType> mobarena_whitelist;
@@ -51,7 +51,7 @@ public class MoeConfig {
     public String magicweather_message_thunder;
     public String magicweather_message_none;
     /* Global */
-    public String global_reloaded;
+    public String global_message_reloaded;
     public String global_message_noperms;
     public String global_message_notenoughmoney;
     public String global_message_cooldown;
@@ -59,23 +59,23 @@ public class MoeConfig {
     public String global_message_off;
     public String global_message_playeronly;
 
-    private MoeConfig(MoeUtils plugin) {
-        this.plugin = plugin;
-        loadFile();
+    private MoeConfig(MoeUtils moe) {
+        this.moe = moe;
+        reloadConfig();
     }
 
-    public static MoeConfig getInstance(MoeUtils plugin) {
+    public static MoeConfig getInstance(MoeUtils moe) {
         if (moeConfig == null) {
-            moeConfig = new MoeConfig(plugin);
+            moeConfig = new MoeConfig(moe);
         }
         return moeConfig;
     }
 
-    public void loadFile() {
-        plugin.reloadConfig();
+    public void reloadConfig() {
+        moe.reloadConfig();
 
         // Convenient local variable
-        FileConfiguration config = plugin.getConfig();
+        FileConfiguration config = moe.getConfig();
 
         // MobArena Addon initialization
         mobarena_on = config.getBoolean("mobarena-addon.enable");
@@ -89,7 +89,7 @@ public class MoeConfig {
             sb.append(e);
             sb.append(" ");
         });
-        plugin.getLogger().info(sb.toString());
+        moe.getLogger().info(sb.toString());
 
         // Safe Portal initialization
         safeportal_on = config.getBoolean("safe-portal.enable");
@@ -127,7 +127,7 @@ public class MoeConfig {
         // Global initialization
         global_message_on = color(config.getString("global.messages.active"));
         global_message_off = color(config.getString("global.messages.deactivated"));
-        global_reloaded = color(config.getString("global.messages.reloaded"));
+        global_message_reloaded = color(config.getString("global.messages.reloaded"));
         global_message_noperms = color(config.getString("global.messages.noperms"));
         global_message_notenoughmoney = color(config.getString("global.messages.notenoughmoney"));
         global_message_cooldown = color(config.getString("global.messages.cooldown"));

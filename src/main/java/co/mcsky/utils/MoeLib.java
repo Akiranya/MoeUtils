@@ -40,7 +40,6 @@ public class MoeLib {
     public static Cooldown cooldown(long now, long lastUsedTime, int cooldown) {
         long diff = TimeUnit.MILLISECONDS.toSeconds(now - lastUsedTime); // In second
         if (diff <= cooldown) { // Note that cooldown is in second
-            // If cooldown is not ready yet, simple returns
             int remaining = (int) (cooldown - diff);
             return new Cooldown(false, remaining);
         } else {

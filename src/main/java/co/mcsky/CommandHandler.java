@@ -13,17 +13,17 @@ import java.util.Objects;
 
 import static co.mcsky.MoeUtils.permission;
 
-public class Commands implements CommandExecutor {
+public class CommandHandler implements CommandExecutor {
 
-    private MoeUtils plugin;
-    private MagicTime magicTime;
-    private MagicWeather magicWeather;
+    private final MoeUtils moe;
+    private final MagicTime magicTime;
+    private final MagicWeather magicWeather;
 
-    public Commands(MoeUtils plugin) {
-        this.plugin = plugin;
-        Objects.requireNonNull(plugin.getCommand("moeutils")).setExecutor(this);
-        magicWeather = MagicWeather.getInstance(plugin);
-        magicTime = MagicTime.getInstance(plugin);
+    public CommandHandler(MoeUtils moe) {
+        this.moe = moe;
+        Objects.requireNonNull(moe.getCommand("moeutils")).setExecutor(this);
+        magicWeather = MagicWeather.getInstance(moe);
+        magicTime = MagicTime.getInstance(moe);
     }
 
     @Override
@@ -32,15 +32,15 @@ public class Commands implements CommandExecutor {
 
         /* Reload */
         if (args[0].equalsIgnoreCase("reload")) {
-            plugin.getMoeConfig().loadFile();
-            plugin.onDisable();
-            plugin.onEnable();
-            sender.sendMessage(plugin.getMoeConfig().global_reloaded);
+            moe.config.reloadConfig();
+            moe.onDisable();
+            moe.onEnable();
+            sender.sendMessage(moe.config.global_message_reloaded);
             return true;
         }
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(plugin.getMoeConfig().global_message_playeronly);
+            sender.sendMessage(moe.config.global_message_playeronly);
             return true;
         }
         Player player = (Player) sender;
@@ -105,7 +105,7 @@ public class Commands implements CommandExecutor {
 
     private boolean hasPermission(CommandSender sender, String perm) {
         if (!permission.has(sender, perm)) {
-            sender.sendMessage(String.format(plugin.getMoeConfig().global_message_noperms, perm));
+            sender.sendMessage(String.format(moe.config.global_message_noperms, perm));
             return false;
         }
         return true;

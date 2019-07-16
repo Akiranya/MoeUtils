@@ -1,7 +1,7 @@
 package co.mcsky.mobarena;
 
-import co.mcsky.CustomPlayerName;
 import co.mcsky.MoeUtils;
+import co.mcsky.TagHandler;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,15 +9,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 
-import static co.mcsky.CustomPlayerName.ACTION.UPDATE;
+import static co.mcsky.TagHandler.ACTION.UPDATE;
 
 public class PlayerHealthListener implements Listener {
-    private CustomPlayerName cpn;
+    private final TagHandler th;
 
-    public PlayerHealthListener(MoeUtils plugin, CustomPlayerName custom) {
+    public PlayerHealthListener(MoeUtils moe, TagHandler th) {
         // Pass the CustomPlayerName instance instead of initializing a new one
-        this.cpn = custom;
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        this.th = th;
+        moe.getServer().getPluginManager().registerEvents(this, moe);
     }
 
     /**
@@ -27,7 +27,7 @@ public class PlayerHealthListener implements Listener {
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         Entity victim = event.getEntity();
         // 不影响竞技场外面的玩家
-        if (!(victim instanceof Player) || !cpn.getPlayers().contains(victim)) return;
+        if (!(victim instanceof Player) || !th.getPlayers().contains(victim)) return;
         updateTag((Player) victim);
     }
 
@@ -38,17 +38,17 @@ public class PlayerHealthListener implements Listener {
     public void onEntityRegainHealth(EntityRegainHealthEvent event) {
         Entity entity = event.getEntity();
         // 不影响竞技场外面的玩家
-        if (!(entity instanceof Player) || !cpn.getPlayers().contains(entity)) return;
+        if (!(entity instanceof Player) || !th.getPlayers().contains(entity)) return;
         updateTag((Player) entity);
     }
 
     private void updateTag(Player p) {
         if (p.getHealth() > 15) {
-            cpn.change(p, cpn.color("&a&l[&r"), cpn.color("&a&l]"), UPDATE);
+            th.change(p, th.color("&a&l[&r"), th.color("&a&l]"), UPDATE);
         } else if (p.getHealth() > 10 && p.getHealth() <= 15) {
-            cpn.change(p, cpn.color("&e&l[&r"), cpn.color("&e&l]"), UPDATE);
+            th.change(p, th.color("&e&l[&r"), th.color("&e&l]"), UPDATE);
         } else {
-            cpn.change(p, cpn.color("&c&l[&r"), cpn.color("&c&l]"), UPDATE);
+            th.change(p, th.color("&c&l[&r"), th.color("&c&l]"), UPDATE);
         }
     }
 }

@@ -1,7 +1,7 @@
 package co.mcsky.mobarena;
 
-import co.mcsky.CustomPlayerName;
 import co.mcsky.MoeUtils;
+import co.mcsky.TagHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -10,12 +10,12 @@ import org.bukkit.scoreboard.Scoreboard;
 
 public class HealthBar {
 
-    private CustomPlayerName custom;
-    private MoeUtils plugin;
+    private final TagHandler th;
+    private final MoeUtils moe;
 
-    public HealthBar(CustomPlayerName custom, MoeUtils plugin) {
-        this.custom = custom;
-        this.plugin = plugin;
+    public HealthBar(TagHandler th, MoeUtils moe) {
+        this.th = th;
+        this.moe = moe;
     }
 
     void showHealth(Player player) {
@@ -24,14 +24,14 @@ public class HealthBar {
         try {
             String name = "showhealth";
             String criteria = "health";
-            String text = custom.color("/ " + (int) Math.ceil(player.getHealth()));
+            String text = th.color("/ " + (int) Math.ceil(player.getHealth()));
             Objective obj = scoreboard.registerNewObjective(name, criteria, text);
             obj.setDisplaySlot(DisplaySlot.BELOW_NAME);
             player.setScoreboard(scoreboard);
         } catch (IllegalArgumentException | IllegalStateException e) {
             // Suppress exception "An objective of name 'showhealth' already exists"
         }
-        Bukkit.getScheduler().runTaskLater(plugin, () -> player.setHealth(player.getHealth()), 20);
+        Bukkit.getScheduler().runTaskLater(moe, () -> player.setHealth(player.getHealth()), 20);
     }
 
     void removeHealth(Player player) {

@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import static co.mcsky.MoeUtils.economy;
 
@@ -49,7 +48,7 @@ public class MagicWeather {
     public void setWeather(Player player, WeatherType weatherType) {
         /* Check cooldown */
         final String worldName = player.getWorld().getName();
-        Status status = lastUsedMap.get(worldName);
+        final Status status = lastUsedMap.get(worldName);
         // If there is no record in map, simply set lastUsedTime to 0
         final long lastUsedTime = status != null ? status.lastUsedTime : 0;
         final long now = System.currentTimeMillis(); // In millisecond
@@ -73,13 +72,13 @@ public class MagicWeather {
         /* Set weather */
         weatherType.setWeather(moe, player);
         // After setting weather, we broadcast it!
+        final String weatherName = weatherType.getName(moe);
         moe.getServer().broadcastMessage(
-                String.format(moe.config.magicweather_message_changed,
-                        player.getWorld().getName(), weatherType.getName(moe))
+                String.format(moe.config.magicweather_message_changed, worldName, weatherName)
         );
 
         /* Charge player */
-        String commandCharge = String.format("hamsterecohelper:heh balance take %s %d", player.getName(), cost);
+        final String commandCharge = String.format("hamsterecohelper:heh balance take %s %d", player.getName(), cost);
         moe.getServer().dispatchCommand(moe.getServer().getConsoleSender(), commandCharge);
         player.sendMessage(String.format(moe.config.magicweather_message_cost, cost));
 
@@ -87,7 +86,6 @@ public class MagicWeather {
         lastUsedMap.put(worldName, new Status(now, player.getUniqueId()));
 
         /* Wait and broadcast */
-        final String weatherName = weatherType.getName(moe);
         broadcastTask = Bukkit.getScheduler().runTaskLaterAsynchronously(
                 moe, () -> moe.getServer().broadcastMessage(
                         String.format(moe.config.magicweather_message_ended,
@@ -104,22 +102,23 @@ public class MagicWeather {
         if (lastUsedMap.isEmpty()) {
             String none = moe.config.magicweather_message_none;
             player.sendMessage(
-                    String.format(moe.config.magicweather_message_status,
-                            none, none, none, 0)
+                    String.format(moe.config.magicweather_message_status, none, none, none, 0)
             );
             return;
         }
         lastUsedMap.forEach((worldName, status) -> {
             long now = System.currentTimeMillis();
-            long waited = TimeUnit.MILLISECONDS.toSeconds(now - status.lastUsedTime); // In second
-            if (waited <= cooldown) {
+            Cooldown cd = MoeLib.cooldown(now, status.lastUsedTime, cooldown);
+            if (!cd.ready) {
+                // If cooldown is not ready yet
                 String activated = moe.config.global_message_on;
                 String lastUsedPlayer = moe.getServer().getOfflinePlayer(status.lastUsedPlayer).getName();
-                int remained = cooldown - (int) waited;
+                int remained = cd.remaining;
                 player.sendMessage(
-                        String.format(moe.config.magicweather_message_status,
-                                worldName, activated, lastUsedPlayer, remained));
+                        String.format(moe.config.magicweather_message_status, worldName, activated, lastUsedPlayer, remained)
+                );
             } else {
+                // If cooldown is ready
                 String activated = moe.config.global_message_off;
                 player.sendMessage(String.format(moe.config.magicweather_message_status, activated, "", ""));
             }

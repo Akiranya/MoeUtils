@@ -10,11 +10,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class CustomPlayerName {
+public class TagHandler {
 
-    private Map<Player, Team> teams;
+    private final Map<Player, Team> teams;
 
-    public CustomPlayerName() {
+    public TagHandler() {
         teams = new HashMap<>();
     }
 
@@ -60,9 +60,9 @@ public class CustomPlayerName {
     }
 
     /**
-     * Get players who have custom prefix or suffix.
+     * Get players who have th prefix or suffix.
      *
-     * @return Players who have custom prefix or suffix.
+     * @return Players who have th prefix or suffix.
      */
     public Set<Player> getPlayers() {
         return new HashSet<>(teams.keySet());

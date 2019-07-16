@@ -91,13 +91,14 @@ public class MagicTime {
 
     public void getStatus(Player player) {
         long now = System.currentTimeMillis();
-        long waited = TimeUnit.MILLISECONDS.toSeconds(now - lastUsedTime); // In second
-        if (waited <= cooldown) {
+        Cooldown cd = MoeLib.cooldown(now, lastUsedTime, cooldown);
+        if (!cd.ready) {
+            // If cooldown is not ready yet
             String status = moe.config.global_message_on;
             String lastUsedPlayer = moe.getServer().getOfflinePlayer(this.lastUsedPlayer).getName();
-            int remained = cooldown - (int) waited;
-            player.sendMessage(String.format(moe.config.magictime_message_status, status, lastUsedPlayer, remained));
+            player.sendMessage(String.format(moe.config.magictime_message_status, status, lastUsedPlayer, cd.remaining));
         } else {
+            // If cooldown is ready
             String status = moe.config.global_message_off;
             String none = moe.config.magicweather_message_none;
             player.sendMessage(String.format(moe.config.magictime_message_status, status, none, 0));
