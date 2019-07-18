@@ -3,9 +3,11 @@ package co.mcsky.foundores;
 import co.mcsky.MoeConfig;
 import co.mcsky.MoeUtils;
 import co.mcsky.utils.MoeLib;
+import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
+import com.sk89q.worldedit.world.World;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -33,9 +35,10 @@ public class BlockBreakListener implements Listener {
     final private Set<Material> blockTypes;
     /**
      * <p>Stores locations of blocks (ores) where players have explored.</p>
-     * <p>Using HashSet for constant searching time.</p>
+     * <p>The reason why I use Deque will be explained someday later :)</p>
      */
-    final private Deque<CuboidRegion> foundLocations;
+    final private Deque<Region> foundLocations;
+    private RegionHandler regionHandler;
 
     public BlockBreakListener(MoeUtils moe) {
         this.moe = moe;
@@ -44,10 +47,13 @@ public class BlockBreakListener implements Listener {
         foundLocations = new LinkedList<>();
         if (moe.config.foundores_on) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
+            regionHandler = new RegionHandler();
+
+            // Schedule a task which remove the last element of Deque at given interval
             Bukkit.getScheduler().runTaskTimer(moe, () -> {
                 if (foundLocations.isEmpty()) return;
                 foundLocations.removeLast();
-            }, 0, MoeLib.toTick(10));
+            }, 0, MoeLib.toTick(moe.config.foundores_pop_interval));
         }
     }
 
@@ -58,20 +64,27 @@ public class BlockBreakListener implements Listener {
         if (!blockTypes.contains(b.getType())) {
             return;
         }
-        // Is player in survival mode?
-        if (e.getPlayer().getGameMode() != GameMode.SURVIVAL) {
-            return;
-        }
-        // Is block in region?
+        // Is block in region previously created?
+        // If it is, simply returns, no need for further checking.
         BlockVector3 vector = BlockVector3.at(b.getX(), b.getY(), b.getZ());
         for (Region r : foundLocations) {
             if (r.contains(vector)) return;
         }
+        // Is player in survival mode?
+        if (e.getPlayer().getGameMode() != GameMode.SURVIVAL) {
+            return;
+        }
+        // Is block in enabled worlds?
+        if (!moe.config.foundores_worlds.contains(b.getWorld().getName())) {
+            return;
+        }
         // If the block is not in any region previously created,
-        // adds it to the head of queue.
-        CuboidRegion region = createCuboidRegion(vector, 1);
+        // adds the region which the block are from to the head of queue.
+        World world = new BukkitWorld(b.getWorld());
+        CuboidRegion region = regionHandler.createCuboidRegion(world, vector, moe.config.foundores_check_radius);
         foundLocations.addFirst(region);
-        broadcast(e, b);
+        // And broadcast it!
+        broadcast(e, b, region);
     }
 
     /**
@@ -80,32 +93,15 @@ public class BlockBreakListener implements Listener {
      * @param e The event.
      * @param b The block related to this event.
      */
-    private void broadcast(BlockBreakEvent e, Block b) {
+    private void broadcast(BlockBreakEvent e, Block b, Region region) {
         String playerName = e.getPlayer().getName();
         String blockType = b.getType().name();
         String color = blockTypeMap.get(Material.matchMaterial(blockType));
         moe.getServer().broadcastMessage(
                 MoeConfig.color(String.format(
                         moe.config.foundores_message_found,
-                        playerName, 999, color, blockType)
+                        playerName, regionHandler.countBlock((CuboidRegion) region, b.getType()), color, blockType)
                 )
         );
-    }
-
-    /**
-     * Creates a cuboid region with given radius and center location.
-     *
-     * @param v The center of the cuboid region. BlockVector3 object can be retrieved by invoking BlockVector3.at().
-     * @param radius Radius of the cuboid region.
-     * @return A cuboid region with given radius and center location.
-     */
-    private CuboidRegion createCuboidRegion(BlockVector3 v, int radius) {
-        int x1 = v.getBlockX() - radius;
-        int y1 = v.getBlockY() - radius;
-        int z1 = v.getBlockZ() - radius;
-        int x2 = v.getBlockX() + radius;
-        int y2 = v.getBlockY() + radius;
-        int z2 = v.getBlockZ() + radius;
-        return new CuboidRegion(BlockVector3.at(x1, y1, z1), BlockVector3.at(x2, y2, z2));
     }
 }

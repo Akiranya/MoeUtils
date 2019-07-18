@@ -6,10 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventPriority;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -24,7 +21,9 @@ public class MoeConfig {
     /* FoundOres */
     public boolean foundores_on;
     public String foundores_prefix;
-    public List<String> foundores_worlds;
+    public Set<String> foundores_worlds;
+    public int foundores_check_radius;
+    public int foundores_pop_interval;
     /**
      * K = block_type<br>
      * V = color_code
@@ -88,6 +87,10 @@ public class MoeConfig {
             moeConfig = new MoeConfig(moe);
         }
         return moeConfig;
+    }
+
+    public static String color(String message) {
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 
     public void reloadConfig() {
@@ -176,7 +179,9 @@ public class MoeConfig {
     private void foundOresInit(FileConfiguration config) {
         foundores_on = config.getBoolean("foundores.enable");
         foundores_prefix = config.getString("foundores.prefix");
-        foundores_worlds = config.getStringList("foundores.worlds");
+        foundores_worlds = new HashSet<>(config.getStringList("foundores.worlds")); // Use HashSet for constant searching time
+        foundores_check_radius = config.getInt("foundores.check_radius");
+        foundores_pop_interval = config.getInt("foundores.pop_interval");
         foundores_block_types = new HashMap<>();
         // Read block_type map from config file
         Map<String, Object> map = config
@@ -194,9 +199,5 @@ public class MoeConfig {
         // MobArena
         moe.getLogger().info(ChatColor.YELLOW + "mobarena.whitelist:");
         mobarena_whitelist.forEach(e -> moe.getLogger().info("- " + e.toString()));
-    }
-
-    public static String color(String message) {
-        return ChatColor.translateAlternateColorCodes('&', message);
     }
 }
