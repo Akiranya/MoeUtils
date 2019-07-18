@@ -21,10 +21,10 @@ public class HealthBar {
     public void showHealth(Player player) {
         // Use the already-existing scoreboard of player instead of creating new one
         Scoreboard scoreboard = player.getScoreboard();
+        String name = "showhealth";
+        String criteria = "health";
+        String text = th.color("/ " + (int) Math.ceil(player.getHealth()));
         try {
-            String name = "showhealth";
-            String criteria = "health";
-            String text = th.color("/ " + (int) Math.ceil(player.getHealth()));
             Objective obj = scoreboard.registerNewObjective(name, criteria, text);
             obj.setDisplaySlot(DisplaySlot.BELOW_NAME);
             player.setScoreboard(scoreboard);
