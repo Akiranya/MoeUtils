@@ -42,7 +42,7 @@ public enum WeatherType {
     public void setWeather(MoeUtils moe, Player player) {
         CommandSender console = moe.getServer().getConsoleSender();
         String world = player.getWorld().getName();
-        int duration = 3600;
+        int duration = 3600; // In second
         switch (this) {
             case CLEAR:
             case RAIN:

@@ -46,7 +46,7 @@ public class MagicTime {
     }
 
 
-    public void setTime(Player player, TimeType timeType) {
+    public void setTime(Player player, TimeType timeType, int cost) {
         /* Check cooldown */
         long now = System.currentTimeMillis();
         Cooldown cd = Cooldown.calculate(now, lastUsedTime, cooldown);
@@ -59,7 +59,6 @@ public class MagicTime {
         }
 
         /* Check balance */
-        int cost = moe.config.magictime_cost;
         if (!economy.has(player, cost)) {
             player.sendMessage(moe.config.global_message_notenoughmoney);
             return;

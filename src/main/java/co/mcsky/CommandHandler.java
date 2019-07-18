@@ -50,12 +50,12 @@ public class CommandHandler implements CommandExecutor {
             if (args.length != 2) return false;
             if (args[1].equalsIgnoreCase("day")) {
                 if (!hasPermission(player, "moe.magic.time.day")) return true;
-                magicTime.setTime(player, TimeType.DAY);
+                magicTime.setTime(player, TimeType.DAY, moe.config.magictime_cost);
                 return true;
             }
             if (args[1].equalsIgnoreCase("night")) {
                 if (!hasPermission(player, "moe.magic.time.night")) return true;
-                magicTime.setTime(player, TimeType.NIGHT);
+                magicTime.setTime(player, TimeType.NIGHT, moe.config.magictime_cost);
                 return true;
             }
             if (args[1].equalsIgnoreCase("reset")) {
@@ -75,17 +75,17 @@ public class CommandHandler implements CommandExecutor {
             if (args.length != 2) return false;
             if (args[1].equalsIgnoreCase("clear")) {
                 if (!hasPermission(player, "moe.magic.weather.clear")) return true;
-                magicWeather.setWeather(player, WeatherType.CLEAR);
+                magicWeather.setWeather(player, WeatherType.CLEAR, moe.config.magicweather_cost);
                 return true;
             }
             if (args[1].equalsIgnoreCase("rain")) {
                 if (!hasPermission(player, "moe.magic.weather.rain")) return true;
-                magicWeather.setWeather(player, WeatherType.RAIN);
+                magicWeather.setWeather(player, WeatherType.RAIN, moe.config.magicweather_cost);
                 return true;
             }
             if (args[1].equalsIgnoreCase("thunder")) {
                 if (!hasPermission(player, "moe.magic.weather.thunder")) return true;
-                magicWeather.setWeather(player, WeatherType.THUNDER);
+                magicWeather.setWeather(player, WeatherType.THUNDER, moe.config.magicweather_cost);
                 return true;
             }
             if (args[1].equalsIgnoreCase("status")) {

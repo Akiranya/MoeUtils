@@ -45,7 +45,7 @@ public class MagicWeather {
         return magicWeather = new MagicWeather(moe);
     }
 
-    public void setWeather(Player player, WeatherType weatherType) {
+    public void setWeather(Player player, WeatherType weatherType, int cost) {
         /* Check cooldown */
         final String worldName = player.getWorld().getName();
         final Status status = lastUsedMap.get(worldName);
@@ -62,7 +62,6 @@ public class MagicWeather {
         }
 
         /* Check balance */
-        int cost = moe.config.magicweather_cost;
         if (!economy.has(player, cost)) {
             // Only if player has enough money do we put it into map
             player.sendMessage(moe.config.global_message_notenoughmoney);
