@@ -1,11 +1,14 @@
 package co.mcsky;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventPriority;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -17,15 +20,29 @@ public class MoeConfig {
 
     private static MoeConfig moeConfig = null;
     private final MoeUtils moe;
+
+    /* FoundOres */
+    public boolean foundores_on;
+    public String foundores_prefix;
+    public List<String> foundores_worlds;
+    /**
+     * K = block_type<br>
+     * V = color_code
+     */
+    public Map<Material, String> foundores_block_types;
+    public String foundores_message_found;
+
     /* MobArena Addon */
     public boolean mobarena_on;
     public Set<EntityType> mobarena_whitelist;
+
     /* Safe Portal */
     public boolean safeportal_on;
     public boolean safeportal_debug_on;
     public EventPriority safeportal_priority;
     public String safeportal_message_player;
     public String safeportal_message_debug;
+
     /* MagicTime */
     public int magictime_cost;
     public int magictime_cooldown;
@@ -37,6 +54,7 @@ public class MoeConfig {
     public String magictime_message_status;
     public String magictime_message_ended;
     public String magictime_message_changed;
+
     /* MagicWeather */
     public int magicweather_cost;
     public int magicweather_cooldown;
@@ -50,6 +68,7 @@ public class MoeConfig {
     public String magicweather_message_clear;
     public String magicweather_message_thunder;
     public String magicweather_message_none;
+
     /* Global */
     public String global_message_reloaded;
     public String global_message_noperms;
@@ -72,45 +91,45 @@ public class MoeConfig {
     }
 
     public void reloadConfig() {
+        // Reload from file
         moe.reloadConfig();
-
         // Convenient local variable
         FileConfiguration config = moe.getConfig();
 
+        // FoundOres initialization
+        foundOresInit(config);
+
         // MobArena Addon initialization
-        mobarena_on = config.getBoolean("mobarena-addon.enable");
-        List<String> entityTypes = config.getStringList("mobarena-addon.whitelist");
-        mobarena_whitelist = entityTypes.stream()
-                .map(e -> EntityType.valueOf(e.toUpperCase()))
-                .collect(Collectors.toSet());
-        // Print out mobarena_whitelist for double-checking
-        StringBuilder sb = new StringBuilder();
-        mobarena_whitelist.forEach(e -> {
-            sb.append(e);
-            sb.append(" ");
-        });
-        moe.getLogger().info(sb.toString());
+        mobArenaInit(config);
 
         // Safe Portal initialization
-        safeportal_on = config.getBoolean("safe-portal.enable");
-        safeportal_debug_on = config.getBoolean("safe-portal.debug");
-        safeportal_priority = EventPriority.valueOf(config.getString("safe-portal.event-priority"));
-        safeportal_message_player = color(config.getString("safe-portal.messages.cancelled"));
-        safeportal_message_debug = color(config.getString("safe-portal.messages.debug"));
+        safePortalInit(config);
 
-        /* MagicTime */
-        magictime_cost = config.getInt("magictime.cost");
-        magictime_cooldown = config.getInt("magictime.cooldown");
-        magictime_message_prefix = color(config.getString("magictime.prefix"));
-        magictime_message_cost = color(config.getString("magictime.messages.cost"));
-        magictime_message_ended = color(config.getString("magictime.messages.ended"));
-        magictime_message_changed = color(config.getString("magictime.messages.changed"));
-        magictime_message_status = color(config.getString("magictime.messages.status"));
-        magictime_message_reset = color(config.getString("magictime.messages.reset"));
-        magictime_message_day = color(config.getString("magictime.messages.day"));
-        magictime_message_night = color(config.getString("magictime.messages.night"));
+        // MagicTime
+        magicTimeInit(config);
 
-        /* MagicWeather */
+        // MagicWeather
+        magicWeatherInit(config);
+
+        // Global initialization
+        globalInit(config);
+
+        // THIS METHOD MUST BE THE LAST ONE RUN
+        // Output config info to console
+        outputConfig();
+    }
+
+    private void globalInit(FileConfiguration config) {
+        global_message_on = color(config.getString("global.messages.active"));
+        global_message_off = color(config.getString("global.messages.deactivated"));
+        global_message_reloaded = color(config.getString("global.messages.reloaded"));
+        global_message_noperms = color(config.getString("global.messages.noperms"));
+        global_message_notenoughmoney = color(config.getString("global.messages.notenoughmoney"));
+        global_message_cooldown = color(config.getString("global.messages.cooldown"));
+        global_message_playeronly = color(config.getString("global.messages.playeronly"));
+    }
+
+    private void magicWeatherInit(FileConfiguration config) {
         magicweather_cost = config.getInt("magicweather.cost");
         magicweather_cooldown = config.getInt("magicweather.cooldown");
         magicweather_message_prefix = color(config.getString("magicweather.prefix"));
@@ -123,18 +142,61 @@ public class MoeConfig {
         magicweather_message_clear = color(config.getString("magicweather.messages.clear"));
         magicweather_message_thunder = color(config.getString("magicweather.messages.thunder"));
         magicweather_message_none = color(config.getString("magicweather.messages.none"));
-
-        // Global initialization
-        global_message_on = color(config.getString("global.messages.active"));
-        global_message_off = color(config.getString("global.messages.deactivated"));
-        global_message_reloaded = color(config.getString("global.messages.reloaded"));
-        global_message_noperms = color(config.getString("global.messages.noperms"));
-        global_message_notenoughmoney = color(config.getString("global.messages.notenoughmoney"));
-        global_message_cooldown = color(config.getString("global.messages.cooldown"));
-        global_message_playeronly = color(config.getString("global.messages.playeronly"));
     }
 
-    private String color(String message) {
+    private void magicTimeInit(FileConfiguration config) {
+        magictime_cost = config.getInt("magictime.cost");
+        magictime_cooldown = config.getInt("magictime.cooldown");
+        magictime_message_prefix = color(config.getString("magictime.prefix"));
+        magictime_message_cost = color(config.getString("magictime.messages.cost"));
+        magictime_message_ended = color(config.getString("magictime.messages.ended"));
+        magictime_message_changed = color(config.getString("magictime.messages.changed"));
+        magictime_message_status = color(config.getString("magictime.messages.status"));
+        magictime_message_reset = color(config.getString("magictime.messages.reset"));
+        magictime_message_day = color(config.getString("magictime.messages.day"));
+        magictime_message_night = color(config.getString("magictime.messages.night"));
+    }
+
+    private void safePortalInit(FileConfiguration config) {
+        safeportal_on = config.getBoolean("safe-portal.enable");
+        safeportal_debug_on = config.getBoolean("safe-portal.debug");
+        safeportal_priority = EventPriority.valueOf(config.getString("safe-portal.event-priority"));
+        safeportal_message_player = color(config.getString("safe-portal.messages.cancelled"));
+        safeportal_message_debug = color(config.getString("safe-portal.messages.debug"));
+    }
+
+    private void mobArenaInit(FileConfiguration config) {
+        mobarena_on = config.getBoolean("mobarena-addon.enable");
+        List<String> entityTypes = config.getStringList("mobarena-addon.whitelist");
+        mobarena_whitelist = entityTypes.stream()
+                .map(e -> EntityType.valueOf(e.toUpperCase()))
+                .collect(Collectors.toSet());
+    }
+
+    private void foundOresInit(FileConfiguration config) {
+        foundores_on = config.getBoolean("foundores.enable");
+        foundores_prefix = config.getString("foundores.prefix");
+        foundores_worlds = config.getStringList("foundores.worlds");
+        foundores_block_types = new HashMap<>();
+        // Read block_type map from config file
+        Map<String, Object> map = config
+                .getConfigurationSection("foundores.block_types")
+                .getValues(false);
+        map.forEach((k, v) -> foundores_block_types.put(Material.matchMaterial(k), (String) v));
+        foundores_message_found = config.getString("foundores.messages.found");
+    }
+
+    private void outputConfig() {
+        // FoundOres
+        moe.getLogger().info(ChatColor.YELLOW + "foundores.block_types:");
+        foundores_block_types.forEach((k, v) -> moe.getLogger().info("- " + k.toString() + ": " + v));
+
+        // MobArena
+        moe.getLogger().info(ChatColor.YELLOW + "mobarena.whitelist:");
+        mobarena_whitelist.forEach(e -> moe.getLogger().info("- " + e.toString()));
+    }
+
+    public static String color(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 }
