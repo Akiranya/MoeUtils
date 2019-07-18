@@ -103,9 +103,9 @@ public class BlockBreakListener implements Listener {
         int x1 = v.getBlockX() - radius;
         int y1 = v.getBlockY() - radius;
         int z1 = v.getBlockZ() - radius;
-        int x2 = v.getBlockX() - radius;
-        int y2 = v.getBlockY() - radius;
-        int z2 = v.getBlockZ() - radius;
+        int x2 = v.getBlockX() + radius;
+        int y2 = v.getBlockY() + radius;
+        int z2 = v.getBlockZ() + radius;
         return new CuboidRegion(BlockVector3.at(x1, y1, z1), BlockVector3.at(x2, y2, z2));
     }
 }
