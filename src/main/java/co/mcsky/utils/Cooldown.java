@@ -7,13 +7,15 @@ import java.util.concurrent.TimeUnit;
  */
 public class Cooldown {
     /**
-     * Represents if the cooldown is ready.
+     * <p>Represents if the cooldown is ready.</p>
+     * <p>Marks it as final in case reckless user changes it through reference.</p>
      */
-    public boolean ready;
+    public final boolean ready;
     /**
-     * The duration the player has to wait before cooldown is ready. In second.
+     * <p>The duration the player has to wait before cooldown is ready. In second.</p>
+     * <p>Marks it as final in case reckless user changes it through reference.</p>
      */
-    public int remaining;
+    public final int remaining;
 
     private Cooldown(boolean ready, int remaining) {
         this.ready = ready;
