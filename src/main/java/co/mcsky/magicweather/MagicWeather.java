@@ -52,7 +52,7 @@ public class MagicWeather {
         // If there is no record in map, simply set lastUsedTime to 0
         final long lastUsedTime = status != null ? status.lastUsedTime : 0;
         final long now = System.currentTimeMillis(); // In millisecond
-        Cooldown cd = MoeLib.cooldown(now, lastUsedTime, cooldown);
+        Cooldown cd = Cooldown.calculate(now, lastUsedTime, cooldown);
         if (!cd.ready) { // Note that cooldown is in second
             // If cooldown is not ready yet...
             player.sendMessage(
@@ -109,7 +109,7 @@ public class MagicWeather {
         }
         lastUsedMap.forEach((worldName, status) -> {
             long now = System.currentTimeMillis();
-            Cooldown cd = MoeLib.cooldown(now, status.lastUsedTime, cooldown);
+            Cooldown cd = Cooldown.calculate(now, status.lastUsedTime, cooldown);
             if (!cd.ready) {
                 // If cooldown is not ready yet
                 String activated = moe.config.global_message_on;

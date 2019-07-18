@@ -49,7 +49,7 @@ public class MagicTime {
     public void setTime(Player player, TimeType timeType) {
         /* Check cooldown */
         long now = System.currentTimeMillis();
-        Cooldown cd = MoeLib.cooldown(now, lastUsedTime, cooldown);
+        Cooldown cd = Cooldown.calculate(now, lastUsedTime, cooldown);
         if (!cd.ready) { // Note that cooldown is in second
             // If cooldown is not ready yet...
             player.sendMessage(
@@ -93,7 +93,7 @@ public class MagicTime {
 
     public void getStatus(Player player) {
         long now = System.currentTimeMillis();
-        Cooldown cd = MoeLib.cooldown(now, lastUsedTime, cooldown);
+        Cooldown cd = Cooldown.calculate(now, lastUsedTime, cooldown);
         if (!cd.ready) {
             // If cooldown is not ready yet
             String status = moe.config.global_message_on;
