@@ -1,3 +1,21 @@
+foundores:
+  enable: true
+  prefix: ">>"
+  worlds:
+    - world
+    - world_nether
+    - world_the_end
+  block_types:
+    gold_ore: '&6'
+    iron_ore: '&7'
+    coal_ore: '&8'
+    lapis_ore: '&1'
+    diamond_ore: '&b'
+    redstone_ore: '&4'
+    emerald_ore: '&a'
+    nether_quartz_ore: '&f'
+  messages:
+    found: '&e%s&b 挖到了 &e%d&b 个 %s%s&b!'
 magictime:
   prefix: ">>"
   cost: 300

@@ -1,5 +1,6 @@
 package co.mcsky;
 
+import co.mcsky.foundores.BlockBreakListener;
 import co.mcsky.magictime.MagicTime;
 import co.mcsky.magicweather.MagicWeather;
 import co.mcsky.mobarena.ArenaEventListener;
@@ -50,14 +51,17 @@ public class MoeUtils extends JavaPlugin {
         // Register commands
         new CommandHandler(this);
 
-        // Set up MobArena-Addon
+        // Set up MobArenaAddon
         setupMobArena();
         if (ma != null) {
             new ArenaEventListener(this, ma, new TagHandler());
         }
 
-        // Set up Safe-Portal
+        // Set up SafePortal
         new PlayerTeleportListener(this);
+
+        // Set up FoundOres
+        new BlockBreakListener(this);
     }
 
     private void setupMobArena() {
