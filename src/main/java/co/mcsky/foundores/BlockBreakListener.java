@@ -3,7 +3,7 @@ package co.mcsky.foundores;
 import co.mcsky.MoeConfig;
 import co.mcsky.MoeUtils;
 import co.mcsky.utils.MoeLib;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
@@ -80,7 +80,7 @@ public class BlockBreakListener implements Listener {
         }
         // If the block is not in any region previously created,
         // adds the region which the block are from to the head of queue.
-        World world = new BukkitWorld(b.getWorld());
+        World world = BukkitAdapter.adapt(b.getWorld());
         CuboidRegion region = regionHandler.createCuboidRegion(world, vector, moe.config.foundores_check_radius);
         foundLocations.addFirst(region);
         // And broadcast it!
@@ -91,7 +91,7 @@ public class BlockBreakListener implements Listener {
      * Broadcasts that a player has found an ore!
      *
      * @param e The event.
-     * @param b The block related to this event.
+     * @param b The (ore) block related to this event.
      */
     private void broadcast(BlockBreakEvent e, Block b, Region region) {
         String playerName = e.getPlayer().getName();
