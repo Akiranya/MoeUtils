@@ -48,7 +48,6 @@ public class BlockBreakListener implements Listener {
         if (moe.config.foundores_on) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
             regionHandler = new RegionHandler();
-
             // Schedule a task which remove the last element of Deque at given interval
             Bukkit.getScheduler().runTaskTimer(moe, () -> {
                 if (foundLocations.isEmpty()) return;
@@ -58,49 +57,49 @@ public class BlockBreakListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerBreakBlock(BlockBreakEvent e) {
-        Block b = e.getBlock();
+    public void onPlayerBreakBlock(BlockBreakEvent event) {
+        Block block = event.getBlock();
         // Is block ore?
-        if (!blockTypes.contains(b.getType())) {
+        if (!blockTypes.contains(block.getType())) {
             return;
         }
         // Is block in region previously created?
         // If it is, simply returns, no need for further checking.
-        BlockVector3 vector = BlockVector3.at(b.getX(), b.getY(), b.getZ());
+        BlockVector3 vector = BlockVector3.at(block.getX(), block.getY(), block.getZ());
         for (Region r : foundLocations) {
             if (r.contains(vector)) return;
         }
         // Is player in survival mode?
-        if (e.getPlayer().getGameMode() != GameMode.SURVIVAL) {
+        if (event.getPlayer().getGameMode() != GameMode.SURVIVAL) {
             return;
         }
         // Is block in enabled worlds?
-        if (!moe.config.foundores_worlds.contains(b.getWorld().getName())) {
+        if (!moe.config.foundores_worlds.contains(block.getWorld().getName())) {
             return;
         }
         // If the block is not in any region previously created,
         // adds the region which the block are from to the head of queue.
-        World world = BukkitAdapter.adapt(b.getWorld());
+        World world = BukkitAdapter.adapt(block.getWorld());
         CuboidRegion region = regionHandler.createCuboidRegion(world, vector, moe.config.foundores_check_radius);
         foundLocations.addFirst(region);
         // And broadcast it!
-        broadcast(e, b, region);
+        broadcast(event, block, region);
     }
 
     /**
      * Broadcasts that a player has found an ore!
      *
-     * @param e The event.
-     * @param b The (ore) block related to this event.
+     * @param event The event.
+     * @param block The (ore) block related to this event.
      */
-    private void broadcast(BlockBreakEvent e, Block b, Region region) {
-        String playerName = e.getPlayer().getName();
-        String blockType = b.getType().name();
+    private void broadcast(BlockBreakEvent event, Block block, Region region) {
+        String playerName = event.getPlayer().getName();
+        String blockType = block.getType().name();
         String color = blockTypeMap.get(Material.matchMaterial(blockType));
         moe.getServer().broadcastMessage(
                 MoeConfig.color(String.format(
                         moe.config.foundores_message_found,
-                        playerName, regionHandler.countBlock((CuboidRegion) region, b.getType()), color, blockType)
+                        playerName, regionHandler.countBlock((CuboidRegion) region, block.getType()), color, blockType)
                 )
         );
     }
