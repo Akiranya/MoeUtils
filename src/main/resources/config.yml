@@ -6,7 +6,7 @@ foundores:
     - world_nether
     - world_the_end
   check_radius: 1
-  pop_interval: 10
+  pop_interval: 30
   block_types:
     gold_ore: '&6'
     iron_ore: '&7'
