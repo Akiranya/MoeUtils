@@ -2,6 +2,7 @@ package co.mcsky.utils;
 
 import java.util.concurrent.TimeUnit;
 
+// TODO Code refactor: abstract cooldown function.
 /**
  * Carries the data about cooldown.
  */
