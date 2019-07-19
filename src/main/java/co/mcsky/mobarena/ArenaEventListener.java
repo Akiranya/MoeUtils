@@ -1,7 +1,7 @@
 package co.mcsky.mobarena;
 
 import co.mcsky.MoeUtils;
-import co.mcsky.TagHandler;
+import co.mcsky.utils.TagHandler;
 import co.mcsky.utils.HealthBar;
 import com.garbagemule.MobArena.MobArena;
 import com.garbagemule.MobArena.events.ArenaEndEvent;
@@ -14,8 +14,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
-import static co.mcsky.TagHandler.ACTION.REMOVE;
-import static co.mcsky.TagHandler.ACTION.UPDATE;
+import static co.mcsky.utils.TagHandler.ACTION.REMOVE;
+import static co.mcsky.utils.TagHandler.ACTION.UPDATE;
 
 public class ArenaEventListener implements Listener {
 

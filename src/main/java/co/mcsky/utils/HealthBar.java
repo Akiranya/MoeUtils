@@ -1,7 +1,6 @@
 package co.mcsky.utils;
 
 import co.mcsky.MoeUtils;
-import co.mcsky.TagHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;

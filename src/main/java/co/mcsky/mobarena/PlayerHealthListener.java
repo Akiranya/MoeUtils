@@ -1,7 +1,7 @@
 package co.mcsky.mobarena;
 
 import co.mcsky.MoeUtils;
-import co.mcsky.TagHandler;
+import co.mcsky.utils.TagHandler;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 
-import static co.mcsky.TagHandler.ACTION.UPDATE;
+import static co.mcsky.utils.TagHandler.ACTION.UPDATE;
 
 public class PlayerHealthListener implements Listener {
     private final TagHandler th;
