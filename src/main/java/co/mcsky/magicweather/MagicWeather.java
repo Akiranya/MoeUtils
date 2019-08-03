@@ -135,6 +135,8 @@ public class MagicWeather {
         player.sendMessage(moe.config.magicweather_message_reset);
     }
 
+    // TODO add reload method
+
     public void cancelBroadcastTask() {
         Bukkit.getScheduler().cancelTask(broadcastTask);
     }

@@ -116,6 +116,8 @@ public class MagicTime {
         player.sendMessage(moe.config.magictime_message_reset);
     }
 
+    // TODO add reload method
+
     public void cancelBroadcastTask() {
         Bukkit.getScheduler().cancelTask(broadcastTask);
     }
