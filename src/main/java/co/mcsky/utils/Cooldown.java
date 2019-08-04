@@ -23,11 +23,17 @@ public class Cooldown {
         return cooldownInstance = new Cooldown();
     }
 
+    public void create(String user, int cooldown) {
+        UserData userData = new UserData();
+        userData.cooldown = cooldown;
+//        userData.lastUsedTime = 0; // implicitly to be zero
+        cooldownMap.put(user, userData);
+    }
+
     public void use(String user) throws NullPointerException {
         if (!cooldownMap.containsKey(user)) {
             throw new NullPointerException("UserData not created yet.");
         }
-
         UserData userData = cooldownMap.get(user);
         userData.lastUsedTime = System.currentTimeMillis();
         cooldownMap.put(user, userData);
@@ -46,7 +52,6 @@ public class Cooldown {
         if (!cooldownMap.containsKey(user)) {
             create(user, cooldown);
         }
-
         UserData userData = cooldownMap.get(user);
         return (userData.cooldown - diff(user));
     }
@@ -57,9 +62,13 @@ public class Cooldown {
         cooldownMap.put(user, userData);
     }
 
+    public void remove(String user) {
+        cooldownMap.remove(user);
+    }
+
     /**
      * Returns the "progress" of given user cooldown.
-     *
+     * <p>
      * For example, if the cooldown is 600,
      * then when progress (diff) is 600, that means the cooldown IS ready.
      *
@@ -72,13 +81,6 @@ public class Cooldown {
         long lastUsedTime = userData.lastUsedTime;
         long diff = TimeUnit.MILLISECONDS.toSeconds(now - lastUsedTime); // In second
         return (int) diff;
-    }
-
-    private void create(String user, int cooldown) {
-        UserData userData = new UserData();
-        userData.cooldown = cooldown;
-//        userData.lastUsedTime = 0; // implicitly to be zero
-        cooldownMap.put(user, userData);
     }
 
     private class UserData {

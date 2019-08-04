@@ -20,7 +20,7 @@ foundores:
     emerald_ore: '&a'
     nether_quartz_ore: '&f'
   messages:
-    found: '&e%s&b 挖到了 %s%s&b!'
+    found: '&e%s&7 挖到了 %s%s&b!'
     blocks:
       gold_ore: 金矿
       iron_ore: 铁矿

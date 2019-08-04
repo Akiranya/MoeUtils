@@ -2,21 +2,23 @@ package co.mcsky.magicweather;
 
 import co.mcsky.MoeUtils;
 import co.mcsky.utils.Cooldown;
-import co.mcsky.utils.MoeLib;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import static co.mcsky.MoeUtils.economy;
+import static co.mcsky.utils.MoeLib.toTick;
 
 /**
  * Singleton class.
  */
 public class MagicWeather {
-    private MoeUtils moe;
-    private static MagicWeather magicWeather = null;
     private static final String COOLDOWNKEY = "magicweather";
+    private static MagicWeather magicWeather = null;
+    private MoeUtils moe;
     private int cooldown; // Cooldown specified in plugin config
     private int broadcastTask; // Id of which broadcasting task is running
 
@@ -86,7 +88,7 @@ public class MagicWeather {
         broadcastTask = Bukkit.getScheduler().runTaskLaterAsynchronously(moe, () -> {
             String format = String.format(moe.config.magicweather_message_ended, weatherName, worldName);
             moe.getServer().broadcastMessage(format);
-        }, MoeLib.toTick(cooldown)).getTaskId();
+        }, toTick(cooldown)).getTaskId();
     }
 
     /**

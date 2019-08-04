@@ -24,6 +24,7 @@ public class MoeConfig {
     public Set<String> foundores_worlds;
     public int foundores_check_radius;
     public int foundores_pop_interval;
+    public int foundores_purge_interval;
     /**
      * K = block_type<br>
      * V = color_code
@@ -183,6 +184,7 @@ public class MoeConfig {
         foundores_worlds = new HashSet<>(config.getStringList("foundores.worlds")); // Use HashSet for constant searching time
         foundores_check_radius = config.getInt("foundores.check_radius");
         foundores_pop_interval = config.getInt("foundores.pop_interval");
+        foundores_purge_interval = config.getInt("foundores.purge_interval");
 
         Map<String, Object> map = config.getConfigurationSection("foundores.block_types").getValues(false);
         foundores_block_types = new HashMap<>();
@@ -200,7 +202,7 @@ public class MoeConfig {
         foundores_block_types.forEach((k, v) -> moe.getLogger().info("- " + k.toString() + ": " + v));
 
         moe.getLogger().info(ChatColor.YELLOW + "foundores.messages.blocks:");
-        foundores_block_types.forEach((k, v) -> moe.getLogger().info("- " + k.toString() + ": " + v));
+        foundores_message_block_translation.forEach((k, v) -> moe.getLogger().info("- " + k.toString() + ": " + v));
 
         // MobArena
         moe.getLogger().info(ChatColor.YELLOW + "mobarena.whitelist:");

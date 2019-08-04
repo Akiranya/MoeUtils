@@ -2,32 +2,59 @@ package co.mcsky.foundores;
 
 import co.mcsky.MoeConfig;
 import co.mcsky.MoeUtils;
-import co.mcsky.utils.MoeLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.*;
 
+import static co.mcsky.utils.MoeLib.toTick;
+
 public class PlayerListener implements Listener {
     final private MoeUtils moe;
+    final private String COOLDOWNKEY = "foundores";
+
     // K -> block_type
     // V -> color_code
     final private Map<Material, String> blockTypeMap;
-    final private Deque<PlayerBlockPair> discoveredLocation; // Stores locations of blocks (ores) where players have explored.
+    final private Map<UUID, Stack<PlayerBlockPair>> playerBlockLog;
 
     public PlayerListener(MoeUtils moe) {
         this.moe = moe;
         blockTypeMap = moe.config.foundores_block_types;
-        discoveredLocation = new LinkedList<>();
+        playerBlockLog = new HashMap<>();
         if (moe.config.foundores_on) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
-            // Schedule a task which removes the last element of Deque at given interval
-            Bukkit.getScheduler().runTaskTimer(moe, discoveredLocation::pollFirst, 0, MoeLib.toTick(moe.config.foundores_pop_interval));
         }
+
+        // Auto clear map playerBlockLog at given interval
+        Bukkit.getScheduler().runTaskTimerAsynchronously(moe, () -> {
+            playerBlockLog.clear();
+            fillPlayerBlockLog();
+        }, 0, toTick(moe.config.foundores_purge_interval));
+
+        Bukkit.getScheduler().runTaskTimerAsynchronously(moe, () -> {
+            if (playerBlockLog.isEmpty()) return;
+            playerBlockLog.forEach((UUID player, Stack<PlayerBlockPair> stack) -> {
+                // Reduces size of stacks of all players at given interval.
+                // This just ensures that if a player still finds same type of ores as they did after a while,
+                // we should announce them.
+                if (!stack.isEmpty()) stack.pop();
+            });
+        }, 0, toTick(moe.config.foundores_pop_interval));
+
+        fillPlayerBlockLog();
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        // OreStack must be created as soon as players join server
+        UUID playerUUID = event.getPlayer().getUniqueId();
+        playerBlockLog.putIfAbsent(playerUUID, new Stack<>());
     }
 
     @EventHandler
@@ -40,8 +67,8 @@ public class PlayerListener implements Listener {
 
         Material blockType = block.getType();
         UUID playerUUID = event.getPlayer().getUniqueId();
-        if (!discoveredLocation.isEmpty()) {
-            PlayerBlockPair peek = discoveredLocation.peekLast();
+        if (!playerBlockLog.get(playerUUID).isEmpty()) {
+            PlayerBlockPair peek = playerBlockLog.get(playerUUID).peek();
             if (peek.player.equals(playerUUID) && peek.blockType == blockType) {
                 return;
             }
@@ -59,7 +86,7 @@ public class PlayerListener implements Listener {
 
         // If the block is not in any region previously created,
         // adds the region which the block are from to the head of queue.
-        discoveredLocation.addLast(new PlayerBlockPair(playerUUID, blockType));
+        playerBlockLog.get(playerUUID).push(new PlayerBlockPair(playerUUID, blockType));
         broadcast(event, block); // Then broadcast it!
     }
 
@@ -70,12 +97,17 @@ public class PlayerListener implements Listener {
      * @param block The (ore) block related to this event.
      */
     private void broadcast(BlockBreakEvent event, Block block) {
-        String playerName = event.getPlayer().getName();
+        String playerName = event.getPlayer().getDisplayName();
         Material blockType = block.getType();
         String color = blockTypeMap.get(Material.matchMaterial(blockType.name()));
         String trans = moe.config.foundores_message_block_translation.get(blockType);
         String msg = MoeConfig.color(String.format(moe.config.foundores_message_found, playerName, color, trans));
         moe.getServer().broadcastMessage(msg);
+    }
+
+    private void fillPlayerBlockLog() {
+        // In case of reading empty map
+        Bukkit.getOnlinePlayers().forEach(p -> playerBlockLog.put(p.getUniqueId(), new Stack<>()));
     }
 
     private class PlayerBlockPair {

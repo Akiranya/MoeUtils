@@ -1,8 +1,8 @@
 package co.mcsky.mobarena;
 
 import co.mcsky.MoeUtils;
-import co.mcsky.utils.TagHandler;
 import co.mcsky.utils.HealthBar;
+import co.mcsky.utils.TagHandler;
 import com.garbagemule.MobArena.MobArena;
 import com.garbagemule.MobArena.events.ArenaEndEvent;
 import com.garbagemule.MobArena.events.ArenaPlayerDeathEvent;

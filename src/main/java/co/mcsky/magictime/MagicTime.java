@@ -2,7 +2,6 @@ package co.mcsky.magictime;
 
 import co.mcsky.MoeUtils;
 import co.mcsky.utils.Cooldown;
-import co.mcsky.utils.MoeLib;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,14 +9,15 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 import static co.mcsky.MoeUtils.economy;
+import static co.mcsky.utils.MoeLib.toTick;
 
 /**
  * Singleton class.
  */
 public class MagicTime {
-    private MoeUtils moe;
-    private static MagicTime magicTime = null;
     private static final String COOLDOWNKEY = "magictime";
+    private static MagicTime magicTime = null;
+    private MoeUtils moe;
     private int cooldown; // In second
     private int broadcastTask; // Id of which broadcasting task is running
     private UUID lastUsedPlayer; // Player who lastly used MagicTime, i.e. ran command
@@ -83,7 +83,7 @@ public class MagicTime {
         broadcastTask = Bukkit.getScheduler().runTaskLaterAsynchronously(moe, () -> {
             String format = String.format(moe.config.magictime_message_ended, timeType.getName(moe));
             moe.getServer().broadcastMessage(format);
-        }, MoeLib.toTick(cooldown)).getTaskId();
+        }, toTick(cooldown)).getTaskId();
     }
 
     public void getStatus(Player player) {

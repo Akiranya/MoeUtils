@@ -1,9 +1,10 @@
 package co.mcsky.magicweather;
 
 import co.mcsky.MoeUtils;
-import co.mcsky.utils.MoeLib;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import static co.mcsky.utils.MoeLib.toTick;
 
 public enum WeatherType {
     RAIN("storm"),
@@ -53,7 +54,7 @@ public enum WeatherType {
             case THUNDER:
                 player.getWorld().setStorm(true);
                 player.getWorld().setThundering(true);
-                player.getWorld().setThunderDuration(MoeLib.toTick(duration));
+                player.getWorld().setThunderDuration(toTick(duration));
                 break;
             default:
                 throw new IllegalStateException("Unknown weather value.");
