@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import static co.mcsky.MoeUtils.economy;
 
@@ -17,18 +16,16 @@ import static co.mcsky.MoeUtils.economy;
  */
 public class MagicTime {
     private static MagicTime magicTime = null;
+    private static final String COOLDOWNKEY = "magictime";
 
     private MoeUtils moe;
-    /**
-     * In millisecond.
-     */
-    private long lastUsedTime;
-    private UUID lastUsedPlayer;
     /**
      * In second.
      */
     private int cooldown;
     private int broadcastTask;
+
+    private UUID lastUsedPlayer;
 
     /**
      * Outer world has no access to the constructor.
@@ -48,13 +45,11 @@ public class MagicTime {
 
     public void setTime(Player player, TimeType timeType, int cost) {
         /* Check cooldown */
-        long now = System.currentTimeMillis();
-        Cooldown cd = Cooldown.calculate(now, lastUsedTime, cooldown);
-        if (!cd.ready) { // Note that cooldown is in second
+        if (!Cooldown.getInstance().check(COOLDOWNKEY, cooldown)) {
             // If cooldown is not ready yet...
-            player.sendMessage(
-                    String.format(moe.config.global_message_cooldown, cd.remaining)
-            );
+            String msg = moe.config.global_message_cooldown;
+            int remaining = Cooldown.getInstance().remaining(COOLDOWNKEY, cooldown);
+            player.sendMessage(String.format(msg, remaining));
             return;
         }
 
@@ -72,37 +67,47 @@ public class MagicTime {
         );
 
         /* Charge player */
+        String cmd = "hamsterecohelper:heh balance take %s %d";
+        String commandCharge = String.format(cmd, player.getName(), cost);
+
         CommandSender console = moe.getServer().getConsoleSender();
-        String commandCharge = String.format("hamsterecohelper:heh balance take %s %d", player.getName(), cost);
         moe.getServer().dispatchCommand(console, commandCharge);
+
         player.sendMessage(String.format(moe.config.magictime_message_cost, cost));
 
         // Only if after all operations do we set lastUsedVariables
-        lastUsedPlayer = player.getUniqueId();
-        lastUsedTime = now; // In millisecond
+        try {
+            Cooldown.getInstance().use(COOLDOWNKEY);
+
+            // Store UUID of the player,
+            // as the player needs to be shown in getStatus() command
+            lastUsedPlayer = player.getUniqueId();
+        } catch (NullPointerException e) {
+            moe.getLogger().warning(e.getMessage());
+            return;
+        }
 
         /* Wait and broadcast */
-        final String fTimeName = timeType.getName(moe);
-        broadcastTask = Bukkit.getScheduler().runTaskLaterAsynchronously(
-                moe, () -> moe.getServer().broadcastMessage(
-                        String.format(moe.config.magictime_message_ended, fTimeName)
-                ), MoeLib.toTick(cooldown)
-        ).getTaskId();
+        broadcastTask = Bukkit.getScheduler().runTaskLaterAsynchronously(moe, () -> {
+            String format = String.format(moe.config.magictime_message_ended, timeType.getName(moe));
+            moe.getServer().broadcastMessage(format);
+        }, MoeLib.toTick(cooldown)).getTaskId();
     }
 
     public void getStatus(Player player) {
-        long now = System.currentTimeMillis();
-        Cooldown cd = Cooldown.calculate(now, lastUsedTime, cooldown);
-        if (!cd.ready) {
+        if (Cooldown.getInstance().check(COOLDOWNKEY, cooldown)) {
+            // If cooldown is ready
+            String msg = moe.config.magictime_message_status;
+            String status = moe.config.global_message_off;
+            String none = moe.config.magicweather_message_none;
+            player.sendMessage(String.format(msg, status, none, 0));
+        } else {
             // If cooldown is not ready yet
             String status = moe.config.global_message_on;
             String lastUsedPlayer = moe.getServer().getOfflinePlayer(this.lastUsedPlayer).getName();
-            player.sendMessage(String.format(moe.config.magictime_message_status, status, lastUsedPlayer, cd.remaining));
-        } else {
-            // If cooldown is ready
-            String status = moe.config.global_message_off;
-            String none = moe.config.magicweather_message_none;
-            player.sendMessage(String.format(moe.config.magictime_message_status, status, none, 0));
+            String msg = moe.config.magictime_message_status;
+            int remaining = Cooldown.getInstance().remaining(COOLDOWNKEY, cooldown);
+            player.sendMessage(String.format(msg, status, lastUsedPlayer, remaining));
         }
     }
 
@@ -112,7 +117,7 @@ public class MagicTime {
      * @param player The player who runs this command.
      */
     public void reset(Player player) {
-        lastUsedTime -= TimeUnit.SECONDS.toMillis(cooldown);
+        Cooldown.getInstance().reset(COOLDOWNKEY);
         player.sendMessage(moe.config.magictime_message_reset);
     }
 

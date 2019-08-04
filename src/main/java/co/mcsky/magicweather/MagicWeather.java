@@ -6,9 +6,7 @@ import co.mcsky.utils.MoeLib;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static co.mcsky.MoeUtils.economy;
 
@@ -16,17 +14,24 @@ import static co.mcsky.MoeUtils.economy;
  * Singleton class.
  */
 public class MagicWeather {
+    private MoeUtils moe;
+
+    private static final String COOLDOWNKEY = "magicweather";
+
     private static MagicWeather magicWeather = null;
+
     /**
      * In second.
      */
-    final private int cooldown;
-    final private MoeUtils moe;
+    private int cooldown;
+
+
     /**
      * K = The name of world.<br>
-     * V = Status of the world.
+     * V = Player who lastly used magic weather in given world.
      */
-    private Map<String, Status> lastUsedMap;
+    private Map<String, UUID> lastUsedWorld;
+
     private int broadcastTask;
 
     /**
@@ -35,7 +40,7 @@ public class MagicWeather {
     private MagicWeather(MoeUtils moe) {
         this.moe = moe;
         cooldown = moe.config.magicweather_cooldown; // In second
-        lastUsedMap = new HashMap<>();
+        lastUsedWorld = new HashMap<>();
     }
 
     public static MagicWeather getInstance(MoeUtils moe) {
@@ -47,17 +52,14 @@ public class MagicWeather {
 
     public void setWeather(Player player, WeatherType weatherType, int cost) {
         /* Check cooldown */
-        final String worldName = player.getWorld().getName();
-        final Status status = lastUsedMap.get(worldName);
-        // If there is no record in map, simply set lastUsedTime to 0
-        final long lastUsedTime = status != null ? status.lastUsedTime : 0;
-        final long now = System.currentTimeMillis(); // In millisecond
-        Cooldown cd = Cooldown.calculate(now, lastUsedTime, cooldown);
-        if (!cd.ready) { // Note that cooldown is in second
+        String worldName = player.getWorld().getName();
+        String key = COOLDOWNKEY + worldName;
+        if (!Cooldown.getInstance().check(COOLDOWNKEY + worldName, cooldown)) {
+            // Note that cooldown is in seconds
             // If cooldown is not ready yet...
-            player.sendMessage(
-                    String.format(moe.config.global_message_cooldown, cd.remaining)
-            );
+            String msg = moe.config.global_message_cooldown;
+            int remaining = Cooldown.getInstance().remaining(key, cooldown);
+            player.sendMessage(String.format(msg, remaining));
             return;
         }
 
@@ -71,26 +73,31 @@ public class MagicWeather {
         /* Set weather */
         weatherType.setWeather(moe, player);
         // After setting weather, we broadcast it!
-        final String weatherName = weatherType.getName(moe);
-        moe.getServer().broadcastMessage(
-                String.format(moe.config.magicweather_message_changed, worldName, weatherName)
-        );
+        String weatherName = weatherType.getName(moe);
+        String msg = moe.config.magicweather_message_changed;
+        moe.getServer().broadcastMessage(String.format(msg, worldName, weatherName));
 
         /* Charge player */
-        final String commandCharge = String.format("hamsterecohelper:heh balance take %s %d", player.getName(), cost);
+        String commandFormat = "hamsterecohelper:heh balance take %s %d";
+        String commandCharge = String.format(commandFormat, player.getName(), cost);
         moe.getServer().dispatchCommand(moe.getServer().getConsoleSender(), commandCharge);
         player.sendMessage(String.format(moe.config.magicweather_message_cost, cost));
 
-        // After all operations, dont forget to put it into map!
-        lastUsedMap.put(worldName, new Status(now, player.getUniqueId()));
+        try {
+            // After all operations, dont forget to put it into map!
+            lastUsedWorld.put(worldName, player.getUniqueId());
+            // Call Cooldown.use() to update lastUsedTime
+            Cooldown.getInstance().use(key);
+        } catch (NullPointerException e) {
+            moe.getLogger().warning(e.getMessage());
+            return;
+        }
 
         /* Wait and broadcast */
-        broadcastTask = Bukkit.getScheduler().runTaskLaterAsynchronously(
-                moe, () -> moe.getServer().broadcastMessage(
-                        String.format(moe.config.magicweather_message_ended,
-                                weatherName, worldName)
-                ), MoeLib.toTick(cooldown)
-        ).getTaskId();
+        broadcastTask = Bukkit.getScheduler().runTaskLaterAsynchronously(moe, () -> {
+            String format = String.format(moe.config.magicweather_message_ended, weatherName, worldName);
+            moe.getServer().broadcastMessage(format);
+        }, MoeLib.toTick(cooldown)).getTaskId();
     }
 
     /**
@@ -99,28 +106,19 @@ public class MagicWeather {
      * @param player Who receives the messages.
      */
     public void getStatus(Player player) {
-        if (lastUsedMap.isEmpty()) {
-            String none = moe.config.magicweather_message_none;
-            player.sendMessage(
-                    String.format(moe.config.magicweather_message_status, none, none, none, 0)
-            );
+        if (lastUsedWorld.isEmpty()) {
+            // Simply return (show nothing to player) if there is no world in cooldown
             return;
         }
-        lastUsedMap.forEach((worldName, status) -> {
-            long now = System.currentTimeMillis();
-            Cooldown cd = Cooldown.calculate(now, status.lastUsedTime, cooldown);
-            if (!cd.ready) {
+        // If players are not in map lastUsedWorld, they won't be shown in the output of getStatus()
+        lastUsedWorld.forEach((worldName, playersUUID) -> {
+            String key = COOLDOWNKEY + worldName;
+            if (!Cooldown.getInstance().check(key, cooldown)) {
                 // If cooldown is not ready yet
                 String activated = moe.config.global_message_on;
-                String lastUsedPlayer = moe.getServer().getOfflinePlayer(status.lastUsedPlayer).getName();
-                int remained = cd.remaining;
-                player.sendMessage(
-                        String.format(moe.config.magicweather_message_status, worldName, activated, lastUsedPlayer, remained)
-                );
-            } else {
-                // If cooldown is ready
-                String activated = moe.config.global_message_off;
-                player.sendMessage(String.format(moe.config.magicweather_message_status, activated, "", ""));
+                String lastUsedPlayer = moe.getServer().getOfflinePlayer(playersUUID).getName();
+                int remained = Cooldown.getInstance().remaining(key, cooldown);
+                player.sendMessage(String.format(moe.config.magicweather_message_status, worldName, activated, lastUsedPlayer, remained));
             }
         });
     }
@@ -131,7 +129,7 @@ public class MagicWeather {
      * @param player The player who runs this command.
      */
     public void reset(Player player, String world) {
-        lastUsedMap.remove(world);
+        lastUsedWorld.remove(world);
         player.sendMessage(moe.config.magicweather_message_reset);
     }
 
@@ -139,18 +137,5 @@ public class MagicWeather {
 
     public void cancelBroadcastTask() {
         Bukkit.getScheduler().cancelTask(broadcastTask);
-    }
-
-    private class Status {
-        /**
-         * In millisecond.
-         */
-        long lastUsedTime;
-        UUID lastUsedPlayer;
-
-        Status(long lastUsedTime, UUID lastUsedPlayer) {
-            this.lastUsedTime = lastUsedTime;
-            this.lastUsedPlayer = lastUsedPlayer;
-        }
     }
 }
