@@ -47,10 +47,10 @@ public class MagicWeather {
     public void setWeather(Player player, WeatherType weatherType, int cost) {
         // Check cooldown
         String worldName = player.getWorld().getName();
-        String key = COOLDOWNKEY + worldName;
-        if (!Cooldown.getInstance().check(COOLDOWNKEY + worldName, cooldown)) { // If cooldown is not ready yet...
+        String cooldownKey = COOLDOWNKEY + worldName;
+        if (!Cooldown.getInstance().check(cooldownKey, cooldown)) { // If cooldown is not ready yet...
             String msg = moe.config.global_message_cooldown;
-            int remaining = Cooldown.getInstance().remaining(key, cooldown); // Note that cooldown is in second
+            int remaining = Cooldown.getInstance().remaining(cooldownKey, cooldown); // Note that cooldown is in second
             player.sendMessage(String.format(msg, remaining));
             return;
         }
@@ -78,7 +78,7 @@ public class MagicWeather {
             // After all operations, dont forget to put it into map!
             lastUsedWorld.put(worldName, player.getUniqueId());
             // Call Cooldown.use() to update lastUsedTime
-            Cooldown.getInstance().use(key);
+            Cooldown.getInstance().use(cooldownKey);
         } catch (NullPointerException e) { // Just in case
             moe.getLogger().warning(e.getMessage());
             return;
@@ -102,12 +102,13 @@ public class MagicWeather {
         }
         // If players are not in map lastUsedWorld, they won't be shown in the output of getStatus()
         lastUsedWorld.forEach((worldName, playersUUID) -> {
-            String key = COOLDOWNKEY + worldName;
-            if (!Cooldown.getInstance().check(key, cooldown)) { // If cooldown is not ready yet
+            String cooldownKey = COOLDOWNKEY + worldName;
+            if (!Cooldown.getInstance().check(cooldownKey, cooldown)) { // If cooldown is not ready yet
                 String activated = moe.config.global_message_on;
                 String lastUsedPlayer = moe.getServer().getOfflinePlayer(playersUUID).getName();
-                int remained = Cooldown.getInstance().remaining(key, cooldown);
-                player.sendMessage(String.format(moe.config.magicweather_message_status, worldName, activated, lastUsedPlayer, remained));
+                int remaining = Cooldown.getInstance().remaining(cooldownKey, cooldown);
+                String format = String.format(moe.config.magicweather_message_status, worldName, activated, lastUsedPlayer, remaining);
+                player.sendMessage(format);
             }
         });
     }
