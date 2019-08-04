@@ -12,14 +12,14 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 import java.util.*;
 
-public class BlockBreakListener implements Listener {
+public class PlayerListener implements Listener {
     final private MoeUtils moe;
     // K -> block_type
     // V -> color_code
     final private Map<Material, String> blockTypeMap;
     final private Deque<PlayerBlockPair> discoveredLocation; // Stores locations of blocks (ores) where players have explored.
 
-    public BlockBreakListener(MoeUtils moe) {
+    public PlayerListener(MoeUtils moe) {
         this.moe = moe;
         blockTypeMap = moe.config.foundores_block_types;
         discoveredLocation = new LinkedList<>();

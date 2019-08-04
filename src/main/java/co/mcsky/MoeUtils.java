@@ -1,6 +1,6 @@
 package co.mcsky;
 
-import co.mcsky.foundores.BlockBreakListener;
+import co.mcsky.foundores.PlayerListener;
 import co.mcsky.magictime.MagicTime;
 import co.mcsky.magicweather.MagicWeather;
 import co.mcsky.mobarena.ArenaEventListener;
@@ -41,13 +41,11 @@ public class MoeUtils extends JavaPlugin {
         config = MoeConfig.getInstance(this);
 
         // Set up Vault
-        if (!setupEconomy()) {
+        if (!(setupEconomy() && setupPermissions() && setupChat())) {
             getLogger().severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
-        setupPermissions();
-        setupChat();
 
         // Register commands
         new CommandHandler(this);
@@ -62,7 +60,7 @@ public class MoeUtils extends JavaPlugin {
         new PlayerTeleportListener(this);
 
         // Set up FoundOres
-        new BlockBreakListener(this);
+        new PlayerListener(this);
     }
 
     private void setupMobArena() {
