@@ -6,7 +6,7 @@ foundores:
     - world_nether
     - world_the_end
   check_radius: 1
-  pop_interval: 60
+  pop_interval: 30
   block_types:
     gold_ore: '&6'
     iron_ore: '&7'
@@ -18,6 +18,15 @@ foundores:
     nether_quartz_ore: '&f'
   messages:
     found: '&e%s&b 挖到了 %s%s&b!'
+    blocks:
+      gold_ore: 金矿
+      iron_ore: 铁矿
+      coal_ore: 煤矿
+      lapis_ore: 青金石
+      diamond_ore: 钻石
+      redstone_ore: 红石
+      emerald_ore: 绿宝石
+      nether_quartz_ore: 石英
 magictime:
   prefix: ">>"
   cost: 300

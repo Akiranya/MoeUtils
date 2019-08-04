@@ -22,9 +22,6 @@ public class MagicTime {
     private int broadcastTask; // Id of which broadcasting task is running
     private UUID lastUsedPlayer; // Player who lastly used MagicTime, i.e. ran command
 
-    /**
-     * Outer world has no access to the constructor.
-     */
     private MagicTime(MoeUtils moe) {
         this.moe = moe;
         cooldown = moe.config.magictime_cooldown; // In second

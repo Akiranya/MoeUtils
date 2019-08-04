@@ -71,9 +71,10 @@ public class BlockBreakListener implements Listener {
      */
     private void broadcast(BlockBreakEvent event, Block block) {
         String playerName = event.getPlayer().getName();
-        String blockType = block.getType().name();
-        String color = blockTypeMap.get(Material.matchMaterial(blockType));
-        String msg = MoeConfig.color(String.format(moe.config.foundores_message_found, playerName, color, blockType));
+        Material blockType = block.getType();
+        String color = blockTypeMap.get(Material.matchMaterial(blockType.name()));
+        String trans = moe.config.foundores_message_block_translation.get(blockType);
+        String msg = MoeConfig.color(String.format(moe.config.foundores_message_found, playerName, color, trans));
         moe.getServer().broadcastMessage(msg);
     }
 

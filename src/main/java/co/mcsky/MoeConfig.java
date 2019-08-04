@@ -29,6 +29,7 @@ public class MoeConfig {
      * V = color_code
      */
     public Map<Material, String> foundores_block_types;
+    public Map<Material, String> foundores_message_block_translation;
     public String foundores_message_found;
 
     /* MobArena Addon */
@@ -182,18 +183,23 @@ public class MoeConfig {
         foundores_worlds = new HashSet<>(config.getStringList("foundores.worlds")); // Use HashSet for constant searching time
         foundores_check_radius = config.getInt("foundores.check_radius");
         foundores_pop_interval = config.getInt("foundores.pop_interval");
+
+        Map<String, Object> map = config.getConfigurationSection("foundores.block_types").getValues(false);
         foundores_block_types = new HashMap<>();
-        // Read block_type map from config file
-        Map<String, Object> map = config
-                .getConfigurationSection("foundores.block_types")
-                .getValues(false);
-        map.forEach((k, v) -> foundores_block_types.put(Material.matchMaterial(k), (String) v));
+        map.forEach((block, color) -> foundores_block_types.put(Material.matchMaterial(block), (String) color));
+
         foundores_message_found = config.getString("foundores.messages.found");
+        foundores_message_block_translation = new HashMap<>();
+        map = config.getConfigurationSection("foundores.messages.blocks").getValues(false);
+        map.forEach((block, trans) -> foundores_message_block_translation.put(Material.matchMaterial(block), (String) trans));
     }
 
     private void outputConfig() {
         // FoundOres
         moe.getLogger().info(ChatColor.YELLOW + "foundores.block_types:");
+        foundores_block_types.forEach((k, v) -> moe.getLogger().info("- " + k.toString() + ": " + v));
+
+        moe.getLogger().info(ChatColor.YELLOW + "foundores.messages.blocks:");
         foundores_block_types.forEach((k, v) -> moe.getLogger().info("- " + k.toString() + ": " + v));
 
         // MobArena
