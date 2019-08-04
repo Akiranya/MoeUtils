@@ -18,6 +18,11 @@ public class MoeConfig {
     private static MoeConfig moeConfig = null;
     private final MoeUtils moe;
 
+    /* Notifier */
+    public boolean notifier_on;
+    public Set<EntityType> notifier_whitelist;
+    public String notifier_message_death;
+
     /* FoundOres */
     public boolean foundores_on;
     public String foundores_prefix;
@@ -116,12 +121,15 @@ public class MoeConfig {
         // MagicWeather
         magicWeatherInit(config);
 
+
         // Global initialization
         globalInit(config);
 
         // THIS METHOD MUST BE THE LAST ONE RUN
         // Output config info to console
         outputConfig();
+
+        notifierInit(config);
     }
 
     private void globalInit(FileConfiguration config) {
@@ -194,6 +202,15 @@ public class MoeConfig {
         foundores_message_block_translation = new HashMap<>();
         map = config.getConfigurationSection("foundores.messages.blocks").getValues(false);
         map.forEach((block, trans) -> foundores_message_block_translation.put(Material.matchMaterial(block), (String) trans));
+    }
+
+    private void notifierInit(FileConfiguration config) {
+        List<String> rawConfig = config.getStringList("notifier.animals");
+        notifier_on = config.getBoolean("notifier.enable");
+        notifier_whitelist = rawConfig.stream()
+                .map(e -> EntityType.valueOf(e.toUpperCase()))
+                .collect(Collectors.toSet());
+        notifier_message_death = config.getString("notifier.message.death");
     }
 
     private void outputConfig() {

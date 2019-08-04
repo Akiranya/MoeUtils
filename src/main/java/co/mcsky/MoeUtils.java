@@ -4,6 +4,7 @@ import co.mcsky.foundores.PlayerListener;
 import co.mcsky.magictime.MagicTime;
 import co.mcsky.magicweather.MagicWeather;
 import co.mcsky.mobarena.ArenaEventListener;
+import co.mcsky.notifier.VillagerDeathAnnouncer;
 import co.mcsky.safeportal.PlayerTeleportListener;
 import co.mcsky.utils.TagHandler;
 import com.garbagemule.MobArena.MobArena;
@@ -61,6 +62,9 @@ public class MoeUtils extends JavaPlugin {
 
         // Set up FoundOres
         new PlayerListener(this);
+
+        // Set up Notifier
+        new VillagerDeathAnnouncer(this);
     }
 
     private void setupMobArena() {
