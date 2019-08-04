@@ -11,6 +11,7 @@ import com.garbagemule.MobArena.MobArena;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -31,8 +32,10 @@ public class MoeUtils extends JavaPlugin {
         HandlerList.unregisterAll(this);
 
         /* Cancel 'postponed broadcast' task */
-        MagicTime.getInstance(this).cancelBroadcastTask();
-        MagicWeather.getInstance(this).cancelBroadcastTask();
+//        MagicTime.getInstance(this).cancelBroadcastTask();
+//        MagicWeather.getInstance(this).cancelBroadcastTask();
+        // Not sure if it works. Just having a try.
+        Bukkit.getScheduler().cancelTasks(this);
     }
 
     @Override

@@ -22,6 +22,8 @@ public class PlayerListener implements Listener {
     // V -> color_code
     final private Map<Material, String> blockTypeMap;
     final private Map<UUID, Stack<PlayerBlockPair>> playerBlockLog;
+    private final int clearTask;
+    private final int reduceTask;
 
     public PlayerListener(MoeUtils moe) {
         this.moe = moe;
@@ -32,12 +34,12 @@ public class PlayerListener implements Listener {
         }
 
         // Auto clear map playerBlockLog at given interval
-        Bukkit.getScheduler().runTaskTimerAsynchronously(moe, () -> {
+        clearTask = Bukkit.getScheduler().runTaskTimerAsynchronously(moe, () -> {
             playerBlockLog.clear();
             fillPlayerBlockLog();
-        }, 0, toTick(moe.config.foundores_purge_interval));
+        }, 0, toTick(moe.config.foundores_purge_interval)).getTaskId();
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(moe, () -> {
+        reduceTask = Bukkit.getScheduler().runTaskTimerAsynchronously(moe, () -> {
             if (playerBlockLog.isEmpty()) return;
             playerBlockLog.forEach((UUID player, Stack<PlayerBlockPair> stack) -> {
                 // Reduces size of stacks of all players at given interval.
@@ -45,7 +47,7 @@ public class PlayerListener implements Listener {
                 // we should announce them.
                 if (!stack.isEmpty()) stack.pop();
             });
-        }, 0, toTick(moe.config.foundores_pop_interval));
+        }, 0, toTick(moe.config.foundores_pop_interval)).getTaskId();
 
         fillPlayerBlockLog();
     }
@@ -88,6 +90,11 @@ public class PlayerListener implements Listener {
         // adds the region which the block are from to the head of queue.
         playerBlockLog.get(playerUUID).push(new PlayerBlockPair(playerUUID, blockType));
         broadcast(event, block); // Then broadcast it!
+    }
+
+    public void cancelTask() {
+        Bukkit.getScheduler().cancelTask(clearTask);
+        Bukkit.getScheduler().cancelTask(reduceTask);
     }
 
     /**
