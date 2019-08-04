@@ -15,17 +15,12 @@ import static co.mcsky.MoeUtils.economy;
  * Singleton class.
  */
 public class MagicTime {
+    private MoeUtils moe;
     private static MagicTime magicTime = null;
     private static final String COOLDOWNKEY = "magictime";
-
-    private MoeUtils moe;
-    /**
-     * In second.
-     */
-    private int cooldown;
-    private int broadcastTask;
-
-    private UUID lastUsedPlayer;
+    private int cooldown; // In second
+    private int broadcastTask; // Id of which broadcasting task is running
+    private UUID lastUsedPlayer; // Player who lastly used MagicTime, i.e. ran command
 
     /**
      * Outer world has no access to the constructor.
@@ -44,7 +39,7 @@ public class MagicTime {
 
 
     public void setTime(Player player, TimeType timeType, int cost) {
-        /* Check cooldown */
+        // Check cooldown
         if (!Cooldown.getInstance().check(COOLDOWNKEY, cooldown)) {
             // If cooldown is not ready yet...
             String msg = moe.config.global_message_cooldown;
@@ -53,20 +48,20 @@ public class MagicTime {
             return;
         }
 
-        /* Check balance */
+        // Check balance
         if (!economy.has(player, cost)) {
             player.sendMessage(moe.config.global_message_notenoughmoney);
             return;
         }
 
-        /* Set time */
+        // Set time
         timeType.setTime(moe);
         // Broadcast it!
         moe.getServer().broadcastMessage(
                 String.format(moe.config.magictime_message_changed, timeType.getName(moe))
         );
 
-        /* Charge player */
+        // Charge player
         String cmd = "hamsterecohelper:heh balance take %s %d";
         String commandCharge = String.format(cmd, player.getName(), cost);
 
@@ -87,7 +82,7 @@ public class MagicTime {
             return;
         }
 
-        /* Wait and broadcast */
+        // Wait and broadcast
         broadcastTask = Bukkit.getScheduler().runTaskLaterAsynchronously(moe, () -> {
             String format = String.format(moe.config.magictime_message_ended, timeType.getName(moe));
             moe.getServer().broadcastMessage(format);
@@ -95,14 +90,12 @@ public class MagicTime {
     }
 
     public void getStatus(Player player) {
-        if (Cooldown.getInstance().check(COOLDOWNKEY, cooldown)) {
-            // If cooldown is ready
+        if (Cooldown.getInstance().check(COOLDOWNKEY, cooldown)) { // If cooldown is ready
             String msg = moe.config.magictime_message_status;
             String status = moe.config.global_message_off;
             String none = moe.config.magicweather_message_none;
             player.sendMessage(String.format(msg, status, none, 0));
         } else {
-            // If cooldown is not ready yet
             String status = moe.config.global_message_on;
             String lastUsedPlayer = moe.getServer().getOfflinePlayer(this.lastUsedPlayer).getName();
             String msg = moe.config.magictime_message_status;
@@ -112,7 +105,7 @@ public class MagicTime {
     }
 
     /**
-     * This method simply subtracts lastUsedTime by cooldown and reassigns it.
+     * Reset cooldown.
      *
      * @param player The player who runs this command.
      */
@@ -120,8 +113,6 @@ public class MagicTime {
         Cooldown.getInstance().reset(COOLDOWNKEY);
         player.sendMessage(moe.config.magictime_message_reset);
     }
-
-    // TODO add reload method
 
     public void cancelBroadcastTask() {
         Bukkit.getScheduler().cancelTask(broadcastTask);
