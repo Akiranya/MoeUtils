@@ -77,7 +77,7 @@ public class MagicTime {
             // Store UUID of the player,
             // as the player needs to be shown in getStatus() command
             lastUsedPlayer = player.getUniqueId();
-        } catch (NullPointerException e) {
+        } catch (NullPointerException e) { // Just in case
             moe.getLogger().warning(e.getMessage());
             return;
         }
