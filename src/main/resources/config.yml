@@ -17,7 +17,7 @@ foundores:
     emerald_ore: '&a'
     nether_quartz_ore: '&f'
   messages:
-    found: '&e%s&b 挖到了 &e%d&b 个 %s%s&b!'
+    found: '&e%s&b 挖到了 %s%s&b!'
 magictime:
   prefix: ">>"
   cost: 300
