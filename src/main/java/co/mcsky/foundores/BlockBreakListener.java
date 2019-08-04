@@ -17,7 +17,7 @@ public class BlockBreakListener implements Listener {
     // K -> block_type
     // V -> color_code
     final private Map<Material, String> blockTypeMap;
-    final private Queue<PlayerBlockPair> discoveredLocation; // Stores locations of blocks (ores) where players have explored.
+    final private Deque<PlayerBlockPair> discoveredLocation; // Stores locations of blocks (ores) where players have explored.
 
     public BlockBreakListener(MoeUtils moe) {
         this.moe = moe;
@@ -26,16 +26,12 @@ public class BlockBreakListener implements Listener {
         if (moe.config.foundores_on) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
             // Schedule a task which removes the last element of Deque at given interval
-            Bukkit.getScheduler().runTaskTimer(moe, discoveredLocation::poll, 0, MoeLib.toTick(moe.config.foundores_pop_interval));
+            Bukkit.getScheduler().runTaskTimer(moe, discoveredLocation::pollFirst, 0, MoeLib.toTick(moe.config.foundores_pop_interval));
         }
     }
 
     @EventHandler
     public void onPlayerBreakBlock(BlockBreakEvent event) {
-        if (discoveredLocation.isEmpty()) {
-            return;
-        }
-
         Block block = event.getBlock();
         // Is block ore?
         if (!blockTypeMap.keySet().contains(block.getType())) {
@@ -44,9 +40,11 @@ public class BlockBreakListener implements Listener {
 
         Material blockType = block.getType();
         UUID playerUUID = event.getPlayer().getUniqueId();
-        PlayerBlockPair peek = discoveredLocation.peek();
-        if (peek.player.equals(playerUUID) && peek.blockType == blockType) {
-            return;
+        if (!discoveredLocation.isEmpty()) {
+            PlayerBlockPair peek = discoveredLocation.peekLast();
+            if (peek.player.equals(playerUUID) && peek.blockType == blockType) {
+                return;
+            }
         }
 
         // Is block in enabled worlds?
@@ -61,7 +59,7 @@ public class BlockBreakListener implements Listener {
 
         // If the block is not in any region previously created,
         // adds the region which the block are from to the head of queue.
-        discoveredLocation.add(new PlayerBlockPair(playerUUID, blockType));
+        discoveredLocation.addLast(new PlayerBlockPair(playerUUID, blockType));
         broadcast(event, block); // Then broadcast it!
     }
 

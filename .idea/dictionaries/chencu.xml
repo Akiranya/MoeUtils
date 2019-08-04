@@ -2,10 +2,14 @@
   <dictionary name="chencu">
     <words>
       <w>cooldown</w>
+      <w>foundores</w>
       <w>magictime</w>
       <w>magicweather</w>
       <w>minecraft</w>
       <w>mobarena</w>
+      <w>noperms</w>
+      <w>notenoughmoney</w>
+      <w>playeronly</w>
       <w>safeportal</w>
       <w>teleportation</w>
     </words>
