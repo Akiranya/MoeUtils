@@ -3,7 +3,7 @@ notifier:
   animals:
     - villager
   messages:
-    death: "刚刚有一只 %s 很不幸的消失了 (死因: %s)"
+    death: '刚刚有一只 %s 从人间蒸发了 (死因: %s) (坐标: %s)'
 foundores:
   enable: true
   prefix: ">>"
