@@ -2,6 +2,7 @@ package co.mcsky.notifier;
 
 import co.mcsky.MoeUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -35,7 +36,14 @@ public class VillagerDeathAnnouncer implements Listener {
             String deathCause = event.getCause().name();
             String customName = livingEntity.getCustomName();
             String entityName = customName != null ? customName : livingEntity.getName();
-            String format = String.format(moe.config.notifier_message_death, entityName, deathCause);
+            Location loc = livingEntity.getLocation();
+            StringBuilder locSb = new StringBuilder();
+            locSb.append(loc.getBlockX());
+            locSb.append(", ");
+            locSb.append(loc.getBlockY());
+            locSb.append(", ");
+            locSb.append(loc.getBlockZ());
+            String format = String.format(moe.config.notifier_message_death, entityName, deathCause, locSb.toString());
             moe.getServer().broadcastMessage(format);
         });
     }

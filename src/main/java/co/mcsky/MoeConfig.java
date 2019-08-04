@@ -210,7 +210,7 @@ public class MoeConfig {
         notifier_whitelist = rawConfig.stream()
                 .map(e -> EntityType.valueOf(e.toUpperCase()))
                 .collect(Collectors.toSet());
-        notifier_message_death = config.getString("notifier.message.death");
+        notifier_message_death = config.getString("notifier.messages.death");
     }
 
     private void outputConfig() {
