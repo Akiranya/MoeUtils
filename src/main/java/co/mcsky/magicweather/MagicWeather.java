@@ -18,15 +18,14 @@ import static co.mcsky.utils.MoeLib.toTick;
 public class MagicWeather {
     private static final String COOLDOWNKEY = "magicweather";
     private static MagicWeather magicWeather = null;
-    private MoeUtils moe;
-    private int cooldown; // Cooldown specified in plugin config
-    private int broadcastTask; // Id of which broadcasting task is running
+    private final MoeUtils moe;
+    private final int cooldown; // Cooldown specified in plugin config
 
     /**
      * K = The name of world.<br>
      * V = Player who lastly used magic weather in given world.
      */
-    private Map<String, UUID> lastUsedWorld;
+    private final Map<String, UUID> lastUsedWorld;
 
     /**
      * Outer world has no access to the constructor.
@@ -85,7 +84,7 @@ public class MagicWeather {
         }
 
         // Wait and broadcast
-        broadcastTask = Bukkit.getScheduler().runTaskLaterAsynchronously(moe, () -> {
+        Bukkit.getScheduler().runTaskLaterAsynchronously(moe, () -> {
             String format = String.format(moe.config.magicweather_message_ended, weatherName, worldName);
             moe.getServer().broadcastMessage(format);
         }, toTick(cooldown)).getTaskId();
@@ -123,7 +122,4 @@ public class MagicWeather {
         player.sendMessage(moe.config.magicweather_message_reset);
     }
 
-    public void cancelBroadcastTask() {
-        Bukkit.getScheduler().cancelTask(broadcastTask);
-    }
 }

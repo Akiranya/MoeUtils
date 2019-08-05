@@ -17,9 +17,8 @@ import static co.mcsky.utils.MoeLib.toTick;
 public class MagicTime {
     private static final String COOLDOWNKEY = "magictime";
     private static MagicTime magicTime = null;
-    private MoeUtils moe;
-    private int cooldown; // In second
-    private int broadcastTask; // Id of which broadcasting task is running
+    private final MoeUtils moe;
+    private final int cooldown; // In second
     private UUID lastUsedPlayer; // Player who lastly used MagicTime, i.e. ran command
 
     private MagicTime(MoeUtils moe) {
@@ -80,10 +79,10 @@ public class MagicTime {
         }
 
         // Wait and broadcast
-        broadcastTask = Bukkit.getScheduler().runTaskLaterAsynchronously(moe, () -> {
+        Bukkit.getScheduler().runTaskLaterAsynchronously(moe, () -> {
             String format = String.format(moe.config.magictime_message_ended, timeType.getName(moe));
             moe.getServer().broadcastMessage(format);
-        }, toTick(cooldown)).getTaskId();
+        }, toTick(cooldown));
     }
 
     public void getStatus(Player player) {
@@ -111,7 +110,4 @@ public class MagicTime {
         player.sendMessage(moe.config.magictime_message_reset);
     }
 
-    public void cancelBroadcastTask() {
-        Bukkit.getScheduler().cancelTask(broadcastTask);
-    }
 }

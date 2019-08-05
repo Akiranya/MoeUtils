@@ -1,8 +1,6 @@
 package co.mcsky;
 
 import co.mcsky.foundores.PlayerListener;
-import co.mcsky.magictime.MagicTime;
-import co.mcsky.magicweather.MagicWeather;
 import co.mcsky.mobarena.ArenaEventListener;
 import co.mcsky.notifier.VillagerDeathAnnouncer;
 import co.mcsky.safeportal.PlayerTeleportListener;
