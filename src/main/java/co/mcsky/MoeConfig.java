@@ -121,15 +121,15 @@ public class MoeConfig {
         // MagicWeather
         magicWeatherInit(config);
 
-
         // Global initialization
         globalInit(config);
+
+        // Notifier initialization
+        notifierInit(config);
 
         // THIS METHOD MUST BE THE LAST ONE RUN
         // Output config info to console
         outputConfig();
-
-        notifierInit(config);
     }
 
     private void globalInit(FileConfiguration config) {
