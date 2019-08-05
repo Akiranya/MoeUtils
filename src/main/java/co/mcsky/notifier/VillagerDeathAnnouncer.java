@@ -12,7 +12,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import java.util.Set;
 
 public class VillagerDeathAnnouncer implements Listener {
-    final private MoeUtils moe;
+    private final MoeUtils moe;
     private final Set<EntityType> whitelist;
 
     public VillagerDeathAnnouncer(MoeUtils moe) {

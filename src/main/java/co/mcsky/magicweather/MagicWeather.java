@@ -62,7 +62,7 @@ public class MagicWeather {
 
         // Set weather
         weatherType.setWeather(moe, player);
-        // After setting weather, we broadcast it!
+        // Broadcast the event
         String weatherName = weatherType.getName(moe);
         String msg = moe.config.magicweather_message_changed;
         moe.getServer().broadcastMessage(String.format(msg, worldName, weatherName));
@@ -71,7 +71,7 @@ public class MagicWeather {
         String commandFormat = "hamsterecohelper:heh balance take %s %d";
         String commandCharge = String.format(commandFormat, player.getName(), cost);
         moe.getServer().dispatchCommand(moe.getServer().getConsoleSender(), commandCharge);
-        player.sendMessage(String.format(moe.config.magicweather_message_cost, cost));
+        player.sendMessage(String.format(moe.config.magicweather_message_cost, cost)); // This command CHARGES player
 
         try {
             // After all operations, dont forget to put it into map!
@@ -83,7 +83,7 @@ public class MagicWeather {
             return;
         }
 
-        // Wait and broadcast
+        // Broadcast the end of event after given duration
         Bukkit.getScheduler().runTaskLaterAsynchronously(moe, () -> {
             String format = String.format(moe.config.magicweather_message_ended, weatherName, worldName);
             moe.getServer().broadcastMessage(format);
