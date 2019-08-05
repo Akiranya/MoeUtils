@@ -10,7 +10,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
+import java.util.UUID;
 
 import static co.mcsky.utils.MoeLib.toTick;
 
@@ -21,7 +24,7 @@ public class PlayerListener implements Listener {
     // K -> block_type
     // V -> color_code
     final private Map<Material, String> blockTypeMap;
-    final private Map<UUID, Stack<PlayerBlockPair>> playerBlockLog;
+    final private Map<UUID, Stack<Material>> playerBlockLog;
     private final int clearTask;
     private final int reduceTask;
 
@@ -41,7 +44,7 @@ public class PlayerListener implements Listener {
 
         reduceTask = Bukkit.getScheduler().runTaskTimerAsynchronously(moe, () -> {
             if (playerBlockLog.isEmpty()) return;
-            playerBlockLog.forEach((UUID player, Stack<PlayerBlockPair> stack) -> {
+            playerBlockLog.forEach((UUID player, Stack<Material> stack) -> {
                 // Reduces size of stacks of all players at given interval.
                 // This just ensures that if a player still finds same type of ores as they did after a while,
                 // we should announce them.
@@ -67,15 +70,6 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        Material blockType = block.getType();
-        UUID playerUUID = event.getPlayer().getUniqueId();
-        if (!playerBlockLog.get(playerUUID).isEmpty()) {
-            PlayerBlockPair peek = playerBlockLog.get(playerUUID).peek();
-            if (peek.player.equals(playerUUID) && peek.blockType == blockType) {
-                return;
-            }
-        }
-
         // Is block in enabled worlds?
         if (!moe.config.foundores_worlds.contains(block.getWorld().getName())) {
             return;
@@ -86,9 +80,17 @@ public class PlayerListener implements Listener {
 //            return;
 //        }
 
+        Material blockType = block.getType();
+        UUID playerUUID = event.getPlayer().getUniqueId();
+        Stack<Material> playerBlockStack = playerBlockLog.get(playerUUID);
+        if (!playerBlockStack.isEmpty() && playerBlockStack.peek() == blockType) {
+            // Don't keep announcing same type of ores
+            return;
+        }
+
         // If the block is not in any region previously created,
         // adds the region which the block are from to the head of queue.
-        playerBlockLog.get(playerUUID).push(new PlayerBlockPair(playerUUID, blockType));
+        playerBlockStack.push(blockType);
         broadcast(event, block); // Then broadcast it!
     }
 
@@ -117,21 +119,21 @@ public class PlayerListener implements Listener {
         Bukkit.getOnlinePlayers().forEach(p -> playerBlockLog.put(p.getUniqueId(), new Stack<>()));
     }
 
-    private class PlayerBlockPair {
-        UUID player;
-        Material blockType;
-
-        PlayerBlockPair(UUID player, Material blockType) {
-            this.player = player;
-            this.blockType = blockType;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof PlayerBlockPair)) return false;
-            return Objects.equals(player, o);
-        }
-    }
+//    private class PlayerBlockPair {
+//        UUID player;
+//        Material blockType;
+//
+//        PlayerBlockPair(UUID player, Material blockType) {
+//            this.player = player;
+//            this.blockType = blockType;
+//        }
+//
+//        @Override
+//        public boolean equals(Object o) {
+//            if (this == o) return true;
+//            if (!(o instanceof PlayerBlockPair)) return false;
+//            return Objects.equals(player, o);
+//        }
+//    }
 
 }
