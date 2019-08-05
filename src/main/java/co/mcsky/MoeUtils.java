@@ -24,16 +24,9 @@ public class MoeUtils extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Save config to disk. It will destroy any data in memory.
-        this.saveConfig();
-
-        HandlerList.unregisterAll(this);
-
-        /* Cancel 'postponed broadcast' task */
-//        MagicTime.getInstance(this).cancelBroadcastTask();
-//        MagicWeather.getInstance(this).cancelBroadcastTask();
-        // Not sure if it works. Just having a try.
-        Bukkit.getScheduler().cancelTasks(this);
+        this.saveConfig(); // Save config to disk. It will destroy any data in memory.
+        HandlerList.unregisterAll(this); // Unregister all listeners
+        Bukkit.getScheduler().cancelTasks(this); // Not sure if it works. Just having a try.
     }
 
     @Override
@@ -54,9 +47,7 @@ public class MoeUtils extends JavaPlugin {
 
         // Set up MobArenaAddon
         setupMobArena();
-        if (ma != null) {
-            new ArenaEventListener(this, ma, new TagHandler());
-        }
+        if (ma != null) new ArenaEventListener(this, ma, new TagHandler());
 
         // Set up SafePortal
         new PlayerTeleportListener(this);
@@ -75,25 +66,19 @@ public class MoeUtils extends JavaPlugin {
 
     private boolean setupPermissions() {
         RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
-        if (permissionProvider != null) {
-            permission = permissionProvider.getProvider();
-        }
+        if (permissionProvider != null) permission = permissionProvider.getProvider();
         return permission != null;
     }
 
     private boolean setupChat() {
         RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
-        if (chatProvider != null) {
-            chat = chatProvider.getProvider();
-        }
+        if (chatProvider != null) chat = chatProvider.getProvider();
         return chat != null;
     }
 
     private boolean setupEconomy() {
         RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-        if (economyProvider != null) {
-            economy = economyProvider.getProvider();
-        }
+        if (economyProvider != null) economy = economyProvider.getProvider();
         return economy != null;
     }
 

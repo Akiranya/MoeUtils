@@ -25,8 +25,6 @@ public class PlayerListener implements Listener {
     // V -> color_code
     final private Map<Material, String> blockTypeMap;
     final private Map<UUID, Stack<Material>> playerBlockLog;
-    private final int clearTask;
-    private final int reduceTask;
 
     public PlayerListener(MoeUtils moe) {
         this.moe = moe;
@@ -37,12 +35,14 @@ public class PlayerListener implements Listener {
         }
 
         // Auto clear map playerBlockLog at given interval
-        clearTask = Bukkit.getScheduler().runTaskTimerAsynchronously(moe, () -> {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(moe, () -> {
             playerBlockLog.clear();
             fillPlayerBlockLog();
-        }, 0, toTick(moe.config.foundores_purge_interval)).getTaskId();
+        }, 0, toTick(moe.config.foundores_purge_interval));
 
-        reduceTask = Bukkit.getScheduler().runTaskTimerAsynchronously(moe, () -> {
+        // Remove this feature for the time being
+        /*
+        Bukkit.getScheduler().runTaskTimerAsynchronously(moe, () -> {
             if (playerBlockLog.isEmpty()) return;
             playerBlockLog.forEach((UUID player, Stack<Material> stack) -> {
                 // Reduces size of stacks of all players at given interval.
@@ -50,7 +50,8 @@ public class PlayerListener implements Listener {
                 // we should announce them.
                 if (!stack.isEmpty()) stack.pop();
             });
-        }, 0, toTick(moe.config.foundores_pop_interval)).getTaskId();
+        }, 0, toTick(moe.config.foundores_pop_interval));
+        */
 
         fillPlayerBlockLog();
     }
@@ -88,15 +89,10 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        // If the block is not in any region previously created,
-        // adds the region which the block are from to the head of queue.
+        // If the block type is not the same as the block that player most recently found,
+        // then adds the region which the block are from to the head of queue.
         playerBlockStack.push(blockType);
         broadcast(event, block); // Then broadcast it!
-    }
-
-    public void cancelTask() {
-        Bukkit.getScheduler().cancelTask(clearTask);
-        Bukkit.getScheduler().cancelTask(reduceTask);
     }
 
     /**

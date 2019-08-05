@@ -52,7 +52,7 @@ public class MagicTime {
 
         // Set time
         timeType.setTime(moe);
-        // Broadcast it!
+        // Broadcast the event
         moe.getServer().broadcastMessage(
                 String.format(moe.config.magictime_message_changed, timeType.getName(moe))
         );
@@ -60,9 +60,8 @@ public class MagicTime {
         // Charge player
         String cmd = "hamsterecohelper:heh balance take %s %d";
         String commandCharge = String.format(cmd, player.getName(), cost);
-
         CommandSender console = moe.getServer().getConsoleSender();
-        moe.getServer().dispatchCommand(console, commandCharge);
+        moe.getServer().dispatchCommand(console, commandCharge); // This command CHARGES player
 
         player.sendMessage(String.format(moe.config.magictime_message_cost, cost));
 
@@ -78,7 +77,7 @@ public class MagicTime {
             return;
         }
 
-        // Wait and broadcast
+        // Broadcast the end of event after given duration
         Bukkit.getScheduler().runTaskLaterAsynchronously(moe, () -> {
             String format = String.format(moe.config.magictime_message_ended, timeType.getName(moe));
             moe.getServer().broadcastMessage(format);
