@@ -84,9 +84,7 @@ public class PlayerListener implements Listener {
         Material blockType = block.getType();
         UUID playerUUID = event.getPlayer().getUniqueId();
         Stack<Material> playerBlockStack = playerBlockLog.get(playerUUID);
-        // Use pop() instead of peek()to avoid player spamming
-        // with TWO type of blocks being interchangeably broken
-        if (!playerBlockStack.isEmpty() && playerBlockStack.pop() == blockType) {
+        if (!playerBlockStack.isEmpty() && playerBlockStack.peek() == blockType) {
             // Don't keep announcing same type of ores
             return;
         }
