@@ -87,7 +87,7 @@ public class MagicWeather {
         Bukkit.getScheduler().runTaskLaterAsynchronously(moe, () -> {
             String format = String.format(moe.config.magicweather_message_ended, weatherName, worldName);
             moe.getServer().broadcastMessage(format);
-        }, toTick(cooldown)).getTaskId();
+        }, toTick(cooldown));
     }
 
     /**
