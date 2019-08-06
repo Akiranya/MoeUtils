@@ -49,24 +49,28 @@ public class CommandHandler implements CommandExecutor {
         if (args[0].equalsIgnoreCase("time")) {
             if (args.length != 2) return false;
             if (args[1].equalsIgnoreCase("day")) {
-                if (!hasPermission(player, "moe.magic.time.day")) return true;
-                magicTime.setTime(player, TimeType.DAY, moe.config.magictime_cost);
-                return true;
+                if (hasPermission(player, "moe.magic.time.day")) {
+                    magicTime.setTime(player, TimeType.DAY, moe.config.magictime_cost);
+                    return true;
+                }
             }
             if (args[1].equalsIgnoreCase("night")) {
-                if (!hasPermission(player, "moe.magic.time.night")) return true;
-                magicTime.setTime(player, TimeType.NIGHT, moe.config.magictime_cost);
-                return true;
+                if (hasPermission(player, "moe.magic.time.night")) {
+                    magicTime.setTime(player, TimeType.NIGHT, moe.config.magictime_cost);
+                    return true;
+                }
             }
             if (args[1].equalsIgnoreCase("reset")) {
-                if (!hasPermission(player, "moe.magic.reset")) return true;
-                magicTime.reset(player);
-                return true;
+                if (hasPermission(player, "moe.magic.reset")) {
+                    magicTime.reset(player);
+                    return true;
+                }
             }
             if (args[1].equalsIgnoreCase("status")) {
-                if (!hasPermission(player, "moe.magic.status")) return true;
-                magicTime.getStatus(player);
-                return true;
+                if (hasPermission(player, "moe.magic.status")) {
+                    magicTime.getStatus(player);
+                    return true;
+                }
             }
         }
 
@@ -74,40 +78,50 @@ public class CommandHandler implements CommandExecutor {
         if (args[0].equalsIgnoreCase("weather")) {
             if (args.length != 2) return false;
             if (args[1].equalsIgnoreCase("clear")) {
-                if (!hasPermission(player, "moe.magic.weather.clear")) return true;
-                magicWeather.setWeather(player, WeatherType.CLEAR, moe.config.magicweather_cost);
-                return true;
+                if (hasPermission(player, "moe.magic.weather.clear")) {
+                    magicWeather.setWeather(player, WeatherType.CLEAR, moe.config.magicweather_cost);
+                    return true;
+                }
             }
             if (args[1].equalsIgnoreCase("rain")) {
-                if (!hasPermission(player, "moe.magic.weather.rain")) return true;
-                magicWeather.setWeather(player, WeatherType.RAIN, moe.config.magicweather_cost);
-                return true;
+                if (hasPermission(player, "moe.magic.weather.rain")) {
+                    magicWeather.setWeather(player, WeatherType.RAIN, moe.config.magicweather_cost);
+                    return true;
+                }
             }
             if (args[1].equalsIgnoreCase("thunder")) {
-                if (!hasPermission(player, "moe.magic.weather.thunder")) return true;
-                magicWeather.setWeather(player, WeatherType.THUNDER, moe.config.magicweather_cost);
-                return true;
+                if (hasPermission(player, "moe.magic.weather.thunder")) {
+                    magicWeather.setWeather(player, WeatherType.THUNDER, moe.config.magicweather_cost);
+                    return true;
+                }
             }
             if (args[1].equalsIgnoreCase("status")) {
-                if (!hasPermission(player, "moe.magic.status")) return true;
-                magicWeather.getStatus(player);
-                return true;
+                if (hasPermission(player, "moe.magic.status")) {
+                    magicWeather.getStatus(player);
+                    return true;
+                }
             }
             if (args[1].equalsIgnoreCase("reset")) {
-                if (!hasPermission(player, "moe.magic.reset")) return true;
-                magicWeather.reset(player, player.getWorld().getName());
-                return true;
+                if (hasPermission(player, "moe.magic.reset")) {
+                    magicWeather.reset(player, player.getWorld().getName());
+                    return true;
+                }
             }
         }
-
         return false;
     }
 
+    /**
+     * Check whether given player has specific permission.
+     * @param sender The player.
+     * @param perm The permission node.
+     * @return Whether given player has specific permission.
+     */
     private boolean hasPermission(CommandSender sender, String perm) {
-        if (!permission.has(sender, perm)) {
+        if (permission.has(sender, perm)) return true;
+        else { // If does not have permission...
             sender.sendMessage(String.format(moe.config.global_message_noperms, perm));
             return false;
         }
-        return true;
     }
 }

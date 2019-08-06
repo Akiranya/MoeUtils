@@ -194,6 +194,7 @@ public class MoeConfig {
         foundores_pop_interval = config.getInt("foundores.pop_interval");
         foundores_purge_interval = config.getInt("foundores.purge_interval");
 
+        // TODO Combine color config and whitelist of block types
         Map<String, Object> map = config.getConfigurationSection("foundores.block_types").getValues(false);
         foundores_block_types = new HashMap<>();
         map.forEach((block, color) -> foundores_block_types.put(Material.matchMaterial(block), (String) color));
