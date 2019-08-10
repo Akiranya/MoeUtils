@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -42,7 +43,9 @@ public class VillagerDeathAnnouncer implements Listener {
             locSb.append(loc.getBlockY());
             locSb.append(", ");
             locSb.append(loc.getBlockZ());
-            String format = String.format(moe.config.notifier_message_death, entityName, deathCause, locSb.toString());
+            Player attacker = livingEntity.getKiller();
+            String playerName = attacker != null ? attacker.getName() : "";
+            String format = String.format(moe.config.notifier_message_death, entityName, deathCause, playerName, locSb.toString());
             moe.getServer().broadcastMessage(format);
         });
     }

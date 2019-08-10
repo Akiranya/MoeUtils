@@ -40,19 +40,6 @@ public class PlayerListener implements Listener {
             fillPlayerBlockLog();
         }, 0, toTick(moe.config.foundores_purge_interval));
 
-        // Remove this feature for the time being
-        /*
-        Bukkit.getScheduler().runTaskTimerAsynchronously(moe, () -> {
-            if (playerBlockLog.isEmpty()) return;
-            playerBlockLog.forEach((UUID player, Stack<Material> stack) -> {
-                // Reduces size of stacks of all players at given interval.
-                // This just ensures that if a player still finds same type of ores as they did after a while,
-                // we should announce them.
-                if (!stack.isEmpty()) stack.pop();
-            });
-        }, 0, toTick(moe.config.foundores_pop_interval));
-        */
-
         fillPlayerBlockLog();
     }
 
@@ -114,22 +101,5 @@ public class PlayerListener implements Listener {
         // In case of reading empty map
         Bukkit.getOnlinePlayers().forEach(p -> playerBlockLog.put(p.getUniqueId(), new Stack<>()));
     }
-
-//    private class PlayerBlockPair {
-//        UUID player;
-//        Material blockType;
-//
-//        PlayerBlockPair(UUID player, Material blockType) {
-//            this.player = player;
-//            this.blockType = blockType;
-//        }
-//
-//        @Override
-//        public boolean equals(Object o) {
-//            if (this == o) return true;
-//            if (!(o instanceof PlayerBlockPair)) return false;
-//            return Objects.equals(player, o);
-//        }
-//    }
 
 }
