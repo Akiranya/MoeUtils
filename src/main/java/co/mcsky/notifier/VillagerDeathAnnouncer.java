@@ -37,15 +37,10 @@ public class VillagerDeathAnnouncer implements Listener {
             String customName = livingEntity.getCustomName();
             String entityName = customName != null ? customName : livingEntity.getName();
             Location loc = livingEntity.getLocation();
-            StringBuilder locSb = new StringBuilder();
-            locSb.append(loc.getBlockX());
-            locSb.append(", ");
-            locSb.append(loc.getBlockY());
-            locSb.append(", ");
-            locSb.append(loc.getBlockZ());
             Player attacker = livingEntity.getKiller();
-            String playerName = attacker != null ? attacker.getName() : "";
-            String format = String.format(moe.config.notifier_message_death, entityName, deathCause, playerName, locSb.toString());
+            String playerName = attacker != null ? attacker.getName() : moe.config.global_message_none;
+            String locSb = loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ();
+            String format = String.format(moe.config.notifier_message_death, entityName, deathCause, playerName, locSb);
             moe.getServer().broadcastMessage(format);
         });
     }

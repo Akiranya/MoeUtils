@@ -73,9 +73,9 @@ public class MoeConfig {
     public String magicweather_message_rain;
     public String magicweather_message_clear;
     public String magicweather_message_thunder;
-    public String magicweather_message_none;
 
     /* Global */
+    public String global_message_none;
     public String global_message_reloaded;
     public String global_message_noperms;
     public String global_message_notenoughmoney;
@@ -133,6 +133,7 @@ public class MoeConfig {
     }
 
     private void globalInit(FileConfiguration config) {
+        global_message_none = color(config.getString("global.messages.none"));
         global_message_on = color(config.getString("global.messages.active"));
         global_message_off = color(config.getString("global.messages.deactivated"));
         global_message_reloaded = color(config.getString("global.messages.reloaded"));
@@ -140,6 +141,7 @@ public class MoeConfig {
         global_message_notenoughmoney = color(config.getString("global.messages.notenoughmoney"));
         global_message_cooldown = color(config.getString("global.messages.cooldown"));
         global_message_playeronly = color(config.getString("global.messages.playeronly"));
+
     }
 
     private void magicWeatherInit(FileConfiguration config) {
@@ -154,7 +156,6 @@ public class MoeConfig {
         magicweather_message_rain = color(config.getString("magicweather.messages.rain"));
         magicweather_message_clear = color(config.getString("magicweather.messages.clear"));
         magicweather_message_thunder = color(config.getString("magicweather.messages.thunder"));
-        magicweather_message_none = color(config.getString("magicweather.messages.none"));
     }
 
     private void magicTimeInit(FileConfiguration config) {

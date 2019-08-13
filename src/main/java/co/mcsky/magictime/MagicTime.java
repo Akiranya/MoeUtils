@@ -88,7 +88,7 @@ public class MagicTime {
         if (Cooldown.getInstance().check(COOLDOWNKEY, cooldown)) { // If cooldown is ready
             String msg = moe.config.magictime_message_status;
             String status = moe.config.global_message_off;
-            String none = moe.config.magicweather_message_none;
+            String none = moe.config.global_message_none;
             player.sendMessage(String.format(msg, status, none, 0));
         } else {
             String status = moe.config.global_message_on;

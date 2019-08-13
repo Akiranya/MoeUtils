@@ -3,7 +3,7 @@ notifier:
   animals:
     - villager
   messages:
-    death: '刚刚有一只 %s 从人间蒸发了 (原因: %s %s) (坐标: %s)'
+    death: '刚刚有一只 %s 从人间蒸发了 (原因: %s) (击杀者: %s) (坐标: %s)'
 foundores:
   enable: true
   prefix: ">>"
@@ -61,7 +61,6 @@ magicweather:
     ended: '&bThe magic weather &e%s&b in world &e%s&b has ended!'
     reset: '&aTimer for magic weather has been reset.'
     cost: '&fYou are charged &e%d&f dollars.'
-    none: 'None'
     status: >
       &a%s:&7 %s&a.
       &aPlayer:&7 %s&a.
@@ -83,6 +82,7 @@ safe-portal:
     debug: '&ePlayerPortalEvent has been cancelled for &b%s&e.'
 global:
   messages:
+    none: 'None'
     active: '&eYes'
     deactivated: '&eNo'
     noperms: '&cYou dont have the permission to use this command:&e %s&c.'
