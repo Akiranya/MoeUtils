@@ -15,52 +15,43 @@ foundores:
   pop_interval: 30
   purge_interval: 1800
   block_types:
-    gold_ore: '&6'
-    iron_ore: '&7'
-    coal_ore: '&8'
-    lapis_ore: '&1'
-    diamond_ore: '&b'
-    redstone_ore: '&4'
-    emerald_ore: '&a'
-    nether_quartz_ore: '&f'
+    gold_ore: '&6金矿'
+    iron_ore: '&7铁矿'
+    coal_ore: '&8煤矿'
+    lapis_ore: '&1青金石'
+    diamond_ore: '&b钻石'
+    redstone_ore: '&4红石'
+    emerald_ore: '&a绿宝石'
+    nether_quartz_ore: '&f石英'
   messages:
-    found: '&e%s&7 挖到了 %s%s&b!'
-    blocks:
-      gold_ore: 金矿
-      iron_ore: 铁矿
-      coal_ore: 煤矿
-      lapis_ore: 青金石
-      diamond_ore: 钻石
-      redstone_ore: 红石
-      emerald_ore: 绿宝石
-      nether_quartz_ore: 石英
+    found: '&e%s&7 挖到了 &e%d &7个 %s&b!'
 magictime:
-  prefix: ">>"
-  cost: 300
+  prefix: '>>'
+  cost: 50
   cooldown: 600
   messages:
-    day: 'Magic Day'
-    night: 'Magic Night'
-    changed: '&bA magician has changed the time of all worlds to &d%s&b.'
-    ended: '&d%s&b has ended!'
-    reset: '&aTimer for magic time has been reset.'
-    cost: '&fYou are charged &e%d&f dollars.'
+    day: 魔法白天
+    night: 魔法夜晚
+    changed: '&b一位神秘的魔法师把所有世界的时间变成了 &d%s&b.'
+    ended: '&d%s&b 结束了! &7(冷却就绪)'
+    reset: '&a魔法时间的冷却已重置.'
+    cost: '&f你花掉了 &e%d&f软妹币.'
     status: >
       &aStatus:&7 %s&a.
       &aPlayer:&7 %s&a.
       &aRemained:&7 %d&a second(s).
 magicweather:
-  prefix: ">>"
-  cost: 300
+  prefix: '>>'
+  cost: 50
   cooldown: 600
   messages:
-    clear: 'Magic Clear'
-    rain: 'Magic Rain'
-    thunder: 'Magic Thunder'
-    changed: '&bA magician has changed the weather of world &e%s&b to &d%s&b.'
-    ended: '&bThe magic weather &e%s&b in world &e%s&b has ended!'
-    reset: '&aTimer for magic weather has been reset.'
-    cost: '&fYou are charged &e%d&f dollars.'
+    clear: 魔法晴天
+    rain: 魔法阴天
+    thunder: 魔法雷雨
+    changed: '&b一位神秘法师把世界 &e%s&b 的天气变成了 &d%s&b.'
+    ended: '&b神秘法师的 &e%s&b (世界 &e%s&b) 结束了! &7(冷却就绪)'
+    reset: '&a魔法天气的冷却已重置.'
+    cost: '&f你花掉了 &e%d&f软妹币.'
     status: >
       &a%s:&7 %s&a.
       &aPlayer:&7 %s&a.
@@ -78,15 +69,15 @@ safe-portal:
   debug: true
   event-priority: MONITOR
   messages:
-    cancelled: '&eSorry, but we found that the destination is out of world border. In case you die, the teleportation has been cancelled.'
+    cancelled: '&e监测到该地狱门的目的地在世界边界外,为了您的安全,本次传送已取消.'
     debug: '&ePlayerPortalEvent has been cancelled for &b%s&e.'
 global:
   messages:
-    none: 'None'
+    none: None
     active: '&eYes'
     deactivated: '&eNo'
-    noperms: '&cYou dont have the permission to use this command:&e %s&c.'
-    reloaded: '&cMoeUtils has been reloaded.'
-    notenoughmoney: '&7You dont have enough money.'
-    cooldown: '&7Cooldown:&b %d&7 second(s).'
-    playeronly: 'Only player may use this command.'
+    noperms: '&c你没有权限使用这个指令:&e %s&c.'
+    reloaded: '&cMoeUtils 已重新载入.'
+    notenoughmoney: '&7你没有足够的软妹币.'
+    cooldown: '&7冷却中:&b %d&7 秒.'
+    playeronly: 只有玩家才可以使用这个指令.

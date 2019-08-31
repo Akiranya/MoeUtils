@@ -113,8 +113,9 @@ public class CommandHandler implements CommandExecutor {
 
     /**
      * Check whether given player has specific permission.
+     *
      * @param sender The player.
-     * @param perm The permission node.
+     * @param perm   The permission node.
      * @return Whether given player has specific permission.
      */
     private boolean hasPermission(CommandSender sender, String perm) {
