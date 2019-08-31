@@ -12,13 +12,15 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.Set;
 
-public class VillagerDeathAnnouncer implements Listener {
+public class CreatureDeathMessage implements Listener {
     private final MoeUtils moe;
     private final Set<EntityType> whitelist;
 
-    public VillagerDeathAnnouncer(MoeUtils moe) {
+    public CreatureDeathMessage(MoeUtils moe) {
         this.moe = moe;
         whitelist = moe.config.notifier_whitelist;
+
+        // 判断是否要注册 Listener
         if (moe.config.notifier_on) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
         }
@@ -33,14 +35,14 @@ public class VillagerDeathAnnouncer implements Listener {
         Bukkit.getScheduler().runTask(moe, () -> {
             if (!livingEntity.isDead()) return; // Ignore if the entity is still alive
             if (!whitelist.contains(livingEntity.getType())) return; // Ignore if it is not in whitelist
+
             String deathCause = event.getCause().name();
-            String customName = livingEntity.getCustomName();
-            String entityName = customName != null ? customName : livingEntity.getName();
+            String victimName = livingEntity.getCustomName() != null ? livingEntity.getCustomName() : livingEntity.getName();
             Location loc = livingEntity.getLocation();
-            Player attacker = livingEntity.getKiller();
-            String playerName = attacker != null ? attacker.getName() : moe.config.global_message_none;
+            Player killer = livingEntity.getKiller();
+            String playerName = killer != null ? killer.getName() : moe.config.global_message_none;
             String locSb = loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ();
-            String format = String.format(moe.config.notifier_message_death, entityName, deathCause, playerName, locSb);
+            String format = String.format(moe.config.notifier_message_death, victimName, deathCause, playerName, locSb);
             moe.getServer().broadcastMessage(format);
         });
     }
