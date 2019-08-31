@@ -75,22 +75,24 @@ public class PlayerListener implements Listener {
         Map<Material, Set<Location>> typeLog = playerLog.get(playerUUID);
         // 继续 ...
 
-        if (typeLog.containsKey(blockType)) { // 如果玩家发现过这种类型的方块
+        if (typeLog.containsKey(blockType)) {
+            // 如果玩家发现过这种类型的方块
             if (!typeLog.get(blockType).contains(justFound)) { // 如果玩家还没发现过这个位置的方块，则进行通报
-                // 开始搜索
-                int count = finder.BFS(justFound, blockType, typeLog.get(blockType));
-                // 通报
-                broadcast(event.getPlayer().getDisplayName(), blockType, count);
+                int count = finder.BFS(justFound, blockType, typeLog.get(blockType)); // 开始搜索
+                broadcast(event.getPlayer().getDisplayName(), blockType, count); // 然后通报
+            } else {
+                // 如果玩家已经发现过这个位置的方块，直接返回
             }
-            // 如果玩家已经发现过这个位置的方块，直接返回
-        } else { // 如果玩家还没发现过这种方块，则进行通报
+        } else {
+            // 如果玩家还没发现过这种类型的方块，则进行通报
+
+            // 因为玩家连这种类型的方块都没发现过，
+            // 所以需要*创建*一个 discovered set 给当前方块类型
             Set<Location> discovered = new HashSet<>();
-            typeLog.put(blockType, discovered);
+            typeLog.put(blockType, discovered); // 不要忘记放到 typeLog map 里供之后的检索用
 
-            // 开始搜索
-            int count = finder.BFS(justFound, blockType, typeLog.get(blockType));
-
-            broadcast(event.getPlayer().getDisplayName(), blockType, count);
+            int count = finder.BFS(justFound, blockType, typeLog.get(blockType)); // 开始搜索
+            broadcast(event.getPlayer().getDisplayName(), blockType, count); // 然后通报
         }
     }
 
