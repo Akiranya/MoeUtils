@@ -47,9 +47,12 @@ public enum WeatherType {
         switch (this) {
             case CLEAR:
             case RAIN:
-                moe.getServer().dispatchCommand(
-                        console, String.format("essentials:weather %s %s %d", world, getCommandName(), duration)
-                );
+                String msg = String.format(
+                        "essentials:weather %s %s %d",
+                        world,
+                        getCommandName(),
+                        duration);
+                moe.getServer().dispatchCommand(console, msg);
                 break;
             case THUNDER:
                 player.getWorld().setStorm(true);

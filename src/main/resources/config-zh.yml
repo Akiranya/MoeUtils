@@ -41,8 +41,10 @@ magictime:
     ended: '&d%s&b 结束了! &7(冷却就绪)'
     reset: '&a魔法时间的冷却已重置.'
     cost: '&f你花掉了 &e%d&f软妹币.'
-    status: |
-      &aStatus:&7 %s&a. &aPlayer:&7 %s&a. &aRemained:&7 %d&a second(s).
+    status: >
+      &aStatus:&7 %s&a.
+      &aPlayer:&7 %s&a.
+      &aRemained:&7 %d&a second(s).
 magicweather:
   prefix: '>>'
   cost: 50
@@ -56,8 +58,10 @@ magicweather:
     reset: '&a魔法天气的冷却已重置.'
     cost: '&f你花掉了 &e%d&f软妹币.'
     none: 无
-    status: |
-      &a%s:&7 %s&a. &aPlayer:&7 %s&a. &aRemained:&7 %d&a second(s).
+    status: >
+      &a%s:&7 %s&a.
+      &aPlayer:&7 %s&a.
+      &aRemained:&7 %d&a second(s).
 mobarena-addon:
   enable: true
   whitelist:

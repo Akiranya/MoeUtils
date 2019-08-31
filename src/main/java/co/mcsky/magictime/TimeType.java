@@ -30,7 +30,9 @@ public enum TimeType {
 
     public void setTime(MoeUtils moe) {
         CommandSender console = moe.getServer().getConsoleSender();
-        String command = String.format("essentials:time %s all", getCommandName());
+        String command = String.format(
+                "essentials:time %s all",
+                getCommandName());
         moe.getServer().dispatchCommand(console, command);
     }
 }

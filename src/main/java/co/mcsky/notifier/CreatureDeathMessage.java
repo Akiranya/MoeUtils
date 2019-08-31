@@ -37,13 +37,19 @@ public class CreatureDeathMessage implements Listener {
             if (!whitelist.contains(livingEntity.getType())) return; // Ignore if it is not in whitelist
 
             String deathCause = event.getCause().name();
-            String victimName = livingEntity.getCustomName() != null ? livingEntity.getCustomName() : livingEntity.getName();
+
+            // 如果 victim 有自定义名字（例如命名牌），则显示自定义名字
+            String victimName = livingEntity.getCustomName() != null ?
+                    livingEntity.getCustomName() :
+                    livingEntity.getName();
+
             Location loc = livingEntity.getLocation();
             Player killer = livingEntity.getKiller();
             String playerName = killer != null ? killer.getName() : moe.config.global_message_none;
             String locSb = loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ();
-            String format = String.format(moe.config.notifier_message_death, victimName, deathCause, playerName, locSb);
-            moe.getServer().broadcastMessage(format);
+
+            String serverMsg = String.format(moe.config.notifier_message_death, victimName, deathCause, playerName, locSb);
+            moe.getServer().broadcastMessage(serverMsg);
         });
     }
 
