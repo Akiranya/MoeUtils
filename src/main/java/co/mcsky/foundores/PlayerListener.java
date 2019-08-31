@@ -38,7 +38,7 @@ public class PlayerListener implements Listener {
         }
 
         // Auto clear map playerLog at given interval
-        Bukkit.getScheduler().runTaskTimerAsynchronously(moe, () -> {
+        Bukkit.getScheduler().runTaskTimer(moe, () -> {
             playerLog.clear();
             reload();
         }, 0, toTick(moe.config.foundores_purge_interval));
@@ -66,17 +66,14 @@ public class PlayerListener implements Listener {
 //        if (event.getPlayer().getGameMode() != GameMode.SURVIVAL) return;
 
         // 这些本地变量下面都会用到
-        Material blockType = block.getType();
         UUID playerUUID = event.getPlayer().getUniqueId();
-
-        Location justFound = block.getLocation(); // 玩家当前挖掉的方块坐标
-
         playerLog.putIfAbsent(playerUUID, new HashMap<>());
         Map<Material, Set<Location>> typeLog = playerLog.get(playerUUID);
-        // 继续 ...
-
+        Location justFound = block.getLocation(); // 玩家当前挖掉的方块坐标
+        Material blockType = block.getType();
         if (typeLog.containsKey(blockType)) {
             // 如果玩家发现过这种类型的方块
+
             if (!typeLog.get(blockType).contains(justFound)) { // 如果玩家还没发现过这个位置的方块，则进行通报
                 int count = finder.BFS(justFound, blockType, typeLog.get(blockType)); // 开始搜索
                 broadcast(event.getPlayer().getDisplayName(), blockType, count); // 然后通报
