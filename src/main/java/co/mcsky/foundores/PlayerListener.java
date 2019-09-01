@@ -66,19 +66,20 @@ public class PlayerListener implements Listener {
 
         // 这些本地变量下面都会用到
         UUID playerUUID = event.getPlayer().getUniqueId();
+        Location foundLocation = block.getLocation(); // 玩家当前挖掉的方块坐标
+        Material foundType = block.getType(); // 玩家当前挖掉的方块类型
         playerLog.putIfAbsent(playerUUID, new HashMap<>()); // 如果该玩家从没挖到过矿，给玩家创建一个 map
-        Map<Material, Set<Location>> typeLog = playerLog.get(playerUUID);
-        Location justFound = block.getLocation(); // 玩家当前挖掉的方块坐标
-        Material blockType = block.getType(); // 玩家当前挖掉的方块类型
-        if (typeLog.containsKey(blockType)) {
+        Map<Material, Set<Location>> typeLog = playerLog.get(playerUUID); // 方块 + 其对应的已探索坐标集合
+        if (typeLog.containsKey(foundType)) {
             // 如果玩家发现过这种类型的方块
 
-            if (!typeLog.get(blockType).contains(justFound)) {
+            Set<Location> discovered = typeLog.get(foundType);
+            if (!discovered.contains(foundLocation)) {
                 // 如果玩家还没发现过这个位置的方块，则进行通报
 
-                finder.setDiscovered(typeLog.get(blockType)); // 设置搜索的参数（已探索的坐标）
-                int count = finder.count(justFound, blockType); // 开始搜索
-                broadcast(event.getPlayer().getDisplayName(), blockType, count); // 然后通报
+                finder.setDiscovered(discovered); // 设置搜索的参数（已探索的坐标）
+                int count = finder.count(foundLocation, foundType); // 开始搜索
+                broadcast(event.getPlayer().getDisplayName(), foundType, count); // 然后通报
             }
             // 如果玩家已经发现过这个位置的方块，不做计算s
 
@@ -87,12 +88,11 @@ public class PlayerListener implements Listener {
 
             // 因为玩家连这种类型的方块都没发现过，
             // 所以需要*创建*一个 discovered set 给当前方块类型
-            Set<Location> discovered = new HashSet<>();
-            typeLog.put(blockType, discovered); // 不要忘记放到 typeLog map 里供之后的检索用
+            typeLog.put(foundType, new HashSet<>()); // 不要忘记放到 typeLog map 里供之后的检索用
 
-            finder.setDiscovered(typeLog.get(blockType)); // 设置搜索的参数（已探索的坐标）
-            int count = finder.count(justFound, blockType); // 开始搜索
-            broadcast(event.getPlayer().getDisplayName(), blockType, count); // 然后通报
+            finder.setDiscovered(typeLog.get(foundType)); // 设置搜索的参数（已探索的坐标）
+            int count = finder.count(foundLocation, foundType); // 开始搜索
+            broadcast(event.getPlayer().getDisplayName(), foundType, count); // 然后通报
         }
     }
 
