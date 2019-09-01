@@ -112,10 +112,6 @@ public class BFSBlockFinder implements BlockFinder {
             }
         }
 
-        // clean up discovered set
-        // 用来提醒开发者在调用该方法前，需要先初始化 discovered
-        discovered = null;
-
         return count;
     }
 
