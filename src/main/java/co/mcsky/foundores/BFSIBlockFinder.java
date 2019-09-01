@@ -9,11 +9,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
-import static org.bukkit.block.BlockFace.*;
-
 /**
  * BlockFinder 的算法受到下面问题的启发：
- *
+ * <p>
  * 问题说明：找到 graph 中所有由 1 组成的区块（chunk）。
  * <p>
  * 如果一个 1 的四个垂直/水平方向上也是 1，那么就说这些 1 是相邻的，
@@ -38,35 +36,10 @@ import static org.bukkit.block.BlockFace.*;
  * <p>
  * P.s. 坐标的格式是 (rows, cols)
  */
-public class BFSBlockFinder implements BlockFinder {
+public class BFSIBlockFinder extends ABlockFinder implements IBlockFinder {
 
-    private final MoeUtils moe;
-    // 这是搜索邻居的标准，可以根据要求进行修改
-    private final BlockFace[] neighbors = {
-            NORTH,
-            EAST,
-            SOUTH,
-            WEST,
-            UP,
-            DOWN,
-            NORTH_EAST,
-            NORTH_WEST,
-            SOUTH_EAST,
-            SOUTH_WEST,
-            WEST_NORTH_WEST,
-            NORTH_NORTH_WEST,
-            NORTH_NORTH_EAST,
-            EAST_NORTH_EAST,
-            EAST_SOUTH_EAST,
-            SOUTH_SOUTH_EAST,
-            SOUTH_SOUTH_WEST,
-            WEST_SOUTH_WEST
-    };
-    private int maxIterations; // 最大搜索
-
-    public BFSBlockFinder(MoeUtils moe, int maxIterations) {
-        this.moe = moe;
-        this.maxIterations = maxIterations;
+    BFSIBlockFinder(MoeUtils moe) {
+        super(moe);
     }
 
     @Override
@@ -75,9 +48,9 @@ public class BFSBlockFinder implements BlockFinder {
     }
 
     /**
-     * @param start 起始点
+     * @param start           起始点
      * @param targetBlockType 搜索的方块类型
-     * @param discovered 已探索过的坐标
+     * @param discovered      已探索过的坐标
      * @return 起始点方块的所有合法邻居数量（包括本身）
      */
     private int BFS(Location start, Material targetBlockType, Set<Location> discovered) {
@@ -96,7 +69,7 @@ public class BFSBlockFinder implements BlockFinder {
         while (!queue.isEmpty()) {
             Location v = queue.remove();
 
-            if (++count >= maxIterations) return count; // 达到最大迭代数时，直接返回当前的方块数，不再进一步搜索
+            if (++count >= searchBound) return count; // 达到最大迭代数时，直接返回当前的方块数，不再进一步搜索
 
             // 遍历 vertex 的所有邻居（这里有 neighbor.length 个邻居）
             // 邻居的标准可以根据情况随时修改，所以考虑加个 config
@@ -113,20 +86,6 @@ public class BFSBlockFinder implements BlockFinder {
         }
 
         return count;
-    }
-
-    /**
-     * @return 是否已经探索过
-     */
-    private boolean isDiscovered(Location target, Set<Location> discovered) {
-        return discovered.contains(target);
-    }
-
-    /**
-     * @return 是否为合法方块（i.e. 该方块是否设定为应该进行全服通告）
-     */
-    private boolean isLegalBlock(Location target, Material targetBlockType) {
-        return target.getBlock().getType() == targetBlockType;
     }
 
 }

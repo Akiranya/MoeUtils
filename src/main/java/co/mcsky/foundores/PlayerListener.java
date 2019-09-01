@@ -22,14 +22,14 @@ public class PlayerListener implements Listener {
     final private Map<Material, String> legalBlockType;
     final private Map<UUID, Map<Material, Set<Location>>> playerLog;
 
-    final private BlockFinder finder;
+    final private IBlockFinder finder;
 
     public PlayerListener(MoeUtils moe) {
         this.moe = moe;
 
         legalBlockType = moe.config.foundores_block_types; // 哪些方块需要通报
         playerLog = new HashMap<>();
-        finder = new BFSBlockFinder(moe, moe.config.foundores_max_iterations); // 初始化搜索类
+        finder = new DFSIBlockFinder(moe); // 初始化搜索类
 
         // 根据配置文件判断是否要注册 Listener
         if (moe.config.foundores_on) {
