@@ -80,7 +80,7 @@ public class PlayerListener implements Listener {
                 int count = finder.count(foundLocation, foundType, discovered); // 开始搜索
                 broadcast(event.getPlayer().getDisplayName(), foundType, count); // 然后通报
             }
-            // 如果玩家已经发现过这个位置的方块，不做计算s
+            // 如果玩家已经发现过这个位置的方块，不做计算
 
         } else {
             // 如果玩家还没发现过这种类型的方块，则进行通报
