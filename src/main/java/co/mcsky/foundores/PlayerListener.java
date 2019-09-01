@@ -67,19 +67,20 @@ public class PlayerListener implements Listener {
 
         // 这些本地变量下面都会用到
         UUID playerUUID = event.getPlayer().getUniqueId();
-        playerLog.putIfAbsent(playerUUID, new HashMap<>());
+        playerLog.putIfAbsent(playerUUID, new HashMap<>()); // 如果该玩家从没挖到过矿，给玩家创建一个 map
         Map<Material, Set<Location>> typeLog = playerLog.get(playerUUID);
         Location justFound = block.getLocation(); // 玩家当前挖掉的方块坐标
-        Material blockType = block.getType();
+        Material blockType = block.getType(); // 玩家当前挖掉的方块类型
         if (typeLog.containsKey(blockType)) {
             // 如果玩家发现过这种类型的方块
 
-            if (!typeLog.get(blockType).contains(justFound)) { // 如果玩家还没发现过这个位置的方块，则进行通报
+            if (!typeLog.get(blockType).contains(justFound)) {
+                // 如果玩家还没发现过这个位置的方块，则进行通报
                 int count = finder.BFS(justFound, blockType, typeLog.get(blockType)); // 开始搜索
                 broadcast(event.getPlayer().getDisplayName(), blockType, count); // 然后通报
-            } else {
-                // 如果玩家已经发现过这个位置的方块，直接返回
             }
+            // 如果玩家已经发现过这个位置的方块，不做计算s
+
         } else {
             // 如果玩家还没发现过这种类型的方块，则进行通报
 
