@@ -77,7 +77,8 @@ public class BFSBlockFinder implements BlockFinder {
     /**
      * @param start 起始点
      * @param targetBlockType 搜索的方块类型
-     * @return 该方块的所有邻居数量（包括本身）
+     * @param discovered 已探索过的坐标
+     * @return 起始点方块的所有合法邻居数量（包括本身）
      */
     private int BFS(Location start, Material targetBlockType, Set<Location> discovered) {
         if (discovered == null) {
