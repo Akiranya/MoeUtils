@@ -101,7 +101,7 @@ public class BFSBlockFinder implements BlockFinder {
         while (!queue.isEmpty()) {
             Location v = queue.remove();
 
-            if (count++ > maxIterations) return count; // 达到最大迭代数时，直接返回当前的方块数，不再进一步搜索
+            if (++count >= maxIterations) return count; // 达到最大迭代数时，直接返回当前的方块数，不再进一步搜索
 
             // 遍历 vertex 的所有邻居（这里有 neighbor.length 个邻居）
             // 邻居的标准可以根据情况随时修改，所以考虑加个 config
