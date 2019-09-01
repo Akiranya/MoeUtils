@@ -18,37 +18,36 @@ public class MoeConfig {
     private static MoeConfig moeConfig = null;
     private final MoeUtils moe;
 
-    /* Notifier */
+    // Notifier
     public boolean notifier_on;
     public Set<EntityType> notifier_whitelist;
     public String notifier_message_death;
 
-    /* FoundOres */
+    // FoundOres
     public boolean foundores_on;
     public String foundores_prefix;
     public Set<String> foundores_worlds;
-    public int foundores_check_radius;
-    public int foundores_pop_interval;
+    public int foundores_max_iterations;
     public int foundores_purge_interval;
     /**
      * K = block_type<br>
-     * V = color_code
+     * V = translation
      */
     public Map<Material, String> foundores_block_types;
     public String foundores_message_found;
 
-    /* MobArena Addon */
+    // MobArena Addon
     public boolean mobarena_on;
     public Set<EntityType> mobarena_whitelist;
 
-    /* Safe Portal */
+    // Safe Portal
     public boolean safeportal_on;
     public boolean safeportal_debug_on;
     public EventPriority safeportal_priority;
     public String safeportal_message_player;
     public String safeportal_message_debug;
 
-    /* MagicTime */
+    // MagicTime
     public int magictime_cost;
     public int magictime_cooldown;
     public String magictime_message_day;
@@ -60,7 +59,7 @@ public class MoeConfig {
     public String magictime_message_ended;
     public String magictime_message_changed;
 
-    /* MagicWeather */
+    // MagicWeather
     public int magicweather_cost;
     public int magicweather_cooldown;
     public String magicweather_message_prefix;
@@ -73,7 +72,7 @@ public class MoeConfig {
     public String magicweather_message_clear;
     public String magicweather_message_thunder;
 
-    /* Global */
+    // Global
     public String global_message_none;
     public String global_message_reloaded;
     public String global_message_noperms;
@@ -190,8 +189,7 @@ public class MoeConfig {
         foundores_on = config.getBoolean("foundores.enable");
         foundores_prefix = config.getString("foundores.prefix");
         foundores_worlds = new HashSet<>(config.getStringList("foundores.worlds")); // Use HashSet for constant searching time
-        foundores_check_radius = config.getInt("foundores.check_radius");
-        foundores_pop_interval = config.getInt("foundores.pop_interval");
+        foundores_max_iterations = config.getInt("foundores.max_iterations");
         foundores_purge_interval = config.getInt("foundores.purge_interval");
 
         // TODO Combine color config and whitelist of block types
@@ -200,9 +198,6 @@ public class MoeConfig {
         map.forEach((block, trans) -> foundores_block_types.put(Material.matchMaterial(block), (String) trans));
 
         foundores_message_found = config.getString("foundores.messages.found");
-//        foundores_message_block_translation = new HashMap<>();
-//        map = config.getConfigurationSection("foundores.messages.blocks").getValues(false);
-//        map.forEach((block, trans) -> foundores_message_block_translation.put(Material.matchMaterial(block), (String) trans));
     }
 
     private void notifierInit(FileConfiguration config) {

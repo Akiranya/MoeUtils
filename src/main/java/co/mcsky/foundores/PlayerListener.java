@@ -16,10 +16,9 @@ import static co.mcsky.utils.MoeLib.toTick;
 
 public class PlayerListener implements Listener {
     final private MoeUtils moe;
-    final private String COOLDOWN_KEY = "foundores";
 
-    // K -> block_type
-    // V -> color_code
+    // K -> block type
+    // V -> translation
     final private Map<Material, String> legalBlockType;
     final private Map<UUID, Map<Material, Set<Location>>> playerLog;
 
@@ -30,7 +29,7 @@ public class PlayerListener implements Listener {
 
         legalBlockType = moe.config.foundores_block_types; // 哪些方块需要通报
         playerLog = new HashMap<>();
-        finder = new BlockFinder(moe);
+        finder = new BFSBlockFinder(moe, moe.config.foundores_max_iterations); // 初始化搜索类
 
         // 根据配置文件判断是否要注册 Listener
         if (moe.config.foundores_on) {
@@ -76,7 +75,9 @@ public class PlayerListener implements Listener {
 
             if (!typeLog.get(blockType).contains(justFound)) {
                 // 如果玩家还没发现过这个位置的方块，则进行通报
-                int count = finder.BFS(justFound, blockType, typeLog.get(blockType)); // 开始搜索
+
+                finder.setDiscovered(typeLog.get(blockType)); // 设置搜索的参数（已探索的坐标）
+                int count = finder.count(justFound, blockType); // 开始搜索
                 broadcast(event.getPlayer().getDisplayName(), blockType, count); // 然后通报
             }
             // 如果玩家已经发现过这个位置的方块，不做计算s
@@ -89,7 +90,8 @@ public class PlayerListener implements Listener {
             Set<Location> discovered = new HashSet<>();
             typeLog.put(blockType, discovered); // 不要忘记放到 typeLog map 里供之后的检索用
 
-            int count = finder.BFS(justFound, blockType, typeLog.get(blockType)); // 开始搜索
+            finder.setDiscovered(typeLog.get(blockType)); // 设置搜索的参数（已探索的坐标）
+            int count = finder.count(justFound, blockType); // 开始搜索
             broadcast(event.getPlayer().getDisplayName(), blockType, count); // 然后通报
         }
     }

@@ -11,8 +11,7 @@ foundores:
     - world
     - world_nether
     - world_the_end
-  check_radius: 1
-  pop_interval: 30
+  max_iterations: 32
   purge_interval: 1800
   block_types:
     gold_ore: '&6金矿'
