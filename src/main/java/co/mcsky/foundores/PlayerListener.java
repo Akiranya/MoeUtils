@@ -77,8 +77,7 @@ public class PlayerListener implements Listener {
             if (!discovered.contains(foundLocation)) {
                 // 如果玩家还没发现过这个位置的方块，则进行通报
 
-                finder.setDiscovered(discovered); // 设置搜索的参数（已探索的坐标）
-                int count = finder.count(foundLocation, foundType); // 开始搜索
+                int count = finder.count(foundLocation, foundType, discovered); // 开始搜索
                 broadcast(event.getPlayer().getDisplayName(), foundType, count); // 然后通报
             }
             // 如果玩家已经发现过这个位置的方块，不做计算s
@@ -90,8 +89,7 @@ public class PlayerListener implements Listener {
             // 所以需要*创建*一个 discovered set 给当前方块类型
             typeLog.put(foundType, new HashSet<>()); // 不要忘记放到 typeLog map 里供之后的检索用
 
-            finder.setDiscovered(typeLog.get(foundType)); // 设置搜索的参数（已探索的坐标）
-            int count = finder.count(foundLocation, foundType); // 开始搜索
+            int count = finder.count(foundLocation, foundType, typeLog.get(foundType)); // 开始搜索
             broadcast(event.getPlayer().getDisplayName(), foundType, count); // 然后通报
         }
     }

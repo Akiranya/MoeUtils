@@ -62,7 +62,6 @@ public class BFSBlockFinder implements BlockFinder {
             SOUTH_SOUTH_WEST,
             WEST_SOUTH_WEST
     };
-    private Set<Location> discovered; // 一个方块类型的已探索的坐标
     private int maxIterations; // 最大搜索
 
     public BFSBlockFinder(MoeUtils moe, int maxIterations) {
@@ -71,13 +70,8 @@ public class BFSBlockFinder implements BlockFinder {
     }
 
     @Override
-    public void setDiscovered(Set<Location> discovered) {
-        this.discovered = discovered;
-    }
-
-    @Override
-    public int count(Location start, Material targetBlockType) {
-        return BFS(start, targetBlockType);
+    public int count(Location start, Material targetBlockType, Set<Location> discovered) {
+        return BFS(start, targetBlockType, discovered);
     }
 
     /**
@@ -85,7 +79,7 @@ public class BFSBlockFinder implements BlockFinder {
      * @param targetBlockType 搜索的方块类型
      * @return 该方块的所有邻居数量（包括本身）
      */
-    private int BFS(Location start, Material targetBlockType) {
+    private int BFS(Location start, Material targetBlockType, Set<Location> discovered) {
         if (discovered == null) {
             moe.getLogger().warning("BlockFinder is not initialized! Search abort.");
             return 0;
@@ -137,4 +131,5 @@ public class BFSBlockFinder implements BlockFinder {
     private boolean isLegalBlock(Location target, Material targetBlockType) {
         return target.getBlock().getType() == targetBlockType;
     }
+
 }
