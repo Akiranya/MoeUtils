@@ -1,4 +1,4 @@
-package co.mcsky.magicweather;
+package co.mcsky.magicutils;
 
 import co.mcsky.MoeUtils;
 import org.bukkit.command.CommandSender;
@@ -6,14 +6,14 @@ import org.bukkit.entity.Player;
 
 import static co.mcsky.utils.MoeLib.toTick;
 
-public enum WeatherType {
+public enum EWeather {
     RAIN("storm"),
     CLEAR("sun"),
     THUNDER("thunder");
 
     private final String commandName;
 
-    WeatherType(String commandName) {
+    EWeather(String commandName) {
         this.commandName = commandName;
     }
 
@@ -47,8 +47,7 @@ public enum WeatherType {
         switch (this) {
             case CLEAR:
             case RAIN:
-                String msg = String.format(
-                        "essentials:weather %s %s %d",
+                String msg = String.format("essentials:weather %s %s %d",
                         world,
                         getCommandName(),
                         duration);

@@ -53,8 +53,6 @@ public class MoeConfig {
     public String magictime_message_day;
     public String magictime_message_night;
     public String magictime_message_prefix;
-    public String magictime_message_reset;
-    public String magictime_message_cost;
     public String magictime_message_status;
     public String magictime_message_ended;
     public String magictime_message_changed;
@@ -65,9 +63,7 @@ public class MoeConfig {
     public String magicweather_message_prefix;
     public String magicweather_message_changed;
     public String magicweather_message_ended;
-    public String magicweather_message_reset;
     public String magicweather_message_status;
-    public String magicweather_message_cost;
     public String magicweather_message_rain;
     public String magicweather_message_clear;
     public String magicweather_message_thunder;
@@ -81,6 +77,8 @@ public class MoeConfig {
     public String global_message_on;
     public String global_message_off;
     public String global_message_playeronly;
+    public String global_message_reset;
+    public String global_message_cost;
 
     private MoeConfig(MoeUtils moe) {
         this.moe = moe;
@@ -104,29 +102,15 @@ public class MoeConfig {
         // Convenient local variable
         FileConfiguration config = moe.getConfig();
 
-        // FoundOres initialization
         foundOresInit(config);
-
-        // MobArena Addon initialization
         mobArenaInit(config);
-
-        // Safe Portal initialization
         safePortalInit(config);
-
-        // MagicTime
         magicTimeInit(config);
-
-        // MagicWeather
         magicWeatherInit(config);
-
-        // Global initialization
         globalInit(config);
-
-        // Notifier initialization
         notifierInit(config);
 
         // THIS METHOD MUST BE THE LAST ONE RUN
-        // Output config info to console
         outputConfig();
     }
 
@@ -139,7 +123,8 @@ public class MoeConfig {
         global_message_notenoughmoney = color(config.getString("global.messages.notenoughmoney"));
         global_message_cooldown = color(config.getString("global.messages.cooldown"));
         global_message_playeronly = color(config.getString("global.messages.playeronly"));
-
+        global_message_reset = color(config.getString("global.messages.reset"));
+        global_message_cost = color(config.getString("global.messages.cost"));
     }
 
     private void magicWeatherInit(FileConfiguration config) {
@@ -149,8 +134,6 @@ public class MoeConfig {
         magicweather_message_changed = color(config.getString("magicweather.messages.changed"));
         magicweather_message_ended = color(config.getString("magicweather.messages.ended"));
         magicweather_message_status = color(config.getString("magicweather.messages.status"));
-        magicweather_message_cost = color(config.getString("magicweather.messages.cost"));
-        magicweather_message_reset = color(config.getString("magicweather.messages.reset"));
         magicweather_message_rain = color(config.getString("magicweather.messages.rain"));
         magicweather_message_clear = color(config.getString("magicweather.messages.clear"));
         magicweather_message_thunder = color(config.getString("magicweather.messages.thunder"));
@@ -160,11 +143,9 @@ public class MoeConfig {
         magictime_cost = config.getInt("magictime.cost");
         magictime_cooldown = config.getInt("magictime.cooldown");
         magictime_message_prefix = color(config.getString("magictime.prefix"));
-        magictime_message_cost = color(config.getString("magictime.messages.cost"));
         magictime_message_ended = color(config.getString("magictime.messages.ended"));
         magictime_message_changed = color(config.getString("magictime.messages.changed"));
         magictime_message_status = color(config.getString("magictime.messages.status"));
-        magictime_message_reset = color(config.getString("magictime.messages.reset"));
         magictime_message_day = color(config.getString("magictime.messages.day"));
         magictime_message_night = color(config.getString("magictime.messages.night"));
     }
@@ -192,7 +173,6 @@ public class MoeConfig {
         foundores_max_iterations = config.getInt("foundores.max_iterations");
         foundores_purge_interval = config.getInt("foundores.purge_interval");
 
-        // TODO Combine color config and whitelist of block types
         Map<String, Object> map = config.getConfigurationSection("foundores.block_types").getValues(false);
         foundores_block_types = new HashMap<>();
         map.forEach((block, trans) -> foundores_block_types.put(Material.matchMaterial(block), (String) trans));

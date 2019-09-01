@@ -1,15 +1,15 @@
-package co.mcsky.magictime;
+package co.mcsky.magicutils;
 
 import co.mcsky.MoeUtils;
 import org.bukkit.command.CommandSender;
 
-public enum TimeType {
+public enum ETime {
     DAY("day"),
     NIGHT("night");
 
     private final String commandName;
 
-    TimeType(String commandName) {
+    ETime(String commandName) {
         this.commandName = commandName;
     }
 
@@ -30,9 +30,7 @@ public enum TimeType {
 
     public void setTime(MoeUtils moe) {
         CommandSender console = moe.getServer().getConsoleSender();
-        String command = String.format(
-                "essentials:time %s all",
-                getCommandName());
+        String command = String.format("essentials:time %s all", getCommandName());
         moe.getServer().dispatchCommand(console, command);
     }
 }

@@ -37,19 +37,9 @@ public class PlayerListener implements Listener {
         }
 
         // Auto clear map playerLog at given interval
-        Bukkit.getScheduler().runTaskTimer(moe, () -> {
-            playerLog.clear();
-            reload();
-        }, 0, toTick(moe.config.foundores_purge_interval));
-
-        reload();
+        Bukkit.getScheduler().runTaskTimer(moe,
+                playerLog::clear, 0, toTick(moe.config.foundores_purge_interval));
     }
-
-//    @EventHandler
-//    public void onPlayerJoin(PlayerJoinEvent event) {
-//        UUID playerUUID = event.getPlayer().getUniqueId();
-//        playerLog.putIfAbsent(playerUUID, new HashMap<>(new HashMap<>()));
-//    }
 
     @EventHandler
     public void onPlayerBreakBlock(BlockBreakEvent event) {
@@ -80,13 +70,12 @@ public class PlayerListener implements Listener {
                 int count = finder.count(foundLocation, foundType, discovered); // 开始搜索
                 broadcast(event.getPlayer().getDisplayName(), foundType, count); // 然后通报
             }
-            // 如果玩家已经发现过这个位置的方块，不做计算
-
+            // ... 如果玩家已经发现过这个位置的方块，不做计算
         } else {
             // 如果玩家还没发现过这种类型的方块，则进行通报
 
             // 因为玩家连这种类型的方块都没发现过，
-            // 所以需要*创建*一个 discovered set 给当前方块类型
+            // 所以需要创建一个 discovered set 给当前方块类型
             typeLog.put(foundType, new HashSet<>()); // 不要忘记放到 typeLog map 里供之后的检索用
 
             int count = finder.count(foundLocation, foundType, typeLog.get(foundType)); // 开始搜索
@@ -105,11 +94,6 @@ public class PlayerListener implements Listener {
                 legalBlockType.get(Material.matchMaterial(blockType.name())));
         String colorServerMsg = MoeConfig.color(serverMsg);
         moe.getServer().broadcastMessage(colorServerMsg);
-    }
-
-    private void reload() {
-        // In case of reading empty map
-        Bukkit.getOnlinePlayers().forEach(p -> playerLog.put(p.getUniqueId(), null));
     }
 
 }

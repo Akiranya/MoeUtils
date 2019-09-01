@@ -9,72 +9,39 @@ import java.util.concurrent.TimeUnit;
  */
 public class Cooldown {
 
-    private static Cooldown cooldownInstance = null;
-    private static Map<String, UserData> cooldownMap;
+    private final Map<String, UserData> cooldownMap;
 
-    private Cooldown() {
+    protected Cooldown() {
         cooldownMap = new HashMap<>();
     }
 
-    public static Cooldown getInstance() {
-        if (cooldownInstance != null) {
-            return cooldownInstance;
-        }
-        return cooldownInstance = new Cooldown();
-    }
-
-    public void create(String user, int cooldown) {
-        UserData userData = new UserData();
-        userData.cooldown = cooldown;
-//        userData.lastUsedTime = 0; // implicitly to be zero
-        cooldownMap.put(user, userData);
-    }
-
-    public void use(String user) throws NullPointerException {
+    protected void use(String user) throws NullPointerException {
         if (!cooldownMap.containsKey(user)) {
-            throw new NullPointerException("UserData not created yet.");
+            throw new NullPointerException("specific key doesn't exist.");
         }
-        UserData userData = cooldownMap.get(user);
-        userData.lastUsedTime = System.currentTimeMillis();
-        cooldownMap.put(user, userData);
+        cooldownMap.get(user).lastUsedTime = System.currentTimeMillis();
     }
 
-    public boolean check(String user, int cooldown) throws NullPointerException {
-        if (!cooldownMap.containsKey(user)) {
+    protected boolean check(String user, int cooldown) {
+        if (cooldownMap.containsKey(user)) {
+            return diff(user) > cooldownMap.get(user).cooldown;
+        } else {
             create(user, cooldown);
             return true;
         }
-        UserData userData = cooldownMap.get(user);
-        return diff(user) > userData.cooldown;
     }
 
-    public int remaining(String user, int cooldown) throws NullPointerException {
+    protected int remaining(String user, int cooldown) {
         if (!cooldownMap.containsKey(user)) {
             create(user, cooldown);
         }
-        UserData userData = cooldownMap.get(user);
-        return (userData.cooldown - diff(user));
+        return (cooldownMap.get(user).cooldown - diff(user));
     }
 
-    public void reset(String user) {
-        UserData userData = cooldownMap.get(user);
-        userData.lastUsedTime = 0;
-        cooldownMap.put(user, userData);
+    protected void reset(String user) {
+        cooldownMap.get(user).lastUsedTime = 0;
     }
 
-    public void remove(String user) {
-        cooldownMap.remove(user);
-    }
-
-    /**
-     * Returns the "progress" of given user cooldown.
-     * <p>
-     * For example, if the cooldown is 600,
-     * then when progress (diff) is 600, that means the cooldown IS ready.
-     *
-     * @param user User
-     * @return Progress.
-     */
     private int diff(String user) {
         UserData userData = cooldownMap.get(user);
         long now = System.currentTimeMillis();
@@ -83,16 +50,19 @@ public class Cooldown {
         return (int) diff;
     }
 
-    private class UserData {
-
-        /**
-         * In second. The duration player has to wait for.
-         */
-        int cooldown;
-        /**
-         * In millisecond.
-         */
-        long lastUsedTime;
+    // 如果要给一个用户创建 cooldown 的数据，直接使用 check() 就好啦
+    private void create(String user, int cooldown) {
+        cooldownMap.put(user, new UserData(cooldown, 0));
     }
 
+    private class UserData {
+        int cooldown; // In second. The duration player has to wait for.
+        long lastUsedTime; // In millisecond. The time when the player last used it.
+
+        UserData(int cooldown, long lastUsedTime) {
+            this.cooldown = cooldown;
+            this.lastUsedTime = lastUsedTime;
+        }
+
+    }
 }
