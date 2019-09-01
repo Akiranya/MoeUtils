@@ -145,13 +145,13 @@ public class MagicWeather {
 
     private boolean checkCooldown(Player player, String cooldownKey) {
         if (Cooldown.getInstance().check(cooldownKey, cooldown)) {
-            return false;
+            return true;
         }
 
         String playerMsg = String.format(
                 moe.config.global_message_cooldown,
                 Cooldown.getInstance().remaining(cooldownKey, cooldown));
         player.sendMessage(playerMsg);
-        return true;
+        return false;
     }
 }

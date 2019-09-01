@@ -97,9 +97,10 @@ public class BlockFinder {
         while (!queue.isEmpty()) {
             Location v = queue.remove();
 
-            count++; // vertex 遍历过就存起来
+            count++; // 计数遍历过的 vertex
 
-            // 遍历 vertex 的所有（四个）邻居
+            // 遍历 vertex 的所有邻居（这里有 neighbor.length 个邻居）
+            // 邻居的标准可以根据情况随时修改，所以考虑加个 config
             for (BlockFace neighbor : neighbors) {
                 Location nei = v.getBlock().getRelative(neighbor).getLocation(); // get 邻居的坐标
                 if (!isDiscovered(nei, discovered) && isLegalBlock(nei, targetBlockType)) {
@@ -123,7 +124,7 @@ public class BlockFinder {
     }
 
     /**
-     * @return 是否是合法方块（i.e. 该方块是否设定为应该进行全服通告）
+     * @return 是否为合法方块（i.e. 该方块是否设定为应该进行全服通告）
      */
     private boolean isLegalBlock(Location target, Material targetBlockType) {
         return target.getBlock().getType() == targetBlockType;
