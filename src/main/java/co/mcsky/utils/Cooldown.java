@@ -39,7 +39,8 @@ public class Cooldown {
     }
 
     protected void reset(String user) {
-        cooldownMap.get(user).lastUsedTime = 0;
+        if (cooldownMap.get(user) != null)
+            cooldownMap.get(user).lastUsedTime = 0;
     }
 
     private int diff(String user) {
