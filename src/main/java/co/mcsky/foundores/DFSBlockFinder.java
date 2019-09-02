@@ -8,9 +8,9 @@ import org.bukkit.block.BlockFace;
 import java.util.Set;
 import java.util.Stack;
 
-public class DFSIBlockFinder extends ABlockFinder implements IBlockFinder {
+public class DFSBlockFinder extends ABlockFinder implements IBlockFinder {
 
-    DFSIBlockFinder(MoeUtils moe) {
+    DFSBlockFinder(MoeUtils moe) {
         super(moe);
     }
 

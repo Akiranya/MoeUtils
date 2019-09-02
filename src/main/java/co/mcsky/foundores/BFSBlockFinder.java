@@ -36,9 +36,9 @@ import java.util.Set;
  * <p>
  * P.s. 坐标的格式是 (rows, cols)
  */
-public class BFSIBlockFinder extends ABlockFinder implements IBlockFinder {
+public class BFSBlockFinder extends ABlockFinder implements IBlockFinder {
 
-    BFSIBlockFinder(MoeUtils moe) {
+    BFSBlockFinder(MoeUtils moe) {
         super(moe);
     }
 

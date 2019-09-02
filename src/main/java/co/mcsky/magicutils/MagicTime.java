@@ -14,12 +14,10 @@ import static co.mcsky.utils.MoeLib.toTick;
 public class MagicTime extends AMagicUtils {
     private static final String COOLDOWN_KEY = "mt";
     private static MagicTime magicTime = null;
-    private final MoeUtils moe;
     private UUID lastUsedPlayer; // 最后一次使用魔法时间的玩家
 
     private MagicTime(MoeUtils moe) {
         super(moe, moe.config.magictime_cooldown);
-        this.moe = moe;
     }
 
     public static MagicTime getInstance(MoeUtils moe) {

@@ -29,7 +29,7 @@ public class PlayerListener implements Listener {
 
         legalBlockType = moe.config.foundores_block_types; // 哪些方块需要通报
         playerLog = new HashMap<>();
-        finder = new DFSIBlockFinder(moe); // 初始化搜索类
+        finder = new DFSBlockFinder(moe); // 初始化搜索类
 
         // 根据配置文件判断是否要注册 Listener
         if (moe.config.foundores_on) {

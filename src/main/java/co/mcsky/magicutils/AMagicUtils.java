@@ -14,7 +14,7 @@ import static co.mcsky.MoeUtils.economy;
 abstract class AMagicUtils extends Cooldown {
 
     final int COOLDOWN_LENGTH;
-    private final MoeUtils moe;
+    public final MoeUtils moe;
 
     AMagicUtils(MoeUtils moe, int cooldown_length) {
         this.moe = moe;

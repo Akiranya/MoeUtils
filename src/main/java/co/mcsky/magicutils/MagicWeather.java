@@ -16,7 +16,6 @@ import static co.mcsky.utils.MoeLib.toTick;
 public class MagicWeather extends AMagicUtils {
     private final static String COOLDOWN_KEY = "mw";
     private static MagicWeather magicWeather = null;
-    private final MoeUtils moe;
 
     // K = world name
     // V = player UUID
@@ -25,7 +24,6 @@ public class MagicWeather extends AMagicUtils {
     private MagicWeather(MoeUtils moe) {
         super(moe, moe.config.magicweather_cooldown);
         lastUsedWorld = new HashMap<>();
-        this.moe = moe;
     }
 
     public static MagicWeather getInstance(MoeUtils moe) {
