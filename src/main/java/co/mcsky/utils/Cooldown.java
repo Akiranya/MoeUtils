@@ -1,5 +1,7 @@
 package co.mcsky.utils;
 
+import org.apache.commons.lang.Validate;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -16,9 +18,7 @@ public class Cooldown {
     }
 
     protected void use(String user) throws NullPointerException {
-        if (!cooldownMap.containsKey(user)) {
-            throw new NullPointerException("specific key doesn't exist.");
-        }
+        Validate.notNull(cooldownMap.get(user), "specific key doesn't exist.");
         cooldownMap.get(user).lastUsedTime = System.currentTimeMillis();
     }
 

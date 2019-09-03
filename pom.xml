@@ -34,6 +34,14 @@
             <id>enginehub-maven</id>
             <url>http://maven.enginehub.org/repo/</url>
         </repository>
+        <repository>
+            <id>NyaaCentral</id>
+            <url>https://raw.githubusercontent.com/NyaaCat/NyaaCentral/maven-repo</url>
+        </repository>
+<!--        <repository>-->
+<!--            <id>aikar</id>-->
+<!--            <url>https://repo.aikar.co/content/groups/aikar/</url>-->
+<!--        </repository>-->
     </repositories>
 
     <dependencies>
@@ -42,12 +50,12 @@
             <artifactId>paper-api</artifactId>
             <version>1.14.3-R0.1-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>net.ess3</groupId>
-            <artifactId>EssentialsX</artifactId>
-            <version>2.17.0</version>
-            <scope>provided</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>net.ess3</groupId>-->
+<!--            <artifactId>EssentialsX</artifactId>-->
+<!--            <version>2.17.0</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.github.garbagemule</groupId>
             <artifactId>MobArena</artifactId>
@@ -64,6 +72,55 @@
             <artifactId>worldedit-bukkit</artifactId>
             <version>7.0.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>cat.nyaa</groupId>
+            <artifactId>nyaacore</artifactId>
+            <version>6.2-SNAPSHOT</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>co.aikar</groupId>-->
+<!--            <artifactId>acf-paper</artifactId> &lt;!&ndash; Don't forget to replace this &ndash;&gt;-->
+<!--            <version>0.5.0-SNAPSHOT</version> &lt;!&ndash; Replace this as well &ndash;&gt;-->
+<!--        </dependency>-->
     </dependencies>
+
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <version>3.7.0</version>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <source>1.8</source>-->
+<!--                    <target>1.8</target>-->
+<!--                    <compilerArgs>-->
+<!--                        <arg>-parameters</arg>-->
+<!--                    </compilerArgs>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-shade-plugin</artifactId>-->
+<!--                <version>3.1.1</version>-->
+<!--                <configuration>-->
+<!--                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>-->
+<!--                    <relocations>-->
+<!--                        <relocation>-->
+<!--                            <pattern>co.aikar.commands</pattern>-->
+<!--                            <shadedPattern>co.mcsky.acf</shadedPattern> &lt;!&ndash; Replace this &ndash;&gt;-->
+<!--                        </relocation>-->
+<!--                    </relocations>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>shade</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
 
 </project>
