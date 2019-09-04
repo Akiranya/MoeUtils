@@ -5,15 +5,18 @@ import co.mcsky.magicutils.EWeather;
 import co.mcsky.magicutils.MagicTime;
 import co.mcsky.magicutils.MagicWeather;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static co.mcsky.MoeUtils.permission;
 
-public class CommandHandler implements CommandExecutor {
+public class CommandHandler implements TabExecutor {
 
     private final MoeUtils moe;
     private final MagicTime magicTime;
@@ -111,16 +114,32 @@ public class CommandHandler implements CommandExecutor {
         return false;
     }
 
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String s, String[] strings) {
+        List<String> result = new ArrayList<>();
+        if (strings.length == 1) {
+            List<String> completion = List.of("time", "weather", "reload");
+            return StringUtil.copyPartialMatches(strings[0], completion, result);
+        }
+        if (strings.length == 2) {
+            if (strings[0].equalsIgnoreCase("time")) {
+                List<String> completion = List.of("day", "night", "reset", "status");
+                return StringUtil.copyPartialMatches(strings[1], completion, result);
+            } else if (strings[0].equalsIgnoreCase("weather")) {
+                List<String> completion = List.of("clear", "rain", "thunder", "status", "reset");
+                return StringUtil.copyPartialMatches(strings[1], completion, result);
+            }
+        }
+        return null;
+    }
+
     /**
      * Check whether given player has specific permission.
-     *
-     * @param sender The player.
-     * @param perm   The permission node.
-     * @return Whether given player has specific permission.
      */
     private boolean hasPermission(CommandSender sender, String perm) {
-        if (permission.has(sender, perm)) return true;
-        else { // If does not have permission...
+        if (permission.has(sender, perm)) {
+            return true;
+        } else { // If does not have permission...
             sender.sendMessage(String.format(moe.config.global_message_noperms, perm));
             return false;
         }
