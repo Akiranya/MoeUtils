@@ -7,12 +7,12 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
-public class HealthBar {
+public class ScoreboardUtil {
 
-    private final TagHandler th;
+    private final TagUtil th;
     private final MoeUtils moe;
 
-    public HealthBar(TagHandler th, MoeUtils moe) {
+    public ScoreboardUtil(TagUtil th, MoeUtils moe) {
         this.th = th;
         this.moe = moe;
     }

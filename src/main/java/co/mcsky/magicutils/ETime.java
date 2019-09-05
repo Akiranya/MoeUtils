@@ -16,9 +16,9 @@ public enum ETime {
     public String getName(MoeUtils moe) {
         switch (this) {
             case DAY:
-                return moe.config.magictime_message_day;
+                return moe.setting.magic_time.msg_day;
             case NIGHT:
-                return moe.config.magictime_message_night;
+                return moe.setting.magic_time.msg_night;
             default:
                 throw new IllegalStateException("Unknown time value.");
         }

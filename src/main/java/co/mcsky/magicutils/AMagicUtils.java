@@ -1,7 +1,7 @@
 package co.mcsky.magicutils;
 
 import co.mcsky.MoeUtils;
-import co.mcsky.util.Cooldown;
+import co.mcsky.util.CooldownUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -11,7 +11,7 @@ import static co.mcsky.MoeUtils.economy;
  * 由于 class MagicTime 和 MagicWeather 共享很多一样的方法，
  * 所以创建了一个 abstract class AMagicUtils 来减少重复的代码。
  */
-abstract class AMagicUtils extends Cooldown {
+abstract class AMagicUtils<K> extends CooldownUtil<K> {
 
     final int COOLDOWN_LENGTH;
     public final MoeUtils moe;
@@ -24,10 +24,10 @@ abstract class AMagicUtils extends Cooldown {
     /**
      * @return 返回 True 如果冷却没有就绪
      */
-    boolean checkCooldown(Player player, String COOLDOWN_KEY) {
+    boolean checkCooldown(Player player, K COOLDOWN_KEY) {
         if (check(COOLDOWN_KEY, COOLDOWN_LENGTH)) return false; // 冷却好了就直接返回
 
-        String playerMsg = String.format(moe.config.global_message_cooldown,
+        String playerMsg = String.format(moe.setting.globe.msg_cooldown,
                 remaining(COOLDOWN_KEY, COOLDOWN_LENGTH));
         player.sendMessage(playerMsg);
         return true;
@@ -38,7 +38,7 @@ abstract class AMagicUtils extends Cooldown {
      */
     boolean checkBalance(Player player, int cost) {
         if (economy.has(player, cost)) return false; // 如果软妹币足够就直接返回
-        player.sendMessage(moe.config.global_message_notenoughmoney);
+        player.sendMessage(moe.setting.globe.msg_not_enough_money);
         return true;
     }
 
@@ -51,7 +51,7 @@ abstract class AMagicUtils extends Cooldown {
         CommandSender console = moe.getServer().getConsoleSender();
         moe.getServer().dispatchCommand(console, cmd); // This command CHARGES player
         // 因为调用 heh 的扣费指令就自带玩家提示信息，所以不再需要多加提示
-//        String playerMsg = String.format(moe.config.global_message_cost, cost);
+//        String playerMsg = String.format(moe.setting.global_message_cost, cost);
 //        player.sendMessage(playerMsg);
     }
 

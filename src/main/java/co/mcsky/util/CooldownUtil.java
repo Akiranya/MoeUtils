@@ -7,22 +7,24 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Carries the data about cooldown.
+ * 用来计算冷却时间的工具类。
+ *
+ * @author Nailm
  */
-public class Cooldown {
+public class CooldownUtil<K> {
 
-    private final Map<String, UserData> cooldownMap;
+    private final Map<K, UserData> cooldownMap;
 
-    protected Cooldown() {
+    protected CooldownUtil() {
         cooldownMap = new HashMap<>();
     }
 
-    protected void use(String user) throws NullPointerException {
+    protected void use(K user) throws NullPointerException {
         Validate.notNull(cooldownMap.get(user), "specific key doesn't exist.");
         cooldownMap.get(user).lastUsedTime = System.currentTimeMillis();
     }
 
-    protected boolean check(String user, int cooldown) {
+    protected boolean check(K user, int cooldown) {
         if (cooldownMap.containsKey(user)) {
             return diff(user) > cooldownMap.get(user).cooldown;
         } else {
@@ -31,19 +33,19 @@ public class Cooldown {
         }
     }
 
-    protected int remaining(String user, int cooldown) {
+    protected int remaining(K user, int cooldown) {
         if (!cooldownMap.containsKey(user)) {
             create(user, cooldown);
         }
         return (cooldownMap.get(user).cooldown - diff(user));
     }
 
-    protected void reset(String user) {
+    protected void reset(K user) {
         if (cooldownMap.get(user) != null)
             cooldownMap.get(user).lastUsedTime = 0;
     }
 
-    private int diff(String user) {
+    private int diff(K user) {
         UserData userData = cooldownMap.get(user);
         long now = System.currentTimeMillis();
         long lastUsedTime = userData.lastUsedTime;
@@ -52,7 +54,7 @@ public class Cooldown {
     }
 
     // 如果要给一个用户创建 cooldown 的数据，直接使用 check() 就好啦
-    private void create(String user, int cooldown) {
+    private void create(K user, int cooldown) {
         cooldownMap.put(user, new UserData(cooldown, 0));
     }
 

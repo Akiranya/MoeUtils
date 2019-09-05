@@ -44,16 +44,6 @@ public class BFSBlockFinder extends ABlockFinder implements IBlockFinder {
 
     @Override
     public int count(Location start, Material targetBlockType, Set<Location> discovered) {
-        return BFS(start, targetBlockType, discovered);
-    }
-
-    /**
-     * @param start           起始点
-     * @param targetBlockType 搜索的方块类型
-     * @param discovered      已探索过的坐标
-     * @return 起始点方块的所有合法邻居数量（包括本身）
-     */
-    private int BFS(Location start, Material targetBlockType, Set<Location> discovered) {
         if (discovered == null) {
             moe.getLogger().warning("BlockFinder is not initialized! Search abort.");
             return 0;
@@ -72,7 +62,7 @@ public class BFSBlockFinder extends ABlockFinder implements IBlockFinder {
             if (++count >= searchBound) return count; // 达到最大迭代数时，直接返回当前的方块数，不再进一步搜索
 
             // 遍历 vertex 的所有邻居（这里有 neighbor.length 个邻居）
-            // 邻居的标准可以根据情况随时修改，所以考虑加个 config
+            // 邻居的标准可以根据情况随时修改，所以考虑加个 setting
             for (BlockFace neighbor : neighbors) {
                 Location nei = v.getBlock().getRelative(neighbor).getLocation(); // get 邻居的坐标
                 if (!isDiscovered(nei, discovered) && isLegalBlock(nei, targetBlockType)) {

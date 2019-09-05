@@ -16,10 +16,10 @@ public class ProjectileCollideListener implements Listener {
     private final MobArena ma;
     private final Set<EntityType> whiteList;
 
-    public ProjectileCollideListener(MoeUtils moe, MobArena ma) {
+    ProjectileCollideListener(MoeUtils moe, MobArena ma) {
         this.ma = ma;
+        this.whiteList = moe.setting.mobarena.whitelist;
         moe.getServer().getPluginManager().registerEvents(this, moe);
-        whiteList = moe.config.mobarena_whitelist;
     }
 
     @EventHandler

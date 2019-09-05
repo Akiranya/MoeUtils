@@ -18,10 +18,10 @@ public class CreatureDeathMessage implements Listener {
 
     public CreatureDeathMessage(MoeUtils moe) {
         this.moe = moe;
-        whitelist = moe.config.notifier_whitelist;
+        this.whitelist = moe.setting.reminder.whitelist;
 
         // 判断是否要注册 Listener
-        if (moe.config.notifier_on) {
+        if (moe.setting.reminder.enable) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
         }
     }
@@ -45,10 +45,10 @@ public class CreatureDeathMessage implements Listener {
 
             Location loc = livingEntity.getLocation();
             Player killer = livingEntity.getKiller();
-            String playerName = killer != null ? killer.getName() : moe.config.global_message_none;
+            String playerName = killer != null ? killer.getName() : moe.setting.globe.msg_none;
             String locSb = loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ();
 
-            String serverMsg = String.format(moe.config.notifier_message_death, victimName, deathCause, playerName, locSb);
+            String serverMsg = String.format(moe.setting.reminder.msg_death, victimName, deathCause, playerName, locSb);
             moe.getServer().broadcastMessage(serverMsg);
         });
     }

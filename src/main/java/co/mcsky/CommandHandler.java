@@ -22,7 +22,7 @@ public class CommandHandler implements TabExecutor {
     private final MagicTime magicTime;
     private final MagicWeather magicWeather;
 
-    public CommandHandler(MoeUtils moe) {
+    CommandHandler(MoeUtils moe) {
         this.moe = moe;
         Objects.requireNonNull(moe.getCommand("moeutils")).setExecutor(this);
         magicWeather = MagicWeather.getInstance(moe);
@@ -35,15 +35,15 @@ public class CommandHandler implements TabExecutor {
 
         /* Reload */
         if (args[0].equalsIgnoreCase("reload")) {
-            moe.config.reloadConfig();
+            moe.setting.reloadConfig();
             moe.onDisable();
             moe.onEnable();
-            sender.sendMessage(moe.config.global_message_reloaded);
+            sender.sendMessage(moe.setting.globe.msg_reload);
             return true;
         }
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(moe.config.global_message_playeronly);
+            sender.sendMessage(moe.setting.globe.msg_player_only);
             return true;
         }
         Player player = (Player) sender;
@@ -53,13 +53,13 @@ public class CommandHandler implements TabExecutor {
             if (args.length != 2) return false;
             if (args[1].equalsIgnoreCase("day")) {
                 if (hasPermission(player, "moe.magic.time.day")) {
-                    magicTime.setTime(player, ETime.DAY, moe.config.magictime_cost);
+                    magicTime.setTime(player, ETime.DAY, moe.setting.magic_time.cost);
                     return true;
                 }
             }
             if (args[1].equalsIgnoreCase("night")) {
                 if (hasPermission(player, "moe.magic.time.night")) {
-                    magicTime.setTime(player, ETime.NIGHT, moe.config.magictime_cost);
+                    magicTime.setTime(player, ETime.NIGHT, moe.setting.magic_time.cost);
                     return true;
                 }
             }
@@ -82,19 +82,19 @@ public class CommandHandler implements TabExecutor {
             if (args.length != 2) return false;
             if (args[1].equalsIgnoreCase("clear")) {
                 if (hasPermission(player, "moe.magic.weather.clear")) {
-                    magicWeather.setWeather(player, EWeather.CLEAR, moe.config.magicweather_cost);
+                    magicWeather.setWeather(player, EWeather.CLEAR, moe.setting.magic_weather.cost);
                     return true;
                 }
             }
             if (args[1].equalsIgnoreCase("rain")) {
                 if (hasPermission(player, "moe.magic.weather.rain")) {
-                    magicWeather.setWeather(player, EWeather.RAIN, moe.config.magicweather_cost);
+                    magicWeather.setWeather(player, EWeather.RAIN, moe.setting.magic_weather.cost);
                     return true;
                 }
             }
             if (args[1].equalsIgnoreCase("thunder")) {
                 if (hasPermission(player, "moe.magic.weather.thunder")) {
-                    magicWeather.setWeather(player, EWeather.THUNDER, moe.config.magicweather_cost);
+                    magicWeather.setWeather(player, EWeather.THUNDER, moe.setting.magic_weather.cost);
                     return true;
                 }
             }
@@ -140,7 +140,7 @@ public class CommandHandler implements TabExecutor {
         if (permission.has(sender, perm)) {
             return true;
         } else { // If does not have permission...
-            sender.sendMessage(String.format(moe.config.global_message_noperms, perm));
+            sender.sendMessage(String.format(moe.setting.globe.msg_no_perm, perm));
             return false;
         }
     }

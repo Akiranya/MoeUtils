@@ -1,8 +1,9 @@
 package co.mcsky.mobarena;
 
+import co.mcsky.MoeSetting;
 import co.mcsky.MoeUtils;
-import co.mcsky.util.HealthBar;
-import co.mcsky.util.TagHandler;
+import co.mcsky.util.ScoreboardUtil;
+import co.mcsky.util.TagUtil;
 import com.garbagemule.MobArena.MobArena;
 import com.garbagemule.MobArena.events.ArenaEndEvent;
 import com.garbagemule.MobArena.events.ArenaPlayerDeathEvent;
@@ -14,25 +15,27 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
-import static co.mcsky.util.TagHandler.ACTION.REMOVE;
-import static co.mcsky.util.TagHandler.ACTION.UPDATE;
+import static co.mcsky.util.TagUtil.ACTION.REMOVE;
+import static co.mcsky.util.TagUtil.ACTION.UPDATE;
 
 public class ArenaEventListener implements Listener {
 
     private final MoeUtils moe;
+    private final MoeSetting setting;
     private final MobArena ma;
-    private final HealthBar healthBar;
-    private final TagHandler th;
+    private final ScoreboardUtil scoreboardUtil;
+    private final TagUtil th;
     private Listener PlayerHealthListener;
     private Listener ProjectileCollideListener;
 
-    public ArenaEventListener(MoeUtils moe, MobArena ma, TagHandler th) {
+    public ArenaEventListener(MoeUtils moe, MobArena ma, TagUtil th) {
         this.moe = moe;
+        this.setting = MoeSetting.getInstance(moe);
         this.ma = ma;
         this.th = th;
-        this.healthBar = new HealthBar(this.th, moe);
+        this.scoreboardUtil = new ScoreboardUtil(this.th, moe);
         // Only if this feature is enabled do we register this listener
-        if (moe.config.mobarena_on) {
+        if (setting.mobarena.enable) {
             this.moe.getServer().getPluginManager().registerEvents(this, moe);
         }
     }
@@ -43,7 +46,7 @@ public class ArenaEventListener implements Listener {
         Bukkit.getScheduler().runTaskLater(moe, () -> {
             for (Player p : event.getArena().getAllPlayers()) {
                 th.change(p, th.color("&a&l[&r"), th.color("&a&l]"), UPDATE);
-                healthBar.showHealth(p);
+                scoreboardUtil.showHealth(p);
             }
             // 当竞技场开始后，开始监听玩家的血量变化
             PlayerHealthListener = new PlayerHealthListener(moe, th);
@@ -57,7 +60,7 @@ public class ArenaEventListener implements Listener {
         Bukkit.getScheduler().runTaskLater(moe, () -> {
             for (Player p : event.getArena().getAllPlayers()) {
                 th.change(p, "", "", REMOVE);
-                healthBar.removeHealth(p);
+                scoreboardUtil.removeHealth(p);
             }
             // Unregister listener when arena ends
             HandlerList.unregisterAll(PlayerHealthListener);
@@ -71,7 +74,7 @@ public class ArenaEventListener implements Listener {
         Bukkit.getScheduler().runTaskLater(moe, () -> {
             Player p = event.getPlayer();
             th.change(p, "", "", REMOVE);
-            healthBar.removeHealth(p);
+            scoreboardUtil.removeHealth(p);
         }, 20);
     }
 
@@ -81,7 +84,7 @@ public class ArenaEventListener implements Listener {
         Bukkit.getScheduler().runTaskLater(moe, () -> {
             Player p = event.getPlayer();
             th.change(event.getPlayer(), "", "", REMOVE);
-            healthBar.removeHealth(p);
+            scoreboardUtil.removeHealth(p);
         }, 20);
     }
 

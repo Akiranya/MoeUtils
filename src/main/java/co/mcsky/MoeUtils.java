@@ -4,7 +4,7 @@ import co.mcsky.foundores.PlayerListener;
 import co.mcsky.mobarena.ArenaEventListener;
 import co.mcsky.notifier.CreatureDeathMessage;
 import co.mcsky.safeportal.PlayerTeleportListener;
-import co.mcsky.util.TagHandler;
+import co.mcsky.util.TagUtil;
 import com.garbagemule.MobArena.MobArena;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
@@ -19,43 +19,36 @@ public class MoeUtils extends JavaPlugin {
     public static Permission permission = null;
     public static Economy economy = null;
     public static Chat chat = null;
-    public MoeConfig config;
+    public MoeSetting setting;
     private MobArena ma;
 
     @Override
     public void onDisable() {
-        this.saveConfig(); // Save config to disk. It will destroy any data in memory.
-        HandlerList.unregisterAll(this); // Unregister all listeners
-        Bukkit.getScheduler().cancelTasks(this); // Not sure if it works. Just having a try.
+        this.saveConfig(); // save setting to disk. It will destroy any data in memory.
+        HandlerList.unregisterAll(this); // unregister all listeners
+        Bukkit.getScheduler().cancelTasks(this); // not sure if it works. Just having a try.
     }
 
     @Override
     public void onEnable() {
-        // Save a copy of the default config.yml if one is not there
+        // save a copy of the default setting.yml if one is not there
         this.saveDefaultConfig();
-        config = MoeConfig.getInstance(this);
+        setting = MoeSetting.getInstance(this);
 
-        // Set up Vault
         if (!(setupEconomy() && setupPermissions() && setupChat())) {
             getLogger().severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
 
-        // Register commands
         new CommandHandler(this);
 
-        // Set up MobArenaAddon
-        setupMobArena();
-        if (ma != null) new ArenaEventListener(this, ma, new TagHandler());
+        setupMobArena(); // Set up MobArena
 
-        // Set up SafePortal
+        if (ma != null) new ArenaEventListener(this, ma, new TagUtil());
+
         new PlayerTeleportListener(this);
-
-        // Set up FoundOres
         new PlayerListener(this);
-
-        // Set up Notifier
         new CreatureDeathMessage(this);
     }
 

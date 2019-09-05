@@ -38,7 +38,7 @@ abstract class ABlockFinder {
 
     ABlockFinder(MoeUtils moe) {
         this.moe = moe;
-        this.searchBound = moe.config.foundores_max_iterations;
+        this.searchBound = moe.setting.found_diamond.max_iterations;
     }
 
     /**

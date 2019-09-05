@@ -1,8 +1,9 @@
 package co.mcsky.foundores;
 
-import co.mcsky.MoeConfig;
 import co.mcsky.MoeUtils;
+import co.mcsky.util.TimeUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -11,8 +12,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
 import java.util.*;
-
-import static co.mcsky.util.MoeLib.toTick;
 
 public class PlayerListener implements Listener {
     final private MoeUtils moe;
@@ -27,18 +26,18 @@ public class PlayerListener implements Listener {
     public PlayerListener(MoeUtils moe) {
         this.moe = moe;
 
-        legalBlockType = moe.config.foundores_block_types; // 哪些方块需要通报
+        legalBlockType = moe.setting.found_diamond.enabled_block_type; // 哪些方块需要通报
         playerLog = new HashMap<>();
         finder = new DFSBlockFinder(moe); // 初始化搜索类
 
         // 根据配置文件判断是否要注册 Listener
-        if (moe.config.foundores_on) {
+        if (moe.setting.found_diamond.enable) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
         }
 
         // Auto clear map playerLog at given interval
         Bukkit.getScheduler().runTaskTimer(moe,
-                playerLog::clear, 0, toTick(moe.config.foundores_purge_interval));
+                playerLog::clear, 0, TimeUtil.toTick(moe.setting.found_diamond.purge_interval));
     }
 
     @EventHandler
@@ -49,7 +48,7 @@ public class PlayerListener implements Listener {
         if (!legalBlockType.keySet().contains(block.getType())) return;
 
         // 如果当前世界未启用通告，直接 return
-        if (!moe.config.foundores_worlds.contains(block.getWorld().getName())) return;
+        if (!moe.setting.found_diamond.enabled_world.contains(block.getWorld().getName())) return;
 
         // 如果玩家不是生存模式，直接 return
 //        if (event.getPlayer().getGameMode() != GameMode.SURVIVAL) return;
@@ -87,13 +86,12 @@ public class PlayerListener implements Listener {
      * 全服通告玩家挖到矿了!
      */
     private void broadcast(String player, Material blockType, int count) {
-        String serverMsg = String.format(
-                moe.config.foundores_message_found,
+        String raw = String.format(moe.setting.found_diamond.msg_found,
                 player,
                 count,
                 legalBlockType.get(Material.matchMaterial(blockType.name())));
-        String colorServerMsg = MoeConfig.color(serverMsg);
-        moe.getServer().broadcastMessage(colorServerMsg);
+        String broadcast = ChatColor.translateAlternateColorCodes('&', raw);
+        moe.getServer().broadcastMessage(broadcast);
     }
 
 }

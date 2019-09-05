@@ -10,11 +10,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class TagHandler {
+public class TagUtil {
 
     private final Map<Player, Team> teams;
 
-    public TagHandler() {
+    public TagUtil() {
         teams = new HashMap<>();
     }
 

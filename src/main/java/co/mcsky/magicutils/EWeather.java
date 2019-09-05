@@ -1,10 +1,9 @@
 package co.mcsky.magicutils;
 
 import co.mcsky.MoeUtils;
+import co.mcsky.util.TimeUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import static co.mcsky.util.MoeLib.toTick;
 
 public enum EWeather {
     RAIN("storm"),
@@ -24,11 +23,11 @@ public enum EWeather {
     public String getName(MoeUtils moe) {
         switch (this) {
             case CLEAR:
-                return moe.config.magicweather_message_clear;
+                return moe.setting.magic_weather.msg_clear;
             case RAIN:
-                return moe.config.magicweather_message_rain;
+                return moe.setting.magic_weather.msg_rain;
             case THUNDER:
-                return moe.config.magicweather_message_thunder;
+                return moe.setting.magic_weather.msg_thunder;
             default:
                 throw new IllegalStateException("Unknown weather value.");
         }
@@ -56,7 +55,7 @@ public enum EWeather {
             case THUNDER:
                 player.getWorld().setStorm(true);
                 player.getWorld().setThundering(true);
-                player.getWorld().setThunderDuration(toTick(duration));
+                player.getWorld().setThunderDuration(TimeUtil.toTick(duration));
                 break;
             default:
                 throw new IllegalStateException("Unknown weather value.");
