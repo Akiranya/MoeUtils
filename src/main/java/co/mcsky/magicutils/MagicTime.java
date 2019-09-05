@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-import static co.mcsky.utils.MoeLib.toTick;
+import static co.mcsky.util.MoeLib.toTick;
 
 /**
  * Singleton class.

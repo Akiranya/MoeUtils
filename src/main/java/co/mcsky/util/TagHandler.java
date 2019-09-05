@@ -1,4 +1,4 @@
-package co.mcsky.utils;
+package co.mcsky.util;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

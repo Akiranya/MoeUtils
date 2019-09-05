@@ -1,7 +1,7 @@
 package co.mcsky.magicutils;
 
 import co.mcsky.MoeUtils;
-import co.mcsky.utils.Cooldown;
+import co.mcsky.util.Cooldown;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

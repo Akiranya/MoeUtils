@@ -4,7 +4,7 @@ import co.mcsky.foundores.PlayerListener;
 import co.mcsky.mobarena.ArenaEventListener;
 import co.mcsky.notifier.CreatureDeathMessage;
 import co.mcsky.safeportal.PlayerTeleportListener;
-import co.mcsky.utils.TagHandler;
+import co.mcsky.util.TagHandler;
 import com.garbagemule.MobArena.MobArena;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;

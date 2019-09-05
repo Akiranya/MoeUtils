@@ -1,4 +1,4 @@
-package co.mcsky.utils;
+package co.mcsky.util;
 
 import org.apache.commons.lang.Validate;
 

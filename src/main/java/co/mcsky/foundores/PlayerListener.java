@@ -12,7 +12,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 import java.util.*;
 
-import static co.mcsky.utils.MoeLib.toTick;
+import static co.mcsky.util.MoeLib.toTick;
 
 public class PlayerListener implements Listener {
     final private MoeUtils moe;

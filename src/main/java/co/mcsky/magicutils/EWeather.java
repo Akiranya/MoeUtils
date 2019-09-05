@@ -4,7 +4,7 @@ import co.mcsky.MoeUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import static co.mcsky.utils.MoeLib.toTick;
+import static co.mcsky.util.MoeLib.toTick;
 
 public enum EWeather {
     RAIN("storm"),

@@ -1,4 +1,4 @@
-package co.mcsky.utils;
+package co.mcsky.util;
 
 public class Timer {
     private String title;
