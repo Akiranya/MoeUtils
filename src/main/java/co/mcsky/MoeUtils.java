@@ -2,7 +2,7 @@ package co.mcsky;
 
 import co.mcsky.foundores.PlayerListener;
 import co.mcsky.mobarena.ArenaEventListener;
-import co.mcsky.notifier.CreatureDeathMessage;
+import co.mcsky.reminder.CreatureDeathMessage;
 import co.mcsky.safeportal.PlayerTeleportListener;
 import co.mcsky.util.TagUtil;
 import com.garbagemule.MobArena.MobArena;

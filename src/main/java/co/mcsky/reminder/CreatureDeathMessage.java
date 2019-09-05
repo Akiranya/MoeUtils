@@ -1,4 +1,4 @@
-package co.mcsky.notifier;
+package co.mcsky.reminder;
 
 import co.mcsky.MoeUtils;
 import org.bukkit.Bukkit;

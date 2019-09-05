@@ -177,13 +177,13 @@ public class MoeSetting {
         public String msg_death;
 
         private Reminder() {
-            List<String> rawConfig = getStringList("notifier.animals");
-            enable = getBoolean("notifier.enable");
+            List<String> rawConfig = getStringList("reminder.animals");
+            enable = getBoolean("reminder.enable");
             whitelist = rawConfig.stream()
                     .map(e -> EntityType.valueOf(e.toUpperCase()))
                     .collect(Collectors.toSet());
 
-            msg_death = getString("notifier.messages.death");
+            msg_death = getString("reminder.messages.death");
         }
     }
 
