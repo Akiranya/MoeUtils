@@ -36,8 +36,7 @@ public class PlayerListener implements Listener {
         }
 
         // Auto clear map playerLog at given interval
-        Bukkit.getScheduler().runTaskTimer(moe,
-                playerLog::clear, 0, TimeUtil.toTick(moe.setting.found_diamond.purge_interval));
+        Bukkit.getScheduler().runTaskTimer(moe, playerLog::clear, 0, TimeUtil.toTick(moe.setting.found_diamond.purge_interval));
     }
 
     @EventHandler
@@ -53,38 +52,41 @@ public class PlayerListener implements Listener {
         // 如果玩家不是生存模式，直接 return
 //        if (event.getPlayer().getGameMode() != GameMode.SURVIVAL) return;
 
-        // 这些本地变量下面都会用到
-        UUID playerUUID = event.getPlayer().getUniqueId();
         Location foundLocation = block.getLocation(); // 玩家当前挖掉的方块坐标
         Material foundType = block.getType(); // 玩家当前挖掉的方块类型
-        playerLog.putIfAbsent(playerUUID, new HashMap<>()); // 如果该玩家从没挖到过矿，给玩家创建一个 map
-        Map<Material, Set<Location>> typeLog = playerLog.get(playerUUID); // 方块 + 其对应的已探索坐标集合
-        if (typeLog.containsKey(foundType)) {
-            // 如果玩家发现过这种类型的方块
 
+        UUID playerUUID = event.getPlayer().getUniqueId();
+        playerLog.putIfAbsent(playerUUID, new HashMap<>()); // 如果该玩家从没挖到过矿，给玩家创建一个 map
+        Map<Material, Set<Location>> typeLog = playerLog.get(playerUUID);
+
+        /* 由于这是一块可能会高频率执行的代码，
+         * 特别是搜索方块的数量涉及到深搜/广搜，
+         * 因此需要尽可能的提高代码的运行效率，以减轻 CPU 负载，
+         * 故设计了以下流程。
+         *
+         * 首先分两种情况：
+         * 1) 玩家发现过这种*类型*的方块
+         * 2) 玩家未发现过这种*类型*的方块
+         *
+         * 如果是 1) 那么从这种*类型*的方块里搜索是否探索过这个*位置*
+         * 如果是 2) 那么就从零开始考虑，也就是需要为玩家和方块创建相应的 map
+         *
+         * 不过呢，把所有类型方块的位置信息存在一个巨大的 hashMap 里效率也许也不错，因为查找的复杂读是 O(1)，
+         * 但为了更高的查找速度，为每个玩家的每种方块创建一个专门的 hashMap 应该会更快。
+         * */
+        if (typeLog.containsKey(foundType)) {
             Set<Location> discovered = typeLog.get(foundType);
             if (!discovered.contains(foundLocation)) {
-                // 如果玩家还没发现过这个位置的方块，则进行通报
-
-                int count = finder.count(foundLocation, foundType, discovered); // 开始搜索
-                broadcast(event.getPlayer().getDisplayName(), foundType, count); // 然后通报
+                int count = finder.count(foundLocation, foundType, discovered);
+                broadcast(event.getPlayer().getDisplayName(), foundType, count);
             }
-            // ... 如果玩家已经发现过这个位置的方块，不做计算
         } else {
-            // 如果玩家还没发现过这种类型的方块，则进行通报
-
-            // 因为玩家连这种类型的方块都没发现过，
-            // 所以需要创建一个 discovered set 给当前方块类型
-            typeLog.put(foundType, new HashSet<>()); // 不要忘记放到 typeLog map 里供之后的检索用
-
-            int count = finder.count(foundLocation, foundType, typeLog.get(foundType)); // 开始搜索
-            broadcast(event.getPlayer().getDisplayName(), foundType, count); // 然后通报
+            typeLog.put(foundType, new HashSet<>());
+            int count = finder.count(foundLocation, foundType, typeLog.get(foundType));
+            broadcast(event.getPlayer().getDisplayName(), foundType, count);
         }
     }
 
-    /**
-     * 全服通告玩家挖到矿了!
-     */
     private void broadcast(String player, Material blockType, int count) {
         String raw = String.format(moe.setting.found_diamond.msg_found,
                 player,
