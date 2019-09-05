@@ -28,7 +28,7 @@ public class PlayerListener implements Listener {
 
         legalBlockType = moe.setting.found_diamond.enabled_block_type; // 哪些方块需要通报
         playerLog = new HashMap<>();
-        finder = new DFSBlockFinder(moe); // 初始化搜索类
+        finder = new BFSBlockFinder(moe); // 初始化搜索类
 
         // 根据配置文件判断是否要注册 Listener
         if (moe.setting.found_diamond.enable) {
