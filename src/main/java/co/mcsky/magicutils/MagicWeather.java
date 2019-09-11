@@ -85,14 +85,14 @@ public class MagicWeather extends AMagicUtils<String> {
         CLEAR("sun"),
         THUNDER("thunder");
 
-        private final String commandName;
+        private final String cmdArg;
 
         Weather(String cmdArg) {
-            this.commandName = cmdArg;
+            this.cmdArg = cmdArg;
         }
 
         public String getCmdArg() {
-            return commandName;
+            return cmdArg;
         }
 
         public String getDisplayName(MoeUtils moe) {

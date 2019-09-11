@@ -59,10 +59,10 @@ public class MagicTime extends AMagicUtils<UUID> {
         DAY("day"),
         NIGHT("night");
 
-        private final String commandName;
+        private final String cmdArg;
 
         Time(String cmdArg) {
-            this.commandName = cmdArg;
+            this.cmdArg = cmdArg;
         }
 
         public String getDisplayName(MoeUtils moe) {
@@ -77,7 +77,7 @@ public class MagicTime extends AMagicUtils<UUID> {
         }
 
         public String getCmdArg() {
-            return commandName;
+            return cmdArg;
         }
 
         public void setTime(MoeUtils moe) {
