@@ -1,7 +1,5 @@
 package co.mcsky;
 
-import co.mcsky.magicutils.ETime;
-import co.mcsky.magicutils.EWeather;
 import co.mcsky.magicutils.MagicTime;
 import co.mcsky.magicutils.MagicWeather;
 import org.bukkit.command.Command;
@@ -15,6 +13,9 @@ import java.util.List;
 import java.util.Objects;
 
 import static co.mcsky.MoeUtils.permission;
+import static co.mcsky.magicutils.MagicTime.Time.DAY;
+import static co.mcsky.magicutils.MagicTime.Time.NIGHT;
+import static co.mcsky.magicutils.MagicWeather.Weather.*;
 
 public class CommandHandler implements TabExecutor {
 
@@ -53,13 +54,13 @@ public class CommandHandler implements TabExecutor {
             if (args.length != 2) return false;
             if (args[1].equalsIgnoreCase("day")) {
                 if (hasPermission(player, "moe.magic.time.day")) {
-                    magicTime.setTime(player, ETime.DAY, moe.setting.magic_time.cost);
+                    magicTime.setTime(player, DAY, moe.setting.magic_time.cost);
                     return true;
                 }
             }
             if (args[1].equalsIgnoreCase("night")) {
                 if (hasPermission(player, "moe.magic.time.night")) {
-                    magicTime.setTime(player, ETime.NIGHT, moe.setting.magic_time.cost);
+                    magicTime.setTime(player, NIGHT, moe.setting.magic_time.cost);
                     return true;
                 }
             }
@@ -82,19 +83,19 @@ public class CommandHandler implements TabExecutor {
             if (args.length != 2) return false;
             if (args[1].equalsIgnoreCase("clear")) {
                 if (hasPermission(player, "moe.magic.weather.clear")) {
-                    magicWeather.setWeather(player, EWeather.CLEAR, moe.setting.magic_weather.cost);
+                    magicWeather.setWeather(player, CLEAR, moe.setting.magic_weather.cost);
                     return true;
                 }
             }
             if (args[1].equalsIgnoreCase("rain")) {
                 if (hasPermission(player, "moe.magic.weather.rain")) {
-                    magicWeather.setWeather(player, EWeather.RAIN, moe.setting.magic_weather.cost);
+                    magicWeather.setWeather(player, RAIN, moe.setting.magic_weather.cost);
                     return true;
                 }
             }
             if (args[1].equalsIgnoreCase("thunder")) {
                 if (hasPermission(player, "moe.magic.weather.thunder")) {
-                    magicWeather.setWeather(player, EWeather.THUNDER, moe.setting.magic_weather.cost);
+                    magicWeather.setWeather(player, THUNDER, moe.setting.magic_weather.cost);
                     return true;
                 }
             }
