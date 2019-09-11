@@ -1,6 +1,6 @@
 # MoeUtils
 
-一个专门为[上古时代服务器](https://mimaru.me)定制的实用类插件。
+一个专门为 [上古时代 Minecraft 服务器](https://mimaru.me) 定制的实用类插件。
 
 # Features
 
