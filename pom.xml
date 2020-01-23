@@ -6,7 +6,7 @@
 
     <groupId>co.mcsky</groupId>
     <artifactId>MoeUtils</artifactId>
-    <version>1.5.2</version>
+    <version>1.5.3</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -48,7 +48,7 @@
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.14.4-R0.1-SNAPSHOT</version>
+            <version>1.15.2-R0.1-SNAPSHOT</version>
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>net.ess3</groupId>-->

@@ -2,7 +2,7 @@ package co.mcsky.magicutils;
 
 import co.mcsky.MoeUtils;
 import co.mcsky.util.CooldownUtil;
-import org.bukkit.command.CommandSender;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
 
 import static co.mcsky.MoeUtils.economy;
@@ -27,8 +27,7 @@ abstract class AMagicUtils<K> extends CooldownUtil<K> {
     boolean checkCooldown(Player player, K COOLDOWN_KEY) {
         if (check(COOLDOWN_KEY, COOLDOWN_LENGTH)) return false; // 冷却好了就直接返回
 
-        String playerMsg = String.format(moe.setting.globe.msg_cooldown,
-                remaining(COOLDOWN_KEY, COOLDOWN_LENGTH));
+        String playerMsg = String.format(moe.setting.globe.msg_cooldown, remaining(COOLDOWN_KEY, COOLDOWN_LENGTH));
         player.sendMessage(playerMsg);
         return true;
     }
@@ -47,12 +46,13 @@ abstract class AMagicUtils<K> extends CooldownUtil<K> {
      * 这样可以将消费额转到系统余额，让资金回流到玩家手里
      */
     void charge(Player player, int cost) {
-        String cmd = String.format("hamsterecohelper:heh balance take %s %d", player.getName(), cost);
-        CommandSender console = moe.getServer().getConsoleSender();
-        moe.getServer().dispatchCommand(console, cmd); // This command CHARGES player
-        // 因为调用 heh 的扣费指令就自带玩家提示信息，所以不再需要多加提示
-//        String playerMsg = String.format(moe.setting.global_message_cost, cost);
-//        player.sendMessage(playerMsg);
+        economy.withdrawPlayer(player, cost); // 执行扣钱操作
+        String playerMsg = String.format(moe.setting.globe.msg_cost, cost);
+        player.sendMessage(playerMsg);
+        // 由于 heh 的数据库设置始终存在问题，改用 Vault 向玩家扣费
+//        String cmd = String.format("hamsterecohelper:heh balance take %s %d", player.getName(), cost);
+//        CommandSender console = moe.getServer().getConsoleSender();
+//        moe.getServer().dispatchCommand(console, cmd); // This command CHARGES player
     }
 
 }
