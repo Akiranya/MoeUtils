@@ -1,4 +1,8 @@
-notifier:
+betterbees:
+  enable: true
+  messages:
+    count: '&e这个蜂巢里有 %s 只蜜蜂.'
+reminder:
   enable: true
   animals:
     - villager

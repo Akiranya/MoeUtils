@@ -1,5 +1,6 @@
 package co.mcsky;
 
+import co.mcsky.betterbees.BeehiveBeeCounter;
 import co.mcsky.foundores.PlayerListener;
 import co.mcsky.mobarena.ArenaEventListener;
 import co.mcsky.reminder.CreatureDeathMessage;
@@ -50,6 +51,7 @@ public class MoeUtils extends JavaPlugin {
         new PlayerTeleportListener(this);
         new PlayerListener(this);
         new CreatureDeathMessage(this);
+        new BeehiveBeeCounter(this);
     }
 
     private void setupMobArena() {

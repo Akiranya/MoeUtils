@@ -22,6 +22,7 @@ public class MoeSetting {
     public final SafePortal safe_portal;
     public final FoundDiamond found_diamond;
     public final MobArenaAddon mobarena;
+    public final BetterBees betterbees;
 
     public static MoeSetting getInstance(MoeUtils moe) {
         if (moeSetting == null) return moeSetting = new MoeSetting(moe);
@@ -38,6 +39,7 @@ public class MoeSetting {
         safe_portal = new SafePortal();
         found_diamond = new FoundDiamond();
         mobarena = new MobArenaAddon();
+        betterbees = new BetterBees();
 
         settingOutput(); // output 必须在最后执行，否则可能 NPE
     }
@@ -51,7 +53,9 @@ public class MoeSetting {
     }
 
     public class Globe {
+
         public final String msg_none;
+
         public final String msg_reload;
         public final String msg_no_perm;
         public final String msg_not_enough_money;
@@ -74,9 +78,12 @@ public class MoeSetting {
             msg_reset = format("global.messages.reset");
             msg_cost = format("global.messages.cost");
         }
+
     }
 
+
     public class MagicWeather {
+
         public final int cost;
         public final int cooldown;
         public final String msg_prefix;
@@ -197,6 +204,16 @@ public class MoeSetting {
             whitelist = entityTypes.stream()
                     .map(e -> EntityType.valueOf(e.toUpperCase()))
                     .collect(Collectors.toSet());
+        }
+    }
+
+    public class BetterBees {
+        public final boolean enable;
+        public final String msg_count;
+
+        private BetterBees() {
+            enable = getBoolean("betterbees.enable");
+            msg_count = format("betterbees.messages.count");
         }
     }
 
