@@ -26,7 +26,7 @@ public class BeehiveBeeCounter implements Listener {
     @EventHandler
     public void onPlayerRightClickBlock(PlayerInteractEvent e) {
         if (e.getClickedBlock() == null) return;
-        if (e.getHand() == EquipmentSlot.HAND && e.getClickedBlock().getType() == Material.BEE_NEST && !e.isBlockInHand()) {
+        if (!e.isBlockInHand() && e.getHand() == EquipmentSlot.HAND && (e.getClickedBlock().getType() == Material.BEE_NEST || e.getClickedBlock().getType() == Material.BEEHIVE) ) {
             Beehive beehive = (Beehive) e.getClickedBlock().getState();
             String msg = String.format(setting.betterbees.msg_count, beehive.getEntityCount());
             e.getPlayer().sendMessage(msg);
