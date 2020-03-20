@@ -23,10 +23,15 @@ public class BeehiveBeeCounter implements Listener {
         }
     }
 
+    // TODO 当玩家第一次放下蜂箱或敲掉蜂巢时，提示插件帮助信息
+
     @EventHandler
     public void onPlayerRightClickBlock(PlayerInteractEvent e) {
         if (e.getClickedBlock() == null) return;
-        if (!e.isBlockInHand() && e.getHand() == EquipmentSlot.HAND && (e.getClickedBlock().getType() == Material.BEE_NEST || e.getClickedBlock().getType() == Material.BEEHIVE) ) {
+        if (!e.isBlockInHand() &&
+                e.getHand() == EquipmentSlot.HAND &&
+                (e.getClickedBlock().getType() == Material.BEE_NEST ||
+                        e.getClickedBlock().getType() == Material.BEEHIVE)) {
             Beehive beehive = (Beehive) e.getClickedBlock().getState();
             String msg = String.format(setting.betterbees.msg_count, beehive.getEntityCount());
             e.getPlayer().sendMessage(msg);
