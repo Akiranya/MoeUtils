@@ -1,7 +1,8 @@
 package co.mcsky.magicutils;
 
 import co.mcsky.MoeUtils;
-import co.mcsky.util.TimeUtil;
+import co.mcsky.config.MagicWeatherConfig;
+import co.mcsky.utilities.TimeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,17 +11,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class MagicWeather extends AMagicUtils<String> {
-    private final static String COOLDOWN_KEY = "magic_weather";
+public class MagicWeather extends AMagicCommon<String> {
+    private static MagicWeatherConfig cfg;
     private static MagicWeather magicWeather = null;
+    private static final String COOLDOWN_KEY = "magic_weather";
 
-    // K = world name
-    // V = player UUID
+    /**
+     * K = World's name
+     * V = Player's UUID
+     */
     private final Map<String, UUID> lastUsedWorld;
 
     private MagicWeather(MoeUtils moe) {
-        super(moe, moe.setting.magic_weather.cooldown);
+        super(moe, moe.magicWeatherConfig.getCooldown());
         lastUsedWorld = new HashMap<>();
+        cfg = moe.magicWeatherConfig;
     }
 
     public static MagicWeather getInstance(MoeUtils moe) {
@@ -33,14 +38,14 @@ public class MagicWeather extends AMagicUtils<String> {
         String worldKey = asWorldKey(worldName);
         if (checkCooldown(player, worldKey) || checkBalance(player, cost)) return;
         weather.setWeather(moe, player); // 改变当前世界的天气
-        String weatherName = weather.getDisplayName(moe);
-        String weatherBroadcastMsg = String.format(moe.setting.magic_weather.msg_changed, worldName, weatherName);
+        String weatherName = weather.getDisplayName();
+        String weatherBroadcastMsg = String.format(cfg.msg_changed, worldName, weatherName);
         moe.getServer().broadcastMessage(weatherBroadcastMsg); // 全服播报
         charge(player, cost); // 扣费
         lastUsedWorld.put(worldName, player.getUniqueId());
         use(worldKey); // 更新冷却时间
         Bukkit.getScheduler().runTaskLaterAsynchronously(moe, () -> {
-            String msg = String.format(moe.setting.magic_weather.msg_finished, weatherName, worldName);
+            String msg = String.format(cfg.msg_ended, weatherName, worldName);
             moe.getServer().broadcastMessage(msg); // 当事件结束时播报一次
         }, TimeUtil.toTick(COOLDOWN_LENGTH));
     }
@@ -51,18 +56,16 @@ public class MagicWeather extends AMagicUtils<String> {
      * @param player Who receives the messages.
      */
     public void getStatus(Player player) {
-        // Simply return (show nothing to player)
-        // if there is no world in cooldown.
+        // Simply return (show nothing to player) if there is no world in cooldown.
         if (lastUsedWorld.isEmpty()) return;
 
-        // If players are not in map lastUsedWorld,
-        // they won't be shown in the output of getStatus()
+        // If players are not in map lastUsedWorld, they won't appear in the output of getStatus()
         lastUsedWorld.forEach((worldName, playerUUID) -> {
             String cooldownKey = asWorldKey(worldName);
             if (!check(cooldownKey, COOLDOWN_LENGTH)) { // If cooldown is not ready yet
-                String statusMsg = String.format(moe.setting.magic_weather.msg_status,
+                String statusMsg = String.format(cfg.msg_status,
                         worldName,
-                        moe.setting.globe.msg_on,
+                        moe.commonConfig.msg_active,
                         moe.getServer().getOfflinePlayer(playerUUID).getName(),
                         remaining(cooldownKey, COOLDOWN_LENGTH));
                 player.sendMessage(statusMsg);
@@ -72,7 +75,7 @@ public class MagicWeather extends AMagicUtils<String> {
 
     public void reset(Player player) {
         lastUsedWorld.clear();
-        String playerMsg = String.format(moe.setting.globe.msg_reset, moe.setting.magic_weather.msg_prefix);
+        String playerMsg = String.format(moe.commonConfig.msg_reset, cfg.msg_prefix);
         player.sendMessage(playerMsg);
     }
 
@@ -95,14 +98,14 @@ public class MagicWeather extends AMagicUtils<String> {
             return cmdArg;
         }
 
-        public String getDisplayName(MoeUtils moe) {
+        public String getDisplayName() {
             switch (this) {
                 case CLEAR:
-                    return moe.setting.magic_weather.msg_clear;
+                    return cfg.msg_clear;
                 case RAIN:
-                    return moe.setting.magic_weather.msg_rain;
+                    return cfg.msg_rain;
                 case THUNDER:
-                    return moe.setting.magic_weather.msg_thunder;
+                    return cfg.msg_thunder;
                 default:
                     throw new IllegalStateException("Unknown weather value.");
             }

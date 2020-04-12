@@ -1,6 +1,7 @@
-package co.mcsky.reminder;
+package co.mcsky.misc;
 
 import co.mcsky.MoeUtils;
+import co.mcsky.config.CreatureDeathLoggerConfig;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -10,16 +11,16 @@ import org.bukkit.event.entity.EntityDeathEvent;
 
 import java.util.Set;
 
-public class CreatureDeathMessage implements Listener {
+public class CreatureDeathLogger implements Listener {
     private final MoeUtils moe;
+    private final CreatureDeathLoggerConfig cfg;
     private final Set<EntityType> whitelist;
 
-    public CreatureDeathMessage(MoeUtils moe) {
+    public CreatureDeathLogger(MoeUtils moe) {
         this.moe = moe;
-        this.whitelist = moe.setting.reminder.whitelist;
-
-        // 判断是否要注册 Listener
-        if (moe.setting.reminder.enable) {
+        this.cfg = moe.creatureDeathLoggerConfig;
+        this.whitelist = cfg.getCreatures();
+        if (cfg.isEnable()) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
         }
     }
@@ -27,17 +28,16 @@ public class CreatureDeathMessage implements Listener {
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e) {
         LivingEntity entity = e.getEntity();
-        if (!whitelist.contains(entity.getType())) return; // Ignore if it is not in whitelist
-        // 如果 victim 有自定义名字（例如命名牌），则显示自定义名字
-        String victimName = entity.getCustomName() != null ? entity.getCustomName() : entity.getName();
+        if (!whitelist.contains(entity.getType())) return;
+        String victimName = entity.getCustomName() != null ? entity.getCustomName() : entity.getName(); // 显示命名
         String cause = null;
         if (e.getEntity().getLastDamageCause() != null) {
             cause = e.getEntity().getLastDamageCause().getCause().name();
         }
-        String player = entity.getKiller() != null ? entity.getKiller().getName() : moe.setting.globe.msg_none;
+        String player = entity.getKiller() != null ? entity.getKiller().getName() : moe.commonConfig.msg_none;
         Location location = entity.getLocation();
         String locationFormat = location.getWorld().getName() + ", " + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ();
-        String serverMsg = String.format(moe.setting.reminder.msg_death, victimName, cause, player, locationFormat);
+        String serverMsg = String.format(cfg.msg_death, victimName, cause, player, locationFormat);
         moe.getServer().broadcastMessage(serverMsg);
     }
 

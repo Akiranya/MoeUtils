@@ -1,4 +1,4 @@
-package co.mcsky.foundores;
+package co.mcsky.foundiamonds;
 
 import co.mcsky.MoeUtils;
 import org.bukkit.Location;
@@ -8,7 +8,7 @@ import org.bukkit.block.BlockFace;
 import java.util.Set;
 import java.util.Stack;
 
-public class DFSBlockFinder extends ABlockFinder implements IBlockFinder {
+public class DFSBlockFinder extends ABlockFinderCommon implements IBlockFinder {
 
     DFSBlockFinder(MoeUtils moe) {
         super(moe);
@@ -29,7 +29,7 @@ public class DFSBlockFinder extends ABlockFinder implements IBlockFinder {
         while (!stack.isEmpty()) {
             Location v = stack.pop();
 
-            if (!isDiscovered(v, discovered)) {
+            if (isDiscovered(v, discovered)) {
                 // 执行到这一步说明 v 一定是合法方块
                 // 因此不需要再判断是否合法
                 discovered.add(v); // 把 v 标记为已探索

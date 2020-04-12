@@ -1,9 +1,9 @@
 package co.mcsky.mobarena;
 
-import co.mcsky.MoeSetting;
 import co.mcsky.MoeUtils;
-import co.mcsky.util.ScoreboardUtil;
-import co.mcsky.util.TagUtil;
+import co.mcsky.config.MobArenaProConfig;
+import co.mcsky.utilities.ScoreboardUtil;
+import co.mcsky.utilities.TagUtil;
 import com.garbagemule.MobArena.MobArena;
 import com.garbagemule.MobArena.events.ArenaEndEvent;
 import com.garbagemule.MobArena.events.ArenaPlayerDeathEvent;
@@ -14,29 +14,39 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 
-import static co.mcsky.util.TagUtil.ACTION.REMOVE;
-import static co.mcsky.util.TagUtil.ACTION.UPDATE;
+import static co.mcsky.utilities.TagUtil.ACTION.REMOVE;
+import static co.mcsky.utilities.TagUtil.ACTION.UPDATE;
+import static org.bukkit.Bukkit.getServer;
 
 public class ArenaEventListener implements Listener {
 
     private final MoeUtils moe;
-    private final MoeSetting setting;
-    private final MobArena ma;
+    private final MobArenaProConfig cfg;
     private final ScoreboardUtil scoreboardUtil;
-    private final TagUtil th;
+    private final TagUtil tagUtil;
+    private MobArena mobArena;
     private Listener PlayerHealthListener;
     private Listener ProjectileCollideListener;
 
-    public ArenaEventListener(MoeUtils moe, MobArena ma, TagUtil th) {
+    public ArenaEventListener(MoeUtils moe) {
         this.moe = moe;
-        this.setting = MoeSetting.getInstance(moe);
-        this.ma = ma;
-        this.th = th;
-        this.scoreboardUtil = new ScoreboardUtil(this.th, moe);
-        // Only if this feature is enabled do we register this listener
-        if (setting.mobarena.enable) {
+        this.cfg = moe.mobArenaProConfig;
+        this.tagUtil = new TagUtil();
+        this.scoreboardUtil = new ScoreboardUtil(this.tagUtil, moe);
+
+        // Check if MobArena is loaded
+        Plugin pluginMobArena = getServer().getPluginManager().getPlugin("MobArena");
+        if (pluginMobArena != null) {
+            this.mobArena = (MobArena) pluginMobArena;
+        }
+        // Check ends
+
+        if (cfg.isEnable() && mobArena != null) {
             this.moe.getServer().getPluginManager().registerEvents(this, moe);
+        } else {
+            moe.getLogger().severe("MobArena-Addon has been disabled as MobArena is not loaded.");
         }
     }
 
@@ -45,12 +55,12 @@ public class ArenaEventListener implements Listener {
         // 游戏开始后，先设置好他们的血条
         Bukkit.getScheduler().runTaskLater(moe, () -> {
             for (Player p : event.getArena().getAllPlayers()) {
-                th.change(p, th.color("&a&l[&r"), th.color("&a&l]"), UPDATE);
+                tagUtil.change(p, tagUtil.color("&a&l[&r"), tagUtil.color("&a&l]"), UPDATE);
                 scoreboardUtil.showHealth(p);
             }
             // 当竞技场开始后，开始监听玩家的血量变化
-            PlayerHealthListener = new PlayerHealthListener(moe, th);
-            ProjectileCollideListener = new ProjectileCollideListener(moe, ma);
+            PlayerHealthListener = new PlayerHealthListener(moe, tagUtil);
+            ProjectileCollideListener = new ProjectileCollideListener(moe, mobArena);
         }, 20);
     }
 
@@ -59,7 +69,7 @@ public class ArenaEventListener implements Listener {
         // 游戏结束，清空计分板
         Bukkit.getScheduler().runTaskLater(moe, () -> {
             for (Player p : event.getArena().getAllPlayers()) {
-                th.change(p, "", "", REMOVE);
+                tagUtil.change(p, "", "", REMOVE);
                 scoreboardUtil.removeHealth(p);
             }
             // Unregister listener when arena ends
@@ -73,7 +83,7 @@ public class ArenaEventListener implements Listener {
         // 玩家死亡，清空计分板
         Bukkit.getScheduler().runTaskLater(moe, () -> {
             Player p = event.getPlayer();
-            th.change(p, "", "", REMOVE);
+            tagUtil.change(p, "", "", REMOVE);
             scoreboardUtil.removeHealth(p);
         }, 20);
     }
@@ -83,7 +93,7 @@ public class ArenaEventListener implements Listener {
         // 玩家离开，清空计分板
         Bukkit.getScheduler().runTaskLater(moe, () -> {
             Player p = event.getPlayer();
-            th.change(event.getPlayer(), "", "", REMOVE);
+            tagUtil.change(event.getPlayer(), "", "", REMOVE);
             scoreboardUtil.removeHealth(p);
         }, 20);
     }

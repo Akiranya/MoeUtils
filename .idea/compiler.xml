@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -9,10 +10,21 @@
         <module name="MoeUtils" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Yamler-Bukkit" target="8" />
+      <module name="Yamler-Bukkit (1)" target="8" />
+      <module name="Yamler-Bungee" target="8" />
+      <module name="Yamler-Core" target="1.7" />
+      <module name="Yamler-parent" target="1.7" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="MoeUtils" options="" />
+      <module name="Yamler-Bukkit" options="-O -Xlint:-path" />
+      <module name="Yamler-Bukkit (1)" options="-O -Xlint:-path" />
+      <module name="Yamler-Bungee" options="-O -Xlint:-path" />
+      <module name="Yamler-Core" options="-O -Xlint:-path" />
     </option>
   </component>
 </project>

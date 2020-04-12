@@ -162,18 +162,18 @@ public class MoeSetting {
         public final String msg_prefix;
 
         private FoundDiamond() {
-            enable = getBoolean("foundores.enable");
-            max_iterations = getInt("foundores.max_iterations");
-            purge_interval = getInt("foundores.purge_interval");
-            enabled_world = new HashSet<>(getStringList("foundores.worlds")); // use HashSet for constant searching time
+            enable = getBoolean("foundiamonds.enable");
+            max_iterations = getInt("foundiamonds.max_iterations");
+            purge_interval = getInt("foundiamonds.purge_interval");
+            enabled_world = new HashSet<>(getStringList("foundiamonds.worlds")); // use HashSet for constant searching time
 
             // 加载需要进行通报的方块类型
             enabled_block_type = new HashMap<>();
-            Map<String, Object> rawMap = getConfigurationSection("foundores.block_types").getValues(false);
+            Map<String, Object> rawMap = getConfigurationSection("foundiamonds.block_types").getValues(false);
             rawMap.forEach((block, displayName) -> enabled_block_type.put(Material.matchMaterial(block), (String) displayName));
 
-            msg_prefix = format("foundores.prefix");
-            msg_found = format("foundores.messages.found");
+            msg_prefix = format("foundiamonds.prefix");
+            msg_found = format("foundiamonds.messages.found");
         }
     }
 
@@ -184,13 +184,13 @@ public class MoeSetting {
         public String msg_death;
 
         private Reminder() {
-            List<String> rawConfig = getStringList("reminder.animals");
-            enable = getBoolean("reminder.enable");
+            List<String> rawConfig = getStringList("misc.animals");
+            enable = getBoolean("misc.enable");
             whitelist = rawConfig.stream()
                     .map(e -> EntityType.valueOf(e.toUpperCase()))
                     .collect(Collectors.toSet());
 
-            msg_death = getString("reminder.messages.death");
+            msg_death = getString("misc.messages.death");
         }
     }
 
@@ -219,10 +219,10 @@ public class MoeSetting {
 
     private void settingOutput() {
         // FoundDiamond: output what types of block are to be announced
-        moe.getLogger().info(ChatColor.YELLOW + "foundores.block_types:");
+        moe.getLogger().info(ChatColor.YELLOW + "foundiamonds.block_types:");
         found_diamond.enabled_block_type.forEach((k, v) -> moe.getLogger().info("- " + k.toString() + ": " + v));
         // FoundDiamond: output which worlds are enabled
-        moe.getLogger().info(ChatColor.YELLOW + "foundores.worlds:");
+        moe.getLogger().info(ChatColor.YELLOW + "foundiamonds.worlds:");
         found_diamond.enabled_world.forEach(e -> moe.getLogger().info("- " + e));
 
         // MobArena: output which entities should bypass collision with players' arrows

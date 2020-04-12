@@ -1,4 +1,4 @@
-package co.mcsky.foundores;
+package co.mcsky.foundiamonds;
 
 import org.bukkit.Location;
 import org.bukkit.Material;

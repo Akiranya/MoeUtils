@@ -1,4 +1,4 @@
-package co.mcsky.foundores;
+package co.mcsky.foundiamonds;
 
 import co.mcsky.MoeUtils;
 import org.bukkit.Location;
@@ -9,7 +9,7 @@ import java.util.Set;
 
 import static org.bukkit.block.BlockFace.*;
 
-abstract class ABlockFinder {
+abstract class ABlockFinderCommon {
 
     final MoeUtils moe;
     final int searchBound;
@@ -36,16 +36,16 @@ abstract class ABlockFinder {
             WEST_SOUTH_WEST
     };
 
-    ABlockFinder(MoeUtils moe) {
+    ABlockFinderCommon(MoeUtils moe) {
         this.moe = moe;
-        this.searchBound = moe.setting.found_diamond.max_iterations;
+        this.searchBound = moe.foundDiamondsConfig.getMaxIterations();
     }
 
     /**
      * @return 是否已经探索过
      */
     boolean isDiscovered(Location target, Set<Location> discovered) {
-        return discovered.contains(target);
+        return !discovered.contains(target);
     }
 
     /**

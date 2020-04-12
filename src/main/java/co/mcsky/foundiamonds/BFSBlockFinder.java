@@ -1,4 +1,4 @@
-package co.mcsky.foundores;
+package co.mcsky.foundiamonds;
 
 import co.mcsky.MoeUtils;
 import org.bukkit.Location;
@@ -36,7 +36,7 @@ import java.util.Set;
  * <p>
  * P.s. 坐标的格式是 (rows, cols)
  */
-public class BFSBlockFinder extends ABlockFinder implements IBlockFinder {
+public class BFSBlockFinder extends ABlockFinderCommon implements IBlockFinder {
 
     BFSBlockFinder(MoeUtils moe) {
         super(moe);
@@ -65,7 +65,7 @@ public class BFSBlockFinder extends ABlockFinder implements IBlockFinder {
             // 邻居的标准可以根据情况随时修改，所以考虑加个 setting
             for (BlockFace neighbor : neighbors) {
                 Location nei = v.getBlock().getRelative(neighbor).getLocation(); // get 邻居的坐标
-                if (!isDiscovered(nei, discovered) && isLegalBlock(nei, targetBlockType)) {
+                if (isDiscovered(nei, discovered) && isLegalBlock(nei, targetBlockType)) {
                     // 这里 IF 需要满足：
                     // 2、邻居 v 没有被探索
                     // 3、邻居 v 是目标方块

@@ -1,9 +1,9 @@
-package co.mcsky.foundores;
+package co.mcsky.foundiamonds;
 
 import co.mcsky.MoeUtils;
-import co.mcsky.util.TimeUtil;
+import co.mcsky.config.FoundDiamondsConfig;
+import co.mcsky.utilities.TimeUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,6 +15,7 @@ import java.util.*;
 
 public class PlayerListener implements Listener {
     final private MoeUtils moe;
+    final private FoundDiamondsConfig cfg;
 
     // K -> block type
     // V -> translation
@@ -25,18 +26,15 @@ public class PlayerListener implements Listener {
 
     public PlayerListener(MoeUtils moe) {
         this.moe = moe;
-
-        legalBlockType = moe.setting.found_diamond.enabled_block_type; // 哪些方块需要通报
+        this.cfg = moe.foundDiamondsConfig;
+        legalBlockType = cfg.getBlocks(); // 哪些方块需要通报
         playerLog = new HashMap<>();
         finder = new BFSBlockFinder(moe); // 初始化搜索类
-
-        // 根据配置文件判断是否要注册 Listener
-        if (moe.setting.found_diamond.enable) {
+        if (cfg.isEnable()) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
         }
-
         // Auto clear map playerLog at given interval
-        Bukkit.getScheduler().runTaskTimer(moe, playerLog::clear, 0, TimeUtil.toTick(moe.setting.found_diamond.purge_interval));
+        Bukkit.getScheduler().runTaskTimer(moe, playerLog::clear, 0, TimeUtil.toTick(cfg.getPurgeInterval()));
     }
 
     @EventHandler
@@ -47,7 +45,7 @@ public class PlayerListener implements Listener {
         if (!legalBlockType.keySet().contains(block.getType())) return;
 
         // 如果当前世界未启用通告，直接 return
-        if (!moe.setting.found_diamond.enabled_world.contains(block.getWorld().getName())) return;
+        if (!cfg.getWorlds().contains(block.getWorld().getName())) return;
 
         // 如果玩家不是生存模式，直接 return
 //        if (event.getPlayer().getGameMode() != GameMode.SURVIVAL) return;
@@ -88,12 +86,16 @@ public class PlayerListener implements Listener {
     }
 
     private void broadcast(String player, Material blockType, int count) {
-        String raw = String.format(moe.setting.found_diamond.msg_found,
-                player,
-                count,
-                legalBlockType.get(Material.matchMaterial(blockType.name())));
-        String broadcast = ChatColor.translateAlternateColorCodes('&', raw);
-        moe.getServer().broadcastMessage(broadcast);
+//        String raw = String.format(cfg.msg_found, player, count, legalBlockType.get(Material.matchMaterial(blockType.name())));
+//        String broadcast = ChatColor.translateAlternateColorCodes('&', raw);
+//        moe.getServer().broadcastMessage(broadcast);
+        moe.getServer().broadcastMessage(
+                String.format(
+                        cfg.msg_found,
+                        player,
+                        count,
+                        legalBlockType.get(Material.matchMaterial(blockType.name())))
+        );
     }
 
 }

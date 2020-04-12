@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,20 +32,20 @@ public class CommandHandler implements TabExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length < 1) return false;
 
         /* Reload */
         if (args[0].equalsIgnoreCase("reload")) {
-            moe.setting.reloadConfig();
+//            moe.setting.reloadConfig();
             moe.onDisable();
             moe.onEnable();
-            sender.sendMessage(moe.setting.globe.msg_reload);
+            sender.sendMessage(moe.commonConfig.msg_reloaded);
             return true;
         }
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(moe.setting.globe.msg_player_only);
+            sender.sendMessage(moe.commonConfig.msg_only_player);
             return true;
         }
         Player player = (Player) sender;
@@ -54,13 +55,13 @@ public class CommandHandler implements TabExecutor {
             if (args.length != 2) return false;
             if (args[1].equalsIgnoreCase("day")) {
                 if (hasPermission(player, "moe.magic.time.day")) {
-                    magicTime.setTime(player, DAY, moe.setting.magic_time.cost);
+                    magicTime.setTime(player, DAY, moe.magicTimeConfig.getCost());
                     return true;
                 }
             }
             if (args[1].equalsIgnoreCase("night")) {
                 if (hasPermission(player, "moe.magic.time.night")) {
-                    magicTime.setTime(player, NIGHT, moe.setting.magic_time.cost);
+                    magicTime.setTime(player, NIGHT, moe.magicTimeConfig.getCost());
                     return true;
                 }
             }
@@ -83,19 +84,19 @@ public class CommandHandler implements TabExecutor {
             if (args.length != 2) return false;
             if (args[1].equalsIgnoreCase("clear")) {
                 if (hasPermission(player, "moe.magic.weather.clear")) {
-                    magicWeather.setWeather(player, CLEAR, moe.setting.magic_weather.cost);
+                    magicWeather.setWeather(player, CLEAR, moe.magicWeatherConfig.getCost());
                     return true;
                 }
             }
             if (args[1].equalsIgnoreCase("rain")) {
                 if (hasPermission(player, "moe.magic.weather.rain")) {
-                    magicWeather.setWeather(player, RAIN, moe.setting.magic_weather.cost);
+                    magicWeather.setWeather(player, RAIN, moe.magicWeatherConfig.getCost());
                     return true;
                 }
             }
             if (args[1].equalsIgnoreCase("thunder")) {
                 if (hasPermission(player, "moe.magic.weather.thunder")) {
-                    magicWeather.setWeather(player, THUNDER, moe.setting.magic_weather.cost);
+                    magicWeather.setWeather(player, THUNDER, moe.magicWeatherConfig.getCost());
                     return true;
                 }
             }
@@ -116,7 +117,7 @@ public class CommandHandler implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String s, String[] strings) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, String[] strings) {
         List<String> result = new ArrayList<>();
         if (strings.length == 1) {
             List<String> completion = List.of("time", "weather", "reload");
@@ -141,7 +142,7 @@ public class CommandHandler implements TabExecutor {
         if (permission.has(sender, perm)) {
             return true;
         } else { // If does not have permission...
-            sender.sendMessage(String.format(moe.setting.globe.msg_no_perm, perm));
+            sender.sendMessage(String.format(moe.commonConfig.msg_noperms, perm));
             return false;
         }
     }

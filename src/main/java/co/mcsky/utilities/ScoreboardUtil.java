@@ -1,4 +1,4 @@
-package co.mcsky.util;
+package co.mcsky.utilities;
 
 import co.mcsky.MoeUtils;
 import org.bukkit.Bukkit;

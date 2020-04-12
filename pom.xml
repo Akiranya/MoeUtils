@@ -6,7 +6,19 @@
 
     <groupId>co.mcsky</groupId>
     <artifactId>MoeUtils</artifactId>
-    <version>1.5.5</version>
+    <version>1.5.6</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>9</source>
+                    <target>9</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -38,6 +50,10 @@
             <id>NyaaCentral</id>
             <url>https://ci.nyaacat.com/maven/</url>
         </repository>
+        <repository>
+            <id>CoreProtect</id>
+            <url>http://maven.playpro.com</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -57,15 +73,34 @@
             <version>1.7</version>
             <scope>provided</scope>
         </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.sk89q.worldedit</groupId>-->
+        <!--            <artifactId>worldedit-bukkit</artifactId>-->
+        <!--            <version>7.0.0-SNAPSHOT</version>-->
+        <!--        </dependency>-->
         <dependency>
-            <groupId>com.sk89q.worldedit</groupId>
-            <artifactId>worldedit-bukkit</artifactId>
-            <version>7.0.0-SNAPSHOT</version>
+            <groupId>net.coreprotect</groupId>
+            <artifactId>coreprotect</artifactId>
+            <version>2.18.2</version>
         </dependency>
         <dependency>
-            <groupId>cat.nyaa</groupId>
-            <artifactId>nyaacore</artifactId>
-            <version>7.0-SNAPSHOT</version>
+            <groupId>net.cubespace</groupId>
+            <artifactId>Yamler-Bukkit</artifactId>
+            <version>2.4.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/libraries/Yamler-Bukkit-2.4.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>17.0.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
