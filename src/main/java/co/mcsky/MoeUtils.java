@@ -1,17 +1,19 @@
 package co.mcsky;
 
-import co.mcsky.betterbees.BeehiveBeeCounter;
 import co.mcsky.config.*;
-import co.mcsky.foundiamonds.PlayerListener;
+import co.mcsky.foundiamonds.FoundDiamonds;
+import co.mcsky.misc.BeehiveBeeCounter;
 import co.mcsky.misc.CreatureDeathLogger;
+import co.mcsky.misc.OptimizedNetherPortal;
 import co.mcsky.mobarena.ArenaEventListener;
-import co.mcsky.safeportal.PlayerTeleportListener;
+import com.earth2me.essentials.Essentials;
 import net.cubespace.Yamler.Config.InvalidConfigurationException;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,6 +22,9 @@ public class MoeUtils extends JavaPlugin {
     public static Economy economy = null;
     public static Chat chat = null;
 
+    public Essentials essentials;
+
+    // All config goes here
     public BetterBeesConfig betterBeesConfig;
     public CommonConfig commonConfig;
     public CreatureDeathLoggerConfig creatureDeathLoggerConfig;
@@ -31,12 +36,6 @@ public class MoeUtils extends JavaPlugin {
 
     @Override
     public void onDisable() {
-//        try {
-//            config.save();
-//        } catch(InvalidConfigurationException ex) {
-//            ex.printStackTrace();
-//        }
-//        this.saveConfig(); // Save setting to disk.
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
     }
@@ -44,16 +43,24 @@ public class MoeUtils extends JavaPlugin {
     @Override
     public void onEnable() {
         loadConfig();
-//        this.saveDefaultConfig();
-        if (!setupVault()) {
-            getLogger().severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
-            getServer().getPluginManager().disablePlugin(this);
-            return;
+
+        if (setupVault()) {
+            getLogger().info("Hooked into Vault.");
         }
+        if (setupEssentials()) {
+            getLogger().info("Hooked into Essentials.");
+        }
+        if (getServer().getPluginManager().getPlugin("LangUtils") != null) {
+            getLogger().info("Hooked into LangUtils.");
+        }
+        if (getServer().getPluginManager().getPlugin("CoreProtect") != null) {
+            getLogger().info("Hooked into CoreProtect.");
+        }
+
         new CommandHandler(this);
         new ArenaEventListener(this);
-        new PlayerTeleportListener(this);
-        new PlayerListener(this);
+        new OptimizedNetherPortal(this);
+        new FoundDiamonds(this);
         new CreatureDeathLogger(this);
         new BeehiveBeeCounter(this);
     }
@@ -68,39 +75,45 @@ public class MoeUtils extends JavaPlugin {
         return permission != null && chat != null && economy != null;
     }
 
+    private boolean setupEssentials() {
+        Plugin plugin = getServer().getPluginManager().getPlugin("Essentials");
+        if (plugin != null) {
+            essentials = (Essentials) plugin;
+            return true;
+        }
+        return false;
+    }
+
     private void loadConfig() {
         try {
+            // Load config from disk
             commonConfig = new CommonConfig(this);
             commonConfig.init();
             commonConfig.save();
-
             betterBeesConfig = new BetterBeesConfig(this);
             betterBeesConfig.init();
             betterBeesConfig.save();
-
             creatureDeathLoggerConfig = new CreatureDeathLoggerConfig(this);
             creatureDeathLoggerConfig.init();
             creatureDeathLoggerConfig.save();
-
             foundDiamondsConfig = new FoundDiamondsConfig(this);
             foundDiamondsConfig.init();
             foundDiamondsConfig.save();
-
             magicTimeConfig = new MagicTimeConfig(this);
             magicTimeConfig.init();
             magicTimeConfig.save();
-
             magicWeatherConfig = new MagicWeatherConfig(this);
             magicWeatherConfig.init();
             magicWeatherConfig.save();
-
             mobArenaProConfig = new MobArenaProConfig(this);
             mobArenaProConfig.init();
             mobArenaProConfig.save();
-
             safePortalConfig = new SafePortalConfig(this);
             safePortalConfig.init();
             safePortalConfig.save();
+
+            // Print relevant config values
+            new ConfigPrinter(this);
         } catch (InvalidConfigurationException ex) {
             ex.printStackTrace();
         }

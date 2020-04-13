@@ -11,16 +11,16 @@ import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 public class FoundDiamondsConfig extends YamlConfig {
     public FoundDiamondsConfig(Plugin plugin) {
         CONFIG_HEADER = new String[]{"Configuration of FoundDiamonds."};
         CONFIG_FILE = new File(plugin.getDataFolder(), "found_diamonds.yml");
         try {
-            addConverter(MaterialConverter.class);
             addConverter(StringConverter.class);
+            addConverter(MaterialConverter.class);
         } catch (InvalidConverterException e) {
             e.printStackTrace();
         }
@@ -47,22 +47,21 @@ public class FoundDiamondsConfig extends YamlConfig {
     }};
 
     @Getter
-    @Comment("Format: \"<block type>: <display name>\"")
-    private HashMap<Material, String> blocks = new HashMap<>() {{
-        // TODO 使用 LangUtils 代替人工翻译
-        put(Material.GOLD_ORE, "&6金矿");
-        put(Material.IRON_ORE, "&7铁矿");
-        put(Material.COAL_ORE, "&8煤矿");
-        put(Material.LAPIS_ORE, "&7铁矿");
-        put(Material.DIAMOND_ORE, "&1青金石");
-        put(Material.REDSTONE_ORE, "&b钻石");
-        put(Material.EMERALD_ORE, "&4红石");
-        put(Material.NETHER_QUARTZ_ORE, "&f石英");
+    @Comment("List of blocks which need to be announced.")
+    private Set<Material> blocks = new HashSet<>() {{
+        add(Material.GOLD_ORE);
+        add(Material.IRON_ORE);
+        add(Material.COAL_ORE);
+        add(Material.LAPIS_ORE);
+        add(Material.DIAMOND_ORE);
+        add(Material.REDSTONE_ORE);
+        add(Material.EMERALD_ORE);
+        add(Material.NETHER_QUARTZ_ORE);
     }};
 
     @Path("messages.prefix")
-    public String msg_prefix = "FD";
+    public String msg_prefix = ">>";
     @Path("messages.found")
-    public String msg_found = "&e%s&7 挖到了 &e%d &7个 %s&b!";
+    public String msg_found = "%s 挖到了 %d 个 %s!";
 
 }

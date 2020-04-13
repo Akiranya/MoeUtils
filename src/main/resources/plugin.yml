@@ -6,12 +6,8 @@ description: A all-in-one plugin.
 author: Nailm
 website: https://mimaru.me
 prefix: MoeUtils
-softdepend:
-  - MobArena
-depend:
-  - Essentials
-  - Vault
-  - Yamler
+softdepend: [MobArena]
+depend: [Essentials, LangUtils, Vault, Yamler]
 commands:
   moeutils:
     description: Entry to MoeUtils

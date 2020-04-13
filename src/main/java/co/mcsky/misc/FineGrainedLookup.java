@@ -1,4 +1,4 @@
-package co.mcsky.colookup;
+package co.mcsky.misc;
 
 public class FineGrainedLookup {
 }

@@ -56,26 +56,26 @@ public class CommandHandler implements TabExecutor {
             if (args[1].equalsIgnoreCase("day")) {
                 if (hasPermission(player, "moe.magic.time.day")) {
                     magicTime.setTime(player, DAY, moe.magicTimeConfig.getCost());
-                    return true;
                 }
+                return true;
             }
             if (args[1].equalsIgnoreCase("night")) {
                 if (hasPermission(player, "moe.magic.time.night")) {
                     magicTime.setTime(player, NIGHT, moe.magicTimeConfig.getCost());
-                    return true;
                 }
+                return true;
             }
             if (args[1].equalsIgnoreCase("reset")) {
                 if (hasPermission(player, "moe.magic.reset")) {
                     magicTime.reset(player);
-                    return true;
                 }
+                return true;
             }
             if (args[1].equalsIgnoreCase("status")) {
                 if (hasPermission(player, "moe.magic.status")) {
                     magicTime.getStatus(player);
-                    return true;
                 }
+                return true;
             }
         }
 
@@ -85,32 +85,32 @@ public class CommandHandler implements TabExecutor {
             if (args[1].equalsIgnoreCase("clear")) {
                 if (hasPermission(player, "moe.magic.weather.clear")) {
                     magicWeather.setWeather(player, CLEAR, moe.magicWeatherConfig.getCost());
-                    return true;
                 }
+                return true;
             }
             if (args[1].equalsIgnoreCase("rain")) {
                 if (hasPermission(player, "moe.magic.weather.rain")) {
                     magicWeather.setWeather(player, RAIN, moe.magicWeatherConfig.getCost());
-                    return true;
                 }
+                return true;
             }
             if (args[1].equalsIgnoreCase("thunder")) {
                 if (hasPermission(player, "moe.magic.weather.thunder")) {
                     magicWeather.setWeather(player, THUNDER, moe.magicWeatherConfig.getCost());
-                    return true;
                 }
+                return true;
             }
             if (args[1].equalsIgnoreCase("status")) {
                 if (hasPermission(player, "moe.magic.status")) {
                     magicWeather.getStatus(player);
-                    return true;
                 }
+                return true;
             }
             if (args[1].equalsIgnoreCase("reset")) {
                 if (hasPermission(player, "moe.magic.reset")) {
                     magicWeather.reset(player);
-                    return true;
                 }
+                return true;
             }
         }
         return false;

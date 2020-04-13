@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class MagicTime extends AMagicCommon<UUID> {
+public class MagicTime extends MagicUtilCommon<UUID> {
     private static MagicTimeConfig cfg;
     private static MagicTime magicTime = null;
     private static final UUID COOLDOWN_KEY = UUID.randomUUID();

@@ -10,13 +10,13 @@ import static co.mcsky.MoeUtils.economy;
 /**
  * This class shares code for {@link MagicTime} and {@link MagicWeather}.
  */
-abstract class AMagicCommon<K> extends CooldownUtil<K> {
+abstract class MagicUtilCommon<K> extends CooldownUtil<K> {
 
     final int COOLDOWN_LENGTH;
     final MoeUtils moe;
     private final CommonConfig cfg;
 
-    AMagicCommon(MoeUtils moe, int cooldown_length) {
+    MagicUtilCommon(MoeUtils moe, int cooldown_length) {
         this.moe = moe;
         this.cfg = moe.commonConfig;
         this.COOLDOWN_LENGTH = cooldown_length;
@@ -26,6 +26,7 @@ abstract class AMagicCommon<K> extends CooldownUtil<K> {
     /**
      * @param player       The player you want to check cooldown.
      * @param COOLDOWN_KEY The cooldown key and this should be unique.
+     *
      * @return True if cooldown is not ready.
      */
     boolean checkCooldown(Player player, K COOLDOWN_KEY) {
@@ -39,6 +40,7 @@ abstract class AMagicCommon<K> extends CooldownUtil<K> {
     /**
      * @param player The player who ought to be charged.
      * @param cost   How much we charge the player.
+     *
      * @return True if the player does not have enough money.
      */
     boolean checkBalance(Player player, int cost) {

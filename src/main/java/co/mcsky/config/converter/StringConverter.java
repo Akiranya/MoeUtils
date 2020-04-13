@@ -29,12 +29,12 @@ public class StringConverter implements Converter {
     }
 
     /**
-     * This method mimics {@link ChatColor#translateAlternateColorCodes(char, java.lang.String)}
-     * except that it changes the character ChatColor.COLOR_CODE back to the text
-     * containing the character {@literal &}.
+     * This method mimics {@link ChatColor#translateAlternateColorCodes(char, java.lang.String)} except that it changes
+     * the character ChatColor.COLOR_CODE back to the text containing the character {@literal &}.
      *
      * @param altColorChar    The alternate color code character to replace.
      * @param textToTranslate Text containing the alternate color code character.
+     *
      * @return Text containing the {@literal &} color code character.
      */
     @NotNull

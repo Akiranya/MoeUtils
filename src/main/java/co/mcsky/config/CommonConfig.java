@@ -1,6 +1,7 @@
 package co.mcsky.config;
 
 import co.mcsky.config.converter.StringConverter;
+import net.cubespace.Yamler.Config.Comment;
 import net.cubespace.Yamler.Config.InvalidConverterException;
 import net.cubespace.Yamler.Config.Path;
 import net.cubespace.Yamler.Config.YamlConfig;
@@ -19,6 +20,8 @@ public class CommonConfig extends YamlConfig {
         }
     }
 
+    @Comment("Default language of LangUtils.")
+    public String lang = "zh_cn";
     @Path("messages.none")
     public String msg_none = "无";
     @Path("messages.active")

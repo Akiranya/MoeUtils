@@ -1,4 +1,4 @@
-package co.mcsky.safeportal;
+package co.mcsky.misc;
 
 import co.mcsky.MoeUtils;
 import co.mcsky.utilities.LocationUtil;
@@ -7,14 +7,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPortalEvent;
 
-public class PlayerTeleportListener implements Listener {
+public class OptimizedNetherPortal implements Listener {
 
     private final MoeUtils moe;
 
-    public PlayerTeleportListener(MoeUtils moe) {
+    public OptimizedNetherPortal(MoeUtils moe) {
         this.moe = moe;
         if (moe.safePortalConfig.isEnable()) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
+            moe.getLogger().info("OptimizedNetherPortal is enabled");
         }
     }
 

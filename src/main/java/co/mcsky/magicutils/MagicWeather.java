@@ -11,14 +11,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class MagicWeather extends AMagicCommon<String> {
+public class MagicWeather extends MagicUtilCommon<String> {
     private static MagicWeatherConfig cfg;
     private static MagicWeather magicWeather = null;
     private static final String COOLDOWN_KEY = "magic_weather";
 
     /**
-     * K = World's name
-     * V = Player's UUID
+     * K = World's name V = Player's UUID
      */
     private final Map<String, UUID> lastUsedWorld;
 

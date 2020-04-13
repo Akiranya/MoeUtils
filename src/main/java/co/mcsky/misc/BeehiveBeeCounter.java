@@ -1,4 +1,4 @@
-package co.mcsky.betterbees;
+package co.mcsky.misc;
 
 import co.mcsky.MoeUtils;
 import co.mcsky.config.BetterBeesConfig;
@@ -17,6 +17,7 @@ public class BeehiveBeeCounter implements Listener {
         cfg = moe.betterBeesConfig;
         if (cfg.isEnable()) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
+            moe.getLogger().info("BeehiveBeeCounter is enabled");
         }
     }
 

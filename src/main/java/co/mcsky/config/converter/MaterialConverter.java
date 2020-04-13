@@ -13,12 +13,12 @@ public class MaterialConverter implements Converter {
 
     @Override
     public Object toConfig(Class<?> type, Object obj, ParameterizedType parameterizedType) throws Exception {
-        return (obj).toString();
+        return obj.toString();
     }
 
     @Override
     public Object fromConfig(Class<?> type, Object obj, ParameterizedType parameterizedType) throws Exception {
-        return Material.getMaterial(obj.toString());
+        return Material.valueOf(obj.toString().toUpperCase());
     }
 
     @Override
