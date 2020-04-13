@@ -1,8 +1,8 @@
 name: MoeUtils
 main: co.mcsky.MoeUtils
-version: 1.5.6
+version: 1.5.7
 api-version: '1.13'
-description: A all-in-one plugin.
+description: A All-in-One plugin.
 author: Nailm
 website: https://mimaru.me
 prefix: MoeUtils
@@ -11,7 +11,7 @@ depend: [Essentials, LangUtils, Vault, Yamler]
 commands:
   moeutils:
     description: Entry to MoeUtils
-    usage: /<command> {subCmds}
+    usage: /<command> {...}
     permission: moe.user
     aliases: [moe]
 permissions:

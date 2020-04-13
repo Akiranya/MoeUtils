@@ -7,6 +7,7 @@ import co.mcsky.misc.CreatureDeathLogger;
 import co.mcsky.misc.OptimizedNetherPortal;
 import co.mcsky.mobarena.ArenaEventListener;
 import com.earth2me.essentials.Essentials;
+import com.meowj.langutils.LangUtils;
 import net.cubespace.Yamler.Config.InvalidConfigurationException;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
@@ -21,8 +22,6 @@ public class MoeUtils extends JavaPlugin {
     public static Permission permission = null;
     public static Economy economy = null;
     public static Chat chat = null;
-
-    public Essentials essentials;
 
     // All config goes here
     public BetterBeesConfig betterBeesConfig;
@@ -44,17 +43,17 @@ public class MoeUtils extends JavaPlugin {
     public void onEnable() {
         loadConfig();
 
-        if (setupVault()) {
+        permission = getPermission();
+        economy = getEconomy();
+        chat = getChat();
+        if (chat != null && permission != null && economy != null) {
             getLogger().info("Hooked into Vault.");
         }
-        if (setupEssentials()) {
+        if (getEssentials() != null) {
             getLogger().info("Hooked into Essentials.");
         }
-        if (getServer().getPluginManager().getPlugin("LangUtils") != null) {
+        if (getLangUtils() != null) {
             getLogger().info("Hooked into LangUtils.");
-        }
-        if (getServer().getPluginManager().getPlugin("CoreProtect") != null) {
-            getLogger().info("Hooked into CoreProtect.");
         }
 
         new CommandHandler(this);
@@ -63,25 +62,6 @@ public class MoeUtils extends JavaPlugin {
         new FoundDiamonds(this);
         new CreatureDeathLogger(this);
         new BeehiveBeeCounter(this);
-    }
-
-    private boolean setupVault() {
-        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
-        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
-        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-        if (permissionProvider != null) permission = permissionProvider.getProvider();
-        if (chatProvider != null) chat = chatProvider.getProvider();
-        if (economyProvider != null) economy = economyProvider.getProvider();
-        return permission != null && chat != null && economy != null;
-    }
-
-    private boolean setupEssentials() {
-        Plugin plugin = getServer().getPluginManager().getPlugin("Essentials");
-        if (plugin != null) {
-            essentials = (Essentials) plugin;
-            return true;
-        }
-        return false;
     }
 
     private void loadConfig() {
@@ -117,6 +97,46 @@ public class MoeUtils extends JavaPlugin {
         } catch (InvalidConfigurationException ex) {
             ex.printStackTrace();
         }
+    }
+
+    private Permission getPermission() {
+        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+        if (permissionProvider != null) {
+            return permissionProvider.getProvider();
+        }
+        return null;
+    }
+
+    private Economy getEconomy() {
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        if (economyProvider != null) {
+            return economyProvider.getProvider();
+        }
+        return null;
+    }
+
+    private Chat getChat() {
+        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+        if (chatProvider != null) {
+            return chatProvider.getProvider();
+        }
+        return null;
+    }
+
+    private Essentials getEssentials() {
+        Plugin plugin = getServer().getPluginManager().getPlugin("Essentials");
+        if (plugin != null) {
+            return (Essentials) plugin;
+        }
+        return null;
+    }
+
+    private LangUtils getLangUtils() {
+        Plugin plugin = getServer().getPluginManager().getPlugin("LangUtils");
+        if (plugin != null) {
+            return (LangUtils) plugin;
+        }
+        return null;
     }
 
 }

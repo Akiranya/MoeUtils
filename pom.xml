@@ -6,7 +6,7 @@
 
     <groupId>co.mcsky</groupId>
     <artifactId>MoeUtils</artifactId>
-    <version>1.5.6</version>
+    <version>1.5.7</version>
     <build>
         <plugins>
             <plugin>
@@ -103,12 +103,6 @@
             <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.coreprotect</groupId>
-            <artifactId>coreprotect</artifactId>
-            <version>2.18.2</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
