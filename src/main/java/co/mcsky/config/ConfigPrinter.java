@@ -9,10 +9,10 @@ public class ConfigPrinter {
 
     public ConfigPrinter(MoeUtils moe) {
         this.moe = moe;
-        settingOutput();
+        print();
     }
 
-    private void settingOutput() {
+    private void print() {
         String bullet = " - ";
 
         moe.getLogger().info(ChatColor.YELLOW + "FoundDiamonds - Enabled BLocks:");
