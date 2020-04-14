@@ -46,9 +46,6 @@ public class FoundDiamonds implements Listener {
         if (!enabledBlocks.contains(block.getType())) return;
         if (!cfg.getWorlds().contains(block.getWorld().getName())) return;
 
-        Location currentLocation = block.getLocation();
-        Material currentBlock = block.getType();
-
         UUID playerUUID = event.getPlayer().getUniqueId();
         // New a map of location history if the player has not found any enabledBlocks yet.
         locationHistory.putIfAbsent(playerUUID, new HashMap<>());
@@ -68,6 +65,8 @@ public class FoundDiamonds implements Listener {
          * 不过呢，把所有类型方块的位置信息存在一个巨大的 hashMap 里效率应该不低，因为查找的复杂读是 O(1)，
          * 但为了更高的查找速度，为每个玩家的每种方块创建一个专门的 hashMap 应该会更快。
          * */
+        Location currentLocation = block.getLocation();
+        Material currentBlock = block.getType();
         if (locationHistory.get(playerUUID).containsKey(currentBlock)) {
             Set<Location> discovered = locationHistory.get(playerUUID).get(currentBlock);
             if (!discovered.contains(currentLocation)) {
