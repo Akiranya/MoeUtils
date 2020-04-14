@@ -61,14 +61,15 @@ public class BlockFinder {
     }
 
     /**
-     * @param start           Start location.
-     * @param targetBlockType The type of block you want to search for.
-     * @param discovered      A set containing locations where blocks are already discovered by the finder.
+     * @param start      Start location.
+     * @param target     The type of block you want to search for.
+     * @param discovered A set containing locations where blocks are already marked as discovered on which the finder
+     *                   will not count.
      *
-     * @return The number of blocks of same type as {@code targetBlockType} which are the neighbors of the block at
-     * location {@code start}.
+     * @return The number of blocks of same type as {@code target} which are the neighbors of the block at location
+     * {@code start}.
      */
-    public int count(Location start, Material targetBlockType, Set<Location> discovered) {
+    public int count(Location start, Material target, Set<Location> discovered) {
         if (discovered == null) {
             return 0;
         }
@@ -84,7 +85,7 @@ public class BlockFinder {
             // 邻居的标准可以根据情况随时修改，所以考虑加个 setting
             for (BlockFace neighbor : neighbors) {
                 Location nei = v.getBlock().getRelative(neighbor).getLocation(); // get 邻居的坐标
-                if (isDiscovered(nei, discovered) && isLegalBlock(nei, targetBlockType)) {
+                if (isDiscovered(nei, discovered) && isLegalBlock(nei, target)) {
                     // 这里 IF 需要满足：
                     // 1、邻居 v 没有被探索
                     // 2、邻居 v 是目标方块

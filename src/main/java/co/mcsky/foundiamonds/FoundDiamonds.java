@@ -23,14 +23,14 @@ public class FoundDiamonds implements Listener {
     final private Set<Material> enabledBlocks;
     final private Map<UUID, Map<Material, Set<Location>>> locationHistory;
 
-    final private BlockFinder finder;
+    final private BlockFinder blockFinder;
 
     public FoundDiamonds(MoeUtils moe) {
         this.moe = moe;
         this.cfg = moe.foundDiamondsConfig;
         enabledBlocks = cfg.getBlocks();
         locationHistory = new HashMap<>();
-        finder = new BlockFinder(moe);
+        blockFinder = new BlockFinder(moe);
         if (cfg.isEnable()) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
             moe.getLogger().info("FoundDiamonds is enabled");
@@ -70,12 +70,12 @@ public class FoundDiamonds implements Listener {
         if (locationHistory.get(playerUUID).containsKey(currentBlock)) {
             Set<Location> discovered = locationHistory.get(playerUUID).get(currentBlock);
             if (!discovered.contains(currentLocation)) {
-                int count = finder.count(currentLocation, currentBlock, discovered);
+                int count = blockFinder.count(currentLocation, currentBlock, discovered);
                 broadcast(event.getPlayer(), currentBlock, count);
             }
         } else {
             locationHistory.get(playerUUID).put(currentBlock, new HashSet<>());
-            int count = finder.count(currentLocation, currentBlock, locationHistory.get(playerUUID).get(currentBlock));
+            int count = blockFinder.count(currentLocation, currentBlock, locationHistory.get(playerUUID).get(currentBlock));
             broadcast(event.getPlayer(), currentBlock, count);
         }
     }
