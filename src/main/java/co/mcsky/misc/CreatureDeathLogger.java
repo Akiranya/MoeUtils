@@ -42,15 +42,16 @@ public class CreatureDeathLogger implements Listener {
                 : moe.commonConfig.msg_none;
         String separator = ", ";
         @SuppressWarnings("StringBufferReplaceableByString")
-        StringBuilder loc = new StringBuilder()
+        String loc = new StringBuilder()
                 .append(entity.getLocation().getWorld().getName())
                 .append(separator)
                 .append(entity.getLocation().getBlockX())
                 .append(separator)
                 .append(entity.getLocation().getBlockY())
                 .append(separator)
-                .append(entity.getLocation().getBlockZ());
-        moe.getServer().broadcastMessage(String.format(cfg.msg_death, victimName, cause, player, loc.toString()));
+                .append(entity.getLocation().getBlockZ())
+                .toString();
+        moe.getServer().broadcastMessage(String.format(cfg.msg_death, victimName, cause, player, loc));
     }
 
 }
