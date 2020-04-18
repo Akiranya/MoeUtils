@@ -60,8 +60,8 @@ public class FoundDiamondsConfig extends YamlConfig {
     }};
 
     @Path("messages.prefix")
-    public String msg_prefix = ">>";
+    public String msg_prefix = "[&e矿工茶馆&r] ";
     @Path("messages.found")
-    public String msg_found = "%s 挖到了 %d 个 %s!";
+    public String msg_found = "%s&b 挖到了 &e%d&b 个 %s!";
 
 }
