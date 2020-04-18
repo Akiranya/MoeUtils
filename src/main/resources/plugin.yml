@@ -11,7 +11,7 @@ depend: [LangUtils, Vault, Yamler]
 commands:
   moeutils:
     description: Entry to MoeUtils
-    usage: /<command> {...}
+    usage: /<command> {Commands...}
     permission: moe.user
     aliases: [moe]
 permissions:
