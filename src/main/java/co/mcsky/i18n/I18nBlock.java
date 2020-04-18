@@ -13,15 +13,13 @@ import java.util.Map;
  * for quickly getting the {@code i18nDisplayName} of a given block.
  */
 public class I18nBlock {
-    private static Map<Material, String> displayNames = new HashMap<>();
+    private static final Map<Material, String> displayNames = new HashMap<>();
 
     public static String getBlockDisplayName(Material material, Player player) {
-        if (displayNames.containsKey(material)) {
-            return displayNames.get(material);
-        } else {
+        if (!displayNames.containsKey(material)) {
             registerEntry(material, player);
-            return displayNames.get(material);
         }
+        return displayNames.get(material);
     }
 
     private static void registerEntry(Material material, Player player) {
