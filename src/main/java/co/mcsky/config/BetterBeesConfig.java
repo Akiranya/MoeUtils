@@ -26,6 +26,9 @@ public class BetterBeesConfig extends YamlConfig {
     private boolean enable = true;
 
     @Getter
-    @Path("messages.count")
-    private String count = "这个蜂巢里有 %s 只蜜蜂.";
+    @Path("messages.count_beehive")
+    private String count_beehive = "这个蜂箱里有 %s 只蜜蜂.";
+    @Getter
+    @Path("messages.count_bee_nest")
+    private String count_bee_nest = "这个蜂巢里有 %s 只蜜蜂.";
 }

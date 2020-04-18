@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 public class BeehiveBeeCounter implements Listener {
 
@@ -27,10 +28,12 @@ public class BeehiveBeeCounter implements Listener {
     public void onPlayerRightClickBlock(PlayerInteractEvent e) {
         if (e.getClickedBlock() == null) return;
         if (!e.isBlockInHand()) {
-            if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (e.getHand() == EquipmentSlot.HAND && e.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 if (e.getClickedBlock().getType() == Material.BEE_NEST || e.getClickedBlock().getType() == Material.BEEHIVE) {
-                    Beehive beehive = (Beehive) e.getClickedBlock().getState();
-                    String msg = String.format(cfg.getCount(), beehive.getEntityCount());
+                    String msg = String.format(
+                            e.getClickedBlock().getType() == Material.BEE_NEST ? cfg.getCount_bee_nest() : cfg.getCount_beehive(),
+                            ((Beehive) e.getClickedBlock().getState()).getEntityCount()
+                    );
                     e.getPlayer().sendMessage(msg);
                 }
             }
