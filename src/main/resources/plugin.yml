@@ -1,13 +1,13 @@
 name: MoeUtils
 main: co.mcsky.MoeUtils
-version: 1.5.7
+version: 1.5.8
 api-version: '1.13'
 description: A All-in-One plugin.
 author: Nailm
 website: https://mimaru.me
 prefix: MoeUtils
-softdepend: [MobArena]
-depend: [Essentials, LangUtils, Vault, Yamler]
+softdepend: [MobArena, Essentials]
+depend: [LangUtils, Vault, Yamler]
 commands:
   moeutils:
     description: Entry to MoeUtils
