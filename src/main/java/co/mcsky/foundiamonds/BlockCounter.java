@@ -1,4 +1,4 @@
-package co.mcsky.utilities;
+package co.mcsky.foundiamonds;
 
 import co.mcsky.MoeUtils;
 import org.bukkit.Location;
@@ -11,7 +11,7 @@ import java.util.Set;
 
 import static org.bukkit.block.BlockFace.*;
 
-public class BlockFinder {
+public class BlockCounter {
 
     /**
      * The maximum iteration for searching.
@@ -42,7 +42,7 @@ public class BlockFinder {
             WEST_SOUTH_WEST
     };
 
-    public BlockFinder(MoeUtils moe) {
+    public BlockCounter(MoeUtils moe) {
         this.searchBound = moe.foundDiamondsConfig.getMaxIterations();
     }
 
