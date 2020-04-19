@@ -50,4 +50,5 @@ public class StringConverter implements Converter {
     public boolean supports(Class<?> type) {
         return type == String.class;
     }
+
 }

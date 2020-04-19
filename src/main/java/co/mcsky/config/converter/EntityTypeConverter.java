@@ -25,4 +25,5 @@ public class EntityTypeConverter implements Converter {
     public boolean supports(Class<?> type) {
         return type.isAssignableFrom(EntityType.class);
     }
+
 }

@@ -13,11 +13,13 @@
       <w>noperms</w>
       <w>notenoughmoney</w>
       <w>nyaa</w>
+      <w>overworld</w>
       <w>playeronly</w>
       <w>safeportal</w>
       <w>softdepend</w>
       <w>teleport</w>
       <w>teleportation</w>
+      <w>teleported</w>
       <w>yamler</w>
     </words>
   </dictionary>

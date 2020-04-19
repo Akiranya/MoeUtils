@@ -25,4 +25,5 @@ public class MaterialConverter implements Converter {
     public boolean supports(Class<?> type) {
         return Material.class.isAssignableFrom(type);
     }
+
 }

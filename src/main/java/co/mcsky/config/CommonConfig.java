@@ -10,6 +10,7 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 
 public class CommonConfig extends YamlConfig {
+
     @Comment("Default language of LangUtils.")
     public String lang = "zh_cn";
     @Path("messages.none")
@@ -42,4 +43,5 @@ public class CommonConfig extends YamlConfig {
             e.printStackTrace();
         }
     }
+
 }
