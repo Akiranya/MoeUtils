@@ -66,6 +66,13 @@ public class CooldownUtil {
             cooldownData.get(user).lastUsedTime = 0;
     }
 
+    /**
+     * Reset all cooldown data.
+     */
+    public static void resetAll() {
+        cooldownData.clear();
+    }
+
     private static long diff(UUID user) {
         UserData userData = cooldownData.get(user);
         long now = System.currentTimeMillis();

@@ -23,9 +23,9 @@ public enum TimeOption {
     public String customName(MoeUtils moe) {
         switch (this) {
             case DAY:
-                return moe.magicTimeConfig.msg_day;
+                return moe.magicTimeCfg.msg_day;
             case NIGHT:
-                return moe.magicTimeConfig.msg_night;
+                return moe.magicTimeCfg.msg_night;
             default:
                 throw new IllegalStateException("Unknown time type.");
         }

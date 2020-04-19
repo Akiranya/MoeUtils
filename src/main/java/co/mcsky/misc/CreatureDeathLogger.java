@@ -24,7 +24,7 @@ public class CreatureDeathLogger implements Listener {
 
     public CreatureDeathLogger(MoeUtils moe) {
         this.moe = moe;
-        this.cfg = moe.creatureDeathLoggerConfig;
+        this.cfg = moe.deathLoggerCfg;
         this.LoggedCreatures = cfg.creatures;
         if (cfg.enable) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
@@ -38,8 +38,8 @@ public class CreatureDeathLogger implements Listener {
         if (!LoggedCreatures.contains(entity.getType())) return;
 
         String victimName = entity.getCustomName() != null
-                            ? entity.getCustomName() + "(" + LanguageHelper.getEntityName(e.getEntityType(), moe.commonConfig.lang) + ")"
-                            : LanguageHelper.getEntityName(e.getEntityType(), moe.commonConfig.lang);
+                            ? entity.getCustomName() + "(" + LanguageHelper.getEntityName(e.getEntityType(), moe.commonCfg.lang) + ")"
+                            : LanguageHelper.getEntityName(e.getEntityType(), moe.commonCfg.lang);
 
         @SuppressWarnings("ConstantConditions")
         String damageCause = DamageCauseLocalization.valueOf(e.getEntity().getLastDamageCause().getCause().name()).getLocalization();
@@ -57,7 +57,7 @@ public class CreatureDeathLogger implements Listener {
                                           .reduce((acc, name) -> acc + separator + name)
                                           .get();
             } else {
-                playerName = moe.commonConfig.msg_none;
+                playerName = moe.commonCfg.msg_none;
             }
         }
 

@@ -32,7 +32,7 @@ public class ArenaEventListener implements Listener {
 
     public ArenaEventListener(MoeUtils moe) {
         this.moe = moe;
-        this.cfg = moe.mobArenaProConfig;
+        this.cfg = moe.mobArenaProCfg;
         this.nametagUtil = new NametagUtil();
         this.scoreboardUtil = new ScoreboardUtil(this.nametagUtil, moe);
 

@@ -19,11 +19,11 @@ public enum WeatherOption {
     public String customName(MoeUtils moe) {
         switch (this) {
             case CLEAR:
-                return moe.magicWeatherConfig.msg_clear;
+                return moe.magicWeatherCfg.msg_clear;
             case RAIN:
-                return moe.magicWeatherConfig.msg_rain;
+                return moe.magicWeatherCfg.msg_rain;
             case THUNDER:
-                return moe.magicWeatherConfig.msg_thunder;
+                return moe.magicWeatherCfg.msg_thunder;
             default:
                 throw new IllegalStateException("Unknown weather type.");
         }

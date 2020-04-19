@@ -16,7 +16,7 @@ public class MagicWeather extends MagicBase {
     private final Map<String, String> lastPlayers;
 
     public MagicWeather(MoeUtils moe) {
-        super(moe, moe.magicWeatherConfig.cooldown);
+        super(moe, moe.magicWeatherCfg.cooldown);
         COOLDOWN_KEYS = new HashMap<>() {{
             moe.getServer().getWorlds().forEach(world -> put(world.getName(), UUID.randomUUID()));
         }};

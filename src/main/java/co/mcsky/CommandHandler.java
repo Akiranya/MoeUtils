@@ -36,11 +36,11 @@ public class CommandHandler implements TabExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length < 1) return false;
         if (args[0].equalsIgnoreCase("reload")) {
-            sender.sendMessage(String.format(moe.commonConfig.msg_reloaded, moe.reload()));
+            sender.sendMessage(String.format(moe.commonCfg.msg_reloaded, moe.reload()));
             return true;
         }
         if (!(sender instanceof Player)) {
-            sender.sendMessage(moe.commonConfig.msg_only_player);
+            sender.sendMessage(moe.commonCfg.msg_only_player);
             return true;
         }
         Player player = (Player) sender;
@@ -68,7 +68,7 @@ public class CommandHandler implements TabExecutor {
             if (args[1].equalsIgnoreCase("reset")) {
                 if (hasPermission(player, "moe.magic.reset")) {
                     magicTime.resetCooldown();
-                    sender.sendMessage(moe.commonConfig.msg_reset);
+                    sender.sendMessage(moe.commonCfg.msg_reset);
                 }
                 return true;
             }
@@ -103,7 +103,7 @@ public class CommandHandler implements TabExecutor {
             if (args[1].equalsIgnoreCase("reset")) {
                 if (hasPermission(player, "moe.magic.reset")) {
                     magicWeather.resetCooldown();
-                    sender.sendMessage(moe.commonConfig.msg_reset);
+                    sender.sendMessage(moe.commonCfg.msg_reset);
                 }
                 return true;
             }
@@ -144,7 +144,7 @@ public class CommandHandler implements TabExecutor {
         if (permission.has(sender, perm)) {
             return true;
         }
-        sender.sendMessage(String.format(moe.commonConfig.msg_noperms, perm));
+        sender.sendMessage(String.format(moe.commonCfg.msg_noperms, perm));
         return false;
     }
 

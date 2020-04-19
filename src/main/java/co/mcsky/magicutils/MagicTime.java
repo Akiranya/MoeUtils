@@ -16,7 +16,7 @@ public class MagicTime extends MagicBase {
 
 
     public MagicTime(MoeUtils moe) {
-        super(moe, moe.magicTimeConfig.cooldown);
+        super(moe, moe.magicTimeCfg.cooldown);
         COOLDOWN_KEY = UUID.randomUUID();
         new MagicTimeListener(moe, this);
     }

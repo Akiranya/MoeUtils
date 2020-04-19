@@ -26,10 +26,10 @@ public class FoundDiamonds implements Listener {
 
     public FoundDiamonds(MoeUtils moe) {
         this.moe = moe;
-        this.cfg = moe.foundDiamondsConfig;
+        this.cfg = moe.foundDiamondsCfg;
         enabledBlocks = cfg.blocks;
         locationHistory = new HashSet<>();
-        blockCounter = new BlockCounter(moe.foundDiamondsConfig.maxIterations);
+        blockCounter = new BlockCounter(moe.foundDiamondsCfg.maxIterations);
         if (cfg.enable) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
             moe.getLogger().info("FoundDiamonds is enabled");

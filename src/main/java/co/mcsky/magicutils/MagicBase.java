@@ -20,7 +20,7 @@ public class MagicBase {
 
     public MagicBase(MoeUtils moe, int cooldownDuration) {
         this.moe = moe;
-        this.cfg = moe.commonConfig;
+        this.cfg = moe.commonCfg;
         this.COOLDOWN_DURATION = cooldownDuration;
     }
 

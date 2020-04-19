@@ -1,19 +1,16 @@
 package co.mcsky;
 
+import co.mcsky.bees.BeeBase;
 import co.mcsky.config.*;
-import co.mcsky.config.reference.EntityValues;
-import co.mcsky.config.reference.MaterialValues;
 import co.mcsky.foundiamonds.FoundDiamonds;
 import co.mcsky.magicutils.MagicTime;
 import co.mcsky.magicutils.MagicWeather;
-import co.mcsky.misc.BeehiveBeeCounter;
 import co.mcsky.misc.CreatureDeathLogger;
 import co.mcsky.misc.OptimizedNetherPortal;
 import co.mcsky.mobarena.ArenaEventListener;
 import co.mcsky.utilities.TimerUtil;
 import com.earth2me.essentials.Essentials;
 import com.meowj.langutils.LangUtils;
-import net.cubespace.Yamler.Config.InvalidConfigurationException;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -31,15 +28,14 @@ public class MoeUtils extends JavaPlugin {
     public static Economy economy = null;
     public static Chat chat = null;
 
-    // All config goes here
-    public BetterBeesConfig betterBeesConfig;
-    public CommonConfig commonConfig;
-    public CreatureDeathLoggerConfig creatureDeathLoggerConfig;
-    public FoundDiamondsConfig foundDiamondsConfig;
-    public MagicTimeConfig magicTimeConfig;
-    public MagicWeatherConfig magicWeatherConfig;
-    public MobArenaProConfig mobArenaProConfig;
-    public SafePortalConfig safePortalConfig;
+    public BeesConfig beesCfg;
+    public CommonConfig commonCfg;
+    public CreatureDeathLoggerConfig deathLoggerCfg;
+    public FoundDiamondsConfig foundDiamondsCfg;
+    public MagicTimeConfig magicTimeCfg;
+    public MagicWeatherConfig magicWeatherCfg;
+    public MobArenaProConfig mobArenaProCfg;
+    public SafePortalConfig safePortalCfg;
 
     @Override
     public void onDisable() {
@@ -69,7 +65,7 @@ public class MoeUtils extends JavaPlugin {
         new OptimizedNetherPortal(this);
         new FoundDiamonds(this);
         new CreatureDeathLogger(this);
-        new BeehiveBeeCounter(this);
+        new BeeBase(this);
 
         // Print config for debugging
         new ConfigPrinter(this);
@@ -89,31 +85,15 @@ public class MoeUtils extends JavaPlugin {
     }
 
     private void loadConfig() {
-        try {
-            commonConfig = new CommonConfig(this);
-            commonConfig.init();
-            betterBeesConfig = new BetterBeesConfig(this);
-            betterBeesConfig.init();
-            creatureDeathLoggerConfig = new CreatureDeathLoggerConfig(this);
-            creatureDeathLoggerConfig.init();
-            foundDiamondsConfig = new FoundDiamondsConfig(this);
-            foundDiamondsConfig.init();
-            magicTimeConfig = new MagicTimeConfig(this);
-            magicTimeConfig.init();
-            magicWeatherConfig = new MagicWeatherConfig(this);
-            magicWeatherConfig.init();
-            mobArenaProConfig = new MobArenaProConfig(this);
-            mobArenaProConfig.init();
-            safePortalConfig = new SafePortalConfig(this);
-            safePortalConfig.init();
-
-            MaterialValues materialValues = new MaterialValues(this);
-            materialValues.init();
-            EntityValues entityValues = new EntityValues(this);
-            entityValues.init();
-        } catch (InvalidConfigurationException ex) {
-            ex.printStackTrace();
-        }
+        ConfigFactory configFactory = new ConfigFactory(this);
+        beesCfg = configFactory.getBeesConfig();
+        commonCfg = configFactory.getCommonConfig();
+        deathLoggerCfg = configFactory.getCreatureDeathLoggerConfig();
+        foundDiamondsCfg = configFactory.getFoundDiamondsConfig();
+        magicTimeCfg = configFactory.getMagicTimeConfig();
+        magicWeatherCfg = configFactory.getMagicWeatherConfig();
+        mobArenaProCfg = configFactory.getMobArenaProConfig();
+        safePortalCfg = configFactory.getSafePortalConfig();
     }
 
     private Permission getPermission() {
