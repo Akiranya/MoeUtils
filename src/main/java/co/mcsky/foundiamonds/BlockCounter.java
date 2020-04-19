@@ -1,6 +1,5 @@
 package co.mcsky.foundiamonds;
 
-import co.mcsky.MoeUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -42,8 +41,8 @@ public class BlockCounter {
             WEST_SOUTH_WEST
     };
 
-    public BlockCounter(MoeUtils moe) {
-        this.searchBound = moe.foundDiamondsConfig.maxIterations;
+    public BlockCounter(int searchBound) {
+        this.searchBound = searchBound;
     }
 
     /**
@@ -63,11 +62,12 @@ public class BlockCounter {
     /**
      * @param start      Start location.
      * @param target     The type of block you want to search for.
-     * @param discovered A set containing locations where blocks are already marked as discovered on which the finder
-     *                   will not count.
+     * @param discovered A set containing locations where blocks are already
+     *                   marked as discovered on which the finder will not
+     *                   count.
      *
-     * @return The number of blocks of same type as {@code target} which are the neighbors of the block at location
-     * {@code start}.
+     * @return The number of blocks of same type as {@code target} which are the
+     * neighbors of the block at location {@code start}.
      */
     public int count(Location start, Material target, Set<Location> discovered) {
         if (discovered == null) {
