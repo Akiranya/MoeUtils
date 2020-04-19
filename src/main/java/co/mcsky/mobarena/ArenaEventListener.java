@@ -25,7 +25,7 @@ public class ArenaEventListener implements Listener {
     private final MoeUtils moe;
     private final MobArenaProConfig cfg;
     private final ScoreboardUtil scoreboardUtil;
-    private final NametagUtil nameTagUtil;
+    private final NametagUtil nametagUtil;
     private MobArena mobArena;
     private Listener PlayerHealthListener;
     private Listener ProjectileCollideListener;
@@ -33,8 +33,8 @@ public class ArenaEventListener implements Listener {
     public ArenaEventListener(MoeUtils moe) {
         this.moe = moe;
         this.cfg = moe.mobArenaProConfig;
-        this.nameTagUtil = new NametagUtil();
-        this.scoreboardUtil = new ScoreboardUtil(this.nameTagUtil, moe);
+        this.nametagUtil = new NametagUtil();
+        this.scoreboardUtil = new ScoreboardUtil(this.nametagUtil, moe);
 
         // Check if MobArena is loaded
         Plugin pluginMobArena = getServer().getPluginManager().getPlugin("MobArena");
@@ -56,11 +56,11 @@ public class ArenaEventListener implements Listener {
         // 游戏开始后，先设置好他们的血条
         Bukkit.getScheduler().runTaskLater(moe, () -> {
             for (Player p : event.getArena().getAllPlayers()) {
-                nameTagUtil.change(p, nameTagUtil.color("&a&l[&r"), nameTagUtil.color("&a&l]"), UPDATE);
+                nametagUtil.change(p, nametagUtil.color("&a&l[&r"), nametagUtil.color("&a&l]"), UPDATE);
                 scoreboardUtil.showHealth(p);
             }
             // 当竞技场开始后，开始监听玩家的血量变化
-            PlayerHealthListener = new PlayerHealthListener(moe, nameTagUtil);
+            PlayerHealthListener = new PlayerHealthListener(moe, nametagUtil);
             ProjectileCollideListener = new ProjectileCollideListener(moe, mobArena);
         }, 20);
     }
@@ -70,7 +70,7 @@ public class ArenaEventListener implements Listener {
         // 游戏结束，清空计分板
         Bukkit.getScheduler().runTaskLater(moe, () -> {
             for (Player p : event.getArena().getAllPlayers()) {
-                nameTagUtil.change(p, "", "", REMOVE);
+                nametagUtil.change(p, "", "", REMOVE);
                 scoreboardUtil.removeHealth(p);
             }
             // Unregister listener when arena ends
@@ -84,7 +84,7 @@ public class ArenaEventListener implements Listener {
         // 玩家死亡，清空计分板
         Bukkit.getScheduler().runTaskLater(moe, () -> {
             Player p = event.getPlayer();
-            nameTagUtil.change(p, "", "", REMOVE);
+            nametagUtil.change(p, "", "", REMOVE);
             scoreboardUtil.removeHealth(p);
         }, 20);
     }
@@ -94,7 +94,7 @@ public class ArenaEventListener implements Listener {
         // 玩家离开，清空计分板
         Bukkit.getScheduler().runTaskLater(moe, () -> {
             Player p = event.getPlayer();
-            nameTagUtil.change(event.getPlayer(), "", "", REMOVE);
+            nametagUtil.change(event.getPlayer(), "", "", REMOVE);
             scoreboardUtil.removeHealth(p);
         }, 20);
     }
