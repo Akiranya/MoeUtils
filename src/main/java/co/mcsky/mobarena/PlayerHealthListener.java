@@ -1,7 +1,7 @@
 package co.mcsky.mobarena;
 
 import co.mcsky.MoeUtils;
-import co.mcsky.utilities.NameTagUtil;
+import co.mcsky.utilities.NametagUtil;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,12 +9,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 
-import static co.mcsky.utilities.NameTagUtil.ACTION.UPDATE;
+import static co.mcsky.utilities.NametagUtil.ACTION.UPDATE;
 
 public class PlayerHealthListener implements Listener {
-    private final NameTagUtil nameTagUtil;
+    private final NametagUtil nameTagUtil;
 
-    PlayerHealthListener(MoeUtils moe, NameTagUtil nameTagUtil) {
+    PlayerHealthListener(MoeUtils moe, NametagUtil nameTagUtil) {
         // Pass the CustomPlayerName instance instead of initializing a new one
         this.nameTagUtil = nameTagUtil;
         moe.getServer().getPluginManager().registerEvents(this, moe);

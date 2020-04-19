@@ -9,22 +9,22 @@ import org.bukkit.scoreboard.Scoreboard;
 
 public class ScoreboardUtil {
 
-    private final NameTagUtil th;
+    private final NametagUtil tag;
     private final MoeUtils moe;
 
-    public ScoreboardUtil(NameTagUtil th, MoeUtils moe) {
-        this.th = th;
+    public ScoreboardUtil(NametagUtil tag, MoeUtils moe) {
+        this.tag = tag;
         this.moe = moe;
     }
 
     public void showHealth(Player player) {
         // Use the already-existing scoreboard of player instead of creating new one
         Scoreboard scoreboard = player.getScoreboard();
-        String name = "showhealth";
-        String criteria = "health";
-        String text = th.color("/ " + (int) Math.ceil(player.getHealth()));
+        final String name = "showhealth";
+        final String criteria = "health";
+        final String displayName = tag.color("/ " + (int) Math.ceil(player.getHealth()));
         try {
-            Objective obj = scoreboard.registerNewObjective(name, criteria, text);
+            Objective obj = scoreboard.registerNewObjective(name, criteria, displayName);
             obj.setDisplaySlot(DisplaySlot.BELOW_NAME);
             player.setScoreboard(scoreboard);
         } catch (IllegalArgumentException | IllegalStateException e) {
@@ -43,4 +43,5 @@ public class ScoreboardUtil {
             // Happens if the player is logging out, just swallow it
         }
     }
+
 }

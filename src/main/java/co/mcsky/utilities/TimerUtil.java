@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class TimerUtil {
+
     private static final Map<UUID, Long> timeMap = new HashMap<>();
 
     /**
@@ -22,4 +23,5 @@ public class TimerUtil {
     public static long end(UUID key) {
         return System.currentTimeMillis() - timeMap.get(key);
     }
+
 }

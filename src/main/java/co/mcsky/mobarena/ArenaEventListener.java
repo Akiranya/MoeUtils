@@ -2,7 +2,7 @@ package co.mcsky.mobarena;
 
 import co.mcsky.MoeUtils;
 import co.mcsky.config.MobArenaProConfig;
-import co.mcsky.utilities.NameTagUtil;
+import co.mcsky.utilities.NametagUtil;
 import co.mcsky.utilities.ScoreboardUtil;
 import com.garbagemule.MobArena.MobArena;
 import com.garbagemule.MobArena.events.ArenaEndEvent;
@@ -16,8 +16,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
-import static co.mcsky.utilities.NameTagUtil.ACTION.REMOVE;
-import static co.mcsky.utilities.NameTagUtil.ACTION.UPDATE;
+import static co.mcsky.utilities.NametagUtil.ACTION.REMOVE;
+import static co.mcsky.utilities.NametagUtil.ACTION.UPDATE;
 import static org.bukkit.Bukkit.getServer;
 
 public class ArenaEventListener implements Listener {
@@ -25,7 +25,7 @@ public class ArenaEventListener implements Listener {
     private final MoeUtils moe;
     private final MobArenaProConfig cfg;
     private final ScoreboardUtil scoreboardUtil;
-    private final NameTagUtil nameTagUtil;
+    private final NametagUtil nameTagUtil;
     private MobArena mobArena;
     private Listener PlayerHealthListener;
     private Listener ProjectileCollideListener;
@@ -33,7 +33,7 @@ public class ArenaEventListener implements Listener {
     public ArenaEventListener(MoeUtils moe) {
         this.moe = moe;
         this.cfg = moe.mobArenaProConfig;
-        this.nameTagUtil = new NameTagUtil();
+        this.nameTagUtil = new NametagUtil();
         this.scoreboardUtil = new ScoreboardUtil(this.nameTagUtil, moe);
 
         // Check if MobArena is loaded
