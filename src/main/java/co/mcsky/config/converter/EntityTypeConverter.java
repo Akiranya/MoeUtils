@@ -13,7 +13,7 @@ public class EntityTypeConverter implements Converter {
 
     @Override
     public Object toConfig(Class<?> type, Object obj, ParameterizedType parameterizedType) throws Exception {
-        return obj.toString();
+        return obj.toString().toLowerCase();
     }
 
     @Override
