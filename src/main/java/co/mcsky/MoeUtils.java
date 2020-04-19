@@ -90,28 +90,20 @@ public class MoeUtils extends JavaPlugin {
             // Load config from disk
             commonConfig = new CommonConfig(this);
             commonConfig.init();
-            commonConfig.save();
             betterBeesConfig = new BetterBeesConfig(this);
             betterBeesConfig.init();
-            betterBeesConfig.save();
             creatureDeathLoggerConfig = new CreatureDeathLoggerConfig(this);
             creatureDeathLoggerConfig.init();
-            creatureDeathLoggerConfig.save();
             foundDiamondsConfig = new FoundDiamondsConfig(this);
             foundDiamondsConfig.init();
-            foundDiamondsConfig.save();
             magicTimeConfig = new MagicTimeConfig(this);
             magicTimeConfig.init();
-            magicTimeConfig.save();
             magicWeatherConfig = new MagicWeatherConfig(this);
             magicWeatherConfig.init();
-            magicWeatherConfig.save();
             mobArenaProConfig = new MobArenaProConfig(this);
             mobArenaProConfig.init();
-            mobArenaProConfig.save();
             safePortalConfig = new SafePortalConfig(this);
             safePortalConfig.init();
-            safePortalConfig.save();
 
             MaterialValues materialValues = new MaterialValues(this);
             materialValues.init();
