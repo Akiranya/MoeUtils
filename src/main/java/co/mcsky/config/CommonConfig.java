@@ -16,9 +16,9 @@ public class CommonConfig extends YamlConfig {
     @Path("messages.none")
     public String msg_none = "无";
     @Path("messages.active")
-    public String msg_active = "是";
+    public String msg_yes = "是";
     @Path("messages.deactivated")
-    public String msg_deactivated = "否";
+    public String msg_no = "否";
     @Path("messages.no_perms")
     public String msg_noperms = "&c你没有权限使用这个指令: %s";
     @Path("messages.only_player")
@@ -32,7 +32,7 @@ public class CommonConfig extends YamlConfig {
     @Path("messages.cooldown")
     public String msg_cooldown = "&7冷却中:&b %d&7 秒.";
     @Path("messages.reset")
-    public String msg_reset = "&b%s 已重置.";
+    public String msg_reset = "&b状态已重置.";
 
     public CommonConfig(Plugin plugin) {
         CONFIG_HEADER = new String[]{"Configuration of Common Messages"};
