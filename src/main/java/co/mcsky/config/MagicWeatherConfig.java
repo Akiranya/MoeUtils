@@ -14,7 +14,7 @@ public class MagicWeatherConfig extends YamlConfig {
     public int cost = 50;
     public int cooldown = 600;
     @Path("messages.prefix")
-    public String msg_prefix = "[&d魔法天气&r] ";
+    public String msg_prefix = "&8[&d魔法天气&8]&r ";
     @Path("messages.clear")
     public String msg_clear = "魔法晴天";
     @Path("messages.rain")

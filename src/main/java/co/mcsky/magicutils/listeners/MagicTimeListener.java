@@ -33,10 +33,10 @@ public class MagicTimeListener extends MagicBase implements Listener {
             e.setCancelled(true);
             return;
         }
-        chargePlayer(player, moe.magicTimeConfig.cost);
         CooldownUtil.use(COOLDOWN_KEY);
-        moe.getServer().getScheduler().runTaskLaterAsynchronously(moe, () -> moe.getServer().broadcastMessage(String.format(moe.magicTimeConfig.msg_ended, e.getTime().customName(moe))), TimeConverter.toTick(COOLDOWN_DURATION));
-        moe.getServer().broadcastMessage(String.format(moe.magicTimeConfig.msg_changed, e.getTime().customName(moe)));
+        chargePlayer(player, moe.magicTimeConfig.cost);
+        moe.getServer().getScheduler().runTaskLaterAsynchronously(moe, () -> moe.getServer().broadcastMessage(moe.magicTimeConfig.msg_prefix + String.format(moe.magicTimeConfig.msg_ended, e.getTime().customName(moe))), TimeConverter.toTick(COOLDOWN_DURATION));
+        moe.getServer().broadcastMessage(moe.magicTimeConfig.msg_prefix + String.format(moe.magicTimeConfig.msg_changed, e.getTime().customName(moe)));
     }
 
 }

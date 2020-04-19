@@ -14,7 +14,7 @@ public class MagicTimeConfig extends YamlConfig {
     public int cost = 50;
     public int cooldown = 600;
     @Path("messages.prefix")
-    public String msg_prefix = "[&d魔法时间&r] ";
+    public String msg_prefix = "&8[&d魔法时间&8]&r ";
     @Path("messages.day")
     public String msg_day = "魔法白天";
     @Path("messages.night")

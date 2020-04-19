@@ -4,6 +4,7 @@ import co.mcsky.config.converter.EntityTypeConverter;
 import co.mcsky.config.converter.StringConverter;
 import lombok.Getter;
 import net.cubespace.Yamler.Config.*;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.Plugin;
 

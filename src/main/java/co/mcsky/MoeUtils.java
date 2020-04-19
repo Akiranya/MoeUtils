@@ -1,6 +1,8 @@
 package co.mcsky;
 
 import co.mcsky.config.*;
+import co.mcsky.config.reference.EntityValues;
+import co.mcsky.config.reference.MaterialValues;
 import co.mcsky.foundiamonds.FoundDiamonds;
 import co.mcsky.magicutils.MagicTime;
 import co.mcsky.magicutils.MagicWeather;
@@ -110,6 +112,11 @@ public class MoeUtils extends JavaPlugin {
             safePortalConfig = new SafePortalConfig(this);
             safePortalConfig.init();
             safePortalConfig.save();
+
+            MaterialValues materialValues = new MaterialValues(this);
+            materialValues.init();
+            EntityValues entityValues = new EntityValues(this);
+            entityValues.init();
 
             // Print relevant config values
             new ConfigPrinter(this);

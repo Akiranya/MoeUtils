@@ -38,6 +38,9 @@ public class MagicTime extends MagicBase {
         return lastPlayer;
     }
 
+    /**
+     * Reset the cooldown of magic time instance.
+     */
     public void resetCooldown() {
         CooldownUtil.reset(COOLDOWN_KEY);
     }

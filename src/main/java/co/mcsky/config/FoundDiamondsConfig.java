@@ -40,7 +40,7 @@ public class FoundDiamondsConfig extends YamlConfig {
         add(Material.NETHER_QUARTZ_ORE);
     }};
     @Path("messages.prefix")
-    public String msg_prefix = "[&e矿工茶馆&r] ";
+    public String msg_prefix = "&8[&e矿工茶馆&8]&r ";
     @Path("messages.found")
     public String msg_found = "%s&7 挖到了 &e%d&7 个 &r&l%s!";
 

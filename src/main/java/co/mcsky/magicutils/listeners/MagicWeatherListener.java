@@ -35,10 +35,10 @@ public class MagicWeatherListener extends MagicBase implements Listener {
             e.setCancelled(true);
             return;
         }
-        chargePlayer(player, moe.magicWeatherConfig.cost);
         CooldownUtil.use(COOLDOWN_KEYS.get(worldName));
-        moe.getServer().getScheduler().runTaskLaterAsynchronously(moe, () -> moe.getServer().broadcastMessage(String.format(moe.magicWeatherConfig.msg_ended, e.getWeather().customName(moe), worldName)), TimeConverter.toTick(COOLDOWN_DURATION));
-        moe.getServer().broadcastMessage(String.format(moe.magicWeatherConfig.msg_changed, worldName, e.getWeather().customName(moe)));
+        chargePlayer(player, moe.magicWeatherConfig.cost);
+        moe.getServer().getScheduler().runTaskLaterAsynchronously(moe, () -> moe.getServer().broadcastMessage(moe.magicWeatherConfig.msg_prefix + String.format(moe.magicWeatherConfig.msg_ended, e.getWeather().customName(moe), worldName)), TimeConverter.toTick(COOLDOWN_DURATION));
+        moe.getServer().broadcastMessage(moe.magicWeatherConfig.msg_prefix + String.format(moe.magicWeatherConfig.msg_changed, worldName, e.getWeather().customName(moe)));
     }
 
 }

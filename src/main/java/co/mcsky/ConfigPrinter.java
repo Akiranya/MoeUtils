@@ -1,11 +1,10 @@
 package co.mcsky;
 
-import co.mcsky.MoeUtils;
 import org.bukkit.ChatColor;
 
 public class ConfigPrinter {
 
-    private MoeUtils moe;
+    private final MoeUtils moe;
 
     public ConfigPrinter(MoeUtils moe) {
         this.moe = moe;
@@ -13,22 +12,13 @@ public class ConfigPrinter {
     }
 
     private void print() {
-        String bullet = " - ";
-
-        moe.getLogger().info(ChatColor.YELLOW + "FoundDiamonds - Enabled BLocks:");
-        moe.foundDiamondsConfig.blocks.forEach(
-                (e) -> moe.getLogger().info(bullet + e.toString())
-                                                   );
-
-        moe.getLogger().info(ChatColor.YELLOW + "FoundDiamonds - Enabled Worlds:");
-        moe.foundDiamondsConfig.worlds.forEach(
-                (e) -> moe.getLogger().info(bullet + e)
-                                                   );
-
-        moe.getLogger().info(ChatColor.YELLOW + "MobArena-Addon - Whitelisted Entities:");
-        moe.mobArenaProConfig.whitelist.forEach(
-                e -> moe.getLogger().info(bullet + e.toString())
-                                                    );
+        final String bullet = " - ";
+        moe.getLogger().info(ChatColor.YELLOW + "FoundDiamonds.blocks:");
+        moe.foundDiamondsConfig.blocks.forEach(e -> moe.getLogger().info(bullet + e.toString().toLowerCase()));
+        moe.getLogger().info(ChatColor.YELLOW + "FoundDiamonds.worlds:");
+        moe.foundDiamondsConfig.worlds.forEach(e -> moe.getLogger().info(bullet + e));
+        moe.getLogger().info(ChatColor.YELLOW + "MobArena-Addon.whitelist:");
+        moe.mobArenaProConfig.whitelist.forEach(e -> moe.getLogger().info(bullet + e.toString().toLowerCase()));
     }
 
 }

@@ -50,6 +50,9 @@ public class MagicWeather extends MagicBase {
         return sb.toString();
     }
 
+    /**
+     * Reset the cooldown of magic weather instance.
+     */
     public void resetCooldown() {
         COOLDOWN_KEYS.values().forEach(CooldownUtil::reset);
     }

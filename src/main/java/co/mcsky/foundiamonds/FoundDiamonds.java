@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class FoundDiamonds implements Listener {
+
     final private MoeUtils moe;
     final private FoundDiamondsConfig cfg;
 
@@ -47,7 +48,7 @@ public class FoundDiamonds implements Listener {
         Location currentLocation = block.getLocation();
         Material currentBlock = block.getType();
         if (!locationHistory.contains(currentLocation)) {
-            moe.getServer().broadcastMessage(String.format(
+            moe.getServer().broadcastMessage(cfg.msg_prefix + String.format(
                     cfg.msg_found,
                     event.getPlayer().getDisplayName(),
                     blockCounter.count(currentLocation, currentBlock, locationHistory),
