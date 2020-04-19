@@ -9,10 +9,10 @@ import org.bukkit.scoreboard.Scoreboard;
 
 public class ScoreboardUtil {
 
-    private final TagUtil th;
+    private final NameTagUtil th;
     private final MoeUtils moe;
 
-    public ScoreboardUtil(TagUtil th, MoeUtils moe) {
+    public ScoreboardUtil(NameTagUtil th, MoeUtils moe) {
         this.th = th;
         this.moe = moe;
     }

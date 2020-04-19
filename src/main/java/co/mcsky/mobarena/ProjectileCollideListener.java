@@ -28,7 +28,8 @@ public class ProjectileCollideListener implements Listener {
         // Ignore if projectiles are not from players
         if (!(shooter instanceof Player)) return;
         // Ignore if player is not in arena
-        if (!ma.getArenaMaster().getAllLivingPlayers().contains(shooter)) return;
+        if (!ma.getArenaMaster().getAllLivingPlayers().contains(shooter))
+            return;
         if (whiteList.contains(event.getCollidedWith().getType())) {
             event.setCancelled(true);
         }

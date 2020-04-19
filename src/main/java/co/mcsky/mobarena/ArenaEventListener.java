@@ -2,8 +2,8 @@ package co.mcsky.mobarena;
 
 import co.mcsky.MoeUtils;
 import co.mcsky.config.MobArenaProConfig;
+import co.mcsky.utilities.NameTagUtil;
 import co.mcsky.utilities.ScoreboardUtil;
-import co.mcsky.utilities.TagUtil;
 import com.garbagemule.MobArena.MobArena;
 import com.garbagemule.MobArena.events.ArenaEndEvent;
 import com.garbagemule.MobArena.events.ArenaPlayerDeathEvent;
@@ -16,8 +16,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
-import static co.mcsky.utilities.TagUtil.ACTION.REMOVE;
-import static co.mcsky.utilities.TagUtil.ACTION.UPDATE;
+import static co.mcsky.utilities.NameTagUtil.ACTION.REMOVE;
+import static co.mcsky.utilities.NameTagUtil.ACTION.UPDATE;
 import static org.bukkit.Bukkit.getServer;
 
 public class ArenaEventListener implements Listener {
@@ -25,7 +25,7 @@ public class ArenaEventListener implements Listener {
     private final MoeUtils moe;
     private final MobArenaProConfig cfg;
     private final ScoreboardUtil scoreboardUtil;
-    private final TagUtil tagUtil;
+    private final NameTagUtil nameTagUtil;
     private MobArena mobArena;
     private Listener PlayerHealthListener;
     private Listener ProjectileCollideListener;
@@ -33,8 +33,8 @@ public class ArenaEventListener implements Listener {
     public ArenaEventListener(MoeUtils moe) {
         this.moe = moe;
         this.cfg = moe.mobArenaProConfig;
-        this.tagUtil = new TagUtil();
-        this.scoreboardUtil = new ScoreboardUtil(this.tagUtil, moe);
+        this.nameTagUtil = new NameTagUtil();
+        this.scoreboardUtil = new ScoreboardUtil(this.nameTagUtil, moe);
 
         // Check if MobArena is loaded
         Plugin pluginMobArena = getServer().getPluginManager().getPlugin("MobArena");
@@ -56,11 +56,11 @@ public class ArenaEventListener implements Listener {
         // 游戏开始后，先设置好他们的血条
         Bukkit.getScheduler().runTaskLater(moe, () -> {
             for (Player p : event.getArena().getAllPlayers()) {
-                tagUtil.change(p, tagUtil.color("&a&l[&r"), tagUtil.color("&a&l]"), UPDATE);
+                nameTagUtil.change(p, nameTagUtil.color("&a&l[&r"), nameTagUtil.color("&a&l]"), UPDATE);
                 scoreboardUtil.showHealth(p);
             }
             // 当竞技场开始后，开始监听玩家的血量变化
-            PlayerHealthListener = new PlayerHealthListener(moe, tagUtil);
+            PlayerHealthListener = new PlayerHealthListener(moe, nameTagUtil);
             ProjectileCollideListener = new ProjectileCollideListener(moe, mobArena);
         }, 20);
     }
@@ -70,7 +70,7 @@ public class ArenaEventListener implements Listener {
         // 游戏结束，清空计分板
         Bukkit.getScheduler().runTaskLater(moe, () -> {
             for (Player p : event.getArena().getAllPlayers()) {
-                tagUtil.change(p, "", "", REMOVE);
+                nameTagUtil.change(p, "", "", REMOVE);
                 scoreboardUtil.removeHealth(p);
             }
             // Unregister listener when arena ends
@@ -84,7 +84,7 @@ public class ArenaEventListener implements Listener {
         // 玩家死亡，清空计分板
         Bukkit.getScheduler().runTaskLater(moe, () -> {
             Player p = event.getPlayer();
-            tagUtil.change(p, "", "", REMOVE);
+            nameTagUtil.change(p, "", "", REMOVE);
             scoreboardUtil.removeHealth(p);
         }, 20);
     }
@@ -94,7 +94,7 @@ public class ArenaEventListener implements Listener {
         // 玩家离开，清空计分板
         Bukkit.getScheduler().runTaskLater(moe, () -> {
             Player p = event.getPlayer();
-            tagUtil.change(event.getPlayer(), "", "", REMOVE);
+            nameTagUtil.change(event.getPlayer(), "", "", REMOVE);
             scoreboardUtil.removeHealth(p);
         }, 20);
     }
