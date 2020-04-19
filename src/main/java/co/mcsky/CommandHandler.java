@@ -52,13 +52,13 @@ public class CommandHandler implements TabExecutor {
             if (args.length != 2) return false;
             if (args[1].equalsIgnoreCase("day")) {
                 if (hasPermission(player, "moe.magic.time.day")) {
-                    magicTime.setTime(player, DAY, moe.magicTimeConfig.getCost());
+                    magicTime.setTime(player, DAY, moe.magicTimeConfig.cost);
                 }
                 return true;
             }
             if (args[1].equalsIgnoreCase("night")) {
                 if (hasPermission(player, "moe.magic.time.night")) {
-                    magicTime.setTime(player, NIGHT, moe.magicTimeConfig.getCost());
+                    magicTime.setTime(player, NIGHT, moe.magicTimeConfig.cost);
                 }
                 return true;
             }
@@ -81,19 +81,19 @@ public class CommandHandler implements TabExecutor {
             if (args.length != 2) return false;
             if (args[1].equalsIgnoreCase("clear")) {
                 if (hasPermission(player, "moe.magic.weather.clear")) {
-                    magicWeather.setWeather(player, CLEAR, moe.magicWeatherConfig.getCost());
+                    magicWeather.setWeather(player, CLEAR, moe.magicWeatherConfig.cost);
                 }
                 return true;
             }
             if (args[1].equalsIgnoreCase("rain")) {
                 if (hasPermission(player, "moe.magic.weather.rain")) {
-                    magicWeather.setWeather(player, RAIN, moe.magicWeatherConfig.getCost());
+                    magicWeather.setWeather(player, RAIN, moe.magicWeatherConfig.cost);
                 }
                 return true;
             }
             if (args[1].equalsIgnoreCase("thunder")) {
                 if (hasPermission(player, "moe.magic.weather.thunder")) {
-                    magicWeather.setWeather(player, THUNDER, moe.magicWeatherConfig.getCost());
+                    magicWeather.setWeather(player, THUNDER, moe.magicWeatherConfig.cost);
                 }
                 return true;
             }

@@ -25,8 +25,8 @@ public class CreatureDeathLogger implements Listener {
     public CreatureDeathLogger(MoeUtils moe) {
         this.moe = moe;
         this.cfg = moe.creatureDeathLoggerConfig;
-        this.LoggedCreatures = cfg.getCreatures();
-        if (cfg.isEnable()) {
+        this.LoggedCreatures = cfg.creatures;
+        if (cfg.enable) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
             moe.getLogger().info("CreatureDeathLogger is enabled");
         }
@@ -49,7 +49,7 @@ public class CreatureDeathLogger implements Listener {
         if (entity.getKiller() != null) {
             playerName = entity.getKiller().getName();
         } else {
-            List<Player> nearbyPlayers = new ArrayList<>(e.getEntity().getLocation().getNearbyPlayers(cfg.getSearchRadius()));
+            List<Player> nearbyPlayers = new ArrayList<>(e.getEntity().getLocation().getNearbyPlayers(cfg.searchRadius));
             if (nearbyPlayers.size() != 0) {
                 // All nearby players are included.
                 playerName = nearbyPlayers.stream()

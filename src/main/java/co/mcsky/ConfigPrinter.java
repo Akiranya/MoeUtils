@@ -21,7 +21,7 @@ public class ConfigPrinter {
                                                    );
 
         moe.getLogger().info(ChatColor.YELLOW + "FoundDiamonds - Enabled Worlds:");
-        moe.foundDiamondsConfig.blocks.forEach(
+        moe.foundDiamondsConfig.worlds.forEach(
                 (e) -> moe.getLogger().info(bullet + e)
                                                    );
 
