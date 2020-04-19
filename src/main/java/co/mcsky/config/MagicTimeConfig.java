@@ -10,21 +10,10 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 
 public class MagicTimeConfig extends YamlConfig {
-    public MagicTimeConfig(Plugin plugin) {
-        CONFIG_HEADER = new String[]{"Configuration of MagicTime"};
-        CONFIG_FILE = new File(plugin.getDataFolder(), "magic_time.yml");
-        try {
-            addConverter(StringConverter.class);
-        } catch (InvalidConverterException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Getter
-    private int cost = 50;
+    private final int cost = 50;
     @Getter
-    private int cooldown = 600;
-
+    private final int cooldown = 600;
     @Path("messages.prefix")
     public String msg_prefix = "[&d魔法时间&r] ";
     @Path("messages.day")
@@ -37,5 +26,15 @@ public class MagicTimeConfig extends YamlConfig {
     public String msg_ended = "&d%s&b 结束了! &7(冷却就绪)";
     @Path("messages.status")
     public String msg_status = "&a当前状态:&7 %s&a. &a触发玩家:&7 %s&a. &a剩余时间:&7 %d&a 秒.";
+
+    public MagicTimeConfig(Plugin plugin) {
+        CONFIG_HEADER = new String[]{"Configuration of MagicTime"};
+        CONFIG_FILE = new File(plugin.getDataFolder(), "magic_time.yml");
+        try {
+            addConverter(StringConverter.class);
+        } catch (InvalidConverterException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

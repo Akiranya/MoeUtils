@@ -15,6 +15,39 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class FoundDiamondsConfig extends YamlConfig {
+    @Getter
+    @Comment("Enable this feature?")
+    private final boolean enable = true;
+    @Getter
+    @Comment("Max search attempts. Higher values may cause more lag.")
+    private final int maxIterations = 32;
+    @Getter
+    @Comment("The interval (in second) between this plugin resets location history.")
+    private final int purgeInterval = 1800;
+    @Getter
+    @Comment("List of worlds where you want to enable announcement.")
+    private final java.util.Set<String> worlds = new HashSet<>() {{
+        add("world");
+        add("world_nether");
+        add("world_the_end");
+    }};
+    @Getter
+    @Comment("List of blocks which need to be announced.")
+    private final Set<Material> blocks = new HashSet<>() {{
+        add(Material.GOLD_ORE);
+        add(Material.IRON_ORE);
+        add(Material.COAL_ORE);
+        add(Material.LAPIS_ORE);
+        add(Material.DIAMOND_ORE);
+        add(Material.REDSTONE_ORE);
+        add(Material.EMERALD_ORE);
+        add(Material.NETHER_QUARTZ_ORE);
+    }};
+    @Path("messages.prefix")
+    public String msg_prefix = "[&e矿工茶馆&r] ";
+    @Path("messages.found")
+    public String msg_found = "%s&7 挖到了 &e%d&7 个 &r&l%s!";
+
     public FoundDiamondsConfig(Plugin plugin) {
         CONFIG_HEADER = new String[]{"Configuration of FoundDiamonds."};
         CONFIG_FILE = new File(plugin.getDataFolder(), "found_diamonds.yml");
@@ -25,43 +58,5 @@ public class FoundDiamondsConfig extends YamlConfig {
             e.printStackTrace();
         }
     }
-
-    @Getter
-    @Comment("Enable this feature?")
-    private boolean enable = true;
-
-    @Getter
-    @Comment("Max search attempts. Higher values may cause more lag.")
-    private int maxIterations = 32;
-
-    @Getter
-    @Comment("The interval when to reset block positions.")
-    private int purgeInterval = 1800;
-
-    @Getter
-    @Comment("List of worlds where you want to enable announcement.")
-    private java.util.Set<String> worlds = new HashSet<>() {{
-        add("world");
-        add("world_nether");
-        add("world_the_end");
-    }};
-
-    @Getter
-    @Comment("List of blocks which need to be announced.")
-    private Set<Material> blocks = new HashSet<>() {{
-        add(Material.GOLD_ORE);
-        add(Material.IRON_ORE);
-        add(Material.COAL_ORE);
-        add(Material.LAPIS_ORE);
-        add(Material.DIAMOND_ORE);
-        add(Material.REDSTONE_ORE);
-        add(Material.EMERALD_ORE);
-        add(Material.NETHER_QUARTZ_ORE);
-    }};
-
-    @Path("messages.prefix")
-    public String msg_prefix = "[&e矿工茶馆&r] ";
-    @Path("messages.found")
-    public String msg_found = "%s&b 挖到了 &e%d&b 个 %s!";
 
 }

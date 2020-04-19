@@ -12,6 +12,19 @@ import java.io.File;
 import java.util.HashSet;
 
 public class MobArenaProConfig extends YamlConfig {
+    @Getter
+    @Comment("Enable this feature?")
+    private final boolean enable = true;
+    @Getter
+    @Comment("List of creatures that DO NOT collide with the arrows from players.")
+    private final java.util.Set<EntityType> whitelist = new HashSet<>() {{
+        add(EntityType.PLAYER);
+        add(EntityType.WOLF);
+        add(EntityType.OCELOT);
+        add(EntityType.IRON_GOLEM);
+        add(EntityType.HORSE);
+    }};
+
     public MobArenaProConfig(Plugin plugin) {
         CONFIG_HEADER = new String[]{"Configuration of MobArenaPro"};
         CONFIG_FILE = new File(plugin.getDataFolder(), "mobarena_addon.yml");
@@ -21,18 +34,4 @@ public class MobArenaProConfig extends YamlConfig {
             e.printStackTrace();
         }
     }
-
-    @Getter
-    @Comment("Enable this feature?")
-    private boolean enable = true;
-
-    @Getter
-    @Comment("List of creatures that DO NOT collide with the arrows from players.")
-    private java.util.Set<EntityType> whitelist = new HashSet<>() {{
-        add(EntityType.PLAYER);
-        add(EntityType.WOLF);
-        add(EntityType.OCELOT);
-        add(EntityType.IRON_GOLEM);
-        add(EntityType.HORSE);
-    }};
 }
