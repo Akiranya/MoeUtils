@@ -14,7 +14,9 @@ public enum TimeOption {
     }
 
     /**
-     * @param moe Get the fancy name!
+     * Get the fancy name!
+     *
+     * @param moe MoeUtils instance.
      *
      * @return The fancy name of this {@code time}.
      */
