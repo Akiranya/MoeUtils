@@ -70,6 +70,9 @@ public class MoeUtils extends JavaPlugin {
         new FoundDiamonds(this);
         new CreatureDeathLogger(this);
         new BeehiveBeeCounter(this);
+
+        // Print config for debugging
+        new ConfigPrinter(this);
     }
 
     /**
@@ -87,7 +90,6 @@ public class MoeUtils extends JavaPlugin {
 
     private void loadConfig() {
         try {
-            // Load config from disk
             commonConfig = new CommonConfig(this);
             commonConfig.init();
             betterBeesConfig = new BetterBeesConfig(this);
@@ -109,9 +111,6 @@ public class MoeUtils extends JavaPlugin {
             materialValues.init();
             EntityValues entityValues = new EntityValues(this);
             entityValues.init();
-
-            // Print relevant config values
-            new ConfigPrinter(this);
         } catch (InvalidConfigurationException ex) {
             ex.printStackTrace();
         }
