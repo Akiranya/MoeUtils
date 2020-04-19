@@ -4,63 +4,89 @@ import org.apache.commons.lang.Validate;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-/**
- * 用来计算冷却时间的工具类。
- *
- * @author Nailm
- */
-public class CooldownUtil<K> {
+public class CooldownUtil {
 
-    private final Map<K, UserData> cooldownMap;
+    private static final Map<UUID, UserData> cooldownData = new HashMap<>();
 
-    protected CooldownUtil() {
-        cooldownMap = new HashMap<>();
+    /**
+     * Uses the cooldown of given user. In other words, this method updates the
+     * last use time to {@code now} for given user.
+     *
+     * @param user The user who uses the cooldown
+     */
+    public static void use(UUID user) {
+        Validate.notNull(cooldownData.get(user), "specific cooldown key doesn't exist.");
+        cooldownData.get(user).lastUsedTime = System.currentTimeMillis();
     }
 
-    protected void use(K user) throws NullPointerException {
-        Validate.notNull(cooldownMap.get(user), "specific key doesn't exist.");
-        cooldownMap.get(user).lastUsedTime = System.currentTimeMillis();
-    }
-
-    protected boolean check(K user, int cooldown) {
-        if (cooldownMap.containsKey(user)) {
-            return diff(user) > cooldownMap.get(user).cooldown;
+    /**
+     * Check if the cooldown of given user is ready.
+     *
+     * @param user     The user who uses the cooldown
+     * @param cooldown The defined cooldown duration (in second)
+     *
+     * @return True if the cooldown is ready (i.e. by design, user can again
+     * uses the functionality corresponding to the cooldown).
+     */
+    public static boolean check(UUID user, int cooldown) {
+        if (cooldownData.containsKey(user)) {
+            return diff(user) > cooldownData.get(user).cooldown;
         } else {
             create(user, cooldown);
             return true;
         }
     }
 
-    protected int remaining(K user, int cooldown) {
-        if (!cooldownMap.containsKey(user)) {
+    /**
+     * Check the remaining time for the cooldown to be ready.
+     *
+     * @param user     The user to be checked
+     * @param cooldown The defined cooldown duration in second
+     *
+     * @return The time which has to pass before the cooldown is ready.
+     */
+    public static long remaining(UUID user, int cooldown) {
+        if (!cooldownData.containsKey(user)) {
             create(user, cooldown);
         }
-        return (cooldownMap.get(user).cooldown - diff(user));
+        return cooldownData.get(user).cooldown - diff(user);
     }
 
-    protected void reset(K user) {
-        if (cooldownMap.get(user) != null)
-            cooldownMap.get(user).lastUsedTime = 0;
+    /**
+     * Reset the cooldown of given user (i.e. forcing to let the cooldown be
+     * ready)
+     *
+     * @param user The user to be reset cooldown
+     */
+    public static void reset(UUID user) {
+        if (cooldownData.get(user) != null)
+            cooldownData.get(user).lastUsedTime = 0;
     }
 
-    private int diff(K user) {
-        UserData userData = cooldownMap.get(user);
+    private static long diff(UUID user) {
+        UserData userData = cooldownData.get(user);
         long now = System.currentTimeMillis();
         long lastUsedTime = userData.lastUsedTime;
-        long diff = TimeUnit.MILLISECONDS.toSeconds(now - lastUsedTime); // In second
-        return (int) diff;
+        return TimeUnit.MILLISECONDS.toSeconds(now - lastUsedTime);
     }
 
-    // 如果要给一个用户创建 cooldown 的数据，直接使用 check() 就好啦
-    private void create(K user, int cooldown) {
-        cooldownMap.put(user, new UserData(cooldown, 0));
+    private static void create(UUID user, int cooldown) {
+        cooldownData.put(user, new UserData(cooldown, 0));
     }
 
-    private class UserData {
-        int cooldown; // In second. The duration player has to wait for.
-        long lastUsedTime; // In millisecond. The time when the player last used it.
+    private static class UserData {
+
+        /**
+         * The duration (in second) player has to wait for
+         */
+        int cooldown;
+        /**
+         * The time (in millisecond) when the player last used it.
+         */
+        long lastUsedTime;
 
         UserData(int cooldown, long lastUsedTime) {
             this.cooldown = cooldown;
@@ -68,4 +94,5 @@ public class CooldownUtil<K> {
         }
 
     }
+
 }
