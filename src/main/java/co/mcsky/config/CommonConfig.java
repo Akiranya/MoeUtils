@@ -15,10 +15,10 @@ public class CommonConfig extends YamlConfig {
     public String lang = "zh_cn";
     @Path("messages.none")
     public String msg_none = "无";
-    @Path("messages.active")
-    public String msg_yes = "是";
-    @Path("messages.deactivated")
-    public String msg_no = "否";
+    @Path("messages.enabled")
+    public String msg_enabled = "是";
+    @Path("messages.disabled")
+    public String msg_disabled = "否";
     @Path("messages.no_perms")
     public String msg_noperms = "&c你没有权限使用这个指令: %s";
     @Path("messages.only_player")
@@ -27,8 +27,8 @@ public class CommonConfig extends YamlConfig {
     public String msg_not_enough_money = "&7你没有足够的金钱.";
     @Path("messages.reloaded")
     public String msg_reloaded = "&bMoeUtils 已重新载入 (耗时 %s ms).";
-    @Path("messages.cost")
-    public String msg_cost = "&f你花掉了 %d &f金钱.";
+    @Path("messages.price")
+    public String msg_price = "&f你花掉了 %d &f金钱.";
     @Path("messages.cooldown")
     public String msg_cooldown = "&7冷却中:&b %d&7 秒.";
     @Path("messages.reset")

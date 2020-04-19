@@ -66,7 +66,7 @@ public class MagicBase {
      */
     public void chargePlayer(Player player, int cost) {
         economy.withdrawPlayer(player, cost);
-        String playerMsg = String.format(cfg.msg_cost, cost);
+        String playerMsg = String.format(cfg.msg_price, cost);
         player.sendMessage(playerMsg);
     }
 
