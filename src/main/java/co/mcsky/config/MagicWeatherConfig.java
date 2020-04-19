@@ -11,6 +11,8 @@ import java.io.File;
 
 public class MagicWeatherConfig extends YamlConfig {
 
+    public int cost = 50;
+    public int cooldown = 600;
     @Path("messages.prefix")
     public String msg_prefix = "[&d魔法天气&r] ";
     @Path("messages.clear")
@@ -25,10 +27,6 @@ public class MagicWeatherConfig extends YamlConfig {
     public String msg_ended = "&b神秘法师的 &e%s&b (世界 &e%s&b) 结束了! &7(冷却就绪)";
     @Path("messages.status")
     public String msg_status = "&a%s:&7 %s&a. &a触发玩家:&7 %s&a. &a剩余时间:&7 %d&a 秒.";
-    @Getter
-    private int cost = 50;
-    @Getter
-    private int cooldown = 600;
 
     public MagicWeatherConfig(Plugin plugin) {
         CONFIG_HEADER = new String[]{"Configuration of MagicWeather"};

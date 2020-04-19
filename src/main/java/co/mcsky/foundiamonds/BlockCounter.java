@@ -43,7 +43,7 @@ public class BlockCounter {
     };
 
     public BlockCounter(MoeUtils moe) {
-        this.searchBound = moe.foundDiamondsConfig.getMaxIterations();
+        this.searchBound = moe.foundDiamondsConfig.maxIterations;
     }
 
     /**

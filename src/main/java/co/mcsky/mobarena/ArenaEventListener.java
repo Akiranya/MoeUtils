@@ -43,7 +43,7 @@ public class ArenaEventListener implements Listener {
         }
         // Check ends
 
-        if (cfg.isEnable() && mobArena != null) {
+        if (cfg.enable && mobArena != null) {
             this.moe.getServer().getPluginManager().registerEvents(this, moe);
             moe.getLogger().info("MobArena-Addon is enabled");
         } else {

@@ -26,15 +26,15 @@ public class FoundDiamonds implements Listener {
     public FoundDiamonds(MoeUtils moe) {
         this.moe = moe;
         this.cfg = moe.foundDiamondsConfig;
-        enabledBlocks = cfg.getBlocks();
+        enabledBlocks = cfg.blocks;
         locationHistory = new HashSet<>();
         blockCounter = new BlockCounter(moe);
-        if (cfg.isEnable()) {
+        if (cfg.enable) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
             moe.getLogger().info("FoundDiamonds is enabled");
         }
         // Auto clear map locationHistory at given interval.
-        Bukkit.getScheduler().runTaskTimer(moe, locationHistory::clear, 0, TimeConverter.toTick(cfg.getPurgeInterval()));
+        Bukkit.getScheduler().runTaskTimer(moe, locationHistory::clear, 0, TimeConverter.toTick(cfg.purgeInterval));
     }
 
     @EventHandler
@@ -42,7 +42,7 @@ public class FoundDiamonds implements Listener {
         Block block = event.getBlock();
 
         if (!enabledBlocks.contains(block.getType())) return;
-        if (!cfg.getWorlds().contains(block.getWorld().getName())) return;
+        if (!cfg.worlds.contains(block.getWorld().getName())) return;
 
         Location currentLocation = block.getLocation();
         Material currentBlock = block.getType();

@@ -12,20 +12,17 @@ import java.util.HashSet;
 
 public class CreatureDeathLoggerConfig extends YamlConfig {
 
-    @Path("messages.death")
-    public String msg_death = "&8刚刚有一只&7%s&8从人间蒸发了 (原因: &7%s&8) (附近玩家: &7%s&8) (坐标: &7%s&8)";
-    @Getter
     @Comment("Enable this feature?")
-    private boolean enable = true;
-    @Getter
-    @Comment("List of creatures that should be logged when died.")
-    private java.util.Set<EntityType> creatures = new HashSet<>() {{
-        add(EntityType.VILLAGER);
-    }};
-    @Getter
+    public boolean enable = true;
     @Comments({"The radius of searching for nearby players around the death entity.",
                "The search only happens if there is no direct killer to the death entity."})
-    private int searchRadius = 16;
+    public int searchRadius = 16;
+    @Comment("List of creatures that should be logged when died.")
+    public java.util.Set<EntityType> creatures = new HashSet<>() {{
+        add(EntityType.VILLAGER);
+    }};
+    @Path("messages.death")
+    public String msg_death = "&8刚刚有一只&7%s&8从人间蒸发了 (原因: &7%s&8) (附近玩家: &7%s&8) (坐标: &7%s&8)";
 
     public CreatureDeathLoggerConfig(Plugin plugin) {
         CONFIG_HEADER = new String[]{"Configuration of the CreatureDeathLogger"};

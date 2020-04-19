@@ -1,4 +1,4 @@
-package co.mcsky.config;
+package co.mcsky;
 
 import co.mcsky.MoeUtils;
 import org.bukkit.ChatColor;
@@ -16,19 +16,19 @@ public class ConfigPrinter {
         String bullet = " - ";
 
         moe.getLogger().info(ChatColor.YELLOW + "FoundDiamonds - Enabled BLocks:");
-        moe.foundDiamondsConfig.getBlocks().forEach(
+        moe.foundDiamondsConfig.blocks.forEach(
                 (e) -> moe.getLogger().info(bullet + e.toString())
-        );
+                                                   );
 
         moe.getLogger().info(ChatColor.YELLOW + "FoundDiamonds - Enabled Worlds:");
-        moe.foundDiamondsConfig.getWorlds().forEach(
+        moe.foundDiamondsConfig.blocks.forEach(
                 (e) -> moe.getLogger().info(bullet + e)
-        );
+                                                   );
 
         moe.getLogger().info(ChatColor.YELLOW + "MobArena-Addon - Whitelisted Entities:");
-        moe.mobArenaProConfig.getWhitelist().forEach(
+        moe.mobArenaProConfig.whitelist.forEach(
                 e -> moe.getLogger().info(bullet + e.toString())
-        );
+                                                    );
     }
 
 }

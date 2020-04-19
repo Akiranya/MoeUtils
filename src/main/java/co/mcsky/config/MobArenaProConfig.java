@@ -13,12 +13,10 @@ import java.util.HashSet;
 
 public class MobArenaProConfig extends YamlConfig {
 
-    @Getter
     @Comment("Enable this feature?")
-    private boolean enable = true;
-    @Getter
+    public boolean enable = true;
     @Comment("List of creatures that DO NOT collide with the arrows from players.")
-    private java.util.Set<EntityType> whitelist = new HashSet<>() {{
+    public java.util.Set<EntityType> whitelist = new HashSet<>() {{
         add(EntityType.PLAYER);
         add(EntityType.WOLF);
         add(EntityType.OCELOT);

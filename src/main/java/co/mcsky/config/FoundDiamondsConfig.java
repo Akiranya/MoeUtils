@@ -16,29 +16,20 @@ import java.util.Set;
 
 public class FoundDiamondsConfig extends YamlConfig {
 
-    @Path("messages.prefix")
-    public String msg_prefix = "[&e矿工茶馆&r] ";
-    @Path("messages.found")
-    public String msg_found = "%s&7 挖到了 &e%d&7 个 &r&l%s!";
-    @Getter
     @Comment("Enable this feature?")
-    private boolean enable = true;
-    @Getter
+    public boolean enable = true;
     @Comment("Max search attempts. Higher values may cause more lag.")
-    private int maxIterations = 32;
-    @Getter
+    public int maxIterations = 32;
     @Comment("The interval (in second) between this plugin resets location history.")
-    private int purgeInterval = 1800;
-    @Getter
+    public int purgeInterval = 1800;
     @Comment("List of worlds where you want to enable announcement.")
-    private java.util.Set<String> worlds = new HashSet<>() {{
+    public java.util.Set<String> worlds = new HashSet<>() {{
         add("world");
         add("world_nether");
         add("world_the_end");
     }};
-    @Getter
     @Comment("List of blocks which need to be announced.")
-    private Set<Material> blocks = new HashSet<>() {{
+    public Set<Material> blocks = new HashSet<>() {{
         add(Material.GOLD_ORE);
         add(Material.IRON_ORE);
         add(Material.COAL_ORE);
@@ -48,6 +39,10 @@ public class FoundDiamondsConfig extends YamlConfig {
         add(Material.EMERALD_ORE);
         add(Material.NETHER_QUARTZ_ORE);
     }};
+    @Path("messages.prefix")
+    public String msg_prefix = "[&e矿工茶馆&r] ";
+    @Path("messages.found")
+    public String msg_found = "%s&7 挖到了 &e%d&7 个 &r&l%s!";
 
     public FoundDiamondsConfig(Plugin plugin) {
         CONFIG_HEADER = new String[]{"Configuration of FoundDiamonds."};

@@ -6,9 +6,12 @@ import org.bukkit.Material;
 import org.bukkit.block.Beehive;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
+
+import static org.bukkit.Material.BEEHIVE;
+import static org.bukkit.Material.BEE_NEST;
+import static org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK;
+import static org.bukkit.inventory.EquipmentSlot.HAND;
 
 public class BeehiveBeeCounter implements Listener {
 
@@ -16,25 +19,24 @@ public class BeehiveBeeCounter implements Listener {
 
     public BeehiveBeeCounter(MoeUtils moe) {
         cfg = moe.betterBeesConfig;
-        if (cfg.isEnable()) {
+        if (cfg.enable) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
             moe.getLogger().info("BeehiveBeeCounter is enabled");
         }
     }
 
-    // TODO 当玩家第一次放下蜂箱或敲掉蜂巢时，提示插件帮助信息
-
     @EventHandler
     public void onPlayerRightClickBlock(PlayerInteractEvent e) {
         if (e.getClickedBlock() == null) return;
         if (!e.isBlockInHand()) {
-            if (e.getHand() == EquipmentSlot.HAND && e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                if (e.getClickedBlock().getType() == Material.BEE_NEST || e.getClickedBlock().getType() == Material.BEEHIVE) {
-                    String msg = String.format(
-                            e.getClickedBlock().getType() == Material.BEE_NEST ? cfg.getCount_bee_nest() : cfg.getCount_beehive(),
-                            ((Beehive) e.getClickedBlock().getState()).getEntityCount()
-                    );
-                    e.getPlayer().sendMessage(msg);
+            if (e.getHand() == HAND && e.getAction() == RIGHT_CLICK_BLOCK) {
+                Material clickedBlockType = e.getClickedBlock().getType();
+                if (clickedBlockType == BEE_NEST || clickedBlockType == BEEHIVE) {
+                    e.getPlayer().sendMessage(String.format(
+                            clickedBlockType == BEE_NEST
+                            ? cfg.count_bee_nest
+                            : cfg.count_beehive,
+                            ((Beehive) e.getClickedBlock().getState()).getEntityCount()));
                 }
             }
         }

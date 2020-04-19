@@ -2,7 +2,7 @@ package co.mcsky.magicutils;
 
 import co.mcsky.MoeUtils;
 import co.mcsky.config.MagicTimeConfig;
-import co.mcsky.utilities.TimeUtil;
+import co.mcsky.utilities.TimeConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,14 +10,15 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 public class MagicTime extends MagicUtilCommon<UUID> {
+
+    private static final UUID COOLDOWN_KEY = UUID.randomUUID();
     private static MagicTimeConfig cfg;
     private static MagicTime magicTime = null;
-    private static final UUID COOLDOWN_KEY = UUID.randomUUID();
     private UUID lastUsedPlayer; // 最后一次使用魔法时间的玩家
 
 
     private MagicTime(MoeUtils moe) {
-        super(moe, moe.magicTimeConfig.getCooldown());
+        super(moe, moe.magicTimeConfig.cooldown);
         cfg = moe.magicTimeConfig;
     }
 
@@ -27,7 +28,8 @@ public class MagicTime extends MagicUtilCommon<UUID> {
     }
 
     public void setTime(Player player, Time time, int cost) {
-        if (checkCooldown(player, COOLDOWN_KEY) || checkBalance(player, cost)) return;
+        if (checkCooldown(player, COOLDOWN_KEY) || checkBalance(player, cost))
+            return;
         time.setTime(moe); // 改变时间
         String broadcast = String.format(cfg.msg_changed, time.getDisplayName(moe));
         moe.getServer().broadcastMessage(broadcast); // 向全服播报
@@ -37,7 +39,7 @@ public class MagicTime extends MagicUtilCommon<UUID> {
         Bukkit.getScheduler().runTaskLaterAsynchronously(moe, () -> {
             String serverMsg = String.format(cfg.msg_ended, time.getDisplayName(moe));
             moe.getServer().broadcastMessage(serverMsg); // 当事件结束时播报一次
-        }, TimeUtil.toTick(COOLDOWN_LENGTH));
+        }, TimeConverter.toTick(COOLDOWN_LENGTH));
     }
 
     public void getStatus(Player player) {
@@ -46,9 +48,9 @@ public class MagicTime extends MagicUtilCommon<UUID> {
         // 用户体验和提示方便不用考虑太多
         if (!check(COOLDOWN_KEY, COOLDOWN_LENGTH)) { // If COOLDOWN_LENGTH is not ready
             String playerMsg = String.format(cfg.msg_status,
-                    moe.commonConfig.msg_active,
-                    moe.getServer().getOfflinePlayer(this.lastUsedPlayer).getName(),
-                    remaining(COOLDOWN_KEY, COOLDOWN_LENGTH));
+                                             moe.commonConfig.msg_active,
+                                             moe.getServer().getOfflinePlayer(this.lastUsedPlayer).getName(),
+                                             remaining(COOLDOWN_KEY, COOLDOWN_LENGTH));
             player.sendMessage(playerMsg);
         }
     }
@@ -57,6 +59,13 @@ public class MagicTime extends MagicUtilCommon<UUID> {
         reset(COOLDOWN_KEY);
         String playerMsg = String.format(moe.commonConfig.msg_reset, cfg.msg_prefix);
         player.sendMessage(playerMsg);
+    }
+
+    /**
+     * @param time The new absolute time to set all worlds to
+     */
+    public void setAllTime(long time) {
+        moe.getServer().getWorlds().forEach(world -> world.setFullTime(time));
     }
 
     public enum Time {

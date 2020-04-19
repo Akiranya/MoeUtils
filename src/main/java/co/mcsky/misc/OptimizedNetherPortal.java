@@ -12,7 +12,7 @@ public class OptimizedNetherPortal implements Listener {
 
     public OptimizedNetherPortal(MoeUtils moe) {
         this.moe = moe;
-        if (moe.safePortalConfig.isEnable()) {
+        if (moe.safePortalConfig.enable) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
             moe.getLogger().info("OptimizedNetherPortal is enabled");
         }
@@ -29,7 +29,7 @@ public class OptimizedNetherPortal implements Listener {
         if (e.getTo().getWorld().getWorldBorder().isInside(e.getTo())) {
             e.setCancelled(true);
             e.getPlayer().sendMessage(moe.safePortalConfig.msg_cancelled);
-            if (moe.safePortalConfig.isDebug()) {
+            if (moe.safePortalConfig.debug) {
                 moe.getLogger().info(String.format(moe.safePortalConfig.msg_debug, e.getPlayer().getName()));
             }
         }

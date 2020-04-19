@@ -12,15 +12,12 @@ import java.io.File;
 
 public class BetterBeesConfig extends YamlConfig {
 
-    @Getter
     @Comment("Enable this feature?")
-    private boolean enable = true;
-    @Getter
+    public boolean enable = true;
     @Path("messages.count_beehive")
-    private String count_beehive = "这个蜂箱里有 %s 只蜜蜂.";
-    @Getter
+    public String count_beehive = "这个蜂箱里有 %s 只蜜蜂.";
     @Path("messages.count_bee_nest")
-    private String count_bee_nest = "这个蜂巢里有 %s 只蜜蜂.";
+    public String count_bee_nest = "这个蜂巢里有 %s 只蜜蜂.";
 
     public BetterBeesConfig(Plugin plugin) {
         CONFIG_HEADER = new String[]{"Configuration of the BetterBees"};
