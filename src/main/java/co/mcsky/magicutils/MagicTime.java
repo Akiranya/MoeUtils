@@ -1,103 +1,45 @@
 package co.mcsky.magicutils;
 
 import co.mcsky.MoeUtils;
-import co.mcsky.config.MagicTimeConfig;
-import co.mcsky.utilities.TimeConverter;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
+import co.mcsky.magicutils.events.MagicTimeEvent;
+import co.mcsky.magicutils.listeners.MagicTimeListener;
+import co.mcsky.utilities.CooldownUtil;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class MagicTime extends MagicUtilCommon<UUID> {
 
-    private static final UUID COOLDOWN_KEY = UUID.randomUUID();
-    private static MagicTimeConfig cfg;
-    private static MagicTime magicTime = null;
-    private UUID lastUsedPlayer; // 最后一次使用魔法时间的玩家
+public class MagicTime extends MagicBase {
+
+    public final UUID COOLDOWN_KEY;
+    private String lastPlayer = null;
 
 
-    private MagicTime(MoeUtils moe) {
+    public MagicTime(MoeUtils moe) {
         super(moe, moe.magicTimeConfig.cooldown);
-        cfg = moe.magicTimeConfig;
+        COOLDOWN_KEY = UUID.randomUUID();
+        new MagicTimeListener(moe, this);
     }
 
-    public static MagicTime getInstance(MoeUtils moe) {
-        if (magicTime == null) return magicTime = new MagicTime(moe);
-        return magicTime;
-    }
-
-    public void setTime(Player player, Time time, int cost) {
-        if (checkCooldown(player, COOLDOWN_KEY) || checkBalance(player, cost))
-            return;
-        time.setTime(moe); // 改变时间
-        String broadcast = String.format(cfg.msg_changed, time.getDisplayName(moe));
-        moe.getServer().broadcastMessage(broadcast); // 向全服播报
-        charge(player, cost); // 向玩家扣费
-        use(COOLDOWN_KEY); // 更新冷却时间（只有以上操作全部完成时才更新冷却时间）
-        lastUsedPlayer = player.getUniqueId(); // 更新最后一次使用魔法时间的玩家
-        Bukkit.getScheduler().runTaskLaterAsynchronously(moe, () -> {
-            String serverMsg = String.format(cfg.msg_ended, time.getDisplayName(moe));
-            moe.getServer().broadcastMessage(serverMsg); // 当事件结束时播报一次
-        }, TimeConverter.toTick(COOLDOWN_LENGTH));
-    }
-
-    public void getStatus(Player player) {
-        // 如果冷却已经就绪，则不输出任何消息
-        // 因为 getStatus() 的输出（设定上）只有管理员可以看到
-        // 用户体验和提示方便不用考虑太多
-        if (!check(COOLDOWN_KEY, COOLDOWN_LENGTH)) { // If COOLDOWN_LENGTH is not ready
-            String playerMsg = String.format(cfg.msg_status,
-                                             moe.commonConfig.msg_active,
-                                             moe.getServer().getOfflinePlayer(this.lastUsedPlayer).getName(),
-                                             remaining(COOLDOWN_KEY, COOLDOWN_LENGTH));
-            player.sendMessage(playerMsg);
+    public void call(TimeOption time, Player player) {
+        MagicTimeEvent event = new MagicTimeEvent(player, time);
+        moe.getServer().getPluginManager().callEvent(event);
+        if (!event.isCancelled()) {
+            // By design, we set time for all worlds so that time between worlds are synchronized.
+            moe.getServer().getWorlds().forEach(time::set);
+            lastPlayer = player.getName();
         }
-    }
-
-    public void reset(Player player) {
-        reset(COOLDOWN_KEY);
-        String playerMsg = String.format(moe.commonConfig.msg_reset, cfg.msg_prefix);
-        player.sendMessage(playerMsg);
     }
 
     /**
-     * @param time The new absolute time to set all worlds to
+     * @return The name of the last player who used magic weather.
      */
-    public void setAllTime(long time) {
-        moe.getServer().getWorlds().forEach(world -> world.setFullTime(time));
+    public String getLastPlayer() {
+        return lastPlayer;
     }
 
-    public enum Time {
-        DAY("day"),
-        NIGHT("night");
-
-        private final String cmdArg;
-
-        Time(String cmdArg) {
-            this.cmdArg = cmdArg;
-        }
-
-        String getDisplayName(MoeUtils moe) {
-            switch (this) {
-                case DAY:
-                    return cfg.msg_day;
-                case NIGHT:
-                    return cfg.msg_night;
-                default:
-                    throw new IllegalStateException("Unknown time value.");
-            }
-        }
-
-        String getCmdArg() {
-            return cmdArg;
-        }
-
-        void setTime(MoeUtils moe) {
-            CommandSender console = moe.getServer().getConsoleSender();
-            String command = String.format("essentials:time %s all", getCmdArg());
-            moe.getServer().dispatchCommand(console, command);
-        }
+    public void resetCooldown() {
+        CooldownUtil.reset(COOLDOWN_KEY);
     }
 
 }

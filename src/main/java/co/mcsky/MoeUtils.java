@@ -2,6 +2,8 @@ package co.mcsky;
 
 import co.mcsky.config.*;
 import co.mcsky.foundiamonds.FoundDiamonds;
+import co.mcsky.magicutils.MagicTime;
+import co.mcsky.magicutils.MagicWeather;
 import co.mcsky.misc.BeehiveBeeCounter;
 import co.mcsky.misc.CreatureDeathLogger;
 import co.mcsky.misc.OptimizedNetherPortal;
@@ -22,6 +24,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.UUID;
 
 public class MoeUtils extends JavaPlugin {
+
     public static Permission permission = null;
     public static Economy economy = null;
     public static Chat chat = null;
@@ -59,7 +62,7 @@ public class MoeUtils extends JavaPlugin {
             getLogger().info("Hooked into LangUtils.");
         }
 
-        new CommandHandler(this);
+        new CommandHandler(this, new MagicTime(this), new MagicWeather(this));
         new ArenaEventListener(this);
         new OptimizedNetherPortal(this);
         new FoundDiamonds(this);
