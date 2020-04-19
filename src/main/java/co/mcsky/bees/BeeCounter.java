@@ -22,11 +22,6 @@ public class BeeCounter implements Listener {
 
     public BeeCounter(MoeUtils moe) {
         cfg = moe.beesCfg;
-        if (cfg.enable) {
-            moe.getServer().getPluginManager().registerEvents(this, moe);
-            moe.getServer().getPluginManager().registerEvents(new BeeReminder(moe), moe);
-            moe.getLogger().info("BeehiveBeeCounter is enabled");
-        }
     }
 
     @EventHandler
