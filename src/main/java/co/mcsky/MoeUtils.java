@@ -6,6 +6,7 @@ import co.mcsky.misc.BeehiveBeeCounter;
 import co.mcsky.misc.CreatureDeathLogger;
 import co.mcsky.misc.OptimizedNetherPortal;
 import co.mcsky.mobarena.ArenaEventListener;
+import co.mcsky.utilities.TimerUtil;
 import com.earth2me.essentials.Essentials;
 import com.meowj.langutils.LangUtils;
 import net.cubespace.Yamler.Config.InvalidConfigurationException;
@@ -17,6 +18,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.UUID;
 
 public class MoeUtils extends JavaPlugin {
     public static Permission permission = null;
@@ -62,6 +65,19 @@ public class MoeUtils extends JavaPlugin {
         new FoundDiamonds(this);
         new CreatureDeathLogger(this);
         new BeehiveBeeCounter(this);
+    }
+
+    /**
+     * Reloads this plugin.
+     *
+     * @return The duration (in millisecond) for the plugin to reload.
+     */
+    public long reload() {
+        UUID uuid = UUID.randomUUID();
+        TimerUtil.start(uuid);
+        onDisable();
+        onEnable();
+        return TimerUtil.end(uuid);
     }
 
     private void loadConfig() {

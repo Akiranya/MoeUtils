@@ -2,8 +2,6 @@ package co.mcsky;
 
 import co.mcsky.magicutils.MagicTime;
 import co.mcsky.magicutils.MagicWeather;
-import co.mcsky.misc.CoreProtectWrapper;
-import net.cubespace.Yamler.Config.InternalConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -12,7 +10,6 @@ import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,10 +37,7 @@ public class CommandHandler implements TabExecutor {
 
         /* Reload */
         if (args[0].equalsIgnoreCase("reload")) {
-//            moe.setting.reloadConfig();
-            moe.onDisable();
-            moe.onEnable();
-            sender.sendMessage(moe.commonConfig.msg_reloaded);
+            sender.sendMessage(String.format(moe.commonConfig.msg_reloaded, moe.reload()));
             return true;
         }
 
