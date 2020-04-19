@@ -8,6 +8,7 @@ import co.mcsky.magicutils.MagicWeather;
 import co.mcsky.misc.CreatureDeathLogger;
 import co.mcsky.misc.OptimizedNetherPortal;
 import co.mcsky.mobarena.ArenaEventListener;
+import co.mcsky.utilities.CooldownUtil;
 import co.mcsky.utilities.TimerUtil;
 import com.earth2me.essentials.Essentials;
 import com.meowj.langutils.LangUtils;
@@ -39,6 +40,7 @@ public class MoeUtils extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        CooldownUtil.resetAll();
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
     }
