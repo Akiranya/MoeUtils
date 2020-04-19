@@ -1,7 +1,6 @@
 package co.mcsky.misc;
 
 import co.mcsky.MoeUtils;
-import co.mcsky.utilities.LocationUtil;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -21,10 +20,13 @@ public class OptimizedNetherPortal implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerTeleport(PlayerPortalEvent e) {
-        // 玩家从地狱走门传送到主世界时，会在主世界的边界外死亡
-        // 所以需要做的就是，如果玩家在主世界的边界外
-        // 就取消传送事件
-        if (LocationUtil.outBorder(e.getTo())) {
+        // Due to the location transformation between Overworld and Nether,
+        // players might be teleported to a location outside of target world (e.g. Nether).
+        // Also, if that happens, players will be killed due to being outside of the world border,
+        // meaning that their death drops will be outside of the world border too.
+
+        // To avoid it, we see if the target location is outside of the world border and cancel the PlayerPortalEvent when necessary.
+        if (e.getTo().getWorld().getWorldBorder().isInside(e.getTo())) {
             e.setCancelled(true);
             e.getPlayer().sendMessage(moe.safePortalConfig.msg_cancelled);
             if (moe.safePortalConfig.isDebug()) {
