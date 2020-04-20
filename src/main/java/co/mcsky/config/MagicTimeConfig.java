@@ -22,8 +22,6 @@ public class MagicTimeConfig extends YamlConfig {
     public String msg_changed = "&b一位神秘的魔法师把所有世界的时间变成了 &d%s&b.";
     @Path("messages.ended")
     public String msg_ended = "&d%s&b 结束了! &7(冷却就绪)";
-    @Path("messages.status")
-    public String msg_status = "&a当前状态:&7 %s&a. &a触发玩家:&7 %s&a. &a剩余时间:&7 %d&a 秒.";
 
     public MagicTimeConfig(Plugin plugin) {
         CONFIG_HEADER = new String[]{"Configuration of MagicTime"};

@@ -24,8 +24,6 @@ public class MagicWeatherConfig extends YamlConfig {
     public String msg_changed = "&b一位神秘法师把世界 &e%s&b 的天气变成了 &d%s&b.";
     @Path("messages.ended")
     public String msg_ended = "&b神秘法师的 &e%s&b (世界 &e%s&b) 结束了! &7(冷却就绪)";
-    @Path("messages.status")
-    public String msg_status = "&a%s:&7 %s&a. &a触发玩家:&7 %s&a. &a剩余时间:&7 %d&a 秒.";
 
     public MagicWeatherConfig(Plugin plugin) {
         CONFIG_HEADER = new String[]{"Configuration of MagicWeather"};
