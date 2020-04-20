@@ -1,9 +1,10 @@
-package co.mcsky;
+package co.mcsky.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Subcommand;
+import co.mcsky.MoeUtils;
 import co.mcsky.magicutils.MagicTime;
 import co.mcsky.magicutils.MagicWeather;
 import co.mcsky.magicutils.TimeOption;
