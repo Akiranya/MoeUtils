@@ -7,7 +7,7 @@ import co.aikar.commands.annotation.*;
 import co.mcsky.MoeUtils;
 import org.bukkit.command.CommandSender;
 
-@CommandAlias("moeutils|moe|mu")
+@CommandAlias("mu|moe|moeutils")
 public class MoeUtilsCommand extends BaseCommand {
 
     private final MoeUtils moe;
@@ -17,6 +17,7 @@ public class MoeUtilsCommand extends BaseCommand {
     }
 
     @HelpCommand
+    @Description("Show the help menu of this plugin.")
     public void help(CommandHelp help) {
         help.showHelp();
     }

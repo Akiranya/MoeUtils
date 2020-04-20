@@ -10,7 +10,7 @@ import co.mcsky.magicutils.MagicTime;
 import co.mcsky.magicutils.TimeOption;
 import org.bukkit.entity.Player;
 
-@CommandAlias("moeutils|moe|mu")
+@CommandAlias("mu|moe|moeutils")
 public class MagicTimeCommand extends BaseCommand {
 
     private final MoeUtils moe;

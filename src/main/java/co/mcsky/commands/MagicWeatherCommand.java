@@ -10,8 +10,7 @@ import co.mcsky.magicutils.MagicWeather;
 import co.mcsky.magicutils.WeatherOption;
 import org.bukkit.entity.Player;
 
-
-@CommandAlias("moeutils|moe|mu")
+@CommandAlias("mu|moe|moeutils")
 public class MagicWeatherCommand extends BaseCommand {
 
     private final MoeUtils moe;
