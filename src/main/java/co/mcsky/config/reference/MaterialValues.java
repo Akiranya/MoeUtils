@@ -22,7 +22,7 @@ public class MaterialValues extends YamlConfig {
     public MaterialValues(Plugin plugin) {
         CONFIG_HEADER = new String[]{"List of available materials for your reference.",
                                      "This file will update automatically each time this plugin loads."};
-        CONFIG_FILE = new File(plugin.getDataFolder(), "list_materials.yml");
+        CONFIG_FILE = new File(plugin.getDataFolder(), "materials.yml");
     }
 
 }

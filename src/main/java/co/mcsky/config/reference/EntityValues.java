@@ -22,7 +22,7 @@ public class EntityValues extends YamlConfig {
     public EntityValues(Plugin plugin) {
         CONFIG_HEADER = new String[]{"List of available entities for your reference.",
                                      "This file will update automatically each time this plugin loads."};
-        CONFIG_FILE = new File(plugin.getDataFolder(), "list_entities.yml");
+        CONFIG_FILE = new File(plugin.getDataFolder(), "entities.yml");
     }
 
 }
