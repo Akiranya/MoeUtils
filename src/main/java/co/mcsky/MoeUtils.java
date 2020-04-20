@@ -2,7 +2,9 @@ package co.mcsky;
 
 import co.aikar.commands.PaperCommandManager;
 import co.mcsky.bees.BeeBase;
-import co.mcsky.commands.CommandHandler;
+import co.mcsky.commands.MagicTimeCommand;
+import co.mcsky.commands.MagicWeatherCommand;
+import co.mcsky.commands.MoeUtilsCommand;
 import co.mcsky.config.*;
 import co.mcsky.foundiamonds.FoundDiamonds;
 import co.mcsky.magicutils.MagicTime;
@@ -79,7 +81,10 @@ public class MoeUtils extends JavaPlugin {
 
         // Register commands
         manager = new PaperCommandManager(this);
-        manager.registerCommand(new CommandHandler(this));
+        manager.enableUnstableAPI("help");
+        manager.registerCommand(new MoeUtilsCommand(this));
+        manager.registerCommand(new MagicTimeCommand(this));
+        manager.registerCommand(new MagicWeatherCommand(this));
 
         // Print config in console
         new ConfigPrinter(this);

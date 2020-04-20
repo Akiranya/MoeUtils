@@ -27,6 +27,8 @@ public class CommonConfig extends YamlConfig {
     public String msg_not_enough_money = "&7你没有足够的金钱.";
     @Path("messages.reloaded")
     public String msg_reloaded = "&bMoeUtils 已重新载入 (耗时 %s ms).";
+    @Path("messages.version")
+    public String msg_version = "&b正在使用 MoeUtils %s.";
     @Path("messages.price")
     public String msg_price = "&f你花掉了 %d &f金钱.";
     @Path("messages.cooldown")
