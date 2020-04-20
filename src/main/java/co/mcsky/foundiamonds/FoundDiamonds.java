@@ -52,7 +52,7 @@ public class FoundDiamonds implements Listener {
                     cfg.msg_found,
                     event.getPlayer().getDisplayName(),
                     blockCounter.count(currentLocation, currentBlock, locationHistory),
-                    I18nBlock.getBlockDisplayName(currentBlock, event.getPlayer())));
+                    I18nBlock.getBlockDisplayName(currentBlock, moe)));
         }
     }
 
