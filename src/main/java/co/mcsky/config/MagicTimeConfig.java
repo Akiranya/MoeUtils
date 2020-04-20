@@ -1,7 +1,6 @@
 package co.mcsky.config;
 
 import co.mcsky.config.converter.StringConverter;
-import lombok.Getter;
 import net.cubespace.Yamler.Config.InvalidConverterException;
 import net.cubespace.Yamler.Config.Path;
 import net.cubespace.Yamler.Config.YamlConfig;

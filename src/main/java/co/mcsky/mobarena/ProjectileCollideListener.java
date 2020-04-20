@@ -34,4 +34,5 @@ public class ProjectileCollideListener implements Listener {
             event.setCancelled(true);
         }
     }
+
 }

@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 import static co.mcsky.utilities.NametagUtil.ACTION.UPDATE;
 
 public class PlayerHealthListener implements Listener {
+
     private final NametagUtil nameTagUtil;
 
     PlayerHealthListener(MoeUtils moe, NametagUtil nameTagUtil) {
@@ -53,4 +54,5 @@ public class PlayerHealthListener implements Listener {
             nameTagUtil.change(p, nameTagUtil.color("&c&l[&r"), nameTagUtil.color("&c&l]"), UPDATE);
         }
     }
+
 }

@@ -17,15 +17,16 @@ import java.util.List;
 import java.util.Set;
 
 public class CreatureDeathLogger implements Listener {
+
     private final MoeUtils moe;
     private final CreatureDeathLoggerConfig cfg;
-    private final Set<EntityType> LoggedCreatures;
+    private final Set<EntityType> loggedCreatures;
     private final String separator = ", ";
 
     public CreatureDeathLogger(MoeUtils moe) {
         this.moe = moe;
         this.cfg = moe.deathLoggerCfg;
-        this.LoggedCreatures = cfg.creatures;
+        this.loggedCreatures = cfg.creatures;
         if (cfg.enable) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
             moe.getLogger().info("CreatureDeathLogger is enabled");
@@ -35,7 +36,7 @@ public class CreatureDeathLogger implements Listener {
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e) {
         LivingEntity entity = e.getEntity();
-        if (!LoggedCreatures.contains(entity.getType())) return;
+        if (!loggedCreatures.contains(entity.getType())) return;
 
         String victimName = entity.getCustomName() != null
                             ? entity.getCustomName() + "(" + LanguageHelper.getEntityName(e.getEntityType(), moe.commonCfg.lang) + ")"
