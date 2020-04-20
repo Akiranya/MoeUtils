@@ -20,7 +20,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="MoeUtils" options="" />
+      <module name="MoeUtils" options="-parameters" />
       <module name="Yamler-Bukkit" options="-O -Xlint:-path" />
       <module name="Yamler-Bukkit (1)" options="-O -Xlint:-path" />
       <module name="Yamler-Bungee" options="-O -Xlint:-path" />

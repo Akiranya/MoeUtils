@@ -6,16 +6,51 @@
 
     <groupId>co.mcsky</groupId>
     <artifactId>MoeUtils</artifactId>
-    <version>1.6.0</version>
+    <version>1.6.1</version>
     <build>
         <plugins>
             <plugin>
+                <version>3.7.0</version>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <source>9</source>
                     <target>9</target>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
+                    <relocations>
+                        <relocation>
+                            <pattern>co.aikar.commands</pattern>
+                            <shadedPattern>co.mcsky.acf</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <artifactSet>
+                                <includes>
+                                    <include>co.aikar</include>
+                                    <include>net.jodah</include>
+                                    <include>net.cubespace</include>
+                                </includes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -46,6 +81,10 @@
             <id>NyaaCentral</id>
             <url>https://ci.nyaacat.com/maven/</url>
         </repository>
+        <repository>
+            <id>aikar</id>
+            <url>https://repo.aikar.co/content/groups/aikar/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -54,25 +93,21 @@
             <artifactId>paper-api</artifactId>
             <version>1.15.2-R0.1-SNAPSHOT</version>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>1_15_R1</groupId>-->
-        <!--            <artifactId>spigot_1_15_R1</artifactId>-->
-        <!--            <version>1.15.2</version>-->
-        <!--            <scope>system</scope>-->
-        <!--            <systemPath>${project.basedir}/libraries/spigot-1.15.2-R0.1-SNAPSHOT.jar</systemPath>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>co.aikar</groupId>
+            <artifactId>acf-paper</artifactId>
+            <version>0.5.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.cubespace</groupId>
+            <artifactId>Yamler-Bukkit</artifactId>
+            <version>2.4.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>17.0.0</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.cubespace</groupId>
-            <artifactId>Yamler-Bukkit</artifactId>
-            <version>2.4.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libraries/Yamler-Bukkit-2.4.0-SNAPSHOT.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.ess3</groupId>

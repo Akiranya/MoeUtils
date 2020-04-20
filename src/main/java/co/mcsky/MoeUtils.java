@@ -1,5 +1,6 @@
 package co.mcsky;
 
+import co.aikar.commands.PaperCommandManager;
 import co.mcsky.bees.BeeBase;
 import co.mcsky.config.*;
 import co.mcsky.foundiamonds.FoundDiamonds;
@@ -38,6 +39,9 @@ public class MoeUtils extends JavaPlugin {
     public MobArenaProConfig mobArenaProCfg;
     public SafePortalConfig safePortalCfg;
 
+    public MagicTime magicTime;
+    public MagicWeather magicWeather;
+
     @Override
     public void onDisable() {
         CooldownUtil.resetAll();
@@ -62,21 +66,24 @@ public class MoeUtils extends JavaPlugin {
             getLogger().info("Hooked into LangUtils.");
         }
 
-        new CommandHandler(this, new MagicTime(this), new MagicWeather(this));
         new ArenaEventListener(this);
         new OptimizedNetherPortal(this);
         new FoundDiamonds(this);
         new CreatureDeathLogger(this);
         new BeeBase(this);
+        magicTime = new MagicTime(this);
+        magicWeather = new MagicWeather(this);
 
-        // Print config for debugging
+        // Register commands
+        PaperCommandManager manager = new PaperCommandManager(this);
+        manager.registerCommand(new CommandHandler(this));
+
+        // Print config in console
         new ConfigPrinter(this);
     }
 
     /**
-     * Reloads this plugin.
-     *
-     * @return The duration (in millisecond) for the plugin to reload.
+     * @return The duration (in millisecond) for the plugin to reload
      */
     public long reload() {
         UUID uuid = UUID.randomUUID();
@@ -87,7 +94,10 @@ public class MoeUtils extends JavaPlugin {
     }
 
     private void loadConfig() {
+        // Load config from disk
         ConfigFactory configFactory = new ConfigFactory(this);
+
+        // Assign config references
         beesCfg = configFactory.getBeesConfig();
         commonCfg = configFactory.getCommonConfig();
         deathLoggerCfg = configFactory.getCreatureDeathLoggerConfig();
