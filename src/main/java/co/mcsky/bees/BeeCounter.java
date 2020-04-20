@@ -46,11 +46,14 @@ public class BeeCounter implements Listener {
         if (e.isBlockInHand()) {
             // Check item in hand
             ItemStack item = e.getItem();
+            Material type = item.getType();
             if (e.getHand() == HAND && e.getAction() == RIGHT_CLICK_AIR) {
-                if (item.getType() == BEEHIVE || item.getType() == BEE_NEST) {
+                if (type == BEEHIVE || type == BEE_NEST) {
                     if (e.getPlayer().isSneaking() || !cfg.requireSneak) {
                         Beehive beehive = (Beehive) ((BlockStateMeta) item.getItemMeta()).getBlockState();
-                        e.getPlayer().sendMessage(String.format(cfg.count_beehive, beehive.getEntityCount()));
+                        e.getPlayer().sendMessage(String.format(type == BEE_NEST
+                                                                ? cfg.count_bee_nest
+                                                                : cfg.count_beehive, beehive.getEntityCount()));
                     }
                 }
             }
