@@ -1,10 +1,9 @@
 package co.mcsky.config;
 
 import co.mcsky.config.converter.MaterialConverter;
-import co.mcsky.config.converter.StringConverter;
 import net.cubespace.Yamler.Config.Comment;
+import net.cubespace.Yamler.Config.InvalidConfigurationException;
 import net.cubespace.Yamler.Config.InvalidConverterException;
-import net.cubespace.Yamler.Config.Path;
 import net.cubespace.Yamler.Config.YamlConfig;
 import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
@@ -13,7 +12,7 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
-public class FoundDiamondsConfig extends YamlConfig {
+public class FoundOresConfig extends YamlConfig {
 
     @Comment("Enable this feature?")
     public boolean enable = true;
@@ -38,18 +37,14 @@ public class FoundDiamondsConfig extends YamlConfig {
         add(Material.EMERALD_ORE);
         add(Material.NETHER_QUARTZ_ORE);
     }};
-    @Path("messages.prefix")
-    public String msg_prefix = "&8[&e矿工茶馆&8]&r ";
-    @Path("messages.found")
-    public String msg_found = "%s&7 挖到了 &e%d&7 个 &r&l%s!";
 
-    public FoundDiamondsConfig(Plugin plugin) {
-        CONFIG_HEADER = new String[]{"Configuration of FoundDiamonds."};
-        CONFIG_FILE = new File(plugin.getDataFolder(), "found_diamonds.yml");
+    public FoundOresConfig(Plugin plugin) {
         try {
-            addConverter(StringConverter.class);
+            CONFIG_HEADER = new String[]{"Configuration of FoundOres."};
+            CONFIG_FILE = new File(plugin.getDataFolder(), "found_diamonds.yml");
             addConverter(MaterialConverter.class);
-        } catch (InvalidConverterException e) {
+            init();
+        } catch (InvalidConfigurationException | InvalidConverterException e) {
             e.printStackTrace();
         }
     }

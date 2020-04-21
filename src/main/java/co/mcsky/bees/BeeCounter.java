@@ -2,6 +2,7 @@ package co.mcsky.bees;
 
 import co.mcsky.MoeUtils;
 import co.mcsky.config.BeesConfig;
+import co.mcsky.LanguageManager;
 import org.bukkit.Material;
 import org.bukkit.block.Beehive;
 import org.bukkit.event.EventHandler;
@@ -19,9 +20,11 @@ import static org.bukkit.inventory.EquipmentSlot.HAND;
 public class BeeCounter implements Listener {
 
     private final BeesConfig cfg;
+    private final LanguageManager lm;
 
     public BeeCounter(MoeUtils moe) {
-        cfg = moe.beesCfg;
+        this.cfg = moe.beesCfg;
+        this.lm = moe.languageManager;
     }
 
     @EventHandler
@@ -33,8 +36,8 @@ public class BeeCounter implements Listener {
                 if (clickedBlockType == BEE_NEST || clickedBlockType == BEEHIVE) {
                     e.getPlayer().sendMessage(String.format(
                             clickedBlockType == BEE_NEST
-                            ? cfg.count_bee_nest
-                            : cfg.count_beehive,
+                            ? lm.betterbees_count_bee_nest
+                            : lm.betterbees_count_beehive,
                             ((Beehive) e.getClickedBlock().getState()).getEntityCount()));
                 }
             }
@@ -52,8 +55,8 @@ public class BeeCounter implements Listener {
                     if (e.getPlayer().isSneaking() || !cfg.requireSneak) {
                         Beehive beehive = (Beehive) ((BlockStateMeta) item.getItemMeta()).getBlockState();
                         e.getPlayer().sendMessage(String.format(type == BEE_NEST
-                                                                ? cfg.count_bee_nest
-                                                                : cfg.count_beehive, beehive.getEntityCount()));
+                                                                ? lm.betterbees_count_bee_nest
+                                                                : lm.betterbees_count_beehive, beehive.getEntityCount()));
                     }
                 }
             }

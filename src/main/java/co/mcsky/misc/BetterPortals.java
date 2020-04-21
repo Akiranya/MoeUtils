@@ -1,20 +1,23 @@
 package co.mcsky.misc;
 
 import co.mcsky.MoeUtils;
+import co.mcsky.LanguageManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPortalEvent;
 
-public class OptimizedNetherPortal implements Listener {
+public class BetterPortals implements Listener {
 
     private final MoeUtils moe;
+    private final LanguageManager lm;
 
-    public OptimizedNetherPortal(MoeUtils moe) {
+    public BetterPortals(MoeUtils moe) {
         this.moe = moe;
+        this.lm = moe.languageManager;
         if (moe.safePortalCfg.enable) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
-            moe.getLogger().info("OptimizedNetherPortal is enabled");
+            moe.getLogger().info("OptimizedNetherPortal is enabled.");
         }
     }
 
@@ -30,9 +33,9 @@ public class OptimizedNetherPortal implements Listener {
         // and cancel the PlayerPortalEvent when it is.
         if (!e.getTo().getWorld().getWorldBorder().isInside(e.getTo())) {
             e.setCancelled(true);
-            e.getPlayer().sendMessage(moe.safePortalCfg.msg_cancelled);
+            e.getPlayer().sendMessage(lm.betterportals_cancelled);
             if (moe.safePortalCfg.debug) {
-                moe.getLogger().info(String.format(moe.safePortalCfg.msg_debug, e.getPlayer().getName()));
+                moe.getLogger().info(String.format(lm.betterportals_debug, e.getPlayer().getName()));
             }
         }
     }

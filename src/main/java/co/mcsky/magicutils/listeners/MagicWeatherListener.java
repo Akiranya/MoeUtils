@@ -1,6 +1,7 @@
 package co.mcsky.magicutils.listeners;
 
 import co.mcsky.MoeUtils;
+import co.mcsky.LanguageManager;
 import co.mcsky.magicutils.MagicBase;
 import co.mcsky.magicutils.MagicWeather;
 import co.mcsky.magicutils.events.MagicWeatherEvent;
@@ -19,10 +20,12 @@ import java.util.UUID;
 public class MagicWeatherListener extends MagicBase implements Listener {
 
     private final Map<String, UUID> COOLDOWN_KEYS;
+    private final LanguageManager lm;
 
     public MagicWeatherListener(MoeUtils moe, MagicWeather magic) {
         super(moe, moe.magicWeatherCfg.cooldown);
-        COOLDOWN_KEYS = magic.COOLDOWN_KEYS;
+        this.COOLDOWN_KEYS = magic.COOLDOWN_KEYS;
+        this.lm = moe.languageManager;
         moe.getServer().getPluginManager().registerEvents(this, moe);
     }
 
@@ -31,14 +34,14 @@ public class MagicWeatherListener extends MagicBase implements Listener {
         Player player = e.getPlayer();
         String worldName = e.getWorld().getName();
         if (!(checkCooldown(player, COOLDOWN_KEYS.get(worldName)) && checkBalance(player, moe.magicWeatherCfg.cost))) {
-            // If player does not meet the requirement, we cancel the magic event.
+            // If player does not meet the precondition, we cancel the magic event.
             e.setCancelled(true);
             return;
         }
         CooldownUtil.use(COOLDOWN_KEYS.get(worldName));
         chargePlayer(player, moe.magicWeatherCfg.cost);
-        moe.getServer().getScheduler().runTaskLaterAsynchronously(moe, () -> moe.getServer().broadcastMessage(moe.magicWeatherCfg.msg_prefix + String.format(moe.magicWeatherCfg.msg_ended, e.getWeather().customName(moe), worldName)), TimeConverter.toTick(COOLDOWN_DURATION));
-        moe.getServer().broadcastMessage(moe.magicWeatherCfg.msg_prefix + String.format(moe.magicWeatherCfg.msg_changed, worldName, e.getWeather().customName(moe)));
+        moe.getServer().getScheduler().runTaskLaterAsynchronously(moe, () -> moe.getServer().broadcastMessage(lm.magicweather_prefix + String.format(lm.magictime_ended, e.getWeather().customName(lm), worldName)), TimeConverter.toTick(COOLDOWN_DURATION));
+        moe.getServer().broadcastMessage(lm.magicweather_prefix + String.format(lm.magicweather_changed, worldName, e.getWeather().customName(lm)));
     }
 
 }

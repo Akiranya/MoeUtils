@@ -1,7 +1,6 @@
 package co.mcsky.config;
 
 import co.mcsky.config.converter.EntityTypeConverter;
-import co.mcsky.config.converter.StringConverter;
 import net.cubespace.Yamler.Config.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.Plugin;
@@ -20,16 +19,14 @@ public class CreatureDeathLoggerConfig extends YamlConfig {
     public java.util.Set<EntityType> creatures = new HashSet<>() {{
         add(EntityType.VILLAGER);
     }};
-    @Path("messages.death")
-    public String msg_death = "&8刚刚有一只&7%s&8从人间蒸发了 (原因: &7%s&8) (附近玩家: &7%s&8) (坐标: &7%s&8)";
 
     public CreatureDeathLoggerConfig(Plugin plugin) {
-        CONFIG_HEADER = new String[]{"Configuration of the CreatureDeathLogger"};
-        CONFIG_FILE = new File(plugin.getDataFolder(), "death_logger.yml");
         try {
+            CONFIG_HEADER = new String[]{"Configuration of the DeathLogger"};
+            CONFIG_FILE = new File(plugin.getDataFolder(), "death_logger.yml");
             addConverter(EntityTypeConverter.class);
-            addConverter(StringConverter.class);
-        } catch (InvalidConverterException e) {
+            init();
+        } catch (InvalidConfigurationException | InvalidConverterException e) {
             e.printStackTrace();
         }
     }

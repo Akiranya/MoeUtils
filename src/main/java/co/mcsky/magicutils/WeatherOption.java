@@ -1,6 +1,6 @@
 package co.mcsky.magicutils;
 
-import co.mcsky.MoeUtils;
+import co.mcsky.LanguageManager;
 import co.mcsky.utilities.TimeConverter;
 import org.bukkit.World;
 
@@ -12,18 +12,18 @@ public enum WeatherOption {
     /**
      * Get the fancy name!
      *
-     * @param moe MoeUtils instance.
+     * @param lm Messages instance of MoeUtils.
      *
      * @return The fancy name of this {@code weather}.
      */
-    public String customName(MoeUtils moe) {
+    public String customName(LanguageManager lm) {
         switch (this) {
             case CLEAR:
-                return moe.magicWeatherCfg.msg_clear;
+                return lm.magicweather_clear;
             case RAIN:
-                return moe.magicWeatherCfg.msg_rain;
+                return lm.magicweather_rain;
             case THUNDER:
-                return moe.magicWeatherCfg.msg_thunder;
+                return lm.magicweather_thunder;
             default:
                 throw new IllegalStateException("Unknown weather type.");
         }

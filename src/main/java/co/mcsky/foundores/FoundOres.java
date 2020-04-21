@@ -1,7 +1,8 @@
-package co.mcsky.foundiamonds;
+package co.mcsky.foundores;
 
 import co.mcsky.MoeUtils;
-import co.mcsky.config.FoundDiamondsConfig;
+import co.mcsky.config.FoundOresConfig;
+import co.mcsky.LanguageManager;
 import co.mcsky.i18n.I18nBlock;
 import co.mcsky.utilities.TimeConverter;
 import org.bukkit.Bukkit;
@@ -15,27 +16,29 @@ import org.bukkit.event.block.BlockBreakEvent;
 import java.util.HashSet;
 import java.util.Set;
 
-public class FoundDiamonds implements Listener {
+public class FoundOres implements Listener {
 
     final private MoeUtils moe;
-    final private FoundDiamondsConfig cfg;
+    final private LanguageManager lm;
+    final private FoundOresConfig cfg;
 
-    final private Set<Material> enabledBlocks;
-    final private Set<Location> locationHistory;
-    final private BlockCounter blockCounter;
+    private final Set<Material> enabledBlocks;
+    private final Set<Location> locationHistory;
+    private final BlockCounter blockCounter;
 
-    public FoundDiamonds(MoeUtils moe) {
+    public FoundOres(MoeUtils moe) {
         this.moe = moe;
+        this.lm = moe.languageManager;
         this.cfg = moe.foundDiamondsCfg;
-        enabledBlocks = cfg.blocks;
-        locationHistory = new HashSet<>();
-        blockCounter = new BlockCounter(moe.foundDiamondsCfg.maxIterations);
+        this.enabledBlocks = cfg.blocks;
+        this.locationHistory = new HashSet<>();
+        this.blockCounter = new BlockCounter(moe.foundDiamondsCfg.maxIterations);
         if (cfg.enable) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
-            moe.getLogger().info("FoundDiamonds is enabled");
+            moe.getLogger().info("FoundDiamonds is enabled.");
+            // Auto clear map locationHistory at given interval for performance reason.
+            Bukkit.getScheduler().runTaskTimer(moe, locationHistory::clear, 0, TimeConverter.toTick(cfg.purgeInterval));
         }
-        // Auto clear map locationHistory at given interval.
-        Bukkit.getScheduler().runTaskTimer(moe, locationHistory::clear, 0, TimeConverter.toTick(cfg.purgeInterval));
     }
 
     @EventHandler
@@ -48,11 +51,11 @@ public class FoundDiamonds implements Listener {
         Location currentLocation = block.getLocation();
         Material currentBlock = block.getType();
         if (!locationHistory.contains(currentLocation)) {
-            moe.getServer().broadcastMessage(cfg.msg_prefix + String.format(
-                    cfg.msg_found,
+            moe.getServer().broadcastMessage(lm.foundores_prefix + String.format(
+                    lm.foundores_found,
                     event.getPlayer().getDisplayName(),
                     blockCounter.count(currentLocation, currentBlock, locationHistory),
-                    I18nBlock.getBlockDisplayName(currentBlock, moe)));
+                    I18nBlock.getBlockDisplayName(currentBlock, lm)));
         }
     }
 

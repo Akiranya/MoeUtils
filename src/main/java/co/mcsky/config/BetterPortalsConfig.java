@@ -7,17 +7,17 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 
-public class BeesConfig extends YamlConfig {
+public class BetterPortalsConfig extends YamlConfig {
 
     @Comment("Enable this feature?")
     public boolean enable = true;
-    @Comment("Whether requires player to sneak for counting or not")
-    public boolean requireSneak = false;
+    @Comment("Enable debug?")
+    public boolean debug = true;
 
-    public BeesConfig(Plugin plugin) {
+    public BetterPortalsConfig(Plugin plugin) {
         try {
-            CONFIG_HEADER = new String[]{"Configuration of the BetterBees"};
-            CONFIG_FILE = new File(plugin.getDataFolder(), "betterbees.yml");
+            CONFIG_HEADER = new String[]{"Configuration of BetterPortals"};
+            CONFIG_FILE = new File(plugin.getDataFolder(), "betterportals.yml");
             init();
         } catch (InvalidConfigurationException e) {
             e.printStackTrace();

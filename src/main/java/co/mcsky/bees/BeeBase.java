@@ -8,7 +8,7 @@ public class BeeBase {
         if (moe.beesCfg.enable) {
             moe.getServer().getPluginManager().registerEvents(new BeeCounter(moe), moe);
             moe.getServer().getPluginManager().registerEvents(new BeeReminder(moe), moe);
-            moe.getLogger().info("BeehiveBeeCounter is enabled");
+            moe.getLogger().info("BetterBees is enabled.");
         }
     }
 

@@ -2,6 +2,7 @@ package co.mcsky.config;
 
 import co.mcsky.config.converter.EntityTypeConverter;
 import net.cubespace.Yamler.Config.Comment;
+import net.cubespace.Yamler.Config.InvalidConfigurationException;
 import net.cubespace.Yamler.Config.InvalidConverterException;
 import net.cubespace.Yamler.Config.YamlConfig;
 import org.bukkit.entity.EntityType;
@@ -24,11 +25,12 @@ public class MobArenaProConfig extends YamlConfig {
     }};
 
     public MobArenaProConfig(Plugin plugin) {
-        CONFIG_HEADER = new String[]{"Configuration of MobArenaPro"};
-        CONFIG_FILE = new File(plugin.getDataFolder(), "mobarena_addon.yml");
         try {
+            CONFIG_HEADER = new String[]{"Configuration of MobArena-Addon"};
+            CONFIG_FILE = new File(plugin.getDataFolder(), "mobarena_addon.yml");
             addConverter(EntityTypeConverter.class);
-        } catch (InvalidConverterException e) {
+            init();
+        } catch (InvalidConfigurationException | InvalidConverterException e) {
             e.printStackTrace();
         }
     }

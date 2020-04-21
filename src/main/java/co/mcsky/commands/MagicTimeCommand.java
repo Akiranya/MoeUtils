@@ -5,6 +5,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import co.mcsky.LanguageManager;
 import co.mcsky.MoeUtils;
 import co.mcsky.magicutils.MagicTime;
 import co.mcsky.magicutils.TimeOption;
@@ -14,11 +15,13 @@ import org.bukkit.entity.Player;
 public class MagicTimeCommand extends BaseCommand {
 
     private final MoeUtils moe;
+    private final LanguageManager lm;
     private final MagicTime magicTime;
 
     public MagicTimeCommand(MoeUtils moe) {
         this.moe = moe;
-        this.magicTime = moe.magicTime;
+        this.lm = moe.languageManager;
+        this.magicTime = new MagicTime(moe);
     }
 
     @Subcommand("time day")
@@ -40,7 +43,7 @@ public class MagicTimeCommand extends BaseCommand {
     @Description("Reset cooldown of magic time.")
     public void reset(Player player) {
         magicTime.resetCooldown();
-        player.sendMessage(moe.commonCfg.msg_reset);
+        player.sendMessage(lm.common_reset);
     }
 
     @Subcommand("time status")

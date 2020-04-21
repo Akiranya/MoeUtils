@@ -13,11 +13,10 @@ import static co.mcsky.utilities.NametagUtil.ACTION.UPDATE;
 
 public class PlayerHealthListener implements Listener {
 
-    private final NametagUtil nameTagUtil;
+    private final NametagUtil nametagUtil;
 
-    PlayerHealthListener(MoeUtils moe, NametagUtil nameTagUtil) {
-        // Pass the CustomPlayerName instance instead of initializing a new one
-        this.nameTagUtil = nameTagUtil;
+    PlayerHealthListener(MoeUtils moe, NametagUtil nametagUtil) {
+        this.nametagUtil = nametagUtil;
         moe.getServer().getPluginManager().registerEvents(this, moe);
     }
 
@@ -28,7 +27,7 @@ public class PlayerHealthListener implements Listener {
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         Entity victim = event.getEntity();
         // 不影响竞技场外面的玩家
-        if (!(victim instanceof Player) || !nameTagUtil.getPlayers().contains(victim))
+        if (!(victim instanceof Player) || !nametagUtil.getPlayers().contains(victim))
             return;
         updateTag((Player) victim);
     }
@@ -40,18 +39,18 @@ public class PlayerHealthListener implements Listener {
     public void onEntityRegainHealth(EntityRegainHealthEvent event) {
         Entity entity = event.getEntity();
         // 不影响竞技场外面的玩家
-        if (!(entity instanceof Player) || !nameTagUtil.getPlayers().contains(entity))
+        if (!(entity instanceof Player) || !nametagUtil.getPlayers().contains(entity))
             return;
         updateTag((Player) entity);
     }
 
     private void updateTag(Player p) {
         if (p.getHealth() > 15) {
-            nameTagUtil.change(p, nameTagUtil.color("&a&l[&r"), nameTagUtil.color("&a&l]"), UPDATE);
+            nametagUtil.change(p, nametagUtil.color("&a&l[&r"), nametagUtil.color("&a&l]"), UPDATE);
         } else if (p.getHealth() > 10 && p.getHealth() <= 15) {
-            nameTagUtil.change(p, nameTagUtil.color("&e&l[&r"), nameTagUtil.color("&e&l]"), UPDATE);
+            nametagUtil.change(p, nametagUtil.color("&e&l[&r"), nametagUtil.color("&e&l]"), UPDATE);
         } else {
-            nameTagUtil.change(p, nameTagUtil.color("&c&l[&r"), nameTagUtil.color("&c&l]"), UPDATE);
+            nametagUtil.change(p, nametagUtil.color("&c&l[&r"), nametagUtil.color("&c&l]"), UPDATE);
         }
     }
 

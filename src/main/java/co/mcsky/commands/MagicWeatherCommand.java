@@ -5,6 +5,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import co.mcsky.LanguageManager;
 import co.mcsky.MoeUtils;
 import co.mcsky.magicutils.MagicWeather;
 import co.mcsky.magicutils.WeatherOption;
@@ -14,11 +15,13 @@ import org.bukkit.entity.Player;
 public class MagicWeatherCommand extends BaseCommand {
 
     private final MoeUtils moe;
+    private final LanguageManager lm;
     private final MagicWeather magicWeather;
 
     public MagicWeatherCommand(MoeUtils moe) {
         this.moe = moe;
-        this.magicWeather = moe.magicWeather;
+        this.lm = moe.languageManager;
+        this.magicWeather = new MagicWeather(moe);
     }
 
     @Subcommand("weather sun|clear")
@@ -47,7 +50,7 @@ public class MagicWeatherCommand extends BaseCommand {
     @Description("Reset cooldown of magic weather.")
     public void reset(Player player) {
         magicWeather.resetCooldown();
-        player.sendMessage(moe.commonCfg.msg_reset);
+        player.sendMessage(lm.common_reset);
     }
 
     @Subcommand("weather status")
