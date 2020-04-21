@@ -1,24 +1,22 @@
 package co.mcsky.magicutils;
 
-import co.mcsky.MoeUtils;
 import co.mcsky.LanguageManager;
+import co.mcsky.MoeUtils;
 import co.mcsky.utilities.CooldownUtil;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-import static co.mcsky.MoeUtils.economy;
-
 /**
  * This class shares code for {@link MagicTime} and {@link MagicWeather}.
  */
-public class MagicBase {
+public abstract class MagicBase {
 
-    public final int COOLDOWN_DURATION;
     public final MoeUtils moe;
     public final LanguageManager lm;
+    public final int COOLDOWN_DURATION;
 
-    public MagicBase(MoeUtils moe, int cooldownDuration) {
+    MagicBase(MoeUtils moe, int cooldownDuration) {
         this.moe = moe;
         this.lm = moe.languageManager;
         this.COOLDOWN_DURATION = cooldownDuration;
@@ -34,7 +32,7 @@ public class MagicBase {
      *
      * @return True if the cooldown is ready. False else wise.
      */
-    public boolean checkCooldown(Player player, UUID COOLDOWN_KEY) {
+    boolean checkCooldown(Player player, UUID COOLDOWN_KEY) {
         if (CooldownUtil.check(COOLDOWN_KEY, COOLDOWN_DURATION)) return true;
         String playerMsg = String.format(lm.common_cooldown, CooldownUtil.remaining(COOLDOWN_KEY, COOLDOWN_DURATION));
         player.sendMessage(playerMsg);
@@ -51,8 +49,8 @@ public class MagicBase {
      *
      * @return True if the player has sufficient balance. False else wise.
      */
-    public boolean checkBalance(Player player, int cost) {
-        if (economy.has(player, cost)) return true;
+    boolean checkBalance(Player player, int cost) {
+        if (MoeUtils.economy.has(player, cost)) return true;
         player.sendMessage(lm.common_not_enough_money);
         return false;
     }
@@ -64,8 +62,8 @@ public class MagicBase {
      * @param player The player who is to be charged.
      * @param cost   The amount of fee applied to the specific player.
      */
-    public void chargePlayer(Player player, int cost) {
-        economy.withdrawPlayer(player, cost);
+    void chargePlayer(Player player, int cost) {
+        MoeUtils.economy.withdrawPlayer(player, cost);
         String playerMsg = String.format(lm.common_charge, cost);
         player.sendMessage(playerMsg);
     }

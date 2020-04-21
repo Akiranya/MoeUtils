@@ -1,5 +1,6 @@
 package co.mcsky.config.reference;
 
+import net.cubespace.Yamler.Config.InvalidConfigurationException;
 import net.cubespace.Yamler.Config.YamlConfig;
 import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
@@ -20,9 +21,14 @@ public class MaterialValues extends YamlConfig {
     }
 
     public MaterialValues(Plugin plugin) {
-        CONFIG_HEADER = new String[]{"List of available materials for your reference.",
-                                     "This file will update automatically each time this plugin loads."};
-        CONFIG_FILE = new File(plugin.getDataFolder(), "materials.yml");
+        try {
+            CONFIG_FILE = new File(plugin.getDataFolder(), "materials.yml");
+            CONFIG_HEADER = new String[]{"List of available materials for your reference.",
+                                         "This file will update automatically each time this plugin loads."};
+            init();
+        } catch (InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
     }
 
 }

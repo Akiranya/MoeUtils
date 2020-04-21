@@ -1,8 +1,8 @@
 package co.mcsky.misc;
 
+import co.mcsky.LanguageManager;
 import co.mcsky.MoeUtils;
 import co.mcsky.config.DeathLoggerConfig;
-import co.mcsky.LanguageManager;
 import co.mcsky.utilities.DamageCauseLocalization;
 import com.meowj.langutils.lang.LanguageHelper;
 import org.bukkit.entity.EntityType;

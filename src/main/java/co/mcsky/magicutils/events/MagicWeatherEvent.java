@@ -12,10 +12,10 @@ import org.jetbrains.annotations.NotNull;
 public class MagicWeatherEvent extends Event implements Cancellable {
 
     public static final HandlerList handlers = new HandlerList();
-    private boolean cancelled;
     @Getter private final World world;
     @Getter private final Player player;
     @Getter private final WeatherOption weather;
+    private boolean cancelled;
 
     public MagicWeatherEvent(Player player, WeatherOption weather) {
         this.player = player;
@@ -27,7 +27,8 @@ public class MagicWeatherEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    public @NotNull HandlerList getHandlers() {
+    public @NotNull
+    HandlerList getHandlers() {
         return handlers;
     }
 

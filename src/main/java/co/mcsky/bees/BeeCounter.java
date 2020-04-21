@@ -1,8 +1,8 @@
 package co.mcsky.bees;
 
+import co.mcsky.LanguageManager;
 import co.mcsky.MoeUtils;
 import co.mcsky.config.BeesConfig;
-import co.mcsky.LanguageManager;
 import org.bukkit.Material;
 import org.bukkit.block.Beehive;
 import org.bukkit.event.EventHandler;

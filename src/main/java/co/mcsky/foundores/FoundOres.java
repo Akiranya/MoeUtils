@@ -1,8 +1,8 @@
 package co.mcsky.foundores;
 
+import co.mcsky.LanguageManager;
 import co.mcsky.MoeUtils;
 import co.mcsky.config.FoundOresConfig;
-import co.mcsky.LanguageManager;
 import co.mcsky.i18n.I18nBlock;
 import co.mcsky.utilities.TimeConverter;
 import org.bukkit.Bukkit;

@@ -12,77 +12,6 @@ import java.util.LinkedHashMap;
 
 public class LanguageManager extends YamlConfig {
 
-    @Path("common.lang")
-    public String common_lang = "zh_cn";
-    @Path("common.none")
-    public String common_none = "无";
-    @Path("common.enabled")
-    public String common_enabled = "是";
-    @Path("common.disabled")
-    public String common_disabled = "否";
-    @Path("common.no_perms")
-    public String common_noperms = "&c你没有权限使用这个指令: %s";
-    @Path("common.only_players")
-    public String common_only_players = "只有玩家才可以使用这个指令.";
-    @Path("common.not_enough_money")
-    public String common_not_enough_money = "&7你没有足够的金钱.";
-    @Path("common.reloaded")
-    public String common_reloaded = "&bMoeUtils 已重新载入 (耗时 %s ms).";
-    @Path("common.version")
-    public String common_version = "&b正在使用 MoeUtils %s.";
-    @Path("common.price")
-    public String common_charge = "&f你花掉了 %d &f金钱.";
-    @Path("common.cooldown")
-    public String common_cooldown = "&7冷却中:&b %d&7 秒.";
-    @Path("common.reset")
-    public String common_reset = "&b状态已重置.";
-
-    @Path("betterbees.count_beehive")
-    public String betterbees_count_beehive = "这个蜂箱里有 %s 只蜜蜂.";
-    @Path("betterbees.count_bee_nest")
-    public String betterbees_count_bee_nest = "这个蜂巢里有 %s 只蜜蜂.";
-    @Path("betterbees.reminder_on_place")
-    public String betterbees_reminder_on_place = "&7提示: &6右击蜂箱/蜂巢&7 可查看内部蜜蜂数量.";
-    @Path("betterbees.reminder_in_hand")
-    public String betterbees_reminder_in_hand = "&7提示: &6手持蜂箱 Shift+右键空气&7 可查看内部蜜蜂数量.";
-
-    @Path("deathlogger.death")
-    public String deathlogger_entity_death = "&8刚刚有一只&7%s&8从人间蒸发了 (原因: &7%s&8) (附近玩家: &7%s&8) (坐标: &7%s&8)";
-
-    @Path("foundores.prefix")
-    public String foundores_prefix = "&8[&e矿工茶馆&8]&r ";
-    @Path("foundores.found")
-    public String foundores_found = "%s&7 挖到了 &e%d&7 个 &r&l%s!";
-
-    @Path("magictime.prefix")
-    public String magictime_prefix = "&8[&d魔法时间&8]&r ";
-    @Path("magictime.day")
-    public String magictime_day = "魔法白天";
-    @Path("magictime.night")
-    public String magictime_night = "魔法夜晚";
-    @Path("magictime.changed")
-    public String magictime_changed = "&b一位神秘的魔法师把所有世界的时间变成了 &d%s&b.";
-    @Path("magictime.ended")
-    public String magictime_ended = "&d%s&b 结束了! &7(冷却就绪)";
-
-    @Path("magicweather.prefix")
-    public String magicweather_prefix = "&8[&d魔法天气&8]&r ";
-    @Path("magicweather.clear")
-    public String magicweather_clear = "魔法晴天";
-    @Path("magicweather.rain")
-    public String magicweather_rain = "魔法阴天";
-    @Path("magicweather.thunder")
-    public String magicweather_thunder = "魔法雷雨";
-    @Path("magicweather.changed")
-    public String magicweather_changed = "&b一位神秘法师把世界 &e%s&b 的天气变成了 &d%s&b.";
-    @Path("magicweather.ended")
-    public String magicweather_ended = "&b神秘法师的 &e%s&b (世界 &e%s&b) 结束了! &7(冷却就绪)";
-
-    @Path("betterportals.cancelled")
-    public String betterportals_cancelled = "&e监测到该地狱门的目的地在世界边界外,为了您的安全本次传送已取消.";
-    @Path("betterportals.debug")
-    public String betterportals_debug = "PlayerPortalEvent has been cancelled for %s.";
-
     @Path("acf-core")
     private final LinkedHashMap<String, String> acf_core = new LinkedHashMap<>() {{
         put("permission_denied", "抱歉, 你没有权限使用这个指令.");
@@ -128,6 +57,70 @@ public class LanguageManager extends YamlConfig {
         put("location_please_specify_xyz", "错误: 请指定坐标的 x, y, z. 例子: <c2>world:x,y,z</c2>.");
         put("location_console_not_relative", "错误: 控制台无法使用相对坐标.");
     }};
+    @Path("common.lang")
+    public String common_lang = "zh_cn";
+    @Path("common.none")
+    public String common_none = "无";
+    @Path("common.enabled")
+    public String common_enabled = "是";
+    @Path("common.disabled")
+    public String common_disabled = "否";
+    @Path("common.no_perms")
+    public String common_noperms = "&c你没有权限使用这个指令: %s";
+    @Path("common.only_players")
+    public String common_only_players = "只有玩家才可以使用这个指令.";
+    @Path("common.not_enough_money")
+    public String common_not_enough_money = "&7你没有足够的金钱.";
+    @Path("common.reloaded")
+    public String common_reloaded = "&bMoeUtils 已重新载入 (耗时 %s ms).";
+    @Path("common.version")
+    public String common_version = "&b正在使用 MoeUtils %s.";
+    @Path("common.price")
+    public String common_charge = "&f你花掉了 %d &f金钱.";
+    @Path("common.cooldown")
+    public String common_cooldown = "&7冷却中:&b %d&7 秒.";
+    @Path("common.reset")
+    public String common_reset = "&b状态已重置.";
+    @Path("betterbees.count_beehive")
+    public String betterbees_count_beehive = "这个蜂箱里有 %s 只蜜蜂.";
+    @Path("betterbees.count_bee_nest")
+    public String betterbees_count_bee_nest = "这个蜂巢里有 %s 只蜜蜂.";
+    @Path("betterbees.reminder_on_place")
+    public String betterbees_reminder_on_place = "&7提示: &6右击蜂箱/蜂巢&7 可查看内部蜜蜂数量.";
+    @Path("betterbees.reminder_in_hand")
+    public String betterbees_reminder_in_hand = "&7提示: &6手持蜂箱 Shift+右键空气&7 可查看内部蜜蜂数量.";
+    @Path("deathlogger.death")
+    public String deathlogger_entity_death = "&8刚刚有一只&7%s&8从人间蒸发了 (原因: &7%s&8) (附近玩家: &7%s&8) (坐标: &7%s&8)";
+    @Path("foundores.prefix")
+    public String foundores_prefix = "&8[&e矿工茶馆&8]&r ";
+    @Path("foundores.found")
+    public String foundores_found = "%s&7 挖到了 &e%d&7 个 &r&l%s!";
+    @Path("magictime.prefix")
+    public String magictime_prefix = "&8[&d魔法时间&8]&r ";
+    @Path("magictime.day")
+    public String magictime_day = "魔法白天";
+    @Path("magictime.night")
+    public String magictime_night = "魔法夜晚";
+    @Path("magictime.changed")
+    public String magictime_changed = "&b一位神秘的魔法师把所有世界的时间变成了 &d%s&b.";
+    @Path("magictime.ended")
+    public String magictime_ended = "&d%s&b 结束了! &7(冷却就绪)";
+    @Path("magicweather.prefix")
+    public String magicweather_prefix = "&8[&d魔法天气&8]&r ";
+    @Path("magicweather.clear")
+    public String magicweather_clear = "魔法晴天";
+    @Path("magicweather.rain")
+    public String magicweather_rain = "魔法阴天";
+    @Path("magicweather.thunder")
+    public String magicweather_thunder = "魔法雷雨";
+    @Path("magicweather.changed")
+    public String magicweather_changed = "&b一位神秘法师把世界 &e%s&b 的天气变成了 &d%s&b.";
+    @Path("magicweather.ended")
+    public String magicweather_ended = "&b神秘法师的 &e%s&b (世界 &e%s&b) 结束了! &7(冷却就绪)";
+    @Path("betterportals.cancelled")
+    public String betterportals_cancelled = "&e监测到该地狱门的目的地在世界边界外,为了您的安全本次传送已取消.";
+    @Path("betterportals.debug")
+    public String betterportals_debug = "PlayerPortalEvent has been cancelled for %s.";
 
     public LanguageManager(Plugin plugin) {
         try {

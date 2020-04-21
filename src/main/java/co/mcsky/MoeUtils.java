@@ -2,13 +2,14 @@ package co.mcsky;
 
 import co.aikar.commands.PaperCommandManager;
 import co.mcsky.bees.BeeBase;
-import co.mcsky.commands.MagicTimeCommand;
-import co.mcsky.commands.MagicWeatherCommand;
-import co.mcsky.commands.MainCommand;
+import co.mcsky.commands.MagicUtilsCommand;
+import co.mcsky.commands.RootCommand;
 import co.mcsky.config.*;
 import co.mcsky.config.reference.EntityValues;
 import co.mcsky.config.reference.MaterialValues;
 import co.mcsky.foundores.FoundOres;
+import co.mcsky.magicutils.MagicTime;
+import co.mcsky.magicutils.MagicWeather;
 import co.mcsky.misc.BetterPortals;
 import co.mcsky.misc.DeathLogger;
 import co.mcsky.mobarena.ArenaEventListener;
@@ -106,24 +107,20 @@ public class MoeUtils extends JavaPlugin {
      * embedded in the resource folder.
      */
     private void loadConfig() {
-        try {
-            // Language file
-            languageManager = new LanguageManager(this);
+        // Language file
+        languageManager = new LanguageManager(this);
 
-            beesCfg = new BeesConfig(this);
-            deathLoggerCfg = new DeathLoggerConfig(this);
-            foundOresCfg = new FoundOresConfig(this);
-            magicTimeCfg = new MagicTimeConfig(this);
-            magicWeatherCfg = new MagicWeatherConfig(this);
-            mobArenaProCfg = new MobArenaProConfig(this);
-            safePortalCfg = new BetterPortalsConfig(this);
+        beesCfg = new BeesConfig(this);
+        deathLoggerCfg = new DeathLoggerConfig(this);
+        foundOresCfg = new FoundOresConfig(this);
+        magicTimeCfg = new MagicTimeConfig(this);
+        magicWeatherCfg = new MagicWeatherConfig(this);
+        mobArenaProCfg = new MobArenaProConfig(this);
+        safePortalCfg = new BetterPortalsConfig(this);
 
-            // Save lists of entities and materials for easy enum values looking up
-            new MaterialValues(this).init();
-            new EntityValues(this).init();
-        } catch (net.cubespace.Yamler.Config.InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+        // Save lists of entities and materials for easy enum values looking up
+        new MaterialValues(this);
+        new EntityValues(this);
     }
 
     private void printConfig() {
@@ -147,9 +144,12 @@ public class MoeUtils extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
         }
         manager.getLocales().setDefaultLocale(Locale.SIMPLIFIED_CHINESE);
-        manager.registerCommand(new MainCommand(this));
-        manager.registerCommand(new MagicTimeCommand(this));
-        manager.registerCommand(new MagicWeatherCommand(this));
+        manager.registerDependency(LanguageManager.class, languageManager);
+        manager.registerDependency(MagicTime.class, new MagicTime(this));
+        manager.registerDependency(MagicWeather.class, new MagicWeather(this));
+        manager.getCommandReplacements().addReplacement("moe", "mu|moe|moeutils");
+        manager.registerCommand(new RootCommand());
+        manager.registerCommand(new MagicUtilsCommand());
     }
 
     private Permission getPermission() {

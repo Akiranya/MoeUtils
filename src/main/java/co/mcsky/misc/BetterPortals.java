@@ -1,7 +1,7 @@
 package co.mcsky.misc;
 
-import co.mcsky.MoeUtils;
 import co.mcsky.LanguageManager;
+import co.mcsky.MoeUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
