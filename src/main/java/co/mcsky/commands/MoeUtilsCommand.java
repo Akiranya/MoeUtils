@@ -17,7 +17,7 @@ public class MoeUtilsCommand extends BaseCommand {
     }
 
     @HelpCommand
-    @Description("Show the help menu of this plugin.")
+    @Description("Show help menu.")
     public void help(CommandHelp help) {
         help.showHelp();
     }
@@ -31,7 +31,7 @@ public class MoeUtilsCommand extends BaseCommand {
 
     @Subcommand("version|ver")
     @CommandPermission("moe.admin")
-    @Description("See version.")
+    @Description("Get the version of this plugin.")
     public void version() {
         CommandManager.getCurrentCommandIssuer().sendMessage(
                 String.format(moe.commonCfg.msg_version, moe.getDescription().getVersion()));

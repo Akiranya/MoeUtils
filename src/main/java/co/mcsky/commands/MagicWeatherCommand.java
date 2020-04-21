@@ -44,7 +44,7 @@ public class MagicWeatherCommand extends BaseCommand {
 
     @Subcommand("weather reset")
     @CommandPermission("moe.magic.reset")
-    @Description("Reset cooldown.")
+    @Description("Reset cooldown of magic weather.")
     public void reset(Player player) {
         magicWeather.resetCooldown();
         player.sendMessage(moe.commonCfg.msg_reset);
@@ -52,7 +52,7 @@ public class MagicWeatherCommand extends BaseCommand {
 
     @Subcommand("weather status")
     @CommandPermission("moe.magic.status")
-    @Description("See the last player who called magic weather.")
+    @Description("Get the last player who called magic weather.")
     public void status(Player player) {
         player.sendMessage(magicWeather.getLastPlayers());
     }

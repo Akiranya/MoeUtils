@@ -37,7 +37,7 @@ public class MagicTimeCommand extends BaseCommand {
 
     @Subcommand("time reset")
     @CommandPermission("moe.magic.reset")
-    @Description("Reset cooldown.")
+    @Description("Reset cooldown of magic time.")
     public void reset(Player player) {
         magicTime.resetCooldown();
         player.sendMessage(moe.commonCfg.msg_reset);
@@ -45,7 +45,7 @@ public class MagicTimeCommand extends BaseCommand {
 
     @Subcommand("time status")
     @CommandPermission("moe.magic.status")
-    @Description("See the last player who called magic time.")
+    @Description("Get the last player who called magic time.")
     public void status(Player player) {
         player.sendMessage(magicTime.getLastPlayer());
     }
