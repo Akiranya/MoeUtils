@@ -8,7 +8,7 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.util.HashSet;
 
-public class CreatureDeathLoggerConfig extends YamlConfig {
+public class DeathLoggerConfig extends YamlConfig {
 
     @Comment("Enable this feature?")
     public boolean enable = true;
@@ -20,7 +20,7 @@ public class CreatureDeathLoggerConfig extends YamlConfig {
         add(EntityType.VILLAGER);
     }};
 
-    public CreatureDeathLoggerConfig(Plugin plugin) {
+    public DeathLoggerConfig(Plugin plugin) {
         try {
             CONFIG_HEADER = new String[]{"Configuration of the DeathLogger"};
             CONFIG_FILE = new File(plugin.getDataFolder(), "death_logger.yml");

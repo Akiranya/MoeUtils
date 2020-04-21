@@ -29,10 +29,10 @@ public class FoundOres implements Listener {
     public FoundOres(MoeUtils moe) {
         this.moe = moe;
         this.lm = moe.languageManager;
-        this.cfg = moe.foundDiamondsCfg;
+        this.cfg = moe.foundOresCfg;
         this.enabledBlocks = cfg.blocks;
         this.locationHistory = new HashSet<>();
-        this.blockCounter = new BlockCounter(moe.foundDiamondsCfg.maxIterations);
+        this.blockCounter = new BlockCounter(moe.foundOresCfg.maxIterations);
         if (cfg.enable) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
             moe.getLogger().info("FoundDiamonds is enabled.");

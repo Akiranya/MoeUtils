@@ -1,7 +1,7 @@
 package co.mcsky.misc;
 
 import co.mcsky.MoeUtils;
-import co.mcsky.config.CreatureDeathLoggerConfig;
+import co.mcsky.config.DeathLoggerConfig;
 import co.mcsky.LanguageManager;
 import co.mcsky.utilities.DamageCauseLocalization;
 import com.meowj.langutils.lang.LanguageHelper;
@@ -21,7 +21,7 @@ public class DeathLogger implements Listener {
 
     private final MoeUtils moe;
     private final LanguageManager lm;
-    private final CreatureDeathLoggerConfig cfg;
+    private final DeathLoggerConfig cfg;
     private final Set<EntityType> loggedCreatures;
     private final String separator = ", ";
 

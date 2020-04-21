@@ -41,8 +41,8 @@ public class MoeUtils extends JavaPlugin {
     public LanguageManager languageManager;
 
     public BeesConfig beesCfg;
-    public CreatureDeathLoggerConfig deathLoggerCfg;
-    public FoundOresConfig foundDiamondsCfg;
+    public DeathLoggerConfig deathLoggerCfg;
+    public FoundOresConfig foundOresCfg;
     public MagicTimeConfig magicTimeCfg;
     public MagicWeatherConfig magicWeatherCfg;
     public MobArenaProConfig mobArenaProCfg;
@@ -111,8 +111,8 @@ public class MoeUtils extends JavaPlugin {
             languageManager = new LanguageManager(this);
 
             beesCfg = new BeesConfig(this);
-            deathLoggerCfg = new CreatureDeathLoggerConfig(this);
-            foundDiamondsCfg = new FoundOresConfig(this);
+            deathLoggerCfg = new DeathLoggerConfig(this);
+            foundOresCfg = new FoundOresConfig(this);
             magicTimeCfg = new MagicTimeConfig(this);
             magicWeatherCfg = new MagicWeatherConfig(this);
             mobArenaProCfg = new MobArenaProConfig(this);
@@ -129,9 +129,9 @@ public class MoeUtils extends JavaPlugin {
     private void printConfig() {
         final String bullet = " - ";
         getLogger().info(ChatColor.YELLOW + "FoundDiamonds.blocks:");
-        foundDiamondsCfg.blocks.forEach(e -> getLogger().info(bullet + e.toString().toLowerCase()));
+        foundOresCfg.blocks.forEach(e -> getLogger().info(bullet + e.toString().toLowerCase()));
         getLogger().info(ChatColor.YELLOW + "FoundDiamonds.worlds:");
-        foundDiamondsCfg.worlds.forEach(e -> getLogger().info(bullet + e));
+        foundOresCfg.worlds.forEach(e -> getLogger().info(bullet + e));
         getLogger().info(ChatColor.YELLOW + "MobArena-Addon.whitelist:");
         mobArenaProCfg.whitelist.forEach(e -> getLogger().info(bullet + e.toString().toLowerCase()));
     }
