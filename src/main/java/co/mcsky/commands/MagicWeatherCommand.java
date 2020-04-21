@@ -14,12 +14,10 @@ import org.bukkit.entity.Player;
 @CommandAlias("mu|moe|moeutils")
 public class MagicWeatherCommand extends BaseCommand {
 
-    private final MoeUtils moe;
     private final LanguageManager lm;
     private final MagicWeather magicWeather;
 
     public MagicWeatherCommand(MoeUtils moe) {
-        this.moe = moe;
         this.lm = moe.languageManager;
         this.magicWeather = new MagicWeather(moe);
     }

@@ -14,12 +14,10 @@ import org.bukkit.entity.Player;
 @CommandAlias("mu|moe|moeutils")
 public class MagicTimeCommand extends BaseCommand {
 
-    private final MoeUtils moe;
     private final LanguageManager lm;
     private final MagicTime magicTime;
 
     public MagicTimeCommand(MoeUtils moe) {
-        this.moe = moe;
         this.lm = moe.languageManager;
         this.magicTime = new MagicTime(moe);
     }

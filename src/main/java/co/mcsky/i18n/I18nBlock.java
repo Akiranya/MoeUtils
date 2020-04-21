@@ -1,7 +1,6 @@
 package co.mcsky.i18n;
 
 import co.mcsky.LanguageManager;
-import co.mcsky.MoeUtils;
 import com.meowj.langutils.lang.LanguageHelper;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

@@ -12,8 +12,8 @@ public class MagicTimeEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
-    @Getter private Player player;
-    @Getter private TimeOption time;
+    @Getter private final Player player;
+    @Getter private final TimeOption time;
 
     public MagicTimeEvent(Player player, TimeOption time) {
         this.player = player;

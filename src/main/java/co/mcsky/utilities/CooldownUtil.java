@@ -89,7 +89,7 @@ public class CooldownUtil {
         /**
          * The duration (in second) player has to wait for
          */
-        int cooldown;
+        final int cooldown;
         /**
          * The time (in millisecond) when the player last used it.
          */

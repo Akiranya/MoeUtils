@@ -13,9 +13,9 @@ public class MagicWeatherEvent extends Event implements Cancellable {
 
     public static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
-    @Getter private World world;
-    @Getter private Player player;
-    @Getter private WeatherOption weather;
+    @Getter private final World world;
+    @Getter private final Player player;
+    @Getter private final WeatherOption weather;
 
     public MagicWeatherEvent(Player player, WeatherOption weather) {
         this.player = player;
