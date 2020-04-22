@@ -127,9 +127,9 @@ public class Configuration extends YamlConfig {
         moe.getLogger().info(ChatColor.YELLOW + "FoundDiamonds.blocks:");
         foundores_blocks.forEach(e -> moe.getLogger().info(bullet + e.toString().toLowerCase()));
         moe.getLogger().info(ChatColor.YELLOW + "FoundDiamonds.worlds:");
-        moe.config.foundores_worlds.forEach(e -> moe.getLogger().info(bullet + e));
+        foundores_worlds.forEach(e -> moe.getLogger().info(bullet + e));
         moe.getLogger().info(ChatColor.YELLOW + "MobArena-Addon.whitelist:");
-        moe.config.mobarena_whitelist.forEach(e -> moe.getLogger().info(bullet + e.toString().toLowerCase()));
+        mobarena_whitelist.forEach(e -> moe.getLogger().info(bullet + e.toString().toLowerCase()));
     }
 
 }
