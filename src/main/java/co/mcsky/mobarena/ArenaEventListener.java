@@ -1,7 +1,7 @@
 package co.mcsky.mobarena;
 
 import co.mcsky.MoeUtils;
-import co.mcsky.config.MobArenaProConfig;
+import co.mcsky.config.Configuration;
 import co.mcsky.utilities.NametagUtil;
 import co.mcsky.utilities.ScoreboardUtil;
 import com.garbagemule.MobArena.MobArena;
@@ -23,7 +23,7 @@ import static org.bukkit.Bukkit.getServer;
 public class ArenaEventListener implements Listener {
 
     private final MoeUtils moe;
-    private final MobArenaProConfig cfg;
+    private final Configuration config;
     private final ScoreboardUtil scoreboardUtil;
     private final NametagUtil nametagUtil;
     private MobArena mobArena;
@@ -32,7 +32,7 @@ public class ArenaEventListener implements Listener {
 
     public ArenaEventListener(MoeUtils moe) {
         this.moe = moe;
-        this.cfg = moe.mobArenaProCfg;
+        this.config = moe.config;
         this.nametagUtil = new NametagUtil();
         this.scoreboardUtil = new ScoreboardUtil(this.nametagUtil, moe);
 
@@ -43,7 +43,7 @@ public class ArenaEventListener implements Listener {
         }
         // Check ends
 
-        if (cfg.enable && mobArena != null) {
+        if (config.mobarena_enable && mobArena != null) {
             this.moe.getServer().getPluginManager().registerEvents(this, moe);
             moe.getLogger().info("MobArena-Addon is enabled.");
         }

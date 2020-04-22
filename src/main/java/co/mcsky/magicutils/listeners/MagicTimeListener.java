@@ -1,6 +1,6 @@
 package co.mcsky.magicutils.listeners;
 
-import co.mcsky.LanguageManager;
+import co.mcsky.LanguageRepository;
 import co.mcsky.MoeUtils;
 import co.mcsky.magicutils.MagicTime;
 import co.mcsky.magicutils.events.MagicTimeEvent;
@@ -13,12 +13,12 @@ import org.bukkit.event.Listener;
  */
 public class MagicTimeListener implements Listener {
 
-    private final LanguageManager lm;
+    private final LanguageRepository lang;
     private final MagicTime magic;
 
     public MagicTimeListener(MagicTime magic) {
         this.magic = magic;
-        this.lm = magic.lm;
+        this.lang = magic.lang;
         MoeUtils moe = magic.moe;
         moe.getServer().getPluginManager().registerEvents(this, moe);
     }
@@ -33,8 +33,8 @@ public class MagicTimeListener implements Listener {
         }
         magic.use();
         magic.chargePlayer(player);
-        magic.broadcast(e.getTime().customName(lm));
-        magic.futureBroadcast(e.getTime().customName(lm));
+        magic.broadcast(e.getTime().customName(lang));
+        magic.futureBroadcast(e.getTime().customName(lang));
     }
 
 }

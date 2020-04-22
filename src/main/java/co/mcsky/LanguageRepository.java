@@ -10,10 +10,10 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.util.LinkedHashMap;
 
-public class LanguageManager extends YamlConfig {
+public class LanguageRepository extends YamlConfig {
 
     @Path("acf-core")
-    private final LinkedHashMap<String, String> acf_core = new LinkedHashMap<>() {{
+    private LinkedHashMap<String, String> acf_core = new LinkedHashMap<>() {{
         put("permission_denied", "抱歉, 你没有权限使用这个指令.");
         put("permission_denied_parameter", "抱歉, 你没有权限使用这个指令 (参数限制).");
         put("error_generic_logged", "发生了一个错误. 问题已记录在. 请将此问题汇报给服务器管理员.");
@@ -41,7 +41,7 @@ public class LanguageManager extends YamlConfig {
         put("help_search_header", "<c3>=== </c3><c1>搜索结果之 </c1><c2>{commandprefix}{command} {search}</c2><c3> ===</c3>");
     }};
     @Path("acf-minecraft")
-    private final LinkedHashMap<String, String> acf_minecraft = new LinkedHashMap<>() {{
+    private LinkedHashMap<String, String> acf_minecraft = new LinkedHashMap<>() {{
         put("player_is_vanished_confirm", "警告: <c2>{vanished}</c2> 已隐身. 请不要惊动他!\n" +
                                           "要确认你的操作, 在他的名字后面加上 <c2>:confirm</c2>.\n" +
                                           "例子: <c2>{vanished}:confirm</c2>");
@@ -122,7 +122,7 @@ public class LanguageManager extends YamlConfig {
     @Path("betterportals.debug")
     public String betterportals_debug = "PlayerPortalEvent has been cancelled for %s.";
 
-    public LanguageManager(Plugin plugin) {
+    public LanguageRepository(Plugin plugin) {
         try {
             CONFIG_FILE = new File(plugin.getDataFolder(), "lang/lang_zh.yml");
             CONFIG_HEADER = new String[]{"Language file of MoeUtils."};

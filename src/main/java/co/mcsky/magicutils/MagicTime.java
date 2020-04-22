@@ -15,7 +15,7 @@ public class MagicTime extends MagicBase {
     private String lastPlayer = null;
 
     public MagicTime(MoeUtils moe) {
-        super(moe, moe.magicTimeCfg.cooldown);
+        super(moe, moe.config.magictime_cooldown);
         COOLDOWN_KEY = UUID.randomUUID();
         new MagicTimeListener(this);
     }
@@ -31,7 +31,7 @@ public class MagicTime extends MagicBase {
     }
 
     public boolean checkBalance(Player player) {
-        return checkBalance(player, moe.magicWeatherCfg.cost);
+        return checkBalance(player, moe.config.magictime_cost);
     }
 
     public boolean checkCooldown(Player player) {
@@ -39,7 +39,7 @@ public class MagicTime extends MagicBase {
     }
 
     public void chargePlayer(Player player) {
-        chargePlayer(player, moe.magicTimeCfg.cost);
+        chargePlayer(player, moe.config.magictime_cost);
     }
 
     public void use() {
@@ -47,11 +47,11 @@ public class MagicTime extends MagicBase {
     }
 
     public void futureBroadcast(String timeName) {
-        moe.getServer().getScheduler().runTaskLaterAsynchronously(moe, () -> moe.getServer().broadcastMessage(lm.magictime_prefix + String.format(lm.magictime_ended, timeName)), TimeConverter.toTick(COOLDOWN_DURATION));
+        moe.getServer().getScheduler().runTaskLaterAsynchronously(moe, () -> moe.getServer().broadcastMessage(lang.magictime_prefix + String.format(lang.magictime_ended, timeName)), TimeConverter.toTick(COOLDOWN_DURATION));
     }
 
     public void broadcast(String timeName) {
-        moe.getServer().broadcastMessage(lm.magictime_prefix + String.format(lm.magictime_changed, timeName));
+        moe.getServer().broadcastMessage(lang.magictime_prefix + String.format(lang.magictime_changed, timeName));
     }
 
     /**

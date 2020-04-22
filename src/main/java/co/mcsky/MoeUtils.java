@@ -2,8 +2,6 @@ package co.mcsky;
 
 import co.aikar.commands.PaperCommandManager;
 import co.mcsky.bees.BeeBase;
-import co.mcsky.commands.MagicUtilsCommand;
-import co.mcsky.commands.RootCommand;
 import co.mcsky.config.*;
 import co.mcsky.config.reference.EntityValues;
 import co.mcsky.config.reference.MaterialValues;
@@ -21,7 +19,6 @@ import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
@@ -39,15 +36,8 @@ public class MoeUtils extends JavaPlugin {
     public static Chat chat = null;
 
     public PaperCommandManager manager;
-    public LanguageManager languageManager;
-
-    public BeesConfig beesCfg;
-    public DeathLoggerConfig deathLoggerCfg;
-    public FoundOresConfig foundOresCfg;
-    public MagicTimeConfig magicTimeCfg;
-    public MagicWeatherConfig magicWeatherCfg;
-    public MobArenaProConfig mobArenaProCfg;
-    public BetterPortalsConfig safePortalCfg;
+    public Configuration config;
+    public LanguageRepository lang;
 
     @Override
     public void onDisable() {
@@ -77,8 +67,7 @@ public class MoeUtils extends JavaPlugin {
             getLogger().info("Hooked into LangUtils.");
         }
 
-        loadConfig();
-        printConfig();
+        initConfig();
         registerCommands();
 
         // Initialize features
@@ -102,39 +91,21 @@ public class MoeUtils extends JavaPlugin {
 
     /**
      * Load config from disk. If config file does not exist, it will create one
-     * with default values embedded in this plugin. Precisely, default config
-     * which are not language-related is embedded in classes. Language files are
-     * embedded in the resource folder.
+     * with default values embedded in this plugin.
      */
-    private void loadConfig() {
-        // Language file
-        languageManager = new LanguageManager(this);
-
-        beesCfg = new BeesConfig(this);
-        deathLoggerCfg = new DeathLoggerConfig(this);
-        foundOresCfg = new FoundOresConfig(this);
-        magicTimeCfg = new MagicTimeConfig(this);
-        magicWeatherCfg = new MagicWeatherConfig(this);
-        mobArenaProCfg = new MobArenaProConfig(this);
-        safePortalCfg = new BetterPortalsConfig(this);
+    private void initConfig() {
+        lang = new LanguageRepository(this);
+        config = new Configuration(this);
+        config.print();
 
         // Save lists of entities and materials for easy enum values looking up
         new MaterialValues(this);
         new EntityValues(this);
     }
 
-    private void printConfig() {
-        final String bullet = " - ";
-        getLogger().info(ChatColor.YELLOW + "FoundDiamonds.blocks:");
-        foundOresCfg.blocks.forEach(e -> getLogger().info(bullet + e.toString().toLowerCase()));
-        getLogger().info(ChatColor.YELLOW + "FoundDiamonds.worlds:");
-        foundOresCfg.worlds.forEach(e -> getLogger().info(bullet + e));
-        getLogger().info(ChatColor.YELLOW + "MobArena-Addon.whitelist:");
-        mobArenaProCfg.whitelist.forEach(e -> getLogger().info(bullet + e.toString().toLowerCase()));
-    }
-
     private void registerCommands() {
         manager = new PaperCommandManager(this);
+        //noinspection deprecation
         manager.enableUnstableAPI("help");
         manager.addSupportedLanguage(Locale.SIMPLIFIED_CHINESE);
         try {
@@ -144,12 +115,11 @@ public class MoeUtils extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
         }
         manager.getLocales().setDefaultLocale(Locale.SIMPLIFIED_CHINESE);
-        manager.registerDependency(LanguageManager.class, languageManager);
+        manager.registerDependency(LanguageRepository.class, lang);
         manager.registerDependency(MagicTime.class, new MagicTime(this));
         manager.registerDependency(MagicWeather.class, new MagicWeather(this));
         manager.getCommandReplacements().addReplacement("moe", "mu|moe|moeutils");
-        manager.registerCommand(new RootCommand());
-        manager.registerCommand(new MagicUtilsCommand());
+        manager.registerCommand(new CommandHandler());
     }
 
     private Permission getPermission() {

@@ -1,6 +1,6 @@
 package co.mcsky.magicutils.listeners;
 
-import co.mcsky.LanguageManager;
+import co.mcsky.LanguageRepository;
 import co.mcsky.MoeUtils;
 import co.mcsky.magicutils.MagicWeather;
 import co.mcsky.magicutils.events.MagicWeatherEvent;
@@ -13,12 +13,12 @@ import org.bukkit.event.Listener;
  */
 public class MagicWeatherListener implements Listener {
 
-    private final LanguageManager lm;
+    private final LanguageRepository lang;
     private final MagicWeather magic;
 
     public MagicWeatherListener(MagicWeather magic) {
         this.magic = magic;
-        this.lm = magic.lm;
+        this.lang = magic.lang;
         MoeUtils moe = magic.moe;
         moe.getServer().getPluginManager().registerEvents(this, moe);
     }
@@ -34,8 +34,8 @@ public class MagicWeatherListener implements Listener {
         }
         magic.use(player);
         magic.chargePlayer(player);
-        magic.broadcast(e.getWeather().customName(lm), worldName);
-        magic.futureBroadcast(e.getWeather().customName(lm), worldName);
+        magic.broadcast(e.getWeather().customName(lang), worldName);
+        magic.futureBroadcast(e.getWeather().customName(lang), worldName);
     }
 
 }

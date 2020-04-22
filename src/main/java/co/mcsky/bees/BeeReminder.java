@@ -1,6 +1,6 @@
 package co.mcsky.bees;
 
-import co.mcsky.LanguageManager;
+import co.mcsky.LanguageRepository;
 import co.mcsky.MoeUtils;
 import co.mcsky.utilities.CooldownUtil;
 import org.bukkit.Material;
@@ -12,12 +12,17 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 public class BeeReminder implements Listener {
 
-    private final LanguageManager lm;
+    private final LanguageRepository lang;
 
     public BeeReminder(MoeUtils moe) {
-        this.lm = moe.languageManager;
+        this.lang = moe.lang;
     }
 
+    /**
+     * When a player places a beehive or bee nest, we send messages to the
+     * player to remind them of how to view the number of bees inside the
+     * block.
+     */
     @EventHandler
     public void placeBeehiveOrBeeNest(BlockPlaceEvent event) {
         Block blockPlaced = event.getBlockPlaced();
@@ -25,7 +30,7 @@ public class BeeReminder implements Listener {
             Player player = event.getPlayer();
             if (CooldownUtil.check(player.getUniqueId(), 15 * 60)) {
                 CooldownUtil.use(player.getUniqueId());
-                player.sendMessage(lm.betterbees_reminder_on_place);
+                player.sendMessage(lang.betterbees_reminder_on_place);
             }
         }
     }

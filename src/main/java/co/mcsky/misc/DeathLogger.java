@@ -1,8 +1,8 @@
 package co.mcsky.misc;
 
-import co.mcsky.LanguageManager;
+import co.mcsky.config.Configuration;
+import co.mcsky.LanguageRepository;
 import co.mcsky.MoeUtils;
-import co.mcsky.config.DeathLoggerConfig;
 import co.mcsky.utilities.DamageCauseLocalization;
 import com.meowj.langutils.lang.LanguageHelper;
 import org.bukkit.entity.EntityType;
@@ -20,17 +20,17 @@ import java.util.Set;
 public class DeathLogger implements Listener {
 
     private final MoeUtils moe;
-    private final LanguageManager lm;
-    private final DeathLoggerConfig cfg;
+    private final LanguageRepository lang;
+    private final Configuration config;
     private final Set<EntityType> loggedCreatures;
     private final String separator = ", ";
 
     public DeathLogger(MoeUtils moe) {
         this.moe = moe;
-        this.cfg = moe.deathLoggerCfg;
-        this.lm = moe.languageManager;
-        this.loggedCreatures = cfg.creatures;
-        if (cfg.enable) {
+        this.config = moe.config;
+        this.lang = moe.lang;
+        this.loggedCreatures = config.deathlogger_creatures;
+        if (config.deathlogger_enable) {
             moe.getServer().getPluginManager().registerEvents(this, moe);
             moe.getLogger().info("CreatureDeathLogger is enabled.");
         }
@@ -42,8 +42,8 @@ public class DeathLogger implements Listener {
         if (!loggedCreatures.contains(entity.getType())) return;
 
         String victimName = entity.getCustomName() != null
-                            ? entity.getCustomName() + "(" + LanguageHelper.getEntityName(e.getEntityType(), lm.common_lang) + ")"
-                            : LanguageHelper.getEntityName(e.getEntityType(), lm.common_lang);
+                            ? entity.getCustomName() + "(" + LanguageHelper.getEntityName(e.getEntityType(), lang.common_lang) + ")"
+                            : LanguageHelper.getEntityName(e.getEntityType(), lang.common_lang);
 
         @SuppressWarnings("ConstantConditions")
         String damageCause = DamageCauseLocalization.valueOf(e.getEntity().getLastDamageCause().getCause().name()).getLocalization();
@@ -53,7 +53,7 @@ public class DeathLogger implements Listener {
         if (entity.getKiller() != null) {
             playerName = entity.getKiller().getName();
         } else {
-            List<Player> nearbyPlayers = new ArrayList<>(e.getEntity().getLocation().getNearbyPlayers(cfg.searchRadius));
+            List<Player> nearbyPlayers = new ArrayList<>(e.getEntity().getLocation().getNearbyPlayers(config.deathlogger_searchRadius));
             if (nearbyPlayers.size() != 0) {
                 // All nearby players are included.
                 playerName = nearbyPlayers.stream()
@@ -61,7 +61,7 @@ public class DeathLogger implements Listener {
                                           .reduce((acc, name) -> acc + separator + name)
                                           .get();
             } else {
-                playerName = lm.common_none;
+                playerName = lang.common_none;
             }
         }
 
@@ -73,7 +73,7 @@ public class DeathLogger implements Listener {
                           separator +
                           entity.getLocation().getBlockZ();
 
-        moe.getServer().broadcastMessage(String.format(lm.deathlogger_entity_death, victimName, damageCause, playerName, location));
+        moe.getServer().broadcastMessage(String.format(lang.deathlogger_entity_death, victimName, damageCause, playerName, location));
     }
 
 }

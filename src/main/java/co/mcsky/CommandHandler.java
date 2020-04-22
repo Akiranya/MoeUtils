@@ -1,9 +1,8 @@
-package co.mcsky.commands;
+package co.mcsky;
 
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
-import co.mcsky.LanguageManager;
-import co.mcsky.MoeUtils;
 import co.mcsky.magicutils.MagicTime;
 import co.mcsky.magicutils.MagicWeather;
 import co.mcsky.magicutils.TimeOption;
@@ -11,19 +10,40 @@ import co.mcsky.magicutils.WeatherOption;
 import org.bukkit.entity.Player;
 
 @CommandAlias("%moe")
-public class MagicUtilsCommand extends BaseCommand {
+public class CommandHandler extends BaseCommand {
 
     @Dependency
     private MoeUtils moe;
     @Dependency
-    private LanguageManager lm;
-    @Dependency
-    private MagicWeather magicWeather;
-    @Dependency
-    private MagicTime magicTime;
+    private LanguageRepository lang;
+
+    @HelpCommand
+    @Description("Show help menu.")
+    public void help(CommandHelp help) {
+        help.showHelp();
+    }
+
+    @Subcommand("reload")
+    @CommandPermission("moe.admin")
+    @Description("Reload config from files.")
+    public void reload() {
+        long elapsed = moe.reload();
+        getCurrentCommandIssuer().sendMessage(String.format(lang.common_reloaded, elapsed));
+    }
+
+    @Subcommand("version|ver|v")
+    @CommandPermission("moe.admin")
+    @Description("Get the version of this plugin.")
+    public void version() {
+        getCurrentCommandIssuer().sendMessage(
+                String.format(lang.common_version, moe.getDescription().getVersion()));
+    }
 
     @Subcommand("weather")
     public class WeatherCommand extends BaseCommand {
+
+        @Dependency
+        private MagicWeather magicWeather;
 
         @Subcommand("sun|clear")
         @CommandPermission("moe.magic.weather")
@@ -51,7 +71,7 @@ public class MagicUtilsCommand extends BaseCommand {
         @Description("Reset cooldown of magic weather.")
         public void reset() {
             magicWeather.resetCooldown();
-            getCurrentCommandIssuer().sendMessage(lm.common_reset);
+            getCurrentCommandIssuer().sendMessage(lang.common_reset);
         }
 
         @Subcommand("status")
@@ -65,6 +85,9 @@ public class MagicUtilsCommand extends BaseCommand {
 
     @Subcommand("time")
     public class TimeCommand extends BaseCommand {
+
+        @Dependency
+        private MagicTime magicTime;
 
         @Subcommand("day")
         @CommandPermission("moe.magic.time")
@@ -85,7 +108,7 @@ public class MagicUtilsCommand extends BaseCommand {
         @Description("Reset cooldown of magic time.")
         public void reset() {
             magicTime.resetCooldown();
-            getCurrentCommandIssuer().sendMessage(lm.common_reset);
+            getCurrentCommandIssuer().sendMessage(lang.common_reset);
         }
 
         @Subcommand("status")
@@ -96,6 +119,5 @@ public class MagicUtilsCommand extends BaseCommand {
         }
 
     }
-
 
 }

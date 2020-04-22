@@ -1,6 +1,6 @@
 package co.mcsky.magicutils;
 
-import co.mcsky.LanguageManager;
+import co.mcsky.LanguageRepository;
 import org.bukkit.World;
 
 public enum TimeOption {
@@ -16,16 +16,16 @@ public enum TimeOption {
     /**
      * Get the fancy name!
      *
-     * @param lm Messages instance of MoeUtils.
+     * @param lang Messages instance of MoeUtils.
      *
      * @return The fancy name of this {@code time}.
      */
-    public String customName(LanguageManager lm) {
+    public String customName(LanguageRepository lang) {
         switch (this) {
             case DAY:
-                return lm.magictime_day;
+                return lang.magictime_day;
             case NIGHT:
-                return lm.magictime_night;
+                return lang.magictime_night;
             default:
                 throw new IllegalStateException("Unknown time type.");
         }

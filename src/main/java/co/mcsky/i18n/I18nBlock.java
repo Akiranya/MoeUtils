@@ -1,6 +1,6 @@
 package co.mcsky.i18n;
 
-import co.mcsky.LanguageManager;
+import co.mcsky.LanguageRepository;
 import com.meowj.langutils.lang.LanguageHelper;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -17,15 +17,15 @@ public class I18nBlock {
 
     private static final Map<Material, String> displayNames = new HashMap<>();
 
-    public static String getBlockDisplayName(Material material, LanguageManager lm) {
+    public static String getBlockDisplayName(Material material, LanguageRepository lang) {
         if (!displayNames.containsKey(material)) {
-            registerEntry(material, lm);
+            registerEntry(material, lang);
         }
         return displayNames.get(material);
     }
 
-    private static void registerEntry(Material material, LanguageManager lm) {
-        displayNames.put(material, LanguageHelper.getItemDisplayName(new ItemStack(material), lm.common_lang));
+    private static void registerEntry(Material material, LanguageRepository lang) {
+        displayNames.put(material, LanguageHelper.getItemDisplayName(new ItemStack(material), lang.common_lang));
     }
 
 }

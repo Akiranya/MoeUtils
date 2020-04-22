@@ -1,6 +1,6 @@
 package co.mcsky.magicutils;
 
-import co.mcsky.LanguageManager;
+import co.mcsky.LanguageRepository;
 import co.mcsky.MoeUtils;
 import co.mcsky.utilities.CooldownUtil;
 import org.bukkit.entity.Player;
@@ -13,12 +13,12 @@ import java.util.UUID;
 public abstract class MagicBase {
 
     public final MoeUtils moe;
-    public final LanguageManager lm;
+    public final LanguageRepository lang;
     public final int COOLDOWN_DURATION;
 
     MagicBase(MoeUtils moe, int cooldownDuration) {
         this.moe = moe;
-        this.lm = moe.languageManager;
+        this.lang = moe.lang;
         this.COOLDOWN_DURATION = cooldownDuration;
     }
 
@@ -34,7 +34,7 @@ public abstract class MagicBase {
      */
     boolean checkCooldown(Player player, UUID COOLDOWN_KEY) {
         if (CooldownUtil.check(COOLDOWN_KEY, COOLDOWN_DURATION)) return true;
-        String playerMsg = String.format(lm.common_cooldown, CooldownUtil.remaining(COOLDOWN_KEY, COOLDOWN_DURATION));
+        String playerMsg = String.format(lang.common_cooldown, CooldownUtil.remaining(COOLDOWN_KEY, COOLDOWN_DURATION));
         player.sendMessage(playerMsg);
         return false;
     }
@@ -51,7 +51,7 @@ public abstract class MagicBase {
      */
     boolean checkBalance(Player player, int cost) {
         if (MoeUtils.economy.has(player, cost)) return true;
-        player.sendMessage(lm.common_not_enough_money);
+        player.sendMessage(lang.common_not_enough_money);
         return false;
     }
 
@@ -64,7 +64,7 @@ public abstract class MagicBase {
      */
     void chargePlayer(Player player, int cost) {
         MoeUtils.economy.withdrawPlayer(player, cost);
-        String playerMsg = String.format(lm.common_charge, cost);
+        String playerMsg = String.format(lang.common_charge, cost);
         player.sendMessage(playerMsg);
     }
 
