@@ -1,5 +1,5 @@
 name: MoeUtils
-main: co.mcsky.MoeUtils
+main: co.mcsky.moeutils.MoeUtils
 version: 1.6.1
 api-version: '1.13'
 description: A All-in-One plugin.
