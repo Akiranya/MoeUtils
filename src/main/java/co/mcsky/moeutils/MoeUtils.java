@@ -72,14 +72,6 @@ public class MoeUtils extends JavaPlugin {
         registerCommands();
     }
 
-    private void initFunctions() {
-        new ArenaEventListener();
-        new BetterPortals();
-        new FoundOres();
-        new DeathLogger();
-        new BeeBase();
-    }
-
     /**
      * @return The duration (in millisecond) for the plugin to reload
      */
@@ -95,6 +87,14 @@ public class MoeUtils extends JavaPlugin {
         initFunctions();
 
         return TimerUtil.end(uuid);
+    }
+
+    private void initFunctions() {
+        new ArenaEventListener();
+        new BetterPortals();
+        new FoundOres();
+        new DeathLogger();
+        new BeeBase();
     }
 
     /**
