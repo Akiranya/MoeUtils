@@ -1,6 +1,5 @@
 package co.mcsky.moeutils.i18n;
 
-import co.mcsky.moeutils.LanguageRepository;
 import co.mcsky.moeutils.MoeUtils;
 import com.meowj.langutils.lang.LanguageHelper;
 import org.bukkit.Material;
