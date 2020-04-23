@@ -54,7 +54,7 @@ public class FoundOres implements Listener {
                     lang.foundores_found,
                     event.getPlayer().getDisplayName(),
                     blockCounter.count(currentLocation, currentBlock, locationHistory),
-                    I18nBlock.getBlockDisplayName(currentBlock, lang)));
+                    I18nBlock.getBlockDisplayName(currentBlock)));
         }
     }
 

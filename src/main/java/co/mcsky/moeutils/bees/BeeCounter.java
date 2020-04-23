@@ -5,6 +5,7 @@ import co.mcsky.moeutils.MoeUtils;
 import co.mcsky.moeutils.config.Configuration;
 import org.bukkit.Material;
 import org.bukkit.block.Beehive;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -37,14 +38,13 @@ public class BeeCounter implements Listener {
             // Check block clicked
             if (e.getHand() == HAND && e.getAction() == RIGHT_CLICK_BLOCK) {
                 Material clickedBlockType = e.getClickedBlock().getType();
-                if (clickedBlockType == BEE_NEST || clickedBlockType == BEEHIVE) {
-                    if (e.getPlayer().isSneaking() || !config.betterbees_requireSneak) {
-                        e.getPlayer().sendMessage(String.format(
-                                clickedBlockType == BEE_NEST
-                                ? lang.betterbees_count_bee_nest
-                                : lang.betterbees_count_beehive,
-                                ((Beehive) e.getClickedBlock().getState()).getEntityCount()));
-                    }
+                Player player = e.getPlayer();
+                if (isBeehive(clickedBlockType) && isSneaking(player)) {
+                    player.sendMessage(String.format(
+                            clickedBlockType == BEE_NEST
+                            ? lang.betterbees_count_bee_nest
+                            : lang.betterbees_count_beehive,
+                            ((Beehive) e.getClickedBlock().getState()).getEntityCount()));
                 }
             }
         }
@@ -58,19 +58,27 @@ public class BeeCounter implements Listener {
     public void useItem(PlayerInteractEvent e) {
         if (e.isBlockInHand()) {
             // Check item in hand
-            ItemStack item = e.getItem();
-            Material type = item.getType();
             if (e.getHand() == HAND && e.getAction() == RIGHT_CLICK_AIR) {
-                if (type == BEEHIVE || type == BEE_NEST) {
-                    if (e.getPlayer().isSneaking() || !config.betterbees_requireSneak) {
-                        Beehive beehive = (Beehive) ((BlockStateMeta) item.getItemMeta()).getBlockState();
-                        e.getPlayer().sendMessage(String.format(type == BEE_NEST
-                                                                ? lang.betterbees_count_bee_nest
-                                                                : lang.betterbees_count_beehive, beehive.getEntityCount()));
-                    }
+                ItemStack item = e.getItem();
+                Material type = item.getType();
+                Player player = e.getPlayer();
+                if (isBeehive(type) && isSneaking(player)) {
+                    player.sendMessage(String.format(
+                            type == BEE_NEST
+                            ? lang.betterbees_count_bee_nest
+                            : lang.betterbees_count_beehive,
+                            ((Beehive) ((BlockStateMeta) item.getItemMeta()).getBlockState()).getEntityCount()));
                 }
             }
         }
+    }
+
+    private boolean isSneaking(Player player) {
+        return player.isSneaking() || !config.betterbees_requireSneak;
+    }
+
+    private boolean isBeehive(Material type) {
+        return type == BEE_NEST || type == BEEHIVE;
     }
 
 }
