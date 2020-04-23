@@ -1,8 +1,8 @@
 package co.mcsky.moeutils.bees;
 
-import co.mcsky.moeutils.config.Configuration;
 import co.mcsky.moeutils.LanguageRepository;
 import co.mcsky.moeutils.MoeUtils;
+import co.mcsky.moeutils.config.Configuration;
 import org.bukkit.Material;
 import org.bukkit.block.Beehive;
 import org.bukkit.event.EventHandler;
@@ -38,11 +38,13 @@ public class BeeCounter implements Listener {
             if (e.getHand() == HAND && e.getAction() == RIGHT_CLICK_BLOCK) {
                 Material clickedBlockType = e.getClickedBlock().getType();
                 if (clickedBlockType == BEE_NEST || clickedBlockType == BEEHIVE) {
-                    e.getPlayer().sendMessage(String.format(
-                            clickedBlockType == BEE_NEST
-                            ? lang.betterbees_count_bee_nest
-                            : lang.betterbees_count_beehive,
-                            ((Beehive) e.getClickedBlock().getState()).getEntityCount()));
+                    if (e.getPlayer().isSneaking() || !config.betterbees_requireSneak) {
+                        e.getPlayer().sendMessage(String.format(
+                                clickedBlockType == BEE_NEST
+                                ? lang.betterbees_count_bee_nest
+                                : lang.betterbees_count_beehive,
+                                ((Beehive) e.getClickedBlock().getState()).getEntityCount()));
+                    }
                 }
             }
         }
