@@ -56,16 +56,16 @@ public class MagicWeather extends MagicBase {
     }
 
     public void futureBroadcast(String weatherName, String worldName) {
-        String prefix = plugin.getMessage(plugin.getServer().getConsoleSender(), "magicweather.prefix");
-        String message = String.format(plugin.getMessage(plugin.getServer().getConsoleSender(), "magictime.ended"), weatherName, worldName);
+        String prefix = plugin.getMessage(null, "magicweather.prefix");
+        String message = String.format(plugin.getMessage(null, "magictime.ended"), weatherName, worldName);
         plugin.getServer()
               .getScheduler()
               .runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(prefix + message), TimeConverter.toTick(COOLDOWN_DURATION));
     }
 
     public void broadcast(String weatherName, String worldName) {
-        String prefix = plugin.getMessage(plugin.getServer().getConsoleSender(), "magicweather.prefix");
-        String message = String.format(plugin.getMessage(plugin.getServer().getConsoleSender(), "magicweather.changed"), worldName, weatherName);
+        String prefix = plugin.getMessage(null, "magicweather.prefix");
+        String message = String.format(plugin.getMessage(null, "magicweather.changed"), worldName, weatherName);
         plugin.getServer().broadcastMessage(prefix + message);
     }
 

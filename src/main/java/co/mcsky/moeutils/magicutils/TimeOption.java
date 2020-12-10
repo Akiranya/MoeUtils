@@ -21,9 +21,9 @@ public enum TimeOption {
     public String customName() {
         switch (this) {
             case DAY:
-                return MoeUtils.plugin.getMessage(MoeUtils.plugin.getServer().getConsoleSender(), "magictime.day");
+                return MoeUtils.plugin.getMessage(null, "magictime.day");
             case NIGHT:
-                return MoeUtils.plugin.getMessage(MoeUtils.plugin.getServer().getConsoleSender(), "magictime.night");
+                return MoeUtils.plugin.getMessage(null, "magictime.night");
             default:
                 throw new IllegalStateException("Unknown time type.");
         }

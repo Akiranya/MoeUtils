@@ -50,8 +50,8 @@ public class FoundOres implements Listener {
         Location currentLocation = block.getLocation();
         Material currentBlock = block.getType();
         if (!locationHistory.contains(currentLocation)) {
-            plugin.getServer().broadcastMessage(plugin.getMessage(plugin.getServer().getConsoleSender(), "foundores.prefix") + String.format(
-                    plugin.getMessage(plugin.getServer().getConsoleSender(), "foundores.found"),
+            plugin.getServer().broadcastMessage(plugin.getMessage(null, "foundores.prefix") + String.format(
+                    plugin.getMessage(null, "foundores.found"),
                     event.getPlayer().getDisplayName(),
                     blockCounter.count(currentLocation, currentBlock, locationHistory),
                     I18nBlock.getBlockDisplayName(currentBlock)));

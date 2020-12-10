@@ -18,11 +18,11 @@ public enum WeatherOption {
     public String customName() {
         switch (this) {
             case CLEAR:
-                return plugin.getMessage(plugin.getServer().getConsoleSender(), "magicweather.clear");
+                return plugin.getMessage(null, "magicweather.clear");
             case RAIN:
-                return plugin.getMessage(plugin.getServer().getConsoleSender(), "magicweather.rain");
+                return plugin.getMessage(null, "magicweather.rain");
             case THUNDER:
-                return plugin.getMessage(plugin.getServer().getConsoleSender(), "magicweather.thunder");
+                return plugin.getMessage(null, "magicweather.thunder");
             default:
                 throw new IllegalStateException("Unknown weather type.");
         }
