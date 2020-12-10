@@ -1,7 +1,7 @@
 package co.mcsky.moeutils.misc;
 
 import co.mcsky.moeutils.MoeUtils;
-import co.mcsky.moeutils.config.Configuration;
+import co.mcsky.moeutils.config.Config;
 import co.mcsky.moeutils.utilities.DamageCauseLocalization;
 import com.meowj.langutils.lang.LanguageHelper;
 import org.bukkit.entity.EntityType;
@@ -19,7 +19,7 @@ import java.util.Set;
 public class DeathLogger implements Listener {
 
     public final MoeUtils plugin;
-    public final Configuration config;
+    public final Config config;
 
     private final Set<EntityType> loggedCreatures;
     private final String separator = ", ";
@@ -27,8 +27,8 @@ public class DeathLogger implements Listener {
     public DeathLogger(MoeUtils plugin) {
         this.plugin = plugin;
         this.config = plugin.config;
-        this.loggedCreatures = config.deathlogger_creatures;
-        if (config.deathlogger_enable) {
+        this.loggedCreatures = config.DEATHLOGGER_CREATURES;
+        if (config.DEATHLOGGER_ENABLE) {
             this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
             this.plugin.getLogger().info("DeathLogger is enabled.");
         }
@@ -54,7 +54,7 @@ public class DeathLogger implements Listener {
         if (killer != null) {
             killerName = killer.getName();
         } else {
-            List<Player> nearbyPlayers = new ArrayList<>(e.getEntity().getLocation().getNearbyPlayers(config.deathlogger_searchRadius));
+            List<Player> nearbyPlayers = new ArrayList<>(e.getEntity().getLocation().getNearbyPlayers(config.DEATHLOGGER_SEARCH_RADIUS));
             if (nearbyPlayers.size() != 0) {
                 // All nearby players are included.
                 killerName = nearbyPlayers.stream()

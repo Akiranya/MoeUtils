@@ -18,7 +18,7 @@ public class MagicWeather extends MagicBase {
     private final Map<String, String> lastPlayers;
 
     public MagicWeather(MoeUtils plugin) {
-        super(plugin, plugin.config.magicweather_cooldown);
+        super(plugin, plugin.config.MAGICWEATHER_COOLDOWN);
         COOLDOWN_KEYS = Collections.unmodifiableMap(new HashMap<>() {{
             plugin.getServer().getWorlds().forEach(world -> put(world.getName(), UUID.randomUUID()));
         }});
@@ -40,7 +40,7 @@ public class MagicWeather extends MagicBase {
     }
 
     public boolean checkBalance(Player player) {
-        return checkBalance(player, plugin.config.magicweather_cost);
+        return checkBalance(player, plugin.config.MAGICWEATHER_COST);
     }
 
     public boolean checkCooldown(Player player) {
@@ -48,7 +48,7 @@ public class MagicWeather extends MagicBase {
     }
 
     public void chargePlayer(Player player) {
-        chargePlayer(player, plugin.config.magicweather_cost);
+        chargePlayer(player, plugin.config.MAGICWEATHER_COST);
     }
 
     public void use(Player player) {

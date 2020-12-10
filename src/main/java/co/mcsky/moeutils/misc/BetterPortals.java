@@ -12,7 +12,7 @@ public class BetterPortals implements Listener {
 
     public BetterPortals(MoeUtils plugin) {
         this.plugin = plugin;
-        if (plugin.config.betterportals_enable) {
+        if (plugin.config.BETTERPORTALS_ENABLE) {
             plugin.getServer().getPluginManager().registerEvents(this, plugin);
             plugin.getLogger().info("BetterPortals is enabled.");
         }
@@ -31,7 +31,7 @@ public class BetterPortals implements Listener {
         if (!e.getTo().getWorld().getWorldBorder().isInside(e.getTo())) {
             e.setCancelled(true);
             e.getPlayer().sendMessage(plugin.getMessage(e.getPlayer(), "betterportals.cancelled"));
-            if (plugin.config.betterportals_debug) {
+            if (plugin.config.BETTERPORTALS_DEBUG) {
                 plugin.getLogger().info(String.format(plugin.getMessage(plugin.getServer().getConsoleSender(), "betterportals.debug"),
                                                       e.getPlayer().getName()));
             }

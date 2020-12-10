@@ -15,7 +15,7 @@ public class MagicTime extends MagicBase {
     private String lastPlayer = null;
 
     public MagicTime(MoeUtils plugin) {
-        super(plugin, plugin.config.magictime_cooldown);
+        super(plugin, plugin.config.MAGICTIME_COOLDOWN);
         COOLDOWN_KEY = UUID.randomUUID();
         new MagicTimeListener(this);
     }
@@ -31,7 +31,7 @@ public class MagicTime extends MagicBase {
     }
 
     public boolean checkBalance(Player player) {
-        return checkBalance(player, plugin.config.magictime_cost);
+        return checkBalance(player, plugin.config.MAGICTIME_COST);
     }
 
     public boolean checkCooldown(Player player) {
@@ -39,7 +39,7 @@ public class MagicTime extends MagicBase {
     }
 
     public void chargePlayer(Player player) {
-        chargePlayer(player, plugin.config.magictime_cost);
+        chargePlayer(player, plugin.config.MAGICTIME_COST);
     }
 
     public void use() {

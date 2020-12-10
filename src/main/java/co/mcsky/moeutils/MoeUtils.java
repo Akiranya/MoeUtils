@@ -2,9 +2,9 @@ package co.mcsky.moeutils;
 
 import co.aikar.commands.PaperCommandManager;
 import co.mcsky.moeutils.bees.BetterBees;
-import co.mcsky.moeutils.config.Configuration;
-import co.mcsky.moeutils.config.reference.EntityValues;
-import co.mcsky.moeutils.config.reference.MaterialValues;
+import co.mcsky.moeutils.config.Config;
+import co.mcsky.moeutils.config.EntitiesList;
+import co.mcsky.moeutils.config.MaterialsList;
 import co.mcsky.moeutils.foundores.FoundOres;
 import co.mcsky.moeutils.magicutils.MagicTime;
 import co.mcsky.moeutils.magicutils.MagicWeather;
@@ -38,9 +38,9 @@ public class MoeUtils extends JavaPlugin {
     public static Economy economy = null;
     public static Chat chat = null;
 
-    public PaperCommandManager manager;
-    public Configuration config;
+    public Config config;
     public LanguageManager lang;
+    public PaperCommandManager manager;
 
     @Override
     public void onDisable() {
@@ -71,13 +71,7 @@ public class MoeUtils extends JavaPlugin {
             getLogger().info("Hooked into LangUtils.");
         }
 
-        lang = new LanguageManager(this, "languages", "zh");
-        lang.setProvider(sender -> {
-            if (sender instanceof Player)
-                return ((Player) sender).getLocale();
-            return null;
-        });
-
+        initLang();
         initConfig();
         initFunctions();
         registerCommands();
@@ -126,17 +120,25 @@ public class MoeUtils extends JavaPlugin {
         new BetterBees(this);
     }
 
+    private void initLang() {
+        lang = new LanguageManager(this, "languages", "zh");
+        lang.setProvider(sender -> {
+            if (sender instanceof Player)
+                return ((Player) sender).getLocale();
+            return null;
+        });
+    }
+
     /**
      * Load config from disk. If config file does not exist, it will create one
      * with default values embedded in this plugin.
      */
     private void initConfig() {
-        config = new Configuration();
-        config.print();
+        config = new Config();
 
         // Save lists of entities and materials for easy enum values looking up
-        new MaterialValues(this);
-        new EntityValues(this);
+        new MaterialsList();
+        new EntitiesList();
     }
 
     private void registerCommands() {

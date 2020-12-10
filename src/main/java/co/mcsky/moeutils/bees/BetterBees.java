@@ -25,7 +25,7 @@ public class BetterBees implements Listener {
 
     public BetterBees(MoeUtils plugin) {
         this.plugin = plugin;
-        if (plugin.config.betterbees_enable) {
+        if (plugin.config.BETTERBEES_ENABLE) {
             plugin.getServer().getPluginManager().registerEvents(this, plugin);
             plugin.getLogger().info("BetterBees is enabled.");
         }
@@ -94,7 +94,7 @@ public class BetterBees implements Listener {
     }
 
     private boolean isSneaking(Player player) {
-        return player.isSneaking() || !plugin.config.betterbees_requireSneak;
+        return player.isSneaking() || !plugin.config.BETTERBEES_REQUIRE_SNEAK;
     }
 
     private boolean isBeehive(Material type) {
