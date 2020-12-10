@@ -18,11 +18,11 @@ public enum WeatherOption {
     public String customName() {
         switch (this) {
             case CLEAR:
-                return plugin.lang.magicweather_clear;
+                return plugin.getMessage(plugin.getServer().getConsoleSender(), "magicweather.clear");
             case RAIN:
-                return plugin.lang.magicweather_rain;
+                return plugin.getMessage(plugin.getServer().getConsoleSender(), "magicweather.rain");
             case THUNDER:
-                return plugin.lang.magicweather_thunder;
+                return plugin.getMessage(plugin.getServer().getConsoleSender(), "magicweather.thunder");
             default:
                 throw new IllegalStateException("Unknown weather type.");
         }
@@ -40,8 +40,8 @@ public enum WeatherOption {
                 break;
             case THUNDER:
                 world.setStorm(true);
-                world.setWeatherDuration(duration);
                 world.setThundering(true);
+                world.setWeatherDuration(duration);
                 world.setThunderDuration(duration);
                 break;
             default:

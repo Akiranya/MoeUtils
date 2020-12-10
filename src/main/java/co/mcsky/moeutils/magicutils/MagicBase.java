@@ -1,25 +1,26 @@
 package co.mcsky.moeutils.magicutils;
 
-import co.mcsky.moeutils.LanguageRepository;
 import co.mcsky.moeutils.MoeUtils;
 import co.mcsky.moeutils.utilities.CooldownUtil;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
-
-import static co.mcsky.moeutils.MoeUtils.plugin;
 
 /**
  * This class shares code for {@link MagicTime} and {@link MagicWeather}.
  */
 public abstract class MagicBase {
 
-    public final LanguageRepository lang;
+    public final MoeUtils plugin;
     public final int COOLDOWN_DURATION;
 
-    MagicBase(int cooldownDuration) {
-        this.lang = plugin.lang;
+    private final ConsoleCommandSender consoleSender;
+
+    MagicBase(MoeUtils plugin, int cooldownDuration) {
         this.COOLDOWN_DURATION = cooldownDuration;
+        this.plugin = plugin;
+        this.consoleSender = plugin.getServer().getConsoleSender();
     }
 
     /**
@@ -33,9 +34,10 @@ public abstract class MagicBase {
      * @return True if the cooldown is ready. False else wise.
      */
     boolean checkCooldown(Player player, UUID COOLDOWN_KEY) {
-        if (CooldownUtil.check(COOLDOWN_KEY, COOLDOWN_DURATION)) return true;
-        String playerMsg = String.format(lang.common_cooldown, CooldownUtil.remaining(COOLDOWN_KEY, COOLDOWN_DURATION));
-        player.sendMessage(playerMsg);
+        if (CooldownUtil.check(COOLDOWN_KEY, COOLDOWN_DURATION))
+            return true;
+        player.sendMessage(String.format(plugin.getMessage(consoleSender, "common.cooldown"),
+                                         CooldownUtil.remaining(COOLDOWN_KEY, COOLDOWN_DURATION)));
         return false;
     }
 
@@ -50,8 +52,9 @@ public abstract class MagicBase {
      * @return True if the player has sufficient balance. False else wise.
      */
     boolean checkBalance(Player player, int cost) {
-        if (MoeUtils.economy.has(player, cost)) return true;
-        player.sendMessage(lang.common_not_enough_money);
+        if (MoeUtils.economy.has(player, cost))
+            return true;
+        player.sendMessage(plugin.getMessage(consoleSender, "common.not_enough_money"));
         return false;
     }
 
@@ -64,8 +67,8 @@ public abstract class MagicBase {
      */
     void chargePlayer(Player player, int cost) {
         MoeUtils.economy.withdrawPlayer(player, cost);
-        String playerMsg = String.format(lang.common_price, cost);
-        player.sendMessage(playerMsg);
+        player.sendMessage(String.format(plugin.getMessage(consoleSender, "common.price"),
+                                         cost));
     }
 
 }

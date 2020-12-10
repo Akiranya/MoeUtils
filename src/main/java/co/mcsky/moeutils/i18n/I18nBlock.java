@@ -13,7 +13,7 @@ import java.util.Map;
  * LanguageHelper}, I have created a wrapper class for quickly getting the
  * {@code i18nDisplayName} of a given block.
  */
-public class I18nBlock {
+public final class I18nBlock {
 
     private static final Map<Material, String> displayNames = new HashMap<>();
 
@@ -25,7 +25,8 @@ public class I18nBlock {
     }
 
     private static void registerEntry(Material material) {
-        displayNames.put(material, LanguageHelper.getItemDisplayName(new ItemStack(material), MoeUtils.plugin.lang.common_lang));
+        String lang_setting = MoeUtils.plugin.getMessage(MoeUtils.plugin.getServer().getConsoleSender(), "common.lang");
+        displayNames.put(material, LanguageHelper.getItemDisplayName(new ItemStack(material), lang_setting));
     }
 
 }

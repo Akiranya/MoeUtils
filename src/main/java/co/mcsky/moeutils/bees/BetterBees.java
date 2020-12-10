@@ -1,27 +1,34 @@
 package co.mcsky.moeutils.bees;
 
-import co.mcsky.moeutils.LanguageRepository;
 import co.mcsky.moeutils.MoeUtils;
+import co.mcsky.moeutils.utilities.CooldownUtil;
 import org.bukkit.Material;
 import org.bukkit.block.Beehive;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 
+import static org.bukkit.Material.BEEHIVE;
 import static org.bukkit.Material.BEE_NEST;
 import static org.bukkit.event.block.Action.RIGHT_CLICK_AIR;
 import static org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK;
 import static org.bukkit.inventory.EquipmentSlot.HAND;
 
-public class BeeCounter extends BeeBase implements Listener {
+public class BetterBees implements Listener {
 
-    private final LanguageRepository lang;
+    public final MoeUtils plugin;
 
-    public BeeCounter() {
-        this.lang = MoeUtils.plugin.lang;
+    public BetterBees(MoeUtils plugin) {
+        this.plugin = plugin;
+        if (plugin.config.betterbees_enable) {
+            plugin.getServer().getPluginManager().registerEvents(this, plugin);
+            plugin.getLogger().info("BetterBees is enabled.");
+        }
     }
 
     /**
@@ -38,8 +45,8 @@ public class BeeCounter extends BeeBase implements Listener {
                 if (isBeehive(type) && isSneaking(player)) {
                     player.sendMessage(String.format(
                             type == BEE_NEST
-                            ? lang.betterbees_count_bee_nest
-                            : lang.betterbees_count_beehive,
+                            ? plugin.getMessage(player, "betterbees.count_bee_nest")
+                            : plugin.getMessage(player, "betterbees.count_beehive"),
                             ((Beehive) e.getClickedBlock().getState()).getEntityCount()));
                 }
             }
@@ -61,12 +68,37 @@ public class BeeCounter extends BeeBase implements Listener {
                 if (isBeehive(type) && isSneaking(player)) {
                     player.sendMessage(String.format(
                             type == BEE_NEST
-                            ? lang.betterbees_count_bee_nest
-                            : lang.betterbees_count_beehive,
+                            ? plugin.getMessage(player, "betterbees.count_bee_nest")
+                            : plugin.getMessage(player, "betterbees.count_beehive"),
                             ((Beehive) ((BlockStateMeta) item.getItemMeta()).getBlockState()).getEntityCount()));
                 }
             }
         }
+    }
+
+    /**
+     * When a player places a beehive or bee nest, we send messages to the
+     * player to remind them of how to view the number of bees inside the
+     * block.
+     */
+    @EventHandler
+    public void placeBeehiveOrBeeNest(BlockPlaceEvent event) {
+        Block blockPlaced = event.getBlockPlaced();
+        if (isBeehive(blockPlaced.getType())) {
+            Player player = event.getPlayer();
+            if (CooldownUtil.check(player.getUniqueId(), 15 * 60)) {
+                CooldownUtil.use(player.getUniqueId());
+                player.sendMessage(plugin.getMessage(player, "betterbees.reminder_on_place"));
+            }
+        }
+    }
+
+    private boolean isSneaking(Player player) {
+        return player.isSneaking() || !plugin.config.betterbees_requireSneak;
+    }
+
+    private boolean isBeehive(Material type) {
+        return type == BEE_NEST || type == BEEHIVE;
     }
 
 }

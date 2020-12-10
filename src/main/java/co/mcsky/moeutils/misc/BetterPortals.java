@@ -1,15 +1,17 @@
 package co.mcsky.moeutils.misc;
 
+import co.mcsky.moeutils.MoeUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPortalEvent;
 
-import static co.mcsky.moeutils.MoeUtils.plugin;
-
 public class BetterPortals implements Listener {
 
-    public BetterPortals() {
+    public final MoeUtils plugin;
+
+    public BetterPortals(MoeUtils plugin) {
+        this.plugin = plugin;
         if (plugin.config.betterportals_enable) {
             plugin.getServer().getPluginManager().registerEvents(this, plugin);
             plugin.getLogger().info("BetterPortals is enabled.");
@@ -28,9 +30,10 @@ public class BetterPortals implements Listener {
         // and cancel the PlayerPortalEvent when it is.
         if (!e.getTo().getWorld().getWorldBorder().isInside(e.getTo())) {
             e.setCancelled(true);
-            e.getPlayer().sendMessage(plugin.lang.betterportals_cancelled);
+            e.getPlayer().sendMessage(plugin.getMessage(e.getPlayer(), "betterportals.cancelled"));
             if (plugin.config.betterportals_debug) {
-                plugin.getLogger().info(String.format(plugin.lang.betterportals_debug, e.getPlayer().getName()));
+                plugin.getLogger().info(String.format(plugin.getMessage(plugin.getServer().getConsoleSender(), "betterportals.debug"),
+                                                      e.getPlayer().getName()));
             }
         }
     }

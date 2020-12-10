@@ -1,5 +1,6 @@
 package co.mcsky.moeutils.magicutils;
 
+import co.mcsky.moeutils.MoeUtils;
 import co.mcsky.moeutils.magicutils.events.MagicWeatherEvent;
 import co.mcsky.moeutils.magicutils.listeners.MagicWeatherListener;
 import co.mcsky.moeutils.utilities.CooldownUtil;
@@ -11,15 +12,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static co.mcsky.moeutils.MoeUtils.plugin;
-
 public class MagicWeather extends MagicBase {
 
     private final Map<String, UUID> COOLDOWN_KEYS;
     private final Map<String, String> lastPlayers;
 
-    public MagicWeather() {
-        super(plugin.config.magicweather_cooldown);
+    public MagicWeather(MoeUtils plugin) {
+        super(plugin, plugin.config.magicweather_cooldown);
         COOLDOWN_KEYS = Collections.unmodifiableMap(new HashMap<>() {{
             plugin.getServer().getWorlds().forEach(world -> put(world.getName(), UUID.randomUUID()));
         }});
@@ -57,11 +56,17 @@ public class MagicWeather extends MagicBase {
     }
 
     public void futureBroadcast(String weatherName, String worldName) {
-        plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(lang.magicweather_prefix + String.format(lang.magictime_ended, weatherName, worldName)), TimeConverter.toTick(COOLDOWN_DURATION));
+        String prefix = plugin.getMessage(plugin.getServer().getConsoleSender(), "magicweather.prefix");
+        String message = String.format(plugin.getMessage(plugin.getServer().getConsoleSender(), "magictime.ended"), weatherName, worldName);
+        plugin.getServer()
+              .getScheduler()
+              .runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(prefix + message), TimeConverter.toTick(COOLDOWN_DURATION));
     }
 
     public void broadcast(String weatherName, String worldName) {
-        plugin.getServer().broadcastMessage(lang.magicweather_prefix + String.format(lang.magicweather_changed, worldName, weatherName));
+        String prefix = plugin.getMessage(plugin.getServer().getConsoleSender(), "magicweather.prefix");
+        String message = String.format(plugin.getMessage(plugin.getServer().getConsoleSender(), "magicweather.changed"), worldName, weatherName);
+        plugin.getServer().broadcastMessage(prefix + message);
     }
 
     /**

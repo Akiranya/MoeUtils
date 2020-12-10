@@ -24,7 +24,8 @@ public class NametagUtil {
      * @param suffix The suffix to be added
      * @param action Update or remove
      */
-    public void change(Player player, String prefix, String suffix, ACTION action) {
+    public void change(Player player, String prefix, String suffix,
+                       ACTION action) {
         if (player == null || prefix == null || suffix == null || action == null) {
             throw new IllegalArgumentException("Method arguments cannot be null.");
         }

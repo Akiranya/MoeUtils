@@ -26,7 +26,8 @@ public class StringConverter implements Converter {
      * @return Text containing the {@literal &} color code character.
      */
     @NotNull
-    private String translateAlternateColorCodes(char altColorChar, @NotNull String textToTranslate) {
+    private String translateAlternateColorCodes(char altColorChar,
+                                                @NotNull String textToTranslate) {
         Validate.notNull(textToTranslate, "Cannot translate null text");
 
         char[] b = textToTranslate.toCharArray();
@@ -40,12 +41,16 @@ public class StringConverter implements Converter {
     }
 
     @Override
-    public Object toConfig(Class<?> type, Object obj, ParameterizedType parameterizedType) throws Exception {
+    public Object toConfig(Class<?> type, Object obj,
+                           ParameterizedType parameterizedType) throws
+                                                                Exception {
         return translateAlternateColorCodes('\u00A7', (String) obj);
     }
 
     @Override
-    public Object fromConfig(Class<?> type, Object section, ParameterizedType parameterizedType) throws Exception {
+    public Object fromConfig(Class<?> type, Object section,
+                             ParameterizedType parameterizedType) throws
+                                                                  Exception {
         return ChatColor.translateAlternateColorCodes('&', section.toString());
     }
 

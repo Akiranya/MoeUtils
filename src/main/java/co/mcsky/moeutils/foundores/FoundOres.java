@@ -1,6 +1,6 @@
 package co.mcsky.moeutils.foundores;
 
-import co.mcsky.moeutils.LanguageRepository;
+import co.mcsky.moeutils.MoeUtils;
 import co.mcsky.moeutils.config.Configuration;
 import co.mcsky.moeutils.i18n.I18nBlock;
 import co.mcsky.moeutils.utilities.TimeConverter;
@@ -15,28 +15,26 @@ import org.bukkit.event.block.BlockBreakEvent;
 import java.util.HashSet;
 import java.util.Set;
 
-import static co.mcsky.moeutils.MoeUtils.*;
-
 public class FoundOres implements Listener {
 
-    final private LanguageRepository lang;
-    final private Configuration config;
+    public final MoeUtils plugin;
+    public final Configuration config;
 
     private final Set<Material> enabledBlocks;
     private final Set<Location> locationHistory;
     private final BlockCounter blockCounter;
 
-    public FoundOres() {
-        this.lang = plugin.lang;
+    public FoundOres(MoeUtils plugin) {
+        this.plugin = plugin;
         this.config = plugin.config;
         this.enabledBlocks = config.foundores_blocks;
         this.locationHistory = new HashSet<>();
         this.blockCounter = new BlockCounter(config.foundores_maxIterations);
         if (config.foundores_enable) {
-            plugin.getServer().getPluginManager().registerEvents(this, plugin);
-            plugin.getLogger().info("FoundOres is enabled.");
+            this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
+            this.plugin.getLogger().info("FoundOres is enabled.");
             // Auto clear map locationHistory at given interval for performance reason.
-            Bukkit.getScheduler().runTaskTimer(plugin, locationHistory::clear, 0, TimeConverter.toTick(config.foundores_purgeInterval));
+            Bukkit.getScheduler().runTaskTimer(this.plugin, locationHistory::clear, 0, TimeConverter.toTick(config.foundores_purgeInterval));
         }
     }
 
@@ -44,14 +42,16 @@ public class FoundOres implements Listener {
     public void onPlayerBreakBlock(BlockBreakEvent event) {
         Block block = event.getBlock();
 
-        if (!enabledBlocks.contains(block.getType())) return;
-        if (!config.foundores_worlds.contains(block.getWorld().getName())) return;
+        if (!enabledBlocks.contains(block.getType()))
+            return;
+        if (!config.foundores_worlds.contains(block.getWorld().getName()))
+            return;
 
         Location currentLocation = block.getLocation();
         Material currentBlock = block.getType();
         if (!locationHistory.contains(currentLocation)) {
-            plugin.getServer().broadcastMessage(lang.foundores_prefix + String.format(
-                    lang.foundores_found,
+            plugin.getServer().broadcastMessage(plugin.getMessage(plugin.getServer().getConsoleSender(), "foundores.prefix") + String.format(
+                    plugin.getMessage(plugin.getServer().getConsoleSender(), "foundores.found"),
                     event.getPlayer().getDisplayName(),
                     blockCounter.count(currentLocation, currentBlock, locationHistory),
                     I18nBlock.getBlockDisplayName(currentBlock)));
