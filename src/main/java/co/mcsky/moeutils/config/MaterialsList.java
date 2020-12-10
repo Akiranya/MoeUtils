@@ -9,6 +9,7 @@ import org.spongepowered.configurate.yaml.NodeStyle;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.File;
+import java.util.Arrays;
 
 public final class MaterialsList {
 
@@ -26,11 +27,7 @@ public final class MaterialsList {
         }
 
         try {
-            root.node("materials").act(node -> {
-                for (Material value : Material.values()) {
-                    node.appendListNode().set(Material.class, value);
-                }
-            });
+            root.node("materials").setList(Material.class, Arrays.asList(Material.values()));
         } catch (SerializationException e) {
             e.printStackTrace();
             return;

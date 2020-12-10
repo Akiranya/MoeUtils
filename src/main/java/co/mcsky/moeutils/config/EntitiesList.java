@@ -10,6 +10,7 @@ import org.spongepowered.configurate.yaml.NodeStyle;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.File;
+import java.util.Arrays;
 
 public final class EntitiesList {
 
@@ -27,11 +28,7 @@ public final class EntitiesList {
         }
 
         try {
-            root.node("entities").act(node -> {
-                for (EntityType value : EntityType.values()) {
-                    node.appendListNode().set(EntityType.class, value);
-                }
-            });
+            root.node("entities").setList(EntityType.class, Arrays.asList(EntityType.values()));
         } catch (SerializationException e) {
             e.printStackTrace();
             return;

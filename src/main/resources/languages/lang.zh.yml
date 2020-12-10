@@ -1,5 +1,4 @@
 common:
-  lang: zh_cn
   none: 无
   enabled: 是
   disabled: 否

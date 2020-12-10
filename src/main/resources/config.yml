@@ -1,5 +1,6 @@
 # Configuration of MoeUtils
 
+lang: zh_cn
 magictime:
   cost: 50
   cooldown: 600

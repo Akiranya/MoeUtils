@@ -5,8 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
-import org.spongepowered.configurate.ConfigurationNode;
-import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.yaml.NodeStyle;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
@@ -22,6 +20,7 @@ public final class Config {
 
     private final YamlConfigurationLoader loader;
 
+    public String LANG;
     public int MAGICTIME_COST;
     public int MAGICTIME_COOLDOWN;
     public int MAGICWEATHER_COST;
@@ -61,6 +60,7 @@ public final class Config {
         }
 
         // Native values
+        LANG = node("lang").getString("zh_cn");
         MAGICWEATHER_COST = node("magictime", "cost").getInt(50);
         MAGICTIME_COOLDOWN = node("magictime", "cooldown").getInt(600);
         MAGICWEATHER_COST = node("magicweather", "cost").getInt(50);

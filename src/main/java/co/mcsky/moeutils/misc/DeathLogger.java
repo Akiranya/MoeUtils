@@ -40,10 +40,10 @@ public class DeathLogger implements Listener {
         if (!loggedCreatures.contains(entity.getType()))
             return;
 
-        String lang_setting = plugin.getMessage(null, "common.lang");
+        String default_lang = plugin.config.LANG;
         String victimName = entity.getCustomName() != null
-                            ? entity.getCustomName() + "(" + LanguageHelper.getEntityName(e.getEntityType(), lang_setting) + ")"
-                            : LanguageHelper.getEntityName(e.getEntityType(), lang_setting);
+                            ? entity.getCustomName() + "(" + LanguageHelper.getEntityName(e.getEntityType(), default_lang) + ")"
+                            : LanguageHelper.getEntityName(e.getEntityType(), default_lang);
 
         @SuppressWarnings("ConstantConditions")
         String damageCause = DamageCauseLocalization.valueOf(e.getEntity().getLastDamageCause().getCause().name()).getLocalization();
@@ -74,7 +74,7 @@ public class DeathLogger implements Listener {
                           separator +
                           entity.getLocation().getBlockZ();
 
-        plugin.getServer().broadcastMessage(String.format(plugin.getMessage(killer, "deathlogger.entity_death"),
+        plugin.getServer().broadcastMessage(String.format(plugin.getMessage(killer, "deathlogger.death"),
                                                           victimName, damageCause, killerName, location));
     }
 
