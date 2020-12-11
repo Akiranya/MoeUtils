@@ -1,7 +1,6 @@
-package co.mcsky.moeutils.config;
+package co.mcsky.moeutils.utilities;
 
 import co.mcsky.moeutils.MoeUtils;
-import org.bukkit.Material;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.serialize.SerializationException;
@@ -9,13 +8,19 @@ import org.spongepowered.configurate.yaml.NodeStyle;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.File;
-import java.util.Arrays;
+import java.util.List;
 
-public final class MaterialsList {
+public class EnumValuesKeeper<T> {
 
-    public MaterialsList() {
+    public EnumValuesKeeper(String fileName, Class<T> enumClass) {
+        if (!enumClass.isEnum()) {
+            MoeUtils.plugin.getLogger().warning(enumClass.getName() + " is not enum class!");
+            return;
+        }
+
+        fileName = fileName + ".yml";
         final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
-                                                                      .path(new File(MoeUtils.plugin.getDataFolder(), "materials.yml").toPath())
+                                                                      .path(new File(MoeUtils.plugin.getDataFolder(), "reference/" + fileName).toPath())
                                                                       .nodeStyle(NodeStyle.BLOCK)
                                                                       .build();
         final CommentedConfigurationNode root;
@@ -27,7 +32,7 @@ public final class MaterialsList {
         }
 
         try {
-            root.node("materials").setList(Material.class, Arrays.asList(Material.values()));
+            root.node("values").setList(enumClass, List.of(enumClass.getEnumConstants()));
         } catch (SerializationException e) {
             e.printStackTrace();
             return;
@@ -36,9 +41,8 @@ public final class MaterialsList {
         try {
             loader.save(root);
         } catch (ConfigurateException e) {
-            MoeUtils.plugin.getLogger().warning("Unable to save materials.yml!");
+            MoeUtils.plugin.getLogger().warning("Unable to save " + fileName);
         }
-
     }
 
 }

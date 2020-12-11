@@ -34,18 +34,16 @@ public class CommandHandler extends BaseCommand {
     @CommandPermission("moe.admin")
     @Description("Reload config from files.")
     public void reload() {
-        long elapsed = plugin.reload();
-        getCurrentCommandIssuer().sendMessage(String.format(plugin.getMessage(null, "common.reloaded"),
-                                                            elapsed));
+        getCurrentCommandIssuer().sendMessage(plugin.getMessage(null, "common.reloaded",
+                                                                "time", plugin.reload() + "ms"));
     }
 
     @Subcommand("version|ver|v")
     @CommandPermission("moe.admin")
     @Description("Get the version of this plugin.")
     public void version() {
-        getCurrentCommandIssuer().sendMessage(
-                String.format(plugin.getMessage(null, "common.version"),
-                              plugin.getDescription().getVersion()));
+        getCurrentCommandIssuer().sendMessage(plugin.getMessage(null, "common.version",
+                                                                "version", plugin.getDescription().getVersion()));
     }
 
     @Subcommand("weather")

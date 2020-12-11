@@ -1,7 +1,7 @@
 package co.mcsky.moeutils.magicutils;
 
 import co.mcsky.moeutils.MoeUtils;
-import co.mcsky.moeutils.utilities.CooldownUtil;
+import co.mcsky.moeutils.utilities.CooldownManager;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -31,10 +31,10 @@ public abstract class MagicBase {
      * @return True if the cooldown is ready. False else wise.
      */
     boolean checkCooldown(Player player, UUID COOLDOWN_KEY) {
-        if (CooldownUtil.check(COOLDOWN_KEY, COOLDOWN_DURATION))
+        if (CooldownManager.check(COOLDOWN_KEY, COOLDOWN_DURATION))
             return true;
-        player.sendMessage(String.format(plugin.getMessage(null, "common.cooldown"),
-                                         CooldownUtil.remaining(COOLDOWN_KEY, COOLDOWN_DURATION)));
+        player.sendMessage(plugin.getMessage(player, "common.cooldown",
+                                             "time", String.valueOf(CooldownManager.remaining(COOLDOWN_KEY, COOLDOWN_DURATION))));
         return false;
     }
 
@@ -51,7 +51,7 @@ public abstract class MagicBase {
     boolean checkBalance(Player player, int cost) {
         if (MoeUtils.economy.has(player, cost))
             return true;
-        player.sendMessage(plugin.getMessage(null, "common.not_enough_money"));
+        player.sendMessage(plugin.getMessage(player, "common.not_enough_money"));
         return false;
     }
 
@@ -64,8 +64,7 @@ public abstract class MagicBase {
      */
     void chargePlayer(Player player, int cost) {
         MoeUtils.economy.withdrawPlayer(player, cost);
-        player.sendMessage(String.format(plugin.getMessage(null, "common.price"),
-                                         cost));
+        player.sendMessage(plugin.getMessage(player, "common.price", "cost", String.valueOf(cost)));
     }
 
 }

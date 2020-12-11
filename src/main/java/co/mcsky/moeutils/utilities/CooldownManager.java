@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class CooldownUtil {
+public class CooldownManager {
 
     private static final Map<UUID, UserData> cooldownData = new HashMap<>();
 

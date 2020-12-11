@@ -1,7 +1,7 @@
 package co.mcsky.moeutils.foundores;
 
+import co.mcsky.moeutils.Configuration;
 import co.mcsky.moeutils.MoeUtils;
-import co.mcsky.moeutils.config.Config;
 import co.mcsky.moeutils.i18n.I18nBlock;
 import co.mcsky.moeutils.utilities.TimeConverter;
 import org.bukkit.Bukkit;
@@ -18,7 +18,7 @@ import java.util.Set;
 public class FoundOres implements Listener {
 
     public final MoeUtils plugin;
-    public final Config config;
+    public final Configuration config;
 
     private final Set<Material> enabledBlocks;
     private final Set<Location> locationHistory;
@@ -50,11 +50,11 @@ public class FoundOres implements Listener {
         Location currentLocation = block.getLocation();
         Material currentBlock = block.getType();
         if (!locationHistory.contains(currentLocation)) {
-            plugin.getServer().broadcastMessage(plugin.getMessage(null, "foundores.prefix") + String.format(
-                    plugin.getMessage(null, "foundores.found"),
-                    event.getPlayer().getDisplayName(),
-                    blockCounter.count(currentLocation, currentBlock, locationHistory),
-                    I18nBlock.getBlockDisplayName(currentBlock)));
+            plugin.getServer().broadcastMessage(plugin.getMessage(null, "foundores.prefix") +
+                                                plugin.getMessage(null, "foundores.found",
+                                                                  "player", event.getPlayer().getDisplayName(),
+                                                                  "count", String.valueOf(blockCounter.count(currentLocation, currentBlock, locationHistory)),
+                                                                  "ore", I18nBlock.getBlockDisplayName(currentBlock)));
         }
     }
 

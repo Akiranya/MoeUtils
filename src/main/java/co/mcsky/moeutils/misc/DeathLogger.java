@@ -1,7 +1,7 @@
 package co.mcsky.moeutils.misc;
 
+import co.mcsky.moeutils.Configuration;
 import co.mcsky.moeutils.MoeUtils;
-import co.mcsky.moeutils.config.Config;
 import co.mcsky.moeutils.utilities.DamageCauseLocalization;
 import com.meowj.langutils.lang.LanguageHelper;
 import org.bukkit.entity.EntityType;
@@ -19,7 +19,7 @@ import java.util.Set;
 public class DeathLogger implements Listener {
 
     public final MoeUtils plugin;
-    public final Config config;
+    public final Configuration config;
 
     private final Set<EntityType> loggedCreatures;
     private final String separator = ", ";
@@ -74,8 +74,11 @@ public class DeathLogger implements Listener {
                           separator +
                           entity.getLocation().getBlockZ();
 
-        plugin.getServer().broadcastMessage(String.format(plugin.getMessage(killer, "deathlogger.death"),
-                                                          victimName, damageCause, killerName, location));
+        plugin.getServer().broadcastMessage(plugin.getMessage(killer, "deathlogger.death",
+                                                              "victim", victimName,
+                                                              "reason", damageCause,
+                                                              "killer", killerName,
+                                                              "location", location));
     }
 
 }

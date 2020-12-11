@@ -1,7 +1,7 @@
 package co.mcsky.moeutils.bees;
 
 import co.mcsky.moeutils.MoeUtils;
-import co.mcsky.moeutils.utilities.CooldownUtil;
+import co.mcsky.moeutils.utilities.CooldownManager;
 import org.bukkit.Material;
 import org.bukkit.block.Beehive;
 import org.bukkit.block.Block;
@@ -43,11 +43,12 @@ public class BetterBees implements Listener {
                 Material type = e.getClickedBlock().getType();
                 Player player = e.getPlayer();
                 if (isBeehive(type) && isSneaking(player)) {
-                    player.sendMessage(String.format(
-                            type == BEE_NEST
-                            ? plugin.getMessage(player, "betterbees.count_bee_nest")
-                            : plugin.getMessage(player, "betterbees.count_beehive"),
-                            ((Beehive) e.getClickedBlock().getState()).getEntityCount()));
+                    // Depending on whether the player is interacting with bee nest or beehive
+                    String raw = type == BEE_NEST
+                                 ? plugin.getMessage(player, "betterbees.count_bee_nest")
+                                 : plugin.getMessage(player, "betterbees.count_beehive");
+                    int beeCount = ((Beehive) e.getClickedBlock().getState()).getEntityCount();
+                    player.sendMessage(plugin.getMessage(player, raw, "{bee_count}", String.valueOf(beeCount)));
                 }
             }
         }
@@ -66,11 +67,12 @@ public class BetterBees implements Listener {
                 Material type = item.getType();
                 Player player = e.getPlayer();
                 if (isBeehive(type) && isSneaking(player)) {
-                    player.sendMessage(String.format(
-                            type == BEE_NEST
-                            ? plugin.getMessage(player, "betterbees.count_bee_nest")
-                            : plugin.getMessage(player, "betterbees.count_beehive"),
-                            ((Beehive) ((BlockStateMeta) item.getItemMeta()).getBlockState()).getEntityCount()));
+                    // Depending on whether the player is interacting with bee nest or beehive
+                    String raw = type == BEE_NEST
+                                 ? plugin.getMessage(player, "betterbees.count_bee_nest")
+                                 : plugin.getMessage(player, "betterbees.count_beehive");
+                    int beeCount = ((Beehive) ((BlockStateMeta) item.getItemMeta()).getBlockState()).getEntityCount();
+                    player.sendMessage(plugin.getMessage(player, raw, "{bee_count}", String.valueOf(beeCount)));
                 }
             }
         }
@@ -86,8 +88,8 @@ public class BetterBees implements Listener {
         Block blockPlaced = event.getBlockPlaced();
         if (isBeehive(blockPlaced.getType())) {
             Player player = event.getPlayer();
-            if (CooldownUtil.check(player.getUniqueId(), 15 * 60)) {
-                CooldownUtil.use(player.getUniqueId());
+            if (CooldownManager.check(player.getUniqueId(), 15 * 60)) {
+                CooldownManager.use(player.getUniqueId());
                 player.sendMessage(plugin.getMessage(player, "betterbees.reminder_on_place"));
             }
         }

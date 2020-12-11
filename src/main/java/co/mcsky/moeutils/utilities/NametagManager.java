@@ -10,11 +10,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class NametagUtil {
+public class NametagManager {
 
     private final Map<Player, Team> teams;
 
-    public NametagUtil() {
+    public NametagManager() {
         teams = new HashMap<>();
     }
 

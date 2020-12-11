@@ -32,8 +32,8 @@ public class BetterPortals implements Listener {
             e.setCancelled(true);
             e.getPlayer().sendMessage(plugin.getMessage(e.getPlayer(), "betterportals.cancelled"));
             if (plugin.config.BETTERPORTALS_DEBUG) {
-                plugin.getLogger().info(String.format(plugin.getMessage(null, "betterportals.debug"),
-                                                      e.getPlayer().getName()));
+                plugin.getLogger().info(plugin.getMessage(null, "betterportals.debug",
+                                                          "player", e.getPlayer().getName()));
             }
         }
     }

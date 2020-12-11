@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class TimerUtil {
+public class Timer {
 
     private static final Map<UUID, Long> timeMap = new HashMap<>();
 

@@ -3,7 +3,7 @@ package co.mcsky.moeutils.magicutils;
 import co.mcsky.moeutils.MoeUtils;
 import co.mcsky.moeutils.magicutils.events.MagicWeatherEvent;
 import co.mcsky.moeutils.magicutils.listeners.MagicWeatherListener;
-import co.mcsky.moeutils.utilities.CooldownUtil;
+import co.mcsky.moeutils.utilities.CooldownManager;
 import co.mcsky.moeutils.utilities.TimeConverter;
 import org.bukkit.entity.Player;
 
@@ -52,12 +52,13 @@ public class MagicWeather extends MagicBase {
     }
 
     public void use(Player player) {
-        CooldownUtil.use(COOLDOWN_KEYS.get(player.getWorld().getName()));
+        CooldownManager.use(COOLDOWN_KEYS.get(player.getWorld().getName()));
     }
 
     public void futureBroadcast(String weatherName, String worldName) {
         String prefix = plugin.getMessage(null, "magicweather.prefix");
-        String message = String.format(plugin.getMessage(null, "magictime.ended"), weatherName, worldName);
+        String message = plugin.getMessage(null, "magictime.ended",
+                                           "weather", weatherName, "world", worldName);
         plugin.getServer()
               .getScheduler()
               .runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(prefix + message), TimeConverter.toTick(COOLDOWN_DURATION));
@@ -65,7 +66,8 @@ public class MagicWeather extends MagicBase {
 
     public void broadcast(String weatherName, String worldName) {
         String prefix = plugin.getMessage(null, "magicweather.prefix");
-        String message = String.format(plugin.getMessage(null, "magicweather.changed"), worldName, weatherName);
+        String message = plugin.getMessage(null, "magicweather.changed",
+                                           "world", worldName, "weather", weatherName);
         plugin.getServer().broadcastMessage(prefix + message);
     }
 
@@ -73,7 +75,7 @@ public class MagicWeather extends MagicBase {
      * Reset the cooldown of magic weather instance.
      */
     public void resetCooldown() {
-        COOLDOWN_KEYS.values().forEach(CooldownUtil::reset);
+        COOLDOWN_KEYS.values().forEach(CooldownManager::reset);
     }
 
     /**

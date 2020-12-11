@@ -1,4 +1,4 @@
-package co.mcsky.moeutils.config;
+package co.mcsky.moeutils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,7 +16,7 @@ import java.util.Set;
 
 import static co.mcsky.moeutils.MoeUtils.plugin;
 
-public final class Config {
+public final class Configuration {
 
     private final YamlConfigurationLoader loader;
 
@@ -42,22 +42,41 @@ public final class Config {
 
     private CommentedConfigurationNode root;
 
-    public Config() {
-        // Initialize the loader with specified builder for config.yml
+    public Configuration() {
+        // Initialize the loader for config file config.yml
         loader = YamlConfigurationLoader.builder()
                                         .indent(4)
                                         .path(new File(plugin.getDataFolder(), "config.yml").toPath())
                                         .nodeStyle(NodeStyle.BLOCK)
                                         .build();
+        // Load the config file contents into memory
+        load();
 
-        // Load config from file, assigning the config tree to root
+        // Output important configs
+        log();
+
+        // Save config file
+        save();
+    }
+
+    public CommentedConfigurationNode node(Object... path) {
+        if (root == null) {
+            plugin.getLogger().severe("Config is not loaded yet!");
+            throw new IllegalStateException();
+        }
+        return root.node(path);
+    }
+
+    public void load() {
+        // Load config from file, assigning the config contents to root
         try {
             root = loader.load();
         } catch (ConfigurateException e) {
             plugin.getLogger().severe("Failed to load config.yml: " + e.getMessage());
             plugin.getServer().getPluginManager().disablePlugin(plugin);
-            return;
         }
+
+        // Assign values to members
 
         // Native values
         LANG = node("lang").getString("zh_cn");
@@ -101,30 +120,8 @@ public final class Config {
                     List.of(EntityType.VILLAGER)));
         } catch (SerializationException e) {
             plugin.getLogger().severe("A error occurred during serialization: " + e.getMessage());
-            // 从文件载入多少 compound values，就算多少。这里仅仅 return
-            return;
+            // 从文件载入多少 compound values，就算多少，有可能中途就 return
         }
-
-        // Read and log important configs for double-check
-        plugin.getLogger().info(ChatColor.YELLOW + "FoundOres.blocks:");
-        FOUNDORES_BLOCKS.forEach(e -> plugin.getLogger().info(e.toString()));
-        plugin.getLogger().info(ChatColor.YELLOW + "FoundOres.worlds:");
-        FOUNDORES_WORLDS.forEach(e -> plugin.getLogger().info(e));
-        plugin.getLogger().info(ChatColor.YELLOW + "MobArena-Addon.whitelist:");
-        MOBARENA_WHITELIST.forEach(e -> plugin.getLogger().info(e.toString()));
-        plugin.getLogger().info(ChatColor.YELLOW + "DeathLogger.creatures:");
-        DEATHLOGGER_CREATURES.forEach(e -> plugin.getLogger().info(e.toString()));
-
-        // Save config file
-        save();
-    }
-
-    public CommentedConfigurationNode node(Object... path) {
-        if (root == null) {
-            plugin.getLogger().severe("Config is not loaded yet!");
-            throw new IllegalStateException();
-        }
-        return root.node(path);
     }
 
     public void save() {
@@ -133,6 +130,18 @@ public final class Config {
         } catch (ConfigurateException e) {
             plugin.getLogger().severe("Unable to save config.yml: " + e.getMessage());
         }
+    }
+
+    public void log() {
+        // Log important configs for double-check
+        plugin.getLogger().info(ChatColor.YELLOW + "FoundOres.blocks:");
+        FOUNDORES_BLOCKS.forEach(e -> plugin.getLogger().info(e.toString()));
+        plugin.getLogger().info(ChatColor.YELLOW + "FoundOres.worlds:");
+        FOUNDORES_WORLDS.forEach(e -> plugin.getLogger().info(e));
+        plugin.getLogger().info(ChatColor.YELLOW + "MobArena-Addon.whitelist:");
+        MOBARENA_WHITELIST.forEach(e -> plugin.getLogger().info(e.toString()));
+        plugin.getLogger().info(ChatColor.YELLOW + "DeathLogger.creatures:");
+        DEATHLOGGER_CREATURES.forEach(e -> plugin.getLogger().info(e.toString()));
     }
 
 }

@@ -7,12 +7,12 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
-public class ScoreboardUtil {
+public class ScoreboardManager {
 
-    private final NametagUtil tag;
+    private final NametagManager tag;
     private final MoeUtils moe;
 
-    public ScoreboardUtil(NametagUtil tag, MoeUtils moe) {
+    public ScoreboardManager(NametagManager tag, MoeUtils moe) {
         this.tag = tag;
         this.moe = moe;
     }

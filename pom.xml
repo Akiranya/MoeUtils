@@ -37,10 +37,10 @@
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <artifactSet>
                         <includes>
-                            <include>co.aikar</include>
-                            <include>de.themoep.utils</include>
-                            <include>org.spongepowered</include>
-                            <include>io.leangen.geantyref</include>
+                            <include>co.aikar</include> <!--Command framework-->
+                            <include>de.themoep.utils</include> <!--Language framework-->
+                            <include>org.spongepowered</include> <!--Config framework-->
+                            <include>io.leangen.geantyref</include> <!--Dependency of config framework-->
                         </includes>
                     </artifactSet>
                     <relocations>

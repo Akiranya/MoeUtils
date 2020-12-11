@@ -3,7 +3,7 @@ package co.mcsky.moeutils.magicutils;
 import co.mcsky.moeutils.MoeUtils;
 import co.mcsky.moeutils.magicutils.events.MagicTimeEvent;
 import co.mcsky.moeutils.magicutils.listeners.MagicTimeListener;
-import co.mcsky.moeutils.utilities.CooldownUtil;
+import co.mcsky.moeutils.utilities.CooldownManager;
 import co.mcsky.moeutils.utilities.TimeConverter;
 import org.bukkit.entity.Player;
 
@@ -43,12 +43,12 @@ public class MagicTime extends MagicBase {
     }
 
     public void use() {
-        CooldownUtil.use(COOLDOWN_KEY);
+        CooldownManager.use(COOLDOWN_KEY);
     }
 
     public void futureBroadcast(String timeName) {
         String prefix = plugin.getMessage(null, "magictime.prefix");
-        String message = String.format(plugin.getMessage(null, "magictime.ended"), timeName);
+        String message = plugin.getMessage(null, "magictime.ended", "time", timeName);
         plugin.getServer()
               .getScheduler()
               .runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(prefix + message), TimeConverter.toTick(COOLDOWN_DURATION));
@@ -56,7 +56,7 @@ public class MagicTime extends MagicBase {
 
     public void broadcast(String timeName) {
         String prefix = plugin.getMessage(null, "magictime.prefix");
-        String message = String.format(plugin.getMessage(null, "magictime.changed"), timeName);
+        String message = plugin.getMessage(null, "magictime.changed", "time", timeName);
         plugin.getServer().broadcastMessage(prefix + message);
     }
 
@@ -71,7 +71,7 @@ public class MagicTime extends MagicBase {
      * Reset the cooldown of magic time instance.
      */
     public void resetCooldown() {
-        CooldownUtil.reset(COOLDOWN_KEY);
+        CooldownManager.reset(COOLDOWN_KEY);
     }
 
 }
