@@ -1,6 +1,5 @@
 package co.mcsky.moeutils.magicutils;
 
-import co.mcsky.moeutils.MoeUtils;
 import co.mcsky.moeutils.magicutils.events.MagicWeatherEvent;
 import co.mcsky.moeutils.magicutils.listeners.MagicWeatherListener;
 import co.mcsky.moeutils.utilities.CooldownManager;
@@ -11,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static co.mcsky.moeutils.MoeUtils.plugin;
+
 public class MagicWeather extends MagicBase {
 
     public static int magicWeatherCost;
@@ -18,9 +19,9 @@ public class MagicWeather extends MagicBase {
     private final Map<String, UUID> COOLDOWN_KEYS;
     private final Map<String, String> lastPlayers;
 
-    public MagicWeather(MoeUtils plugin) {
+    public MagicWeather() {
         // Configuration values
-        super(plugin, plugin.config.node("magicweather", "cooldown").getInt(600));
+        super(plugin.config.node("magicweather", "cooldown").getInt(600));
         magicWeatherCost = plugin.config.node("magicweather", "cost").getInt(50);
 
         // Internal vars

@@ -67,7 +67,8 @@ public class MoeUtils extends JavaPlugin {
         // Initialize config manager
         config = new Configuration();
 
-        // Initialize functions & config nodes
+        // Initialize functions & initialize config nodes
+        // In this stage, default config values will be adopted if no one is present
         initializeFunctions();
 
         // Register commands
@@ -89,11 +90,11 @@ public class MoeUtils extends JavaPlugin {
     }
 
     public void initializeFunctions() {
-        new BetterPortals(this);
-        new FoundOres(this);
-        new DeathLogger(this);
-        new BetterBees(this);
         new MobArenaAddon();
+        new BetterPortals();
+        new FoundOres();
+        new DeathLogger();
+        new BetterBees();
     }
 
     /**
@@ -150,7 +151,7 @@ public class MoeUtils extends JavaPlugin {
         }
         manager.getLocales().setDefaultLocale(Locale.SIMPLIFIED_CHINESE);
         manager.getCommandReplacements().addReplacement("moe", "moe|mu|moeutils");
-        manager.registerCommand(new CommandHandler(this, new MagicTime(this), new MagicWeather(this)));
+        manager.registerCommand(new CommandHandler(new MagicTime(), new MagicWeather()));
     }
 
     private Permission getPermission() {

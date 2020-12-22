@@ -1,20 +1,19 @@
 package co.mcsky.moeutils.utilities;
 
-import co.mcsky.moeutils.MoeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
+import static co.mcsky.moeutils.MoeUtils.plugin;
+
 public class ScoreboardManager {
 
     private final NametagManager tag;
-    private final MoeUtils moe;
 
-    public ScoreboardManager(NametagManager tag, MoeUtils moe) {
+    public ScoreboardManager(NametagManager tag) {
         this.tag = tag;
-        this.moe = moe;
     }
 
     public void showHealth(Player player) {
@@ -30,7 +29,7 @@ public class ScoreboardManager {
         } catch (IllegalArgumentException | IllegalStateException e) {
             // Suppress exception "An objective of name 'showhealth' already exists"
         }
-        Bukkit.getScheduler().runTaskLater(moe, () -> player.setHealth(player.getHealth()), 20);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> player.setHealth(player.getHealth()), 20);
     }
 
     public void removeHealth(Player player) {

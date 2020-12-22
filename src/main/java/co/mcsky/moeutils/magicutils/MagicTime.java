@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
+import static co.mcsky.moeutils.MoeUtils.plugin;
+
 public class MagicTime extends MagicBase {
 
     public static int magicTimeCost;
@@ -15,9 +17,9 @@ public class MagicTime extends MagicBase {
     private final UUID COOLDOWN_KEY;
     private String lastPlayer = null;
 
-    public MagicTime(MoeUtils plugin) {
+    public MagicTime() {
         // Configuration values
-        super(plugin, plugin.config.node("magictime", "cooldown").getInt(600));
+        super(MoeUtils.plugin.config.node("magictime", "cooldown").getInt(600));
         magicTimeCost = plugin.config.node("magictime", "cost").getInt(50);
 
         // Internal vars

@@ -1,7 +1,8 @@
 package co.mcsky.moeutils.magicutils;
 
-import co.mcsky.moeutils.MoeUtils;
 import org.bukkit.World;
+
+import static co.mcsky.moeutils.MoeUtils.plugin;
 
 public enum TimeOption {
     DAY(0),
@@ -21,9 +22,9 @@ public enum TimeOption {
     public String customName() {
         switch (this) {
             case DAY:
-                return MoeUtils.plugin.getMessage(null, "magictime.day");
+                return plugin.getMessage(null, "magictime.day");
             case NIGHT:
-                return MoeUtils.plugin.getMessage(null, "magictime.night");
+                return plugin.getMessage(null, "magictime.night");
             default:
                 throw new IllegalStateException("Unknown time type.");
         }

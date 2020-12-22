@@ -1,7 +1,6 @@
 package co.mcsky.moeutils.misc;
 
 import co.mcsky.moeutils.Configuration;
-import co.mcsky.moeutils.MoeUtils;
 import co.mcsky.moeutils.utilities.DamageCauseLocalization;
 import com.meowj.langutils.lang.LanguageHelper;
 import org.bukkit.entity.EntityType;
@@ -18,6 +17,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static co.mcsky.moeutils.MoeUtils.plugin;
+
 public class DeathLogger implements Listener {
 
     private final static String separator = ", ";
@@ -26,20 +27,17 @@ public class DeathLogger implements Listener {
     public static int searchRadius;
     public static Set<EntityType> loggedCreatures;
 
-    public final MoeUtils plugin;
     public final Configuration config;
 
     @SuppressWarnings("SimplifyStreamApiCallChains")
-    public DeathLogger(MoeUtils plugin) {
-        this.plugin = plugin;
+    public DeathLogger() {
         config = plugin.config;
 
         // Configuration values
         enable = plugin.config.node("deathlogger", "enable").getBoolean();
         searchRadius = plugin.config.node("deathlogger", "searchRadius").getInt(32);
         try {
-            loggedCreatures = plugin.config.node("deathlogger", "creatures")
-                                           .getList(EntityType.class, () -> List.of(EntityType.VILLAGER)).stream().collect(Collectors.toSet());
+            loggedCreatures = plugin.config.node("deathlogger", "creatures").getList(EntityType.class, List.of(EntityType.VILLAGER)).stream().collect(Collectors.toSet());
         } catch (final SerializationException e) {
             plugin.getLogger().severe("DeathLogger initialization failed! Please validate the configuration.");
             return;
@@ -47,8 +45,8 @@ public class DeathLogger implements Listener {
 
         // Register this listener
         if (enable) {
-            this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
-            this.plugin.getLogger().info("DeathLogger is enabled.");
+            plugin.getServer().getPluginManager().registerEvents(this, plugin);
+            plugin.getLogger().info("DeathLogger is enabled.");
         }
     }
 

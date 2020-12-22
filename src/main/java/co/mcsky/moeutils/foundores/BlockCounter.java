@@ -69,8 +69,7 @@ public class BlockCounter {
      * @return The number of blocks of same type as {@code target} which are the
      * neighbors of the block at location {@code start}.
      */
-    public int count(Location start, Material target,
-                     Set<Location> discovered) {
+    public int count(Location start, Material target, Set<Location> discovered) {
         if (discovered == null) {
             return 0;
         }

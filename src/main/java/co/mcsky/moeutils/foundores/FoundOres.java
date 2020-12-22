@@ -1,7 +1,6 @@
 package co.mcsky.moeutils.foundores;
 
 import co.mcsky.moeutils.Configuration;
-import co.mcsky.moeutils.MoeUtils;
 import co.mcsky.moeutils.i18n.I18nBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,6 +16,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static co.mcsky.moeutils.MoeUtils.plugin;
+
 public class FoundOres implements Listener {
 
     public static final String header = "foundores";
@@ -26,21 +27,19 @@ public class FoundOres implements Listener {
     public static Set<Material> enabledBlocks;
     public static Set<String> enabledWorlds;
 
-    public final MoeUtils plugin;
     public final Configuration config;
 
     private Set<Location> locationHistory;
     private BlockCounter blockCounter;
 
     @SuppressWarnings("SimplifyStreamApiCallChains")
-    public FoundOres(MoeUtils plugin) {
-        this.plugin = plugin;
+    public FoundOres() {
         config = plugin.config;
 
         // Configuration values
         enable = config.node(header, "enable").getBoolean();
-        maxIteration = config.node(header, "maxIterations").getInt();
-        purgeInterval = config.node(header, "purgeInterval").getInt();
+        maxIteration = config.node(header, "maxIterations").getInt(32);
+        purgeInterval = config.node(header, "purgeInterval").getInt(1800);
 
         try {
             enabledBlocks = config.node(header, "blocks").getList(Material.class, () ->

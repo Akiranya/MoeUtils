@@ -1,7 +1,6 @@
 package co.mcsky.moeutils.bees;
 
 import co.mcsky.moeutils.Configuration;
-import co.mcsky.moeutils.MoeUtils;
 import co.mcsky.moeutils.utilities.CooldownManager;
 import org.bukkit.Material;
 import org.bukkit.block.Beehive;
@@ -13,6 +12,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import static co.mcsky.moeutils.MoeUtils.plugin;
 import static org.bukkit.Material.BEEHIVE;
 import static org.bukkit.Material.BEE_NEST;
 import static org.bukkit.event.block.Action.RIGHT_CLICK_AIR;
@@ -26,11 +26,9 @@ public class BetterBees implements Listener {
     public static boolean enable;
     public static boolean requireSneak;
 
-    public final MoeUtils plugin;
     public final Configuration config;
 
-    public BetterBees(MoeUtils plugin) {
-        this.plugin = plugin;
+    public BetterBees() {
         config = plugin.config;
 
         // Configuration values

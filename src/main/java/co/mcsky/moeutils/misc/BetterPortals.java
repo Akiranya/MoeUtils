@@ -1,20 +1,18 @@
 package co.mcsky.moeutils.misc;
 
-import co.mcsky.moeutils.MoeUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPortalEvent;
 
+import static co.mcsky.moeutils.MoeUtils.plugin;
+
 public class BetterPortals implements Listener {
 
     public static boolean enable;
     public static boolean debug;
-    public final MoeUtils plugin;
 
-    public BetterPortals(MoeUtils plugin) {
-        this.plugin = plugin;
-
+    public BetterPortals() {
         // Configuration values
         enable = plugin.config.node("betterportals", "enable").getBoolean();
         debug = plugin.config.node("betterportals", "debug").getBoolean();

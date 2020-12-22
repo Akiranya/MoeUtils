@@ -1,12 +1,13 @@
 package co.mcsky.moeutils.i18n;
 
-import co.mcsky.moeutils.MoeUtils;
 import com.meowj.langutils.lang.LanguageHelper;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static co.mcsky.moeutils.MoeUtils.plugin;
 
 /**
  * Since there is no method like {@code getBlockDisplayName} in {@link
@@ -25,7 +26,7 @@ public final class I18nBlock {
     }
 
     private static void registerEntry(Material material) {
-        String default_lang = MoeUtils.plugin.config.getLanguage();
+        String default_lang = plugin.config.getLanguage();
         displayNames.put(material, LanguageHelper.getItemDisplayName(new ItemStack(material), default_lang));
     }
 

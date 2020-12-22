@@ -8,7 +8,7 @@ common:
   reloaded: '&bMoeUtils 已重新载入 (耗时 {time}).'
   version: '&b正在使用 MoeUtils {version}.'
   price: '&f你花掉了 {cost} &f金钱.'
-  cooldown: '&7冷却中:&b {time}.'
+  cooldown: '&7冷却中:&b {time}s.'
   reset: '&b状态已重置.'
 betterbees:
   count_beehive: 这个蜂箱里有 {bee_count} 只蜜蜂.

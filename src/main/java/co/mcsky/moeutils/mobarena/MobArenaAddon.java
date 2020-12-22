@@ -55,7 +55,7 @@ public class MobArenaAddon implements Listener {
         }
 
         nametagManager = new NametagManager();
-        scoreboardManager = new ScoreboardManager(nametagManager, plugin);
+        scoreboardManager = new ScoreboardManager(nametagManager);
 
         // Check if MobArena is loaded
         Plugin mobArena = plugin.getServer().getPluginManager().getPlugin("MobArena");
@@ -78,7 +78,7 @@ public class MobArenaAddon implements Listener {
                 scoreboardManager.showHealth(p);
             }
             // 当竞技场开始后，开始监听玩家的血量变化
-            PlayerHealthListener = new PlayerHealthListener(plugin, nametagManager);
+            PlayerHealthListener = new PlayerHealthListener(nametagManager);
             ProjectileCollideListener = new ProjectileCollideListener(this);
         }, 20);
     }

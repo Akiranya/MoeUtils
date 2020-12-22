@@ -9,17 +9,16 @@ import co.mcsky.moeutils.magicutils.TimeOption;
 import co.mcsky.moeutils.magicutils.WeatherOption;
 import org.bukkit.entity.Player;
 
+import static co.mcsky.moeutils.MoeUtils.plugin;
+
 @CommandAlias("%moe")
 public class CommandHandler extends BaseCommand {
 
-    public final MoeUtils plugin;
     public final MagicTime time;
     public final MagicWeather weather;
 
-    public CommandHandler(MoeUtils plugin,
-                          MagicTime time,
+    public CommandHandler(MagicTime time,
                           MagicWeather weather) {
-        this.plugin = plugin;
         this.time = time;
         this.weather = weather;
     }

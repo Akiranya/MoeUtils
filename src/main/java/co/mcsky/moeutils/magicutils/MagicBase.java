@@ -6,17 +6,17 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
+import static co.mcsky.moeutils.MoeUtils.plugin;
+
 /**
  * This class shares code for {@link MagicTime} and {@link MagicWeather}.
  */
 public abstract class MagicBase {
 
-    public final MoeUtils plugin;
     public final int COOLDOWN_DURATION;
 
-    MagicBase(MoeUtils plugin, int cooldownDuration) {
+    MagicBase(int cooldownDuration) {
         this.COOLDOWN_DURATION = cooldownDuration;
-        this.plugin = plugin;
     }
 
     /**
