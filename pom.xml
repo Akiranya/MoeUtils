@@ -147,6 +147,10 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>elmakers-repo</id>
+            <url>http://maven.elmakers.com/repository/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -207,12 +211,12 @@
             <version>1.7</version>
             <scope>provided</scope>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>com.github.garbagemule</groupId>-->
-        <!--            <artifactId>MobArena</artifactId>-->
-        <!--            <version>0.103</version>-->
-        <!--            <scope>provided</scope>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>com.github.garbagemule</groupId>
+            <artifactId>MobArena</artifactId>
+            <version>0.103</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>

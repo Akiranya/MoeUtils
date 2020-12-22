@@ -1,7 +1,7 @@
 package co.mcsky.moeutils.mobarena;
 
 import co.mcsky.moeutils.MoeUtils;
-import co.mcsky.moeutils.utilities.NametagUtil;
+import co.mcsky.moeutils.utilities.NametagManager;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,10 +11,10 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 
 public class PlayerHealthListener implements Listener {
 
-    private final NametagUtil nametagUtil;
+    private final NametagManager ntManager;
 
-    PlayerHealthListener(MoeUtils moe, NametagUtil nametagUtil) {
-        this.nametagUtil = nametagUtil;
+    PlayerHealthListener(MoeUtils moe, NametagManager ntManager) {
+        this.ntManager = ntManager;
         moe.getServer().getPluginManager().registerEvents(this, moe);
     }
 
@@ -25,7 +25,7 @@ public class PlayerHealthListener implements Listener {
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         Entity victim = event.getEntity();
         // 不影响竞技场外面的玩家
-        if (!(victim instanceof Player) || !nametagUtil.getPlayers().contains(victim))
+        if (!(victim instanceof Player) || !ntManager.getPlayers().contains(victim))
             return;
         updateTag((Player) victim);
     }
@@ -37,18 +37,18 @@ public class PlayerHealthListener implements Listener {
     public void onEntityRegainHealth(EntityRegainHealthEvent event) {
         Entity entity = event.getEntity();
         // 不影响竞技场外面的玩家
-        if (!(entity instanceof Player) || !nametagUtil.getPlayers().contains(entity))
+        if (!(entity instanceof Player) || !ntManager.getPlayers().contains(entity))
             return;
         updateTag((Player) entity);
     }
 
     private void updateTag(Player p) {
         if (p.getHealth() > 15) {
-            nametagUtil.change(p, nametagUtil.color("&a&l[&r"), nametagUtil.color("&a&l]"), NametagUtil.ACTION.UPDATE);
+            ntManager.change(p, ntManager.color("&a&l[&r"), ntManager.color("&a&l]"), NametagManager.ACTION.UPDATE);
         } else if (p.getHealth() > 10 && p.getHealth() <= 15) {
-            nametagUtil.change(p, nametagUtil.color("&e&l[&r"), nametagUtil.color("&e&l]"), NametagUtil.ACTION.UPDATE);
+            ntManager.change(p, ntManager.color("&e&l[&r"), ntManager.color("&e&l]"), NametagManager.ACTION.UPDATE);
         } else {
-            nametagUtil.change(p, nametagUtil.color("&c&l[&r"), nametagUtil.color("&c&l]"), NametagUtil.ACTION.UPDATE);
+            ntManager.change(p, ntManager.color("&c&l[&r"), ntManager.color("&c&l]"), NametagManager.ACTION.UPDATE);
         }
     }
 

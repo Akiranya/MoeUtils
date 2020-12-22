@@ -4,19 +4,26 @@ import co.mcsky.moeutils.MoeUtils;
 import co.mcsky.moeutils.magicutils.events.MagicTimeEvent;
 import co.mcsky.moeutils.magicutils.listeners.MagicTimeListener;
 import co.mcsky.moeutils.utilities.CooldownManager;
-import co.mcsky.moeutils.utilities.TimeConverter;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
 public class MagicTime extends MagicBase {
 
+    public static int magicTimeCost;
+
     private final UUID COOLDOWN_KEY;
     private String lastPlayer = null;
 
     public MagicTime(MoeUtils plugin) {
-        super(plugin, plugin.config.MAGICTIME_COOLDOWN);
+        // Configuration values
+        super(plugin, plugin.config.node("magictime", "cooldown").getInt(600));
+        magicTimeCost = plugin.config.node("magictime", "cost").getInt(50);
+
+        // Internal vars
         COOLDOWN_KEY = UUID.randomUUID();
+
+        // Register listener
         new MagicTimeListener(this);
     }
 
@@ -31,7 +38,7 @@ public class MagicTime extends MagicBase {
     }
 
     public boolean checkBalance(Player player) {
-        return checkBalance(player, plugin.config.MAGICTIME_COST);
+        return checkBalance(player, magicTimeCost);
     }
 
     public boolean checkCooldown(Player player) {
@@ -39,7 +46,7 @@ public class MagicTime extends MagicBase {
     }
 
     public void chargePlayer(Player player) {
-        chargePlayer(player, plugin.config.MAGICTIME_COST);
+        chargePlayer(player, magicTimeCost);
     }
 
     public void use() {
@@ -51,7 +58,7 @@ public class MagicTime extends MagicBase {
         String message = plugin.getMessage(null, "magictime.ended", "time", timeName);
         plugin.getServer()
               .getScheduler()
-              .runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(prefix + message), TimeConverter.toTick(COOLDOWN_DURATION));
+              .runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(prefix + message), COOLDOWN_DURATION * 20L);
     }
 
     public void broadcast(String timeName) {

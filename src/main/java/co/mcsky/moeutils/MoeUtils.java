@@ -7,6 +7,7 @@ import co.mcsky.moeutils.magicutils.MagicTime;
 import co.mcsky.moeutils.magicutils.MagicWeather;
 import co.mcsky.moeutils.misc.BetterPortals;
 import co.mcsky.moeutils.misc.DeathLogger;
+import co.mcsky.moeutils.mobarena.MobArenaAddon;
 import co.mcsky.moeutils.utilities.CooldownManager;
 import co.mcsky.moeutils.utilities.EnumValuesKeeper;
 import co.mcsky.moeutils.utilities.Timer;
@@ -56,21 +57,24 @@ public class MoeUtils extends JavaPlugin {
         economy = getEconomy();
         chat = getChat();
 
+        // Save useful enum values in files
+        new EnumValuesKeeper<>("materials", Material.class);
+        new EnumValuesKeeper<>("entities", EntityType.class);
+
         // Initialize language manager
         initializeLanguageManager();
 
         // Initialize config manager
         config = new Configuration();
 
-        // Save useful enum values in files
-        new EnumValuesKeeper<>("materials", Material.class);
-        new EnumValuesKeeper<>("entities", EntityType.class);
-
-        // Initialize functions
+        // Initialize functions & config nodes
         initializeFunctions();
 
         // Register commands
         registerCommands();
+
+        // Save nodes in config.yml
+        config.save();
     }
 
     public void initializeLanguageManager() {
@@ -89,6 +93,7 @@ public class MoeUtils extends JavaPlugin {
         new FoundOres(this);
         new DeathLogger(this);
         new BetterBees(this);
+        new MobArenaAddon();
     }
 
     /**
@@ -103,7 +108,8 @@ public class MoeUtils extends JavaPlugin {
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
         config.load();
-        config.log();
+        config.save();
+//        config.log();
 
         // Re-initialize language and functions
         initializeLanguageManager();
@@ -143,7 +149,7 @@ public class MoeUtils extends JavaPlugin {
             return;
         }
         manager.getLocales().setDefaultLocale(Locale.SIMPLIFIED_CHINESE);
-        manager.getCommandReplacements().addReplacement("moe", "mu|moe|moeutils");
+        manager.getCommandReplacements().addReplacement("moe", "moe|mu|moeutils");
         manager.registerCommand(new CommandHandler(this, new MagicTime(this), new MagicWeather(this)));
     }
 

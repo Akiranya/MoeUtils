@@ -1,6 +1,5 @@
 package co.mcsky.moeutils.magicutils;
 
-import co.mcsky.moeutils.utilities.TimeConverter;
 import org.bukkit.World;
 
 import static co.mcsky.moeutils.MoeUtils.plugin;
@@ -29,7 +28,7 @@ public enum WeatherOption {
     }
 
     public void set(World world) {
-        int duration = TimeConverter.toTick(3600);
+        int duration = 3600 * 20;
         switch (this) {
             case CLEAR:
                 world.setStorm(false);

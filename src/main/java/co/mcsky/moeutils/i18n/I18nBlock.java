@@ -25,7 +25,7 @@ public final class I18nBlock {
     }
 
     private static void registerEntry(Material material) {
-        String default_lang = MoeUtils.plugin.config.LANG;
+        String default_lang = MoeUtils.plugin.config.getLanguage();
         displayNames.put(material, LanguageHelper.getItemDisplayName(new ItemStack(material), default_lang));
     }
 

@@ -11,24 +11,42 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.spongepowered.configurate.serialize.SerializationException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DeathLogger implements Listener {
+
+    private final static String separator = ", ";
+
+    public static boolean enable;
+    public static int searchRadius;
+    public static Set<EntityType> loggedCreatures;
 
     public final MoeUtils plugin;
     public final Configuration config;
 
-    private final Set<EntityType> loggedCreatures;
-    private final String separator = ", ";
-
+    @SuppressWarnings("SimplifyStreamApiCallChains")
     public DeathLogger(MoeUtils plugin) {
         this.plugin = plugin;
-        this.config = plugin.config;
-        this.loggedCreatures = config.DEATHLOGGER_CREATURES;
-        if (config.DEATHLOGGER_ENABLE) {
+        config = plugin.config;
+
+        // Configuration values
+        enable = plugin.config.node("deathlogger", "enable").getBoolean();
+        searchRadius = plugin.config.node("deathlogger", "searchRadius").getInt(32);
+        try {
+            loggedCreatures = plugin.config.node("deathlogger", "creatures")
+                                           .getList(EntityType.class, () -> List.of(EntityType.VILLAGER)).stream().collect(Collectors.toSet());
+        } catch (final SerializationException e) {
+            plugin.getLogger().severe("DeathLogger initialization failed! Please validate the configuration.");
+            return;
+        }
+
+        // Register this listener
+        if (enable) {
             this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
             this.plugin.getLogger().info("DeathLogger is enabled.");
         }
@@ -40,7 +58,7 @@ public class DeathLogger implements Listener {
         if (!loggedCreatures.contains(entity.getType()))
             return;
 
-        String default_lang = plugin.config.LANG;
+        String default_lang = plugin.config.getLanguage();
         String victimName = entity.getCustomName() != null
                             ? entity.getCustomName() + "(" + LanguageHelper.getEntityName(e.getEntityType(), default_lang) + ")"
                             : LanguageHelper.getEntityName(e.getEntityType(), default_lang);
@@ -54,7 +72,7 @@ public class DeathLogger implements Listener {
         if (killer != null) {
             killerName = killer.getName();
         } else {
-            List<Player> nearbyPlayers = new ArrayList<>(e.getEntity().getLocation().getNearbyPlayers(config.DEATHLOGGER_SEARCH_RADIUS));
+            List<Player> nearbyPlayers = new ArrayList<>(e.getEntity().getLocation().getNearbyPlayers(searchRadius));
             if (nearbyPlayers.size() != 0) {
                 // All nearby players are included.
                 killerName = nearbyPlayers.stream()

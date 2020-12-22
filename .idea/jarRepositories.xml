@@ -72,6 +72,11 @@
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="elmakers-repo" />
+      <option name="name" value="elmakers-repo" />
+      <option name="url" value="http://maven.elmakers.com/repository/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="CodeMC" />
       <option name="name" value="CodeMC" />
       <option name="url" value="https://repo.codemc.org/repository/maven-public" />

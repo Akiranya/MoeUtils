@@ -8,11 +8,18 @@ import org.bukkit.event.player.PlayerPortalEvent;
 
 public class BetterPortals implements Listener {
 
+    public static boolean enable;
+    public static boolean debug;
     public final MoeUtils plugin;
 
     public BetterPortals(MoeUtils plugin) {
         this.plugin = plugin;
-        if (plugin.config.BETTERPORTALS_ENABLE) {
+
+        // Configuration values
+        enable = plugin.config.node("betterportals", "enable").getBoolean();
+        debug = plugin.config.node("betterportals", "debug").getBoolean();
+
+        if (enable) {
             plugin.getServer().getPluginManager().registerEvents(this, plugin);
             plugin.getLogger().info("BetterPortals is enabled.");
         }
@@ -31,7 +38,7 @@ public class BetterPortals implements Listener {
         if (!e.getTo().getWorld().getWorldBorder().isInside(e.getTo())) {
             e.setCancelled(true);
             e.getPlayer().sendMessage(plugin.getMessage(e.getPlayer(), "betterportals.cancelled"));
-            if (plugin.config.BETTERPORTALS_DEBUG) {
+            if (debug) {
                 plugin.getLogger().info(plugin.getMessage(null, "betterportals.debug",
                                                           "player", e.getPlayer().getName()));
             }

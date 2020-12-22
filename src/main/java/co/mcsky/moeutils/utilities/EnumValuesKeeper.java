@@ -10,8 +10,17 @@ import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import java.io.File;
 import java.util.List;
 
+/**
+ * A convenient class to save all elements of specified enum class to file. This
+ * is helpful for the user when they need to specify the name of an item or
+ * entity in the config files.
+ */
 public class EnumValuesKeeper<T> {
 
+    /**
+     * @param fileName  the file name (without extension)
+     * @param enumClass the enum class to be examined
+     */
     public EnumValuesKeeper(String fileName, Class<T> enumClass) {
         if (!enumClass.isEnum()) {
             MoeUtils.plugin.getLogger().warning(enumClass.getName() + " is not enum class!");

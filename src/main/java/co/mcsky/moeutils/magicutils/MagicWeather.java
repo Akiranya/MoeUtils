@@ -4,7 +4,6 @@ import co.mcsky.moeutils.MoeUtils;
 import co.mcsky.moeutils.magicutils.events.MagicWeatherEvent;
 import co.mcsky.moeutils.magicutils.listeners.MagicWeatherListener;
 import co.mcsky.moeutils.utilities.CooldownManager;
-import co.mcsky.moeutils.utilities.TimeConverter;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
@@ -14,15 +13,23 @@ import java.util.UUID;
 
 public class MagicWeather extends MagicBase {
 
+    public static int magicWeatherCost;
+
     private final Map<String, UUID> COOLDOWN_KEYS;
     private final Map<String, String> lastPlayers;
 
     public MagicWeather(MoeUtils plugin) {
-        super(plugin, plugin.config.MAGICWEATHER_COOLDOWN);
+        // Configuration values
+        super(plugin, plugin.config.node("magicweather", "cooldown").getInt(600));
+        magicWeatherCost = plugin.config.node("magicweather", "cost").getInt(50);
+
+        // Internal vars
         COOLDOWN_KEYS = Collections.unmodifiableMap(new HashMap<>() {{
             plugin.getServer().getWorlds().forEach(world -> put(world.getName(), UUID.randomUUID()));
         }});
         lastPlayers = new HashMap<>();
+
+        // Register the listener
         new MagicWeatherListener(this);
     }
 
@@ -40,7 +47,7 @@ public class MagicWeather extends MagicBase {
     }
 
     public boolean checkBalance(Player player) {
-        return checkBalance(player, plugin.config.MAGICWEATHER_COST);
+        return checkBalance(player, magicWeatherCost);
     }
 
     public boolean checkCooldown(Player player) {
@@ -48,7 +55,7 @@ public class MagicWeather extends MagicBase {
     }
 
     public void chargePlayer(Player player) {
-        chargePlayer(player, plugin.config.MAGICWEATHER_COST);
+        chargePlayer(player, magicWeatherCost);
     }
 
     public void use(Player player) {
@@ -61,7 +68,7 @@ public class MagicWeather extends MagicBase {
                                            "weather", weatherName, "world", worldName);
         plugin.getServer()
               .getScheduler()
-              .runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(prefix + message), TimeConverter.toTick(COOLDOWN_DURATION));
+              .runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(prefix + message), COOLDOWN_DURATION * 20L);
     }
 
     public void broadcast(String weatherName, String worldName) {

@@ -14,7 +14,6 @@ public abstract class MagicBase {
     public final MoeUtils plugin;
     public final int COOLDOWN_DURATION;
 
-
     MagicBase(MoeUtils plugin, int cooldownDuration) {
         this.COOLDOWN_DURATION = cooldownDuration;
         this.plugin = plugin;
