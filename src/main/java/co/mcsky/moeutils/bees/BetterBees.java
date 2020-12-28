@@ -75,7 +75,7 @@ public class BetterBees implements Listener {
                      ? plugin.getMessage(player, "betterbees.count_bee_nest")
                      : plugin.getMessage(player, "betterbees.count_beehive");
         int beeCount = beehive.getEntityCount();
-        player.sendMessage(plugin.getMessage(player, raw, "{bee_count}", String.valueOf(beeCount)));
+        player.sendMessage(plugin.getMessage(player, raw, "{bee_count}", beeCount));
     }
 
     /**

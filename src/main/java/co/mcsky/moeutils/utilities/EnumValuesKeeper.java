@@ -16,13 +16,13 @@ import static co.mcsky.moeutils.MoeUtils.*;
  * is helpful for the user when they need to specify the name of an item or
  * entity in the config files.
  */
-public class EnumValuesKeeper<T> {
+public class EnumValuesKeeper {
 
     /**
      * @param fileName  the file name (without extension)
      * @param enumClass the enum class to be examined
      */
-    public EnumValuesKeeper(String fileName, Class<T> enumClass) {
+    public static <T> void save(String fileName, Class<T> enumClass) {
         if (!enumClass.isEnum()) {
             plugin.getLogger().warning(enumClass.getName() + " is not enum class!");
             return;

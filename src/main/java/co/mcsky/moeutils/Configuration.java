@@ -62,16 +62,4 @@ public final class Configuration {
         return node("lang").getString("zh_cn");
     }
 
-//    public void log() {
-//        // Log important configs for double-check
-//        plugin.getLogger().info(ChatColor.YELLOW + "FoundOres.blocks:");
-//        FOUNDORES_BLOCKS.forEach(e -> plugin.getLogger().info(e.toString()));
-//        plugin.getLogger().info(ChatColor.YELLOW + "FoundOres.worlds:");
-//        FOUNDORES_WORLDS.forEach(e -> plugin.getLogger().info(e));
-//        plugin.getLogger().info(ChatColor.YELLOW + "MobArena-Addon.whitelist:");
-//        MOBARENA_WHITELIST.forEach(e -> plugin.getLogger().info(e.toString()));
-//        plugin.getLogger().info(ChatColor.YELLOW + "DeathLogger.creatures:");
-//        DEATHLOGGER_CREATURES.forEach(e -> plugin.getLogger().info(e.toString()));
-//    }
-
 }

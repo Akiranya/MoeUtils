@@ -87,7 +87,7 @@ public class FoundOres implements Listener {
             String prefix = plugin.getMessage(null, "foundores.prefix");
             String message = plugin.getMessage(null, "foundores.found",
                                                "player", event.getPlayer().getDisplayName(),
-                                               "count", String.valueOf(blockCounter.count(currentLocation, currentBlock, locationHistory)),
+                                               "count", blockCounter.count(currentLocation, currentBlock, locationHistory),
                                                "ore", I18nBlock.getBlockDisplayName(currentBlock));
             plugin.getServer().broadcastMessage(prefix + message);
         }

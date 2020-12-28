@@ -82,12 +82,9 @@ public class DeathLogger implements Listener {
             }
         }
 
-        String location = entity.getLocation().getWorld().getName() +
-                          separator +
-                          entity.getLocation().getBlockX() +
-                          separator +
-                          entity.getLocation().getBlockY() +
-                          separator +
+        String location = entity.getLocation().getWorld().getName() + separator +
+                          entity.getLocation().getBlockX() + separator +
+                          entity.getLocation().getBlockY() + separator +
                           entity.getLocation().getBlockZ();
 
         plugin.getServer().broadcastMessage(plugin.getMessage(killer, "deathlogger.death",

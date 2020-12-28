@@ -28,6 +28,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -41,6 +42,14 @@ public class MoeUtils extends JavaPlugin {
     public Configuration config;
     public LanguageManager lang;
     public PaperCommandManager manager;
+
+    private MagicTime magicTime;
+    private MagicWeather magicWeather;
+    private MobArenaAddon mobArenaAddon;
+    private BetterPortals betterPortals;
+    private FoundOres foundOres;
+    private BetterBees betterBees;
+    private DeathLogger deathLogger;
 
     @Override
     public void onDisable() {
@@ -57,9 +66,6 @@ public class MoeUtils extends JavaPlugin {
         economy = getEconomy();
         chat = getChat();
 
-        // Save useful enum values in files
-        new EnumValuesKeeper<>("materials", Material.class);
-        new EnumValuesKeeper<>("entities", EntityType.class);
 
         // Initialize language manager
         initializeLanguageManager();
@@ -68,14 +74,18 @@ public class MoeUtils extends JavaPlugin {
         config = new Configuration();
 
         // Initialize functions & initialize config nodes
-        // In this stage, default config values will be adopted if no one is present
-        initializeFunctions();
+        // In this stage, config node is initialized (with default values if nothing is present in the file)
+        initializeModules();
 
         // Register commands
         registerCommands();
 
         // Save nodes in config.yml
         config.save();
+
+        // Save useful enum values in files
+        EnumValuesKeeper.save("materials", Material.class);
+        EnumValuesKeeper.save("entities", EntityType.class);
     }
 
     public void initializeLanguageManager() {
@@ -89,7 +99,7 @@ public class MoeUtils extends JavaPlugin {
         });
     }
 
-    public void initializeFunctions() {
+    public void initializeModules() {
         new MobArenaAddon();
         new BetterPortals();
         new FoundOres();
@@ -110,11 +120,10 @@ public class MoeUtils extends JavaPlugin {
         Bukkit.getScheduler().cancelTasks(this);
         config.load();
         config.save();
-//        config.log();
 
         // Re-initialize language and functions
         initializeLanguageManager();
-        initializeFunctions();
+        initializeModules();
 
         return Timer.end(uuid);
     }
@@ -122,20 +131,24 @@ public class MoeUtils extends JavaPlugin {
     /**
      * Get a message from a language config for a certain sender
      *
-     * @param sender       The sender to get the string for. (Language is based
-     *                     on this)
+     * @param sender       The sender to get the string for.
      * @param key          The language key in the config
      * @param replacements An option array for replacements. (2n)-th will be the
      *                     placeholder, (2n+1)-th the value. Placeholders have
-     *                     to be surrounded by percentage signs: %placeholder%
+     *                     to be surrounded by percentage signs: {placeholder}
      *
      * @return The string from the config which matches the sender's language
      * (or the default one) with the replacements replaced (or an error message,
      * never null)
      */
-    public String getMessage(CommandSender sender, String key,
-                             String... replacements) {
-        return lang.getConfig(sender).get(key, replacements);
+    public String getMessage(CommandSender sender, String key, Object... replacements) {
+        if (replacements.length == 0) {
+            return lang.getConfig(sender).get(key);
+        } else {
+            return lang.getConfig(sender).get(key, Arrays.stream(replacements)
+                                                         .map(Object::toString)
+                                                         .toArray(String[]::new));
+        }
     }
 
     private void registerCommands() {
@@ -151,14 +164,14 @@ public class MoeUtils extends JavaPlugin {
         }
         manager.getLocales().setDefaultLocale(Locale.SIMPLIFIED_CHINESE);
         manager.getCommandReplacements().addReplacement("moe", "moe|mu|moeutils");
-        manager.registerCommand(new CommandHandler(new MagicTime(), new MagicWeather()));
+        manager.registerDependency(MagicTime.class, magicTime);
+        manager.registerDependency(MagicWeather.class, magicWeather);
+        manager.registerCommand(new CommandHandler());
     }
 
     private Permission getPermission() {
         RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
-        return permissionProvider != null
-               ? permissionProvider.getProvider()
-               : null;
+        return permissionProvider != null ? permissionProvider.getProvider() : null;
     }
 
     private Economy getEconomy() {

@@ -7,21 +7,15 @@ import co.mcsky.moeutils.magicutils.MagicTime;
 import co.mcsky.moeutils.magicutils.MagicWeather;
 import co.mcsky.moeutils.magicutils.TimeOption;
 import co.mcsky.moeutils.magicutils.WeatherOption;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import static co.mcsky.moeutils.MoeUtils.plugin;
 
 @CommandAlias("%moe")
 public class CommandHandler extends BaseCommand {
 
-    public final MagicTime time;
-    public final MagicWeather weather;
-
-    public CommandHandler(MagicTime time,
-                          MagicWeather weather) {
-        this.time = time;
-        this.weather = weather;
-    }
+    @Dependency public MoeUtils plugin;
+    @Dependency public MagicTime time;
+    @Dependency public MagicWeather weather;
 
     @HelpCommand
     @Description("Show help menu.")
@@ -32,17 +26,17 @@ public class CommandHandler extends BaseCommand {
     @Subcommand("reload")
     @CommandPermission("moe.admin")
     @Description("Reload config from files.")
-    public void reload() {
-        getCurrentCommandIssuer().sendMessage(plugin.getMessage(null, "common.reloaded",
-                                                                "time", plugin.reload() + "ms"));
+    public void reload(CommandSender sender) {
+        sender.sendMessage(plugin.getMessage(sender, "common.reloaded",
+                                             "time", plugin.reload() + "ms"));
     }
 
     @Subcommand("version|ver|v")
     @CommandPermission("moe.admin")
     @Description("Get the version of this plugin.")
-    public void version() {
-        getCurrentCommandIssuer().sendMessage(plugin.getMessage(null, "common.version",
-                                                                "version", plugin.getDescription().getVersion()));
+    public void version(CommandSender sender) {
+        sender.sendMessage(plugin.getMessage(sender, "common.version",
+                                             "version", plugin.getDescription().getVersion()));
     }
 
     @Subcommand("weather")
@@ -72,16 +66,16 @@ public class CommandHandler extends BaseCommand {
         @Subcommand("reset")
         @CommandPermission("moe.magic.reset")
         @Description("Reset cooldown of magic weather.")
-        public void reset() {
+        public void reset(CommandSender sender) {
             weather.resetCooldown();
-            getCurrentCommandIssuer().sendMessage(plugin.getMessage(null, "common.reset"));
+            sender.sendMessage(plugin.getMessage(sender, "common.reset"));
         }
 
         @Subcommand("status")
         @CommandPermission("moe.magic.status")
         @Description("Get the last player who called magic weather.")
-        public void status() {
-            getCurrentCommandIssuer().sendMessage(weather.getLastPlayers());
+        public void status(CommandSender sender) {
+            sender.sendMessage(weather.getLastPlayers());
         }
 
     }
@@ -106,16 +100,16 @@ public class CommandHandler extends BaseCommand {
         @Subcommand("reset")
         @CommandPermission("moe.magic.reset")
         @Description("Reset cooldown of magic time.")
-        public void reset() {
+        public void reset(CommandSender sender) {
             time.resetCooldown();
-            getCurrentCommandIssuer().sendMessage(plugin.getMessage(null, "common.reset"));
+            sender.sendMessage(plugin.getMessage(sender, "common.reset"));
         }
 
         @Subcommand("status")
         @CommandPermission("moe.magic.status")
         @Description("Get the last player who called magic time.")
-        public void status() {
-            getCurrentCommandIssuer().sendMessage(time.getLastPlayer());
+        public void status(CommandSender sender) {
+            sender.sendMessage(time.getLastPlayer());
         }
 
     }

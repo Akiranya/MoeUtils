@@ -33,7 +33,7 @@ public abstract class MagicBase {
         if (CooldownManager.check(COOLDOWN_KEY, COOLDOWN_DURATION))
             return true;
         player.sendMessage(plugin.getMessage(player, "common.cooldown",
-                                             "time", String.valueOf(CooldownManager.remaining(COOLDOWN_KEY, COOLDOWN_DURATION))));
+                                             "time", CooldownManager.remaining(COOLDOWN_KEY, COOLDOWN_DURATION)));
         return false;
     }
 
@@ -63,7 +63,7 @@ public abstract class MagicBase {
      */
     void chargePlayer(Player player, int cost) {
         MoeUtils.economy.withdrawPlayer(player, cost);
-        player.sendMessage(plugin.getMessage(player, "common.price", "cost", String.valueOf(cost)));
+        player.sendMessage(plugin.getMessage(player, "common.price", "cost", cost));
     }
 
 }
