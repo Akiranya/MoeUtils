@@ -16,20 +16,11 @@ public final class Configuration {
     private CommentedConfigurationNode root;
 
     public Configuration() {
-        // Initialize the loader for config file config.yml
         loader = YamlConfigurationLoader.builder()
                                         .indent(4)
                                         .path(new File(plugin.getDataFolder(), configFileName).toPath())
                                         .nodeStyle(NodeStyle.BLOCK)
                                         .build();
-        // Load the config file contents into memory
-        load();
-
-        // Output important configs
-//        log();
-
-        // Save config file
-//        save();
     }
 
     public CommentedConfigurationNode node(Object... path) {
@@ -40,8 +31,10 @@ public final class Configuration {
         return root.node(path);
     }
 
+    /**
+     * Load config from file, assigning the config contents to root
+     */
     public void load() {
-        // Load config from file, assigning the config contents to root
         try {
             root = loader.load();
         } catch (ConfigurateException e) {
@@ -50,6 +43,9 @@ public final class Configuration {
         }
     }
 
+    /**
+     * Save root node to file
+     */
     public void save() {
         try {
             loader.save(root);

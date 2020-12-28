@@ -72,6 +72,7 @@ public class MoeUtils extends JavaPlugin {
 
         // Initialize config manager
         config = new Configuration();
+        config.load();
 
         // Initialize functions & initialize config nodes
         // In this stage, config node is initialized (with default values if nothing is present in the file)
@@ -86,25 +87,6 @@ public class MoeUtils extends JavaPlugin {
         // Save useful enum values in files
         EnumValuesKeeper.save("materials", Material.class);
         EnumValuesKeeper.save("entities", EntityType.class);
-    }
-
-    public void initializeLanguageManager() {
-        lang = new LanguageManager(this, "languages", "zh");
-        lang.setPlaceholderPrefix("{");
-        lang.setPlaceholderSuffix("}");
-        lang.setProvider(sender -> {
-            if (sender instanceof Player)
-                return ((Player) sender).getLocale();
-            return null;
-        });
-    }
-
-    public void initializeModules() {
-        new MobArenaAddon();
-        new BetterPortals();
-        new FoundOres();
-        new DeathLogger();
-        new BetterBees();
     }
 
     /**
@@ -149,6 +131,25 @@ public class MoeUtils extends JavaPlugin {
                                                          .map(Object::toString)
                                                          .toArray(String[]::new));
         }
+    }
+
+    private void initializeLanguageManager() {
+        lang = new LanguageManager(this, "languages", "zh");
+        lang.setPlaceholderPrefix("{");
+        lang.setPlaceholderSuffix("}");
+        lang.setProvider(sender -> {
+            if (sender instanceof Player)
+                return ((Player) sender).getLocale();
+            return null;
+        });
+    }
+
+    private void initializeModules() {
+        new MobArenaAddon();
+        new BetterPortals();
+        new FoundOres();
+        new DeathLogger();
+        new BetterBees();
     }
 
     private void registerCommands() {
