@@ -1,7 +1,7 @@
-package co.mcsky.moeutils.magicutils.listeners;
+package co.mcsky.moeutils.magic.listeners;
 
-import co.mcsky.moeutils.magicutils.MagicWeather;
-import co.mcsky.moeutils.magicutils.events.MagicWeatherEvent;
+import co.mcsky.moeutils.magic.MagicWeather;
+import co.mcsky.moeutils.magic.events.MagicWeatherEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

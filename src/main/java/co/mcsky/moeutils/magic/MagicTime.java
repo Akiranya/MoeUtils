@@ -1,9 +1,9 @@
-package co.mcsky.moeutils.magicutils;
+package co.mcsky.moeutils.magic;
 
 import co.mcsky.moeutils.MoeUtils;
-import co.mcsky.moeutils.magicutils.events.MagicTimeEvent;
-import co.mcsky.moeutils.magicutils.listeners.MagicTimeListener;
-import co.mcsky.moeutils.utilities.CooldownManager;
+import co.mcsky.moeutils.magic.events.MagicTimeEvent;
+import co.mcsky.moeutils.magic.listeners.MagicTimeListener;
+import co.mcsky.moeutils.util.CooldownManager;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -58,9 +58,7 @@ public class MagicTime extends MagicBase {
     public void futureBroadcast(String timeName) {
         String prefix = plugin.getMessage(null, "magictime.prefix");
         String message = plugin.getMessage(null, "magictime.ended", "time", timeName);
-        plugin.getServer()
-              .getScheduler()
-              .runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(prefix + message), COOLDOWN_DURATION * 20L);
+        plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(prefix + message), COOLDOWN_DURATION * 20L);
     }
 
     public void broadcast(String timeName) {

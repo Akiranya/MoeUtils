@@ -1,4 +1,4 @@
-package co.mcsky.moeutils.utilities;
+package co.mcsky.moeutils.util;
 
 import org.apache.commons.lang.Validate;
 
@@ -27,7 +27,6 @@ public class CooldownManager {
      *
      * @param user     The user who uses the cooldown
      * @param cooldown The defined cooldown duration (in second)
-     *
      * @return True if the cooldown is ready (i.e. by design, user can again
      * uses the functionality corresponding to the cooldown).
      */
@@ -45,7 +44,6 @@ public class CooldownManager {
      *
      * @param user     The user to be checked
      * @param cooldown The defined cooldown duration in second
-     *
      * @return The time which has to pass before the cooldown is ready.
      */
     public static long remaining(UUID user, int cooldown) {

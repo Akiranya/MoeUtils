@@ -65,7 +65,6 @@ public class BlockCounter {
      * @param discovered A set containing locations where blocks are already
      *                   marked as discovered on which the finder will not
      *                   count.
-     *
      * @return The number of blocks of same type as {@code target} which are the
      * neighbors of the block at location {@code start}.
      */

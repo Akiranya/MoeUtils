@@ -11,8 +11,8 @@ common:
   cooldown: '&7冷却中:&b {time}s.'
   reset: '&b状态已重置.'
 betterbees:
-  count_beehive: 这个蜂箱里有 {bee_count} 只蜜蜂.
-  count_bee_nest: 这个蜂巢里有 {bee_count} 只蜜蜂.
+  count_beehive: '这个蜂箱里有 {bee_count} 只蜜蜂.'
+  count_bee_nest: '这个蜂巢里有 {bee_count} 只蜜蜂.'
   reminder_on_place: '&7提示: &6右击蜂箱/蜂巢&7 可查看内部蜜蜂数量.'
   reminder_in_hand: '&7提示: &6手持蜂箱 Shift+右键空气&7 可查看内部蜜蜂数量.'
 deathlogger:
@@ -32,54 +32,7 @@ magicweather:
   rain: 魔法阴天
   thunder: 魔法雷雨
   changed: '&b一位神秘法师把世界 &e{world}&b 的天气变成了 &d{weather}&b.'
-  ended: '&b神秘法师的 &e{player}&b (世界 &e{world}&b) 结束了! &7(冷却就绪)'
+  ended: '&b神秘法师的 &e{weather}&b (世界 &e{world}&b) 结束了! &7(冷却就绪)'
 betterportals:
   cancelled: '&e监测到该地狱门的目的地在世界边界外,为了您的安全本次传送已取消.'
   debug: PlayerPortalEvent has been cancelled for {player}.
-acf-core:
-  permission_denied: 抱歉, 你没有权限使用这个指令.
-  permission_denied_parameter: 抱歉, 你没有权限使用这个指令 (参数限制).
-  error_generic_logged: 发生了一个错误. 问题已记录在. 请将此问题汇报给服务器管理员.
-  unknown_command: 没有该指令, 输入 <c2>/help</c2> 查看帮助
-  invalid_syntax: '用法: <c2>{command}</c2> <c3>{syntax}</c3>'
-  error_prefix: '错误: {message}'
-  error_performing_command: 抱歉, 执行该指令时服务器内部发生了一个错误.
-  info_message: '{message}'
-  please_specify_one_of: '错误: 请从 (<c2>{valid}</c2>) 选择一个值.'
-  must_be_a_number: '错误: {num} 必须时一个数字.'
-  must_be_min_length: '错误: 最小为 {min} 个字符长.'
-  must_be_max_length: '错误: 最多为 {max} 个字符长.'
-  please_specify_at_most: '错误: 最多只能设置为 {max}.'
-  please_specify_at_least: '错误: 请指定一个比 {min} 大的值.'
-  not_allowed_on_console: '错误: 控制台无法使用该指令.'
-  could_not_find_player: '错误: 无法找到玩家: <c2>{search}</c2>'
-  no_command_matched_search: 没有帮助信息包含 <c2>{search}</c2>.
-  help_page_information: '- 显示页面 <c2>{page}</c2> / <c2>{totalpages}</c2> (共 <c3>{results}</c3>
-    条指令).'
-  help_no_results: '错误: 没有更多页面了.'
-  help_header: <c3>=== </c3><c1>帮助信息之指令 </c1><c2>{commandprefix}{command}</c2><c3>
-    ===</c3>
-  help_format: <c1>{command}</c1> <c2>{parameters}</c2> <c3>{separator} {description}</c3>
-  help_detailed_header: <c3>=== </c3><c1>详细帮助信息之 </c1><c2>{commandprefix}{command}</c2><c3>
-    ===</c3>
-  help_detailed_command_format: <c1>{command}</c1> <c2>{parameters}</c2> <c3>{separator}
-    {description}</c3>
-  help_detailed_parameter_format: '<c2>{syntaxorname}</c2>: <c3>{description}</c3>'
-  help_search_header: <c3>=== </c3><c1>搜索结果之 </c1><c2>{commandprefix}{command} {search}</c2><c3>
-    ===</c3>
-acf-minecraft:
-  player_is_vanished_confirm: |-
-    警告: <c2>{vanished}</c2> 已隐身. 请不要惊动他!
-    要确认你的操作, 在他的名字后面加上 <c2>:confirm</c2>.
-    例子: <c2>{vanished}:confirm</c2>
-  invalid_world: '错误: 世界不存在.'
-  you_must_be_holding_item: '错误: 你的手上必须拿着一个物品.'
-  username_too_short: '错误: 用户名太短, 必须为三个字符长.'
-  is_not_a_valid_name: '错误: <c2>{name}</c2> 不是一个有效的用户名.'
-  multiple_players_match: '错误: 有多名玩家的名字对上了 <c2>{search}</c2> <c3>({all})</c3>, 请指定更佳完整的用户名.'
-  no_player_found_server: 玩家 <c2>{search}</c2> 好像还没有来过此服务器.
-  no_player_found_offline: 未找到叫做 <c2>{search}</c2> 的玩家.
-  no_player_found: 未找到叫做 <c2>{search}</c2> 的玩家.
-  location_please_specify_world: '错误: 请指定一个世界. 例子: <c2>world:x,y,z</c2>.'
-  location_please_specify_xyz: '错误: 请指定坐标的 x, y, z. 例子: <c2>world:x,y,z</c2>.'
-  location_console_not_relative: '错误: 控制台无法使用相对坐标.'

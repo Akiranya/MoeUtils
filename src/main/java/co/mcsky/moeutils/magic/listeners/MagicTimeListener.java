@@ -1,7 +1,7 @@
-package co.mcsky.moeutils.magicutils.listeners;
+package co.mcsky.moeutils.magic.listeners;
 
-import co.mcsky.moeutils.magicutils.MagicTime;
-import co.mcsky.moeutils.magicutils.events.MagicTimeEvent;
+import co.mcsky.moeutils.magic.MagicTime;
+import co.mcsky.moeutils.magic.events.MagicTimeEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

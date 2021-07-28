@@ -1,4 +1,4 @@
-package co.mcsky.moeutils.magicutils;
+package co.mcsky.moeutils.magic;
 
 import org.bukkit.World;
 
@@ -20,14 +20,11 @@ public enum TimeOption {
      * @return The fancy name of this {@code time}.
      */
     public String customName() {
-        switch (this) {
-            case DAY:
-                return plugin.getMessage(null, "magictime.day");
-            case NIGHT:
-                return plugin.getMessage(null, "magictime.night");
-            default:
-                throw new IllegalStateException("Unknown time type.");
-        }
+        return switch (this) {
+            case DAY -> plugin.getMessage(null, "magictime.day");
+            case NIGHT -> plugin.getMessage(null, "magictime.night");
+            default -> throw new IllegalStateException("Unknown time type.");
+        };
     }
 
     public void set(World world) {

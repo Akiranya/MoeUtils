@@ -1,42 +1,36 @@
 package co.mcsky.moeutils;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
-import co.mcsky.moeutils.magicutils.MagicTime;
-import co.mcsky.moeutils.magicutils.MagicWeather;
-import co.mcsky.moeutils.magicutils.TimeOption;
-import co.mcsky.moeutils.magicutils.WeatherOption;
+import co.mcsky.moeutils.magic.MagicTime;
+import co.mcsky.moeutils.magic.MagicWeather;
+import co.mcsky.moeutils.magic.TimeOption;
+import co.mcsky.moeutils.magic.WeatherOption;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandAlias("%moe")
-public class CommandHandler extends BaseCommand {
+@CommandAlias("mu")
+public class MoeCommands extends BaseCommand {
 
-    @Dependency public MoeUtils plugin;
-    @Dependency public MagicTime time;
-    @Dependency public MagicWeather weather;
-
-    @HelpCommand
-    @Description("Show help menu.")
-    public void help(CommandHelp help) {
-        help.showHelp();
-    }
+    @Dependency
+    public MoeUtils plugin;
+    @Dependency
+    public MagicTime time;
+    @Dependency
+    public MagicWeather weather;
 
     @Subcommand("reload")
     @CommandPermission("moe.admin")
     @Description("Reload config from files.")
     public void reload(CommandSender sender) {
-        sender.sendMessage(plugin.getMessage(sender, "common.reloaded",
-                                             "time", plugin.reload() + "ms"));
+        sender.sendMessage(plugin.getMessage(sender, "common.reloaded", "time", plugin.reload() + "ms"));
     }
 
     @Subcommand("version|ver|v")
     @CommandPermission("moe.admin")
     @Description("Get the version of this plugin.")
     public void version(CommandSender sender) {
-        sender.sendMessage(plugin.getMessage(sender, "common.version",
-                                             "version", plugin.getDescription().getVersion()));
+        sender.sendMessage(plugin.getMessage(sender, "common.version", "version", plugin.getDescription().getVersion()));
     }
 
     @Subcommand("weather")

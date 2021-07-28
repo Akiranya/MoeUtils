@@ -1,6 +1,6 @@
 package co.mcsky.moeutils.foundores;
 
-import co.mcsky.moeutils.Configuration;
+import co.mcsky.moeutils.MoeConfig;
 import co.mcsky.moeutils.i18n.I18nBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -27,12 +27,11 @@ public class FoundOres implements Listener {
     public static Set<Material> enabledBlocks;
     public static Set<String> enabledWorlds;
 
-    public final Configuration config;
+    public final MoeConfig config;
 
     private Set<Location> locationHistory;
     private BlockCounter blockCounter;
 
-    @SuppressWarnings("SimplifyStreamApiCallChains")
     public FoundOres() {
         config = plugin.config;
 
@@ -42,7 +41,7 @@ public class FoundOres implements Listener {
         purgeInterval = config.node(header, "purgeInterval").getInt(1800);
 
         try {
-            enabledBlocks = config.node(header, "blocks").getList(Material.class, () ->
+            enabledBlocks = new HashSet<>(config.node(header, "blocks").getList(Material.class, () ->
                     List.of(Material.GOLD_ORE,
                             Material.IRON_ORE,
                             Material.COAL_ORE,
@@ -50,13 +49,13 @@ public class FoundOres implements Listener {
                             Material.DIAMOND_ORE,
                             Material.REDSTONE_ORE,
                             Material.EMERALD_ORE,
-                            Material.NETHER_QUARTZ_ORE)).stream().collect(Collectors.toSet());
-            enabledWorlds = config.node(header, "worlds").getList(String.class, () ->
+                            Material.NETHER_QUARTZ_ORE)));
+            enabledWorlds = new HashSet<>(config.node(header, "worlds").getList(String.class, () ->
                     List.of("world",
                             "world_nether",
-                            "world_the_end")).stream().collect(Collectors.toSet());
+                            "world_the_end")));
         } catch (final SerializationException e) {
-            plugin.getLogger().severe("FoundOres initialization failed! Please validate the configuration.");
+            plugin.getLogger().severe(e.getMessage());
             return;
         }
 
@@ -86,9 +85,9 @@ public class FoundOres implements Listener {
         if (!locationHistory.contains(currentLocation)) {
             String prefix = plugin.getMessage(null, "foundores.prefix");
             String message = plugin.getMessage(null, "foundores.found",
-                                               "player", event.getPlayer().getDisplayName(),
-                                               "count", blockCounter.count(currentLocation, currentBlock, locationHistory),
-                                               "ore", I18nBlock.getBlockDisplayName(currentBlock));
+                    "player", event.getPlayer().displayName(),
+                    "count", blockCounter.count(currentLocation, currentBlock, locationHistory),
+                    "ore", I18nBlock.getBlockDisplayName(currentBlock));
             plugin.getServer().broadcastMessage(prefix + message);
         }
     }

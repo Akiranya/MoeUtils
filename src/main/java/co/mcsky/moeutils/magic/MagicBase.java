@@ -1,7 +1,7 @@
-package co.mcsky.moeutils.magicutils;
+package co.mcsky.moeutils.magic;
 
 import co.mcsky.moeutils.MoeUtils;
-import co.mcsky.moeutils.utilities.CooldownManager;
+import co.mcsky.moeutils.util.CooldownManager;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -26,14 +26,13 @@ public abstract class MagicBase {
      *
      * @param player       The player you want to check cooldown.
      * @param COOLDOWN_KEY The cooldown key and this should be unique.
-     *
      * @return True if the cooldown is ready. False else wise.
      */
     boolean checkCooldown(Player player, UUID COOLDOWN_KEY) {
         if (CooldownManager.check(COOLDOWN_KEY, COOLDOWN_DURATION))
             return true;
         player.sendMessage(plugin.getMessage(player, "common.cooldown",
-                                             "time", CooldownManager.remaining(COOLDOWN_KEY, COOLDOWN_DURATION)));
+                "time", CooldownManager.remaining(COOLDOWN_KEY, COOLDOWN_DURATION)));
         return false;
     }
 
@@ -44,7 +43,6 @@ public abstract class MagicBase {
      *
      * @param player The player who is to be charged.
      * @param cost   How much we charge the player.
-     *
      * @return True if the player has sufficient balance. False else wise.
      */
     boolean checkBalance(Player player, int cost) {
@@ -63,6 +61,7 @@ public abstract class MagicBase {
      */
     void chargePlayer(Player player, int cost) {
         MoeUtils.economy.withdrawPlayer(player, cost);
+        MoeUtils.systemBalance.deposit(cost);
         player.sendMessage(plugin.getMessage(player, "common.price", "cost", cost));
     }
 

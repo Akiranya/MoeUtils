@@ -1,18 +1,16 @@
-package co.mcsky.moeutils.magicutils.events;
+package co.mcsky.moeutils.magic.events;
 
-import co.mcsky.moeutils.magicutils.TimeOption;
-import lombok.Getter;
+import co.mcsky.moeutils.magic.TimeOption;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.NotNull;
 
 public class MagicTimeEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
-    @Getter private final Player player;
-    @Getter private final TimeOption time;
+    private final Player player;
+    private final TimeOption time;
     private boolean cancelled;
 
     public MagicTimeEvent(Player player, TimeOption time) {
@@ -24,8 +22,16 @@ public class MagicTimeEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    public @NotNull
-    HandlerList getHandlers() {
+    public Player getPlayer() {
+        return player;
+    }
+
+    public TimeOption getTime() {
+        return time;
+    }
+
+    @Override
+    public HandlerList getHandlers() {
         return handlers;
     }
 

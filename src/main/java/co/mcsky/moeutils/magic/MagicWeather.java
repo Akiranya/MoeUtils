@@ -1,8 +1,8 @@
-package co.mcsky.moeutils.magicutils;
+package co.mcsky.moeutils.magic;
 
-import co.mcsky.moeutils.magicutils.events.MagicWeatherEvent;
-import co.mcsky.moeutils.magicutils.listeners.MagicWeatherListener;
-import co.mcsky.moeutils.utilities.CooldownManager;
+import co.mcsky.moeutils.magic.events.MagicWeatherEvent;
+import co.mcsky.moeutils.magic.listeners.MagicWeatherListener;
+import co.mcsky.moeutils.util.CooldownManager;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
@@ -65,17 +65,14 @@ public class MagicWeather extends MagicBase {
 
     public void futureBroadcast(String weatherName, String worldName) {
         String prefix = plugin.getMessage(null, "magicweather.prefix");
-        String message = plugin.getMessage(null, "magictime.ended",
-                                           "weather", weatherName, "world", worldName);
-        plugin.getServer()
-              .getScheduler()
-              .runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(prefix + message), COOLDOWN_DURATION * 20L);
+        String message = plugin.getMessage(null, "magicweather.ended", "weather", weatherName, "world", worldName);
+        plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(prefix + message), COOLDOWN_DURATION * 20L);
     }
 
     public void broadcast(String weatherName, String worldName) {
         String prefix = plugin.getMessage(null, "magicweather.prefix");
         String message = plugin.getMessage(null, "magicweather.changed",
-                                           "world", worldName, "weather", weatherName);
+                "world", worldName, "weather", weatherName);
         plugin.getServer().broadcastMessage(prefix + message);
     }
 
@@ -92,10 +89,10 @@ public class MagicWeather extends MagicBase {
     public String getLastPlayers() {
         StringBuilder sb = new StringBuilder();
         lastPlayers.forEach(((world, player) -> sb.append("[ ")
-                                                  .append(world)
-                                                  .append(": ")
-                                                  .append(player)
-                                                  .append(" ]")));
+                .append(world)
+                .append(": ")
+                .append(player)
+                .append(" ]")));
         return sb.toString();
     }
 

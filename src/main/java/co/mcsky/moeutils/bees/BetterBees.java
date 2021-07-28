@@ -1,7 +1,7 @@
 package co.mcsky.moeutils.bees;
 
-import co.mcsky.moeutils.Configuration;
-import co.mcsky.moeutils.utilities.CooldownManager;
+import co.mcsky.moeutils.MoeConfig;
+import co.mcsky.moeutils.util.CooldownManager;
 import org.bukkit.Material;
 import org.bukkit.block.Beehive;
 import org.bukkit.block.Block;
@@ -26,7 +26,7 @@ public class BetterBees implements Listener {
     public static boolean enable;
     public static boolean requireSneak;
 
-    public final Configuration config;
+    public final MoeConfig config;
 
     public BetterBees() {
         config = plugin.config;
@@ -71,11 +71,14 @@ public class BetterBees implements Listener {
 
     private void sendMessage(Beehive beehive, Player player) {
         // Depending on whether the player is interacting with bee nest or beehive
-        String raw = beehive.getType() == BEE_NEST
-                     ? plugin.getMessage(player, "betterbees.count_bee_nest")
-                     : plugin.getMessage(player, "betterbees.count_beehive");
+        String raw;
+        if (beehive.getType() == BEE_NEST) {
+            raw = plugin.getMessage(player, "betterbees.count_bee_nest");
+        } else {
+            raw = plugin.getMessage(player, "betterbees.count_beehive");
+        }
         int beeCount = beehive.getEntityCount();
-        player.sendMessage(plugin.getMessage(player, raw, "{bee_count}", beeCount));
+        player.sendMessage(plugin.getMessage(player, raw, "bee_count", beeCount));
     }
 
     /**

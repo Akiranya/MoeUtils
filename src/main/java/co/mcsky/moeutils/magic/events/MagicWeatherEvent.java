@@ -1,20 +1,18 @@
-package co.mcsky.moeutils.magicutils.events;
+package co.mcsky.moeutils.magic.events;
 
-import co.mcsky.moeutils.magicutils.WeatherOption;
-import lombok.Getter;
+import co.mcsky.moeutils.magic.WeatherOption;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.NotNull;
 
 public class MagicWeatherEvent extends Event implements Cancellable {
 
     public static final HandlerList handlers = new HandlerList();
-    @Getter private final World world;
-    @Getter private final Player player;
-    @Getter private final WeatherOption weather;
+    private final World world;
+    private final Player player;
+    private final WeatherOption weather;
     private boolean cancelled;
 
     public MagicWeatherEvent(Player player, WeatherOption weather) {
@@ -27,8 +25,20 @@ public class MagicWeatherEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    public @NotNull
-    HandlerList getHandlers() {
+    public World getWorld() {
+        return world;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public WeatherOption getWeather() {
+        return weather;
+    }
+
+    @Override
+    public HandlerList getHandlers() {
         return handlers;
     }
 

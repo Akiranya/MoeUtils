@@ -1,4 +1,4 @@
-package co.mcsky.moeutils.utilities;
+package co.mcsky.moeutils.util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +17,6 @@ public class Timer {
 
     /**
      * @param key The UUID which bind to a starting timer.
-     *
      * @return Elapsed time (in millisecond) since the timer started.
      */
     public static long end(UUID key) {

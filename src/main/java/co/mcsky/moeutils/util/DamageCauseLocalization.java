@@ -1,4 +1,4 @@
-package co.mcsky.moeutils.utilities;
+package co.mcsky.moeutils.util;
 
 /**
  * Contains chinese localization for all damage causes.
