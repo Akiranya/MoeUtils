@@ -1,11 +1,14 @@
 package co.mcsky.moeutils;
 
+import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+import co.mcsky.moeutils.data.DataSource;
 import co.mcsky.moeutils.magic.MagicTime;
 import co.mcsky.moeutils.magic.MagicWeather;
 import co.mcsky.moeutils.magic.TimeOption;
 import co.mcsky.moeutils.magic.WeatherOption;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -18,12 +21,15 @@ public class MoeCommands extends BaseCommand {
     public MagicTime time;
     @Dependency
     public MagicWeather weather;
+    @Dependency
+    public DataSource dataSource;
 
     @Subcommand("reload")
     @CommandPermission("moe.admin")
     @Description("Reload config from files.")
     public void reload(CommandSender sender) {
-        sender.sendMessage(plugin.getMessage(sender, "common.reloaded", "time", plugin.reload() + "ms"));
+        MoeUtils.plugin.reload();
+        sender.sendMessage(plugin.getMessage(sender, "common.reloaded"));
     }
 
     @Subcommand("version|ver|v")
@@ -31,6 +37,28 @@ public class MoeCommands extends BaseCommand {
     @Description("Get the version of this plugin.")
     public void version(CommandSender sender) {
         sender.sendMessage(plugin.getMessage(sender, "common.version", "version", plugin.getDescription().getVersion()));
+    }
+
+    @Subcommand("ep")
+    public class EndEyeCommand extends BaseCommand {
+        @Subcommand("set")
+        public void set(Player player) {
+            final Location location = player.getLocation().toBlockLocation();
+            dataSource.addEndEyeTargetLocation(location);
+            player.sendMessage(plugin.getMessage(player, "end-eye-changer.set", "location", ACFBukkitUtil.blockLocationToString(location)));
+        }
+
+        @Subcommand("list")
+        public void list(CommandSender sender) {
+            sender.sendMessage(plugin.getMessage(sender, "end-eye-changer.list-title"));
+            dataSource.getEndEyeTargetLocations().forEach(location -> sender.sendMessage(plugin.getMessage(sender, "end-eye-changer.list", "location", ACFBukkitUtil.blockLocationToString(location))));
+        }
+
+        @Subcommand("clear")
+        public void clear(CommandSender sender) {
+            dataSource.clearTargetLocations();
+            sender.sendMessage(plugin.getMessage(sender, "end-eye-changer.clear"));
+        }
     }
 
     @Subcommand("weather")

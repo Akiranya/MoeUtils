@@ -1,0 +1,56 @@
+plugins {
+    id 'java-library'
+}
+
+ext.pluginNameUpper = "MoeUtils"
+ext.majorVersion = 1
+ext.minorVersion = 8
+ext.minecraftVersion = "1.17.1"
+java.sourceCompatibility = JavaVersion.VERSION_16
+java.targetCompatibility = JavaVersion.VERSION_16
+
+group = 'co.mcsky'
+archivesBaseName = "${pluginNameUpper}-mc$minecraftVersion"
+version = "$majorVersion.$minorVersion".toString()
+
+// source file modification (modify version string)
+processResources {
+    filesMatching("**/plugin.yml") {
+        expand 'version': project.version
+    }
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://papermc.io/repo/repository/maven-public/' }
+    maven { url = 'https://repo.minebench.de/' }
+    maven { url = 'https://repo.aikar.co/content/groups/aikar/' }
+    maven { url = 'https://ci.nyaacat.com/maven/' }
+    maven { url = 'https://repo.lucko.me' }
+    maven { url = 'https://jitpack.io' }
+}
+
+dependencies {
+    compileOnly('io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT')
+
+    // helper lib
+    compileOnly('me.lucko:helper:5.6.8')
+
+    // config framework
+    compileOnly('org.spongepowered:configurate-core:4.1.1')
+    compileOnly('org.spongepowered:configurate-yaml:4.1.1')
+
+    // i18n framework
+    compileOnly('de.themoep.utils:lang-bukkit:1.3-SNAPSHOT')
+
+    // command framework
+    compileOnly('co.aikar:acf-paper:0.5.0-SNAPSHOT')
+
+    compileOnly("cat.nyaa:nyaacore:8.1-SNAPSHOT")
+    compileOnly('com.meowj:LangUtils:2.3-SNAPSHOT')
+    compileOnly('net.milkbowl.vault:VaultAPI:1.7') { transitive = false }
+}

@@ -1,95 +1,64 @@
 package co.mcsky.moeutils.foundores;
 
 import co.mcsky.moeutils.MoeConfig;
+import co.mcsky.moeutils.MoeUtils;
 import co.mcsky.moeutils.i18n.I18nBlock;
-import org.bukkit.Bukkit;
+import me.lucko.helper.Events;
+import me.lucko.helper.Schedulers;
+import me.lucko.helper.scheduler.Ticks;
+import me.lucko.helper.terminable.TerminableConsumer;
+import me.lucko.helper.terminable.module.TerminableModule;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.spongepowered.configurate.serialize.SerializationException;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.concurrent.TimeUnit;
 
 import static co.mcsky.moeutils.MoeUtils.plugin;
 
-public class FoundOres implements Listener {
+public class FoundOres implements TerminableModule {
 
-    public static final String header = "foundores";
-    public static boolean enable;
-    public static int maxIteration;
-    public static int purgeInterval;
-    public static Set<Material> enabledBlocks;
-    public static Set<String> enabledWorlds;
+    // necessary for this function to work
+    private final Set<Location> locationHistory;
+    private final BlockCounter blockCounter;
 
-    public final MoeConfig config;
-
-    private Set<Location> locationHistory;
-    private BlockCounter blockCounter;
+    // wrap arraylist with hashset for faster lookup
+    private final Set<Material> hashEnabledBlocks;
+    private final Set<String> hashEnabledWorld;
 
     public FoundOres() {
-        config = plugin.config;
-
-        // Configuration values
-        enable = config.node(header, "enable").getBoolean();
-        maxIteration = config.node(header, "maxIterations").getInt(32);
-        purgeInterval = config.node(header, "purgeInterval").getInt(1800);
-
-        try {
-            enabledBlocks = new HashSet<>(config.node(header, "blocks").getList(Material.class, () ->
-                    List.of(Material.GOLD_ORE,
-                            Material.IRON_ORE,
-                            Material.COAL_ORE,
-                            Material.LAPIS_ORE,
-                            Material.DIAMOND_ORE,
-                            Material.REDSTONE_ORE,
-                            Material.EMERALD_ORE,
-                            Material.NETHER_QUARTZ_ORE)));
-            enabledWorlds = new HashSet<>(config.node(header, "worlds").getList(String.class, () ->
-                    List.of("world",
-                            "world_nether",
-                            "world_the_end")));
-        } catch (final SerializationException e) {
-            plugin.getLogger().severe(e.getMessage());
-            return;
-        }
-
-        // Internal variables
         locationHistory = new HashSet<>();
-        blockCounter = new BlockCounter(maxIteration);
+        blockCounter = new BlockCounter(plugin.config.max_iterations);
 
-        if (enable) {
-            plugin.getServer().getPluginManager().registerEvents(this, plugin);
-            plugin.getLogger().info("FoundOres is enabled.");
-            // Auto clear map locationHistory at given interval for performance reason.
-            Bukkit.getScheduler().runTaskTimer(plugin, locationHistory::clear, 0, purgeInterval * 20L);
-        }
+        hashEnabledBlocks = new HashSet<>();
+        hashEnabledWorld = new HashSet<>();
+        hashEnabledBlocks.addAll(plugin.config.enabled_blocks);
+        hashEnabledWorld.addAll(plugin.config.enabled_worlds);
     }
 
-    @EventHandler
-    public void onPlayerBreakBlock(BlockBreakEvent event) {
-        Block block = event.getBlock();
+    @Override
+    public void setup(@NotNull TerminableConsumer consumer) {
+        if (!MoeUtils.logActiveStatus("FoundOres", plugin.config.found_ores_enabled)) return;
 
-        if (!enabledBlocks.contains(block.getType()))
-            return;
-        if (!enabledWorlds.contains(block.getWorld().getName()))
-            return;
+        // clear history locations at interval
+        Schedulers.sync().runRepeating(locationHistory::clear, 0, Ticks.from(plugin.config.purge_interval, TimeUnit.SECONDS));
 
-        Location currentLocation = block.getLocation();
-        Material currentBlock = block.getType();
-        if (!locationHistory.contains(currentLocation)) {
-            String prefix = plugin.getMessage(null, "foundores.prefix");
-            String message = plugin.getMessage(null, "foundores.found",
-                    "player", event.getPlayer().displayName(),
-                    "count", blockCounter.count(currentLocation, currentBlock, locationHistory),
-                    "ore", I18nBlock.getBlockDisplayName(currentBlock));
-            plugin.getServer().broadcastMessage(prefix + message);
-        }
+        Events.subscribe(BlockBreakEvent.class)
+                .filter(e -> hashEnabledBlocks.contains(e.getBlock().getType()))
+                .filter(e -> hashEnabledWorld.contains(e.getBlock().getWorld().getName()))
+                .filter(e -> !locationHistory.contains(e.getBlock().getLocation()))
+                .handler(e -> {
+                    final Block currentBlock = e.getBlock();
+                    String prefix = plugin.getMessage(e.getPlayer(), "found-ores.prefix");
+                    String message = plugin.getMessage(e.getPlayer(), "found-ores.found",
+                            "player", e.getPlayer().getDisplayName(),
+                            "count", blockCounter.count(currentBlock.getLocation(), currentBlock.getType(), locationHistory),
+                            "ore", I18nBlock.getBlockDisplayName(currentBlock.getType()));
+                    plugin.getServer().broadcastMessage(prefix + message);
+                }).bindWith(consumer);
     }
-
 }

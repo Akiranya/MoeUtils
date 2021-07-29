@@ -1,6 +1,5 @@
 package co.mcsky.moeutils.misc;
 
-import co.mcsky.moeutils.MoeConfig;
 import co.mcsky.moeutils.MoeUtils;
 import me.lucko.helper.Events;
 import me.lucko.helper.scheduler.Ticks;
@@ -15,18 +14,15 @@ import java.util.concurrent.TimeUnit;
 
 public class LoginProtector implements TerminableModule {
 
-    MoeConfig config;
-
-    public LoginProtector() {
-        this.config = MoeUtils.plugin.config;
-    }
-
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
+        if (!MoeUtils.logActiveStatus("LoginProtection", MoeUtils.plugin.config.login_protection_enabled)) return;
+
         Events.subscribe(PlayerJoinEvent.class).handler(e -> {
-            int duration = (int) Ticks.from(config.node("login-protection", "duration-in-sec").getLong(15), TimeUnit.SECONDS);
-            int amplifier = config.node("login-protection", "amplifier").getInt(4);
-            e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, duration, amplifier));
+            final int duration = (int) Ticks.from(MoeUtils.plugin.config.login_protection_duration, TimeUnit.SECONDS);
+            final int amplifier = MoeUtils.plugin.config.login_protection_amplifier;
+            final PotionEffect effect = new PotionEffect(PotionEffectType.ABSORPTION, duration, amplifier);
+            e.getPlayer().addPotionEffect(effect);
         }).bindWith(consumer);
     }
 }

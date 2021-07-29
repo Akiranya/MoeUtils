@@ -2,6 +2,7 @@ package co.mcsky.moeutils.magic;
 
 import co.mcsky.moeutils.MoeUtils;
 import co.mcsky.moeutils.util.CooldownManager;
+import me.lucko.helper.terminable.module.TerminableModule;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -11,7 +12,7 @@ import static co.mcsky.moeutils.MoeUtils.plugin;
 /**
  * This class shares code for {@link MagicTime} and {@link MagicWeather}.
  */
-public abstract class MagicBase {
+public abstract class MagicBase implements TerminableModule {
 
     public final int COOLDOWN_DURATION;
 

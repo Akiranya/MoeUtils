@@ -3,30 +3,22 @@ package co.mcsky.moeutils;
 import cat.nyaa.nyaacore.component.ISystemBalance;
 import cat.nyaa.nyaacore.component.NyaaComponent;
 import co.aikar.commands.PaperCommandManager;
-import co.mcsky.moeutils.bees.BetterBees;
+import co.mcsky.moeutils.data.DataSource;
+import co.mcsky.moeutils.data.DataSourceFileHandler;
 import co.mcsky.moeutils.foundores.FoundOres;
 import co.mcsky.moeutils.magic.MagicTime;
 import co.mcsky.moeutils.magic.MagicWeather;
-import co.mcsky.moeutils.misc.BetterPortals;
-import co.mcsky.moeutils.misc.DeathLogger;
-import co.mcsky.moeutils.misc.EndEyeChanger;
-import co.mcsky.moeutils.misc.LoginProtector;
-import co.mcsky.moeutils.util.CooldownManager;
-import co.mcsky.moeutils.util.Timer;
+import co.mcsky.moeutils.misc.*;
 import de.themoep.utils.lang.bukkit.LanguageManager;
+import me.lucko.helper.Services;
+import me.lucko.helper.plugin.ExtendedJavaPlugin;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.spongepowered.configurate.serialize.SerializationException;
 
 import java.util.Arrays;
-import java.util.UUID;
 
-public class MoeUtils extends JavaPlugin {
+public class MoeUtils extends ExtendedJavaPlugin {
 
     public static MoeUtils plugin;
     public static Economy economy;
@@ -39,58 +31,67 @@ public class MoeUtils extends JavaPlugin {
     private MagicTime magicTime;
     private MagicWeather magicWeather;
 
+    private DataSource dataSource;
+    private DataSourceFileHandler dataSourceFileHandler;
 
-    @Override
-    public void onDisable() {
-        HandlerList.unregisterAll(this);
-        Bukkit.getScheduler().cancelTasks(this);
+    public static boolean logActiveStatus(String module, boolean status) {
+        if (status) {
+            plugin.getLogger().info(module + " is enabled");
+        } else {
+            plugin.getLogger().info(module + " is disabled");
+        }
+        return status;
     }
 
     @Override
-    public void onEnable() {
+    protected void load() {
+
+    }
+
+    @Override
+    protected void enable() {
         plugin = this;
 
-        // Hook into Vault
-        economy = getEconomy();
-        systemBalance = NyaaComponent.get(ISystemBalance.class);
+        // hook into Vault
+        try {
+            economy = Services.load(Economy.class);
+            systemBalance = NyaaComponent.get(ISystemBalance.class);
+        } catch (Exception e) {
+            getLogger().severe(e.getMessage());
+            getLogger().severe("Some vault registration is not present");
+            disable();
+            return;
+        }
 
-        // Initialize language manager
+        // initialize language manager
         initializeLanguageManager();
 
-        // Initialize config manager
+        // initialize config manager
         config = new MoeConfig();
         config.load();
+        config.save(); // save config nodes into file
 
-        // Initialize functions & initialize config nodes
-        // In this stage, config node is initialized (with default values if nothing is present in the file)
+        // initialize data source
+        dataSourceFileHandler = new DataSourceFileHandler();
+        dataSource = dataSourceFileHandler.load().orElse(new DataSource());
+        dataSourceFileHandler.save(dataSource);
+
+        // initialize functions & initialize config nodes
+        // in this stage, config node is initialized (with default values if nothing is present in the file)
         initializeModules();
 
-        // Register commands
+        // register commands
         registerCommands();
-
-        // Save nodes in config.yml
-        config.save();
     }
 
-    /**
-     * @return The duration (in millisecond) for the plugin to reload
-     */
-    public long reload() {
-        UUID uuid = UUID.randomUUID();
-        Timer.start(uuid);
+    @Override
+    protected void disable() {
+        dataSourceFileHandler.save(dataSource);
+    }
 
-        // Reset cooldown, unregister all listeners, cancel tasks and reload config from file
-        CooldownManager.resetAll();
-        HandlerList.unregisterAll(this);
-        Bukkit.getScheduler().cancelTasks(this);
-        config.load();
-        config.save();
-
-        // Re-initialize language and functions
-        initializeLanguageManager();
-        initializeModules();
-
-        return Timer.end(uuid);
+    public void reload() {
+        onDisable();
+        onEnable();
     }
 
     /**
@@ -121,37 +122,29 @@ public class MoeUtils extends JavaPlugin {
         lang.setPlaceholderSuffix("}");
         lang.setProvider(sender -> {
             if (sender instanceof Player)
-                return ((Player) sender).getLocale();
+                return ((Player) sender).locale().getLanguage();
             return null;
         });
     }
 
     private void initializeModules() {
-        try {
-            new BetterPortals();
-            new FoundOres();
-            new DeathLogger();
-            new BetterBees();
-            new LoginProtector();
-            new EndEyeChanger();
-            magicTime = new MagicTime();
-            magicWeather = new MagicWeather();
-        } catch (SerializationException e) {
-            getLogger().severe(e.getMessage());
-        }
-
+        // all are terminable
+        bindModule(new BetterPortals());
+        bindModule(new FoundOres());
+        bindModule(new DeathLogger());
+        bindModule(new BetterBees());
+        bindModule(new LoginProtector());
+        bindModule(new EndEyeChanger(dataSource));
+        magicTime = bindModule(new MagicTime());
+        magicWeather = bindModule(new MagicWeather());
     }
 
     private void registerCommands() {
         manager = new PaperCommandManager(this);
         manager.registerDependency(MagicTime.class, magicTime);
         manager.registerDependency(MagicWeather.class, magicWeather);
+        manager.registerDependency(DataSource.class, dataSource);
         manager.registerCommand(new MoeCommands());
-    }
-
-    private Economy getEconomy() {
-        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-        return economyProvider != null ? economyProvider.getProvider() : null;
     }
 
 }

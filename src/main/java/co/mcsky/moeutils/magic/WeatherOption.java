@@ -16,9 +16,9 @@ public enum WeatherOption {
      */
     public String customName() {
         return switch (this) {
-            case CLEAR -> plugin.getMessage(null, "magicweather.clear");
-            case RAIN -> plugin.getMessage(null, "magicweather.rain");
-            case THUNDER -> plugin.getMessage(null, "magicweather.thunder");
+            case CLEAR -> plugin.getMessage(null, "magic-weather.clear");
+            case RAIN -> plugin.getMessage(null, "magic-weather.rain");
+            case THUNDER -> plugin.getMessage(null, "magic-weather.thunder");
         };
     }
 

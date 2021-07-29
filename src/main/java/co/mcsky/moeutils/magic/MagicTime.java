@@ -1,46 +1,56 @@
 package co.mcsky.moeutils.magic;
 
-import co.mcsky.moeutils.MoeUtils;
 import co.mcsky.moeutils.magic.events.MagicTimeEvent;
-import co.mcsky.moeutils.magic.listeners.MagicTimeListener;
 import co.mcsky.moeutils.util.CooldownManager;
+import me.lucko.helper.Events;
+import me.lucko.helper.Schedulers;
+import me.lucko.helper.scheduler.Ticks;
+import me.lucko.helper.terminable.TerminableConsumer;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static co.mcsky.moeutils.MoeUtils.plugin;
 
 public class MagicTime extends MagicBase {
 
-    public static int magicTimeCost;
-
     private final UUID COOLDOWN_KEY;
     private String lastPlayer = null;
 
     public MagicTime() {
-        // Configuration values
-        super(MoeUtils.plugin.config.node("magictime", "cooldown").getInt(600));
-        magicTimeCost = plugin.config.node("magictime", "cost").getInt(50);
-
-        // Internal vars
+        super(plugin.config.magic_time_cooldown);
         COOLDOWN_KEY = UUID.randomUUID();
+    }
 
-        // Register listener
-        new MagicTimeListener(this);
+    @Override
+    public void setup(@NotNull TerminableConsumer consumer) {
+        Events.subscribe(MagicTimeEvent.class).handler(e -> {
+            Player player = e.getPlayer();
+            if (!(checkCooldown(player) && checkBalance(player))) {
+                e.setCancelled(true);
+                return;
+            }
+            use();
+            chargePlayer(player);
+            broadcast(e.getTime().customName());
+            futureBroadcast(e.getTime().customName());
+        }).bindWith(consumer);
     }
 
     public void call(TimeOption time, Player player) {
         MagicTimeEvent event = new MagicTimeEvent(player, time);
         plugin.getServer().getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
-            // By design, we set time for all worlds so that time between worlds are synchronized.
+            // set time for all worlds so that time between worlds are synchronized
             plugin.getServer().getWorlds().forEach(time::set);
             lastPlayer = player.getName();
         }
     }
 
     public boolean checkBalance(Player player) {
-        return checkBalance(player, magicTimeCost);
+        return checkBalance(player, plugin.config.magic_time_cost);
     }
 
     public boolean checkCooldown(Player player) {
@@ -48,7 +58,7 @@ public class MagicTime extends MagicBase {
     }
 
     public void chargePlayer(Player player) {
-        chargePlayer(player, magicTimeCost);
+        chargePlayer(player, plugin.config.magic_time_cost);
     }
 
     public void use() {
@@ -56,14 +66,14 @@ public class MagicTime extends MagicBase {
     }
 
     public void futureBroadcast(String timeName) {
-        String prefix = plugin.getMessage(null, "magictime.prefix");
-        String message = plugin.getMessage(null, "magictime.ended", "time", timeName);
-        plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(prefix + message), COOLDOWN_DURATION * 20L);
+        String prefix = plugin.getMessage(null, "magic-time.prefix");
+        String message = plugin.getMessage(null, "magic-time.ended", "time", timeName);
+        Schedulers.bukkit().runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(prefix + message), Ticks.from(COOLDOWN_DURATION, TimeUnit.SECONDS));
     }
 
     public void broadcast(String timeName) {
-        String prefix = plugin.getMessage(null, "magictime.prefix");
-        String message = plugin.getMessage(null, "magictime.changed", "time", timeName);
+        String prefix = plugin.getMessage(null, "magic-time.prefix");
+        String message = plugin.getMessage(null, "magic-time.changed", "time", timeName);
         plugin.getServer().broadcastMessage(prefix + message);
     }
 
@@ -80,5 +90,4 @@ public class MagicTime extends MagicBase {
     public void resetCooldown() {
         CooldownManager.reset(COOLDOWN_KEY);
     }
-
 }

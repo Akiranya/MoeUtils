@@ -21,9 +21,8 @@ public enum TimeOption {
      */
     public String customName() {
         return switch (this) {
-            case DAY -> plugin.getMessage(null, "magictime.day");
-            case NIGHT -> plugin.getMessage(null, "magictime.night");
-            default -> throw new IllegalStateException("Unknown time type.");
+            case DAY -> plugin.getMessage(null, "magic-time.day");
+            case NIGHT -> plugin.getMessage(null, "magic-time.night");
         };
     }
 

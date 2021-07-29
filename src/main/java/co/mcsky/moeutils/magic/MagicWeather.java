@@ -1,37 +1,50 @@
 package co.mcsky.moeutils.magic;
 
 import co.mcsky.moeutils.magic.events.MagicWeatherEvent;
-import co.mcsky.moeutils.magic.listeners.MagicWeatherListener;
 import co.mcsky.moeutils.util.CooldownManager;
+import me.lucko.helper.Events;
+import me.lucko.helper.Schedulers;
+import me.lucko.helper.scheduler.Ticks;
+import me.lucko.helper.terminable.TerminableConsumer;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static co.mcsky.moeutils.MoeUtils.plugin;
 
 public class MagicWeather extends MagicBase {
-
-    public static int magicWeatherCost;
 
     private final Map<String, UUID> COOLDOWN_KEYS;
     private final Map<String, String> lastPlayers;
 
     public MagicWeather() {
         // Configuration values
-        super(plugin.config.node("magicweather", "cooldown").getInt(600));
-        magicWeatherCost = plugin.config.node("magicweather", "cost").getInt(50);
-
-        // Internal vars
+        super(plugin.config.magic_weather_cooldown);
         COOLDOWN_KEYS = Collections.unmodifiableMap(new HashMap<>() {{
             plugin.getServer().getWorlds().forEach(world -> put(world.getName(), UUID.randomUUID()));
         }});
         lastPlayers = new HashMap<>();
+    }
 
-        // Register the listener
-        new MagicWeatherListener(this);
+    @Override
+    public void setup(@NotNull TerminableConsumer consumer) {
+        Events.subscribe(MagicWeatherEvent.class).handler(e -> {
+            Player player = e.getPlayer();
+            String worldName = e.getWorld().getName();
+            if (!(checkCooldown(player) && checkBalance(player))) {
+                e.setCancelled(true);
+                return;
+            }
+            use(player);
+            chargePlayer(player);
+            broadcast(e.getWeather().customName(), worldName);
+            futureBroadcast(e.getWeather().customName(), worldName);
+        }).bindWith(consumer);
     }
 
     /**
@@ -48,7 +61,7 @@ public class MagicWeather extends MagicBase {
     }
 
     public boolean checkBalance(Player player) {
-        return checkBalance(player, magicWeatherCost);
+        return checkBalance(player, plugin.config.magic_weather_cost);
     }
 
     public boolean checkCooldown(Player player) {
@@ -56,7 +69,7 @@ public class MagicWeather extends MagicBase {
     }
 
     public void chargePlayer(Player player) {
-        chargePlayer(player, magicWeatherCost);
+        chargePlayer(player, plugin.config.magic_weather_cost);
     }
 
     public void use(Player player) {
@@ -64,15 +77,14 @@ public class MagicWeather extends MagicBase {
     }
 
     public void futureBroadcast(String weatherName, String worldName) {
-        String prefix = plugin.getMessage(null, "magicweather.prefix");
-        String message = plugin.getMessage(null, "magicweather.ended", "weather", weatherName, "world", worldName);
-        plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(prefix + message), COOLDOWN_DURATION * 20L);
+        String prefix = plugin.getMessage(null, "magic-weather.prefix");
+        String message = plugin.getMessage(null, "magic-weather.ended", "weather", weatherName, "world", worldName);
+        Schedulers.bukkit().runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(prefix + message), Ticks.from(COOLDOWN_DURATION, TimeUnit.SECONDS));
     }
 
     public void broadcast(String weatherName, String worldName) {
-        String prefix = plugin.getMessage(null, "magicweather.prefix");
-        String message = plugin.getMessage(null, "magicweather.changed",
-                "world", worldName, "weather", weatherName);
+        String prefix = plugin.getMessage(null, "magic-weather.prefix");
+        String message = plugin.getMessage(null, "magic-weather.changed", "world", worldName, "weather", weatherName);
         plugin.getServer().broadcastMessage(prefix + message);
     }
 
@@ -95,5 +107,4 @@ public class MagicWeather extends MagicBase {
                 .append(" ]")));
         return sb.toString();
     }
-
 }
