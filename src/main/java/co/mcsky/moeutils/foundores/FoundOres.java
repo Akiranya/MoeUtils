@@ -1,6 +1,5 @@
 package co.mcsky.moeutils.foundores;
 
-import co.mcsky.moeutils.MoeConfig;
 import co.mcsky.moeutils.MoeUtils;
 import co.mcsky.moeutils.i18n.I18nBlock;
 import me.lucko.helper.Events;
@@ -42,7 +41,7 @@ public class FoundOres implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (!MoeUtils.logActiveStatus("FoundOres", plugin.config.found_ores_enabled)) return;
+        if (MoeUtils.logActiveStatus("FoundOres", plugin.config.found_ores_enabled)) return;
 
         // clear history locations at interval
         Schedulers.sync().runRepeating(locationHistory::clear, 0, Ticks.from(plugin.config.purge_interval, TimeUnit.SECONDS));

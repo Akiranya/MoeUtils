@@ -29,7 +29,7 @@ public class EndEyeChanger implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (!MoeUtils.logActiveStatus("EndEyeChanger", MoeUtils.plugin.config.end_eye_changer_enabled)) return;
+        if (MoeUtils.logActiveStatus("EndEyeChanger", MoeUtils.plugin.config.end_eye_changer_enabled)) return;
 
         // spawn an end signal entity if the world does not spawn
         Events.subscribe(PlayerInteractEvent.class)

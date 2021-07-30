@@ -18,7 +18,7 @@ public class DataSourceSerializer implements TypeSerializer<DataSource> {
     @Override
     public DataSource deserialize(Type type, ConfigurationNode node) throws SerializationException {
         final DataSource dataSource = new DataSource();
-        final List<Location> locations = node.node("locations").getList(Location.class, new ArrayList<>());
+        final List<Location> locations = node.node("end-eye-target-locations").getList(Location.class, new ArrayList<>());
         dataSource.addEndEyeTargetLocation(locations);
         return dataSource;
     }
@@ -26,6 +26,6 @@ public class DataSourceSerializer implements TypeSerializer<DataSource> {
     @Override
     public void serialize(Type type, @Nullable DataSource obj, ConfigurationNode node) throws SerializationException {
         Preconditions.checkNotNull(obj);
-        node.node("locations").setList(Location.class, obj.getEndEyeTargetLocations());
+        node.node("end-eye-target-locations").setList(Location.class, obj.getEndEyeTargetLocations());
     }
 }

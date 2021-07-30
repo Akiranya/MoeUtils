@@ -34,13 +34,20 @@ public class MoeUtils extends ExtendedJavaPlugin {
     private DataSource dataSource;
     private DataSourceFileHandler dataSourceFileHandler;
 
+    /**
+     * Logs active status for given module.
+     *
+     * @param module the module name
+     * @param status whether the module is set to be enabled or disabled
+     * @return true, if the module is set to be disabled, otherwise false
+     */
     public static boolean logActiveStatus(String module, boolean status) {
         if (status) {
             plugin.getLogger().info(module + " is enabled");
         } else {
             plugin.getLogger().info(module + " is disabled");
         }
-        return status;
+        return !status;
     }
 
     @Override

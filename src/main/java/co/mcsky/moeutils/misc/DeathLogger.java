@@ -33,7 +33,7 @@ public class DeathLogger implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (!MoeUtils.logActiveStatus("DeathLogger", plugin.config.death_logger_enabled)) return;
+        if (MoeUtils.logActiveStatus("DeathLogger", plugin.config.death_logger_enabled)) return;
 
         Events.subscribe(EntityDeathEvent.class)
                 .filter(e -> hashLoggedCreatures.contains(e.getEntityType()))

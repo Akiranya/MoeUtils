@@ -1,8 +1,9 @@
 package co.mcsky.moeutils.misc;
 
 import co.mcsky.moeutils.MoeUtils;
-import co.mcsky.moeutils.util.CooldownManager;
 import me.lucko.helper.Events;
+import me.lucko.helper.cooldown.Cooldown;
+import me.lucko.helper.cooldown.CooldownMap;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
 import org.bukkit.Material;
@@ -13,6 +14,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.TimeUnit;
+
 import static co.mcsky.moeutils.MoeUtils.plugin;
 import static org.bukkit.Material.BEEHIVE;
 import static org.bukkit.Material.BEE_NEST;
@@ -22,9 +25,16 @@ import static org.bukkit.inventory.EquipmentSlot.HAND;
 
 public class BetterBees implements TerminableModule {
 
+    // cooldown map for message reminder
+    private final CooldownMap<Player> messageReminderCooldown;
+
+    public BetterBees() {
+        messageReminderCooldown = CooldownMap.create(Cooldown.of(5, TimeUnit.MINUTES));
+    }
+
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (!MoeUtils.logActiveStatus("BetterBees", plugin.config.better_bees_enabled)) return;
+        if (MoeUtils.logActiveStatus("BetterBees", plugin.config.better_bees_enabled)) return;
 
         /*
           When a player right clicks any beehive or bee nest, we send messages
@@ -60,11 +70,11 @@ public class BetterBees implements TerminableModule {
          */
         Events.subscribe(BlockPlaceEvent.class)
                 .filter(e -> isBeehive(e.getBlockPlaced().getType()))
-                .filter(e -> CooldownManager.check(e.getPlayer().getUniqueId(), 15 * 60))
                 .handler(e -> {
                     final Player player = e.getPlayer();
-                    CooldownManager.use(player.getUniqueId());
-                    player.sendMessage(plugin.getMessage(player, "better-bees.reminder_on_place"));
+                    if (messageReminderCooldown.test(player)) {
+                        player.sendMessage(plugin.getMessage(player, "better-bees.reminder-on-place"));
+                    }
                 }).bindWith(consumer);
     }
 
@@ -72,9 +82,9 @@ public class BetterBees implements TerminableModule {
         // Depending on whether the player is interacting with bee nest or beehive
         int beeCount = beehive.getEntityCount();
         if (beehive.getType() == BEE_NEST) {
-            player.sendMessage(plugin.getMessage(player, "better-bees.count_bee_nest", "bee_count", beeCount));
+            player.sendMessage(plugin.getMessage(player, "better-bees.count-bee-nest", "bee_count", beeCount));
         } else {
-            player.sendMessage(plugin.getMessage(player, "better-bees.count_beehive", "bee_count", beeCount));
+            player.sendMessage(plugin.getMessage(player, "better-bees.count0beehive", "bee_count", beeCount));
         }
     }
 

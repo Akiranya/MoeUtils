@@ -1,7 +1,6 @@
 package co.mcsky.moeutils.magic;
 
 import co.mcsky.moeutils.magic.events.MagicTimeEvent;
-import co.mcsky.moeutils.util.CooldownManager;
 import me.lucko.helper.Events;
 import me.lucko.helper.Schedulers;
 import me.lucko.helper.scheduler.Ticks;
@@ -16,12 +15,12 @@ import static co.mcsky.moeutils.MoeUtils.plugin;
 
 public class MagicTime extends MagicBase {
 
-    private final UUID COOLDOWN_KEY;
-    private String lastPlayer = null;
+    private final UUID cooldownKey;
+    private String lastPlayer;
 
     public MagicTime() {
         super(plugin.config.magic_time_cooldown);
-        COOLDOWN_KEY = UUID.randomUUID();
+        cooldownKey = UUID.randomUUID();
     }
 
     @Override
@@ -32,7 +31,7 @@ public class MagicTime extends MagicBase {
                 e.setCancelled(true);
                 return;
             }
-            use();
+            startCooldown();
             chargePlayer(player);
             broadcast(e.getTime().customName());
             futureBroadcast(e.getTime().customName());
@@ -54,21 +53,21 @@ public class MagicTime extends MagicBase {
     }
 
     public boolean checkCooldown(Player player) {
-        return checkCooldown(player, COOLDOWN_KEY);
+        return testSilently(player, cooldownKey);
+    }
+
+    public void startCooldown() {
+        test(cooldownKey);
     }
 
     public void chargePlayer(Player player) {
         chargePlayer(player, plugin.config.magic_time_cost);
     }
 
-    public void use() {
-        CooldownManager.use(COOLDOWN_KEY);
-    }
-
     public void futureBroadcast(String timeName) {
         String prefix = plugin.getMessage(null, "magic-time.prefix");
         String message = plugin.getMessage(null, "magic-time.ended", "time", timeName);
-        Schedulers.bukkit().runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(prefix + message), Ticks.from(COOLDOWN_DURATION, TimeUnit.SECONDS));
+        Schedulers.bukkit().runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(prefix + message), Ticks.from(cooldownAmount, TimeUnit.SECONDS));
     }
 
     public void broadcast(String timeName) {
@@ -88,6 +87,6 @@ public class MagicTime extends MagicBase {
      * Reset the cooldown of magic time instance.
      */
     public void resetCooldown() {
-        CooldownManager.reset(COOLDOWN_KEY);
+        reset(cooldownKey);
     }
 }

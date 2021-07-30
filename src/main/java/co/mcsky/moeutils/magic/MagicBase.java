@@ -1,44 +1,66 @@
 package co.mcsky.moeutils.magic;
 
 import co.mcsky.moeutils.MoeUtils;
-import co.mcsky.moeutils.util.CooldownManager;
+import me.lucko.helper.cooldown.Cooldown;
+import me.lucko.helper.cooldown.CooldownMap;
 import me.lucko.helper.terminable.module.TerminableModule;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static co.mcsky.moeutils.MoeUtils.plugin;
 
 /**
- * This class shares code for {@link MagicTime} and {@link MagicWeather}.
+ * Shares code for {@link MagicTime} and {@link MagicWeather}.
  */
 public abstract class MagicBase implements TerminableModule {
 
-    public final int COOLDOWN_DURATION;
+    public final int cooldownAmount;
+    public final CooldownMap<UUID> cooldownMap;
 
-    MagicBase(int cooldownDuration) {
-        this.COOLDOWN_DURATION = cooldownDuration;
+    MagicBase(int cooldownAmount) {
+        this.cooldownAmount = cooldownAmount;
+        this.cooldownMap = CooldownMap.create(Cooldown.of(cooldownAmount, TimeUnit.SECONDS));
     }
 
     /**
-     * Check if the specific player has their cooldown ready. If the cooldown
+     * Checks if the specific player has their cooldown ready. If the cooldown
      * were NOT ready, it would send relevant messages to the player. Messages
      * will not be sent if the cooldown is ready.
      *
-     * @param player       The player you want to check cooldown.
-     * @param COOLDOWN_KEY The cooldown key and this should be unique.
+     * @param player      The player you want to check cooldown.
+     * @param cooldownKey The cooldown key and this should be unique.
      * @return True if the cooldown is ready. False else wise.
      */
-    boolean checkCooldown(Player player, UUID COOLDOWN_KEY) {
-        if (CooldownManager.check(COOLDOWN_KEY, COOLDOWN_DURATION))
+    boolean testSilently(Player player, UUID cooldownKey) {
+        if (cooldownMap.testSilently(cooldownKey))
             return true;
-        player.sendMessage(plugin.getMessage(player, "common.cooldown",
-                "time", CooldownManager.remaining(COOLDOWN_KEY, COOLDOWN_DURATION)));
+        player.sendMessage(plugin.getMessage(player, "common.cooldown", "time", cooldownMap.remainingTime(cooldownKey, TimeUnit.SECONDS)));
         return false;
     }
 
     /**
-     * Check if the specific player has sufficient balance. If the balance is
+     * Resets the cooldown to which the key specified if the cooldown is not active.
+     *
+     * @param cooldownKey the key to which cooldown to be reset (i.e. to active the cooldown)
+     * @return true if the cooldown to which the key specified is not active, otherwise not
+     */
+    boolean test(UUID cooldownKey) {
+        return cooldownMap.test(cooldownKey);
+    }
+
+    /**
+     * Resets cooldown.
+     *
+     * @param cooldownKey the cooldown to which the key specified to be reset
+     */
+    void reset(UUID cooldownKey) {
+        cooldownMap.reset(cooldownKey);
+    }
+
+    /**
+     * Checks if the specific player has sufficient balance. If the balance is
      * NOT sufficient, it would send relevant messages to the player. Messages
      * will not be sent if the player has sufficient balance.
      *
@@ -54,7 +76,7 @@ public abstract class MagicBase implements TerminableModule {
     }
 
     /**
-     * Try to charge player with specific fee. If the charging is successful, it
+     * Attempts to charge player with specific fee. If the charging is successful, it
      * will send relevant messages to the player.
      *
      * @param player The player who is to be charged.

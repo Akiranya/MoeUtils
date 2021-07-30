@@ -10,7 +10,6 @@ import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import static co.mcsky.moeutils.MoeUtils.plugin;
@@ -89,7 +88,6 @@ public final class MoeConfig {
             logged_creatures = root.node("death-logger", "creatures").getList(EntityType.class, List.of(EntityType.VILLAGER));
 
             end_eye_changer_enabled = root.node("end-eye-changer", "enabled").getBoolean(false);
-            gate_locations = root.node("end-eye-changer", "gate-locations").getList(Location.class, new ArrayList<>());
 
             login_protection_enabled = root.node("login-protection", "enabled").getBoolean(false);
             login_protection_duration = root.node("login-protection", "duration-in-sec").getInt(15);
