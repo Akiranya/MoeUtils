@@ -80,6 +80,7 @@ public class DeathLogger implements TerminableModule {
     /**
      * Contains chinese localization for all damage causes.
      */
+    @SuppressWarnings("unused")
     public enum DamageCauseLocalization {
 
         BLOCK_EXPLOSION("方块爆炸"),

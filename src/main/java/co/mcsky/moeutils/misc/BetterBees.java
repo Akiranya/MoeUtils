@@ -84,7 +84,7 @@ public class BetterBees implements TerminableModule {
         if (beehive.getType() == BEE_NEST) {
             player.sendMessage(plugin.getMessage(player, "better-bees.count-bee-nest", "bee_count", beeCount));
         } else {
-            player.sendMessage(plugin.getMessage(player, "better-bees.count0beehive", "bee_count", beeCount));
+            player.sendMessage(plugin.getMessage(player, "better-bees.count-beehive", "bee_count", beeCount));
         }
     }
 
