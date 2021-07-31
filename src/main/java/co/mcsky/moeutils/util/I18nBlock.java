@@ -1,4 +1,4 @@
-package co.mcsky.moeutils.i18n;
+package co.mcsky.moeutils.util;
 
 import co.mcsky.moeutils.MoeConfig;
 import com.meowj.langutils.lang.LanguageHelper;
@@ -17,7 +17,7 @@ public final class I18nBlock {
 
     private static final Map<Material, String> displayNames = new HashMap<>();
 
-    public static String getBlockDisplayName(Material material) {
+    public static String localizedName(Material material) {
         if (!displayNames.containsKey(material)) {
             registerEntry(material);
         }

@@ -1,7 +1,7 @@
 package co.mcsky.moeutils.foundores;
 
 import co.mcsky.moeutils.MoeUtils;
-import co.mcsky.moeutils.i18n.I18nBlock;
+import co.mcsky.moeutils.util.I18nBlock;
 import me.lucko.helper.Events;
 import me.lucko.helper.Schedulers;
 import me.lucko.helper.scheduler.Ticks;
@@ -56,7 +56,7 @@ public class FoundOres implements TerminableModule {
                     String message = plugin.getMessage(e.getPlayer(), "found-ores.found",
                             "player", e.getPlayer().getDisplayName(),
                             "count", blockCounter.count(currentBlock.getLocation(), currentBlock.getType(), locationHistory),
-                            "ore", I18nBlock.getBlockDisplayName(currentBlock.getType()));
+                            "ore", I18nBlock.localizedName(currentBlock.getType()));
                     plugin.getServer().broadcastMessage(prefix + message);
                 }).bindWith(consumer);
     }
