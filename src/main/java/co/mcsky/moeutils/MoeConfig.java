@@ -39,7 +39,6 @@ public final class MoeConfig {
     public int search_radius;
     public List<EntityType> logged_creatures;
     public boolean end_eye_changer_enabled;
-    public List<Location> gate_locations;
     public boolean login_protection_enabled;
     public int login_protection_duration;
     public int login_protection_amplifier;
