@@ -1,8 +1,7 @@
 package co.mcsky.moeutils.magic;
 
+import co.mcsky.moeutils.MoeUtils;
 import org.bukkit.World;
-
-import static co.mcsky.moeutils.MoeUtils.plugin;
 
 public enum WeatherOption {
     RAIN,
@@ -16,9 +15,9 @@ public enum WeatherOption {
      */
     public String customName() {
         return switch (this) {
-            case CLEAR -> plugin.getMessage(null, "magic-weather.clear");
-            case RAIN -> plugin.getMessage(null, "magic-weather.rain");
-            case THUNDER -> plugin.getMessage(null, "magic-weather.thunder");
+            case CLEAR -> MoeUtils.plugin.getMessage(null, "magic-weather.clear");
+            case RAIN -> MoeUtils.plugin.getMessage(null, "magic-weather.rain");
+            case THUNDER -> MoeUtils.plugin.getMessage(null, "magic-weather.thunder");
         };
     }
 

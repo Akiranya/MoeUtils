@@ -1,7 +1,6 @@
 package co.mcsky.moeutils;
 
 import co.mcsky.moeutils.config.YamlConfigFactory;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -11,8 +10,6 @@ import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.File;
 import java.util.List;
-
-import static co.mcsky.moeutils.MoeUtils.plugin;
 
 public final class MoeConfig {
 
@@ -47,7 +44,7 @@ public final class MoeConfig {
     private CommentedConfigurationNode root;
 
     public MoeConfig() {
-        loader = YamlConfigFactory.loader(new File(plugin.getDataFolder(), FILENAME));
+        loader = YamlConfigFactory.loader(new File(MoeUtils.plugin.getDataFolder(), FILENAME));
     }
 
     /**
@@ -57,8 +54,8 @@ public final class MoeConfig {
         try {
             root = loader.load();
         } catch (ConfigurateException e) {
-            plugin.getLogger().severe(e.getMessage());
-            plugin.getServer().getPluginManager().disablePlugin(plugin);
+            MoeUtils.plugin.getLogger().severe(e.getMessage());
+            MoeUtils.plugin.getServer().getPluginManager().disablePlugin(MoeUtils.plugin);
             return;
         }
 
@@ -93,7 +90,7 @@ public final class MoeConfig {
             login_protection_amplifier = root.node("login-protection", "amplifier").getInt(4);
 
         } catch (SerializationException e) {
-            plugin.getLogger().severe(e.getMessage());
+            MoeUtils.plugin.getLogger().severe(e.getMessage());
         }
 
     }
@@ -105,7 +102,7 @@ public final class MoeConfig {
         try {
             loader.save(root);
         } catch (ConfigurateException e) {
-            plugin.getLogger().severe(e.getMessage());
+            MoeUtils.plugin.getLogger().severe(e.getMessage());
         }
     }
 

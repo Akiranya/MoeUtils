@@ -1,5 +1,6 @@
 package co.mcsky.moeutils.magic;
 
+import co.mcsky.moeutils.MoeUtils;
 import co.mcsky.moeutils.magic.events.MagicWeatherEvent;
 import me.lucko.helper.Events;
 import me.lucko.helper.Schedulers;
@@ -14,17 +15,15 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import static co.mcsky.moeutils.MoeUtils.plugin;
-
 public class MagicWeather extends MagicBase {
 
     private final Map<String, UUID> cooldownKeys;
     private final Map<String, String> lastPlayers;
 
     public MagicWeather() {
-        super(plugin.config.magic_weather_cooldown);
+        super(MoeUtils.plugin.config.magic_weather_cooldown);
         cooldownKeys = Collections.unmodifiableMap(new HashMap<>() {{
-            plugin.getServer().getWorlds().forEach(world -> put(world.getName(), UUID.randomUUID()));
+            MoeUtils.plugin.getServer().getWorlds().forEach(world -> put(world.getName(), UUID.randomUUID()));
         }});
         lastPlayers = new HashMap<>();
     }
@@ -51,7 +50,7 @@ public class MagicWeather extends MagicBase {
      */
     public void call(WeatherOption weather, Player player) {
         MagicWeatherEvent event = new MagicWeatherEvent(player, weather);
-        plugin.getServer().getPluginManager().callEvent(event);
+        MoeUtils.plugin.getServer().getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
             weather.set(player.getWorld());
             lastPlayers.put(player.getWorld().getName(), player.getName());
@@ -59,7 +58,7 @@ public class MagicWeather extends MagicBase {
     }
 
     public boolean checkBalance(Player player) {
-        return checkBalance(player, plugin.config.magic_weather_cost);
+        return checkBalance(player, MoeUtils.plugin.config.magic_weather_cost);
     }
 
     public boolean checkCooldown(Player player) {
@@ -71,19 +70,19 @@ public class MagicWeather extends MagicBase {
     }
 
     public void chargePlayer(Player player) {
-        chargePlayer(player, plugin.config.magic_weather_cost);
+        chargePlayer(player, MoeUtils.plugin.config.magic_weather_cost);
     }
 
     public void futureBroadcast(String weatherName, String worldName) {
-        String prefix = plugin.getMessage(null, "magic-weather.prefix");
-        String message = plugin.getMessage(null, "magic-weather.ended", "weather", weatherName, "world", worldName);
-        Schedulers.bukkit().runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(prefix + message), Ticks.from(cooldownAmount, TimeUnit.SECONDS));
+        String prefix = MoeUtils.plugin.getMessage(null, "magic-weather.prefix");
+        String message = MoeUtils.plugin.getMessage(null, "magic-weather.ended", "weather", weatherName, "world", worldName);
+        Schedulers.bukkit().runTaskLaterAsynchronously(MoeUtils.plugin, () -> MoeUtils.plugin.getServer().broadcastMessage(prefix + message), Ticks.from(cooldownAmount, TimeUnit.SECONDS));
     }
 
     public void broadcast(String weatherName, String worldName) {
-        String prefix = plugin.getMessage(null, "magic-weather.prefix");
-        String message = plugin.getMessage(null, "magic-weather.changed", "world", worldName, "weather", weatherName);
-        plugin.getServer().broadcastMessage(prefix + message);
+        String prefix = MoeUtils.plugin.getMessage(null, "magic-weather.prefix");
+        String message = MoeUtils.plugin.getMessage(null, "magic-weather.changed", "world", worldName, "weather", weatherName);
+        MoeUtils.plugin.getServer().broadcastMessage(prefix + message);
     }
 
     /**

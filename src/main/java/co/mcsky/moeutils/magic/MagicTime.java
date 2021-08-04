@@ -1,5 +1,6 @@
 package co.mcsky.moeutils.magic;
 
+import co.mcsky.moeutils.MoeUtils;
 import co.mcsky.moeutils.magic.events.MagicTimeEvent;
 import me.lucko.helper.Events;
 import me.lucko.helper.Schedulers;
@@ -11,15 +12,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import static co.mcsky.moeutils.MoeUtils.plugin;
-
 public class MagicTime extends MagicBase {
 
     private final UUID cooldownKey;
     private String lastPlayer;
 
     public MagicTime() {
-        super(plugin.config.magic_time_cooldown);
+        super(MoeUtils.plugin.config.magic_time_cooldown);
         cooldownKey = UUID.randomUUID();
     }
 
@@ -40,16 +39,16 @@ public class MagicTime extends MagicBase {
 
     public void call(TimeOption time, Player player) {
         MagicTimeEvent event = new MagicTimeEvent(player, time);
-        plugin.getServer().getPluginManager().callEvent(event);
+        MoeUtils.plugin.getServer().getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
             // set time for all worlds so that time between worlds are synchronized
-            plugin.getServer().getWorlds().forEach(time::set);
+            MoeUtils.plugin.getServer().getWorlds().forEach(time::set);
             lastPlayer = player.getName();
         }
     }
 
     public boolean checkBalance(Player player) {
-        return checkBalance(player, plugin.config.magic_time_cost);
+        return checkBalance(player, MoeUtils.plugin.config.magic_time_cost);
     }
 
     public boolean checkCooldown(Player player) {
@@ -61,19 +60,19 @@ public class MagicTime extends MagicBase {
     }
 
     public void chargePlayer(Player player) {
-        chargePlayer(player, plugin.config.magic_time_cost);
+        chargePlayer(player, MoeUtils.plugin.config.magic_time_cost);
     }
 
     public void futureBroadcast(String timeName) {
-        String prefix = plugin.getMessage(null, "magic-time.prefix");
-        String message = plugin.getMessage(null, "magic-time.ended", "time", timeName);
-        Schedulers.bukkit().runTaskLaterAsynchronously(plugin, () -> plugin.getServer().broadcastMessage(prefix + message), Ticks.from(cooldownAmount, TimeUnit.SECONDS));
+        String prefix = MoeUtils.plugin.getMessage(null, "magic-time.prefix");
+        String message = MoeUtils.plugin.getMessage(null, "magic-time.ended", "time", timeName);
+        Schedulers.bukkit().runTaskLaterAsynchronously(MoeUtils.plugin, () -> MoeUtils.plugin.getServer().broadcastMessage(prefix + message), Ticks.from(cooldownAmount, TimeUnit.SECONDS));
     }
 
     public void broadcast(String timeName) {
-        String prefix = plugin.getMessage(null, "magic-time.prefix");
-        String message = plugin.getMessage(null, "magic-time.changed", "time", timeName);
-        plugin.getServer().broadcastMessage(prefix + message);
+        String prefix = MoeUtils.plugin.getMessage(null, "magic-time.prefix");
+        String message = MoeUtils.plugin.getMessage(null, "magic-time.changed", "time", timeName);
+        MoeUtils.plugin.getServer().broadcastMessage(prefix + message);
     }
 
     /**

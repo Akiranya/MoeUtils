@@ -9,19 +9,14 @@ import me.lucko.helper.terminable.module.TerminableModule;
 import org.bukkit.Material;
 import org.bukkit.block.Beehive;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.TimeUnit;
-
-import static co.mcsky.moeutils.MoeUtils.plugin;
-import static org.bukkit.Material.BEEHIVE;
-import static org.bukkit.Material.BEE_NEST;
-import static org.bukkit.event.block.Action.RIGHT_CLICK_AIR;
-import static org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK;
-import static org.bukkit.inventory.EquipmentSlot.HAND;
 
 public class BetterBees implements TerminableModule {
 
@@ -34,7 +29,7 @@ public class BetterBees implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MoeUtils.logActiveStatus("BetterBees", plugin.config.better_bees_enabled)) return;
+        if (MoeUtils.logActiveStatus("BetterBees", MoeUtils.plugin.config.better_bees_enabled)) return;
 
         /*
           When a player right clicks any beehive or bee nest, we send messages
@@ -42,16 +37,16 @@ public class BetterBees implements TerminableModule {
          */
         Events.subscribe(PlayerInteractEvent.class)
                 .filter(e -> !e.isBlockInHand())
-                .filter(e -> e.getHand() == HAND)
+                .filter(e -> e.getHand() == EquipmentSlot.HAND)
                 .handler(e -> {
-                    if (e.getAction() == RIGHT_CLICK_BLOCK) {
+                    if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
                         // Check block clicked
 
                         Player player = e.getPlayer();
                         if (isBeehive(e.getClickedBlock().getType()) && isSneaking(player)) {
                             sendMessage((Beehive) e.getClickedBlock().getState(), player);
                         }
-                    } else if (e.getAction() == RIGHT_CLICK_AIR) {
+                    } else if (e.getAction() == Action.RIGHT_CLICK_AIR) {
                         // Check item in hand
 
                         ItemStack item = e.getItem();
@@ -73,7 +68,7 @@ public class BetterBees implements TerminableModule {
                 .handler(e -> {
                     final Player player = e.getPlayer();
                     if (messageReminderCooldown.test(player)) {
-                        player.sendMessage(plugin.getMessage(player, "better-bees.reminder-on-place"));
+                        player.sendMessage(MoeUtils.plugin.getMessage(player, "better-bees.reminder-on-place"));
                     }
                 }).bindWith(consumer);
     }
@@ -81,18 +76,18 @@ public class BetterBees implements TerminableModule {
     private void sendMessage(Beehive beehive, Player player) {
         // Depending on whether the player is interacting with bee nest or beehive
         int beeCount = beehive.getEntityCount();
-        if (beehive.getType() == BEE_NEST) {
-            player.sendMessage(plugin.getMessage(player, "better-bees.count-bee-nest", "bee_count", beeCount));
+        if (beehive.getType() == Material.BEE_NEST) {
+            player.sendMessage(MoeUtils.plugin.getMessage(player, "better-bees.count-bee-nest", "bee_count", beeCount));
         } else {
-            player.sendMessage(plugin.getMessage(player, "better-bees.count-beehive", "bee_count", beeCount));
+            player.sendMessage(MoeUtils.plugin.getMessage(player, "better-bees.count-beehive", "bee_count", beeCount));
         }
     }
 
     private boolean isSneaking(Player player) {
-        return player.isSneaking() || !plugin.config.require_sneak;
+        return player.isSneaking() || !MoeUtils.plugin.config.require_sneak;
     }
 
     private boolean isBeehive(Material type) {
-        return type == BEE_NEST || type == BEEHIVE;
+        return type == Material.BEE_NEST || type == Material.BEEHIVE;
     }
 }

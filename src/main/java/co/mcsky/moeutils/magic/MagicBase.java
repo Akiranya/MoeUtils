@@ -9,8 +9,6 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import static co.mcsky.moeutils.MoeUtils.plugin;
-
 /**
  * Shares code for {@link MagicTime} and {@link MagicWeather}.
  */
@@ -36,7 +34,7 @@ public abstract class MagicBase implements TerminableModule {
     boolean testSilently(Player player, UUID cooldownKey) {
         if (cooldownMap.testSilently(cooldownKey))
             return true;
-        player.sendMessage(plugin.getMessage(player, "common.cooldown", "time", cooldownMap.remainingTime(cooldownKey, TimeUnit.SECONDS)));
+        player.sendMessage(MoeUtils.plugin.getMessage(player, "common.cooldown", "time", cooldownMap.remainingTime(cooldownKey, TimeUnit.SECONDS)));
         return false;
     }
 
@@ -71,7 +69,7 @@ public abstract class MagicBase implements TerminableModule {
     boolean checkBalance(Player player, int cost) {
         if (MoeUtils.economy.has(player, cost))
             return true;
-        player.sendMessage(plugin.getMessage(player, "common.not_enough_money"));
+        player.sendMessage(MoeUtils.plugin.getMessage(player, "common.not_enough_money"));
         return false;
     }
 
@@ -85,7 +83,7 @@ public abstract class MagicBase implements TerminableModule {
     void chargePlayer(Player player, int cost) {
         MoeUtils.economy.withdrawPlayer(player, cost);
         MoeUtils.systemBalance.deposit(cost);
-        player.sendMessage(plugin.getMessage(player, "common.price", "cost", cost));
+        player.sendMessage(MoeUtils.plugin.getMessage(player, "common.price", "cost", cost));
     }
 
 }

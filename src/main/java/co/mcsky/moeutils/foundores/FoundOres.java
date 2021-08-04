@@ -17,8 +17,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static co.mcsky.moeutils.MoeUtils.plugin;
-
 public class FoundOres implements TerminableModule {
 
     // necessary for this function to work
@@ -31,20 +29,20 @@ public class FoundOres implements TerminableModule {
 
     public FoundOres() {
         locationHistory = new HashSet<>();
-        blockCounter = new BlockCounter(plugin.config.max_iterations);
+        blockCounter = new BlockCounter(MoeUtils.plugin.config.max_iterations);
 
         hashEnabledBlocks = new HashSet<>();
         hashEnabledWorld = new HashSet<>();
-        hashEnabledBlocks.addAll(plugin.config.enabled_blocks);
-        hashEnabledWorld.addAll(plugin.config.enabled_worlds);
+        hashEnabledBlocks.addAll(MoeUtils.plugin.config.enabled_blocks);
+        hashEnabledWorld.addAll(MoeUtils.plugin.config.enabled_worlds);
     }
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MoeUtils.logActiveStatus("FoundOres", plugin.config.found_ores_enabled)) return;
+        if (MoeUtils.logActiveStatus("FoundOres", MoeUtils.plugin.config.found_ores_enabled)) return;
 
         // clear history locations at interval
-        Schedulers.sync().runRepeating(locationHistory::clear, 0, Ticks.from(plugin.config.purge_interval, TimeUnit.SECONDS));
+        Schedulers.sync().runRepeating(locationHistory::clear, 0, Ticks.from(MoeUtils.plugin.config.purge_interval, TimeUnit.SECONDS));
 
         Events.subscribe(BlockBreakEvent.class)
                 .filter(e -> hashEnabledBlocks.contains(e.getBlock().getType()))
@@ -52,12 +50,12 @@ public class FoundOres implements TerminableModule {
                 .filter(e -> !locationHistory.contains(e.getBlock().getLocation()))
                 .handler(e -> {
                     final Block currentBlock = e.getBlock();
-                    String prefix = plugin.getMessage(e.getPlayer(), "found-ores.prefix");
-                    String message = plugin.getMessage(e.getPlayer(), "found-ores.found",
+                    String prefix = MoeUtils.plugin.getMessage(e.getPlayer(), "found-ores.prefix");
+                    String message = MoeUtils.plugin.getMessage(e.getPlayer(), "found-ores.found",
                             "player", e.getPlayer().getDisplayName(),
                             "count", blockCounter.count(currentBlock.getLocation(), currentBlock.getType(), locationHistory),
                             "ore", I18nBlock.localizedName(currentBlock.getType()));
-                    plugin.getServer().broadcastMessage(prefix + message);
+                    MoeUtils.plugin.getServer().broadcastMessage(prefix + message);
                 }).bindWith(consumer);
     }
 }

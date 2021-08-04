@@ -18,8 +18,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static co.mcsky.moeutils.MoeUtils.plugin;
-
 public class DeathLogger implements TerminableModule {
 
     private final static String separator = ", ";
@@ -27,12 +25,12 @@ public class DeathLogger implements TerminableModule {
 
     public DeathLogger() {
         hashLoggedCreatures = new HashSet<>();
-        hashLoggedCreatures.addAll(plugin.config.logged_creatures);
+        hashLoggedCreatures.addAll(MoeUtils.plugin.config.logged_creatures);
     }
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MoeUtils.logActiveStatus("DeathLogger", plugin.config.death_logger_enabled)) return;
+        if (MoeUtils.logActiveStatus("DeathLogger", MoeUtils.plugin.config.death_logger_enabled)) return;
 
         Events.subscribe(EntityDeathEvent.class)
                 .filter(e -> hashLoggedCreatures.contains(e.getEntityType()))
@@ -51,7 +49,7 @@ public class DeathLogger implements TerminableModule {
                     if (killer != null) {
                         killerName = killer.getName();
                     } else {
-                        List<Player> nearbyPlayers = new ArrayList<>(e.getEntity().getLocation().getNearbyPlayers(plugin.config.search_radius));
+                        List<Player> nearbyPlayers = new ArrayList<>(e.getEntity().getLocation().getNearbyPlayers(MoeUtils.plugin.config.search_radius));
                         if (nearbyPlayers.size() != 0) {
                             // All nearby players are included.
                             killerName = nearbyPlayers.stream()
@@ -59,7 +57,7 @@ public class DeathLogger implements TerminableModule {
                                     .reduce((acc, name) -> acc + separator + name)
                                     .get();
                         } else {
-                            killerName = plugin.getMessage(null, "common.none");
+                            killerName = MoeUtils.plugin.getMessage(null, "common.none");
                         }
                     }
 
@@ -68,7 +66,7 @@ public class DeathLogger implements TerminableModule {
                             entity.getLocation().getBlockY() + separator +
                             entity.getLocation().getBlockZ();
 
-                    plugin.getServer().broadcastMessage(plugin.getMessage(killer, "death-logger.death",
+                    MoeUtils.plugin.getServer().broadcastMessage(MoeUtils.plugin.getMessage(killer, "death-logger.death",
                             "victim", victimName,
                             "reason", damageCause,
                             "killer", killerName,
