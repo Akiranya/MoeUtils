@@ -75,7 +75,7 @@ public class MoeUtils extends ExtendedJavaPlugin {
         config.save(); // save config nodes into file
 
         // initialize data source
-        dataSourceFileHandler = new DataSourceFileHandler();
+        dataSourceFileHandler = new DataSourceFileHandler(getDataFolder());
         dataSource = dataSourceFileHandler.load().orElse(new DataSource());
         dataSourceFileHandler.save(dataSource);
 

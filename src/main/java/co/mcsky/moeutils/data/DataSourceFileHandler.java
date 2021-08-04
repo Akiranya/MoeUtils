@@ -18,12 +18,12 @@ public class DataSourceFileHandler extends FileStorageHandler<DataSource> {
     private final YamlConfigurationLoader loader;
     private CommentedConfigurationNode root;
 
-    public DataSourceFileHandler() {
-        super(fileName, fileExt, MoeUtils.plugin.getDataFolder());
+    public DataSourceFileHandler(File dataFolder) {
+        super(fileName, fileExt, dataFolder);
         TypeSerializerCollection s = YamlConfigFactory.typeSerializers().childBuilder()
                 .register(DataSource.class, DataSourceSerializer.INSTANCE)
                 .build();
-        loader = YamlConfigFactory.loader(new File(MoeUtils.plugin.getDataFolder(), fileName + fileExt));
+        loader = YamlConfigFactory.loader(new File(dataFolder, fileName + fileExt));
         try {
             root = loader.load(loader.defaultOptions().serializers(s));
         } catch (ConfigurateException e) {
