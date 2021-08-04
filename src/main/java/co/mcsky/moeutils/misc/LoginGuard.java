@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.TimeUnit;
 
-public class LoginProtector implements TerminableModule {
+public class LoginGuard implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
