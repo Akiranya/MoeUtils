@@ -6,8 +6,7 @@ description: A all-in-One plugin.
 author: Nailm
 website: https://mimaru.me
 prefix: MoeUtils
-softdepend: [MewEconomy]
-depend: [NyaaCore, LangUtils, Vault]
+depend: [MoeCore, LangUtils, Vault]
 permissions:
   moe.*:
     description: Gives access to all MoeUtils commands
