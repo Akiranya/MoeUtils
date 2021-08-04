@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -39,6 +40,17 @@ public class EndEyeChanger implements TerminableModule {
                 .filter(e -> dataSource.containsEndEyeTargetWorld(e.getPlayer().getWorld().getName()))
                 .handler(e -> {
                     final Player player = e.getPlayer();
+                    final ItemStack hand = e.getItem();
+
+                    //noinspection ConstantConditions
+                    final int handAmount = hand.getAmount();
+                    int resultAmount = handAmount - 1;
+                    if (resultAmount <= 0) {
+                        e.getPlayer().getInventory().setItemInMainHand(null);
+                    } else {
+                        e.getPlayer().getInventory().setItemInMainHand(e.getItem().asQuantity(resultAmount));
+                    }
+
                     player.getWorld().spawnEntity(player.getLocation(), EntityType.ENDER_SIGNAL);
                     player.playSound(player.getLocation(), Sound.ENTITY_ENDER_EYE_LAUNCH, 1, 1);
                 }).bindWith(consumer);
