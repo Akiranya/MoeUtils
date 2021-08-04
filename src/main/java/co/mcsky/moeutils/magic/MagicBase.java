@@ -1,5 +1,6 @@
 package co.mcsky.moeutils.magic;
 
+import co.mcsky.moecore.MoeCore;
 import co.mcsky.moeutils.MoeUtils;
 import me.lucko.helper.cooldown.Cooldown;
 import me.lucko.helper.cooldown.CooldownMap;
@@ -82,7 +83,7 @@ public abstract class MagicBase implements TerminableModule {
      */
     void chargePlayer(Player player, int cost) {
         MoeUtils.economy.withdrawPlayer(player, cost);
-        MoeUtils.systemBalance.deposit(cost);
+        MoeCore.plugin.systemAccount().depositSystem(cost);
         player.sendMessage(MoeUtils.plugin.getMessage(player, "common.price", "cost", cost));
     }
 

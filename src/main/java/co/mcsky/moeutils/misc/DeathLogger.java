@@ -1,5 +1,6 @@
 package co.mcsky.moeutils.misc;
 
+import co.aikar.commands.ACFBukkitUtil;
 import co.mcsky.moeutils.MoeConfig;
 import co.mcsky.moeutils.MoeUtils;
 import com.meowj.langutils.lang.LanguageHelper;
@@ -13,7 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -49,7 +49,7 @@ public class DeathLogger implements TerminableModule {
                     if (killer != null) {
                         killerName = killer.getName();
                     } else {
-                        List<Player> nearbyPlayers = new ArrayList<>(e.getEntity().getLocation().getNearbyPlayers(MoeUtils.plugin.config.search_radius));
+                        List<Player> nearbyPlayers = e.getEntity().getLocation().getNearbyPlayers(MoeUtils.plugin.config.search_radius).stream().toList();
                         if (nearbyPlayers.size() != 0) {
                             // All nearby players are included.
                             killerName = nearbyPlayers.stream()
@@ -61,11 +61,7 @@ public class DeathLogger implements TerminableModule {
                         }
                     }
 
-                    String location = entity.getLocation().getWorld().getName() + separator +
-                            entity.getLocation().getBlockX() + separator +
-                            entity.getLocation().getBlockY() + separator +
-                            entity.getLocation().getBlockZ();
-
+                    String location = ACFBukkitUtil.blockLocationToString(entity.getLocation());
                     MoeUtils.plugin.getServer().broadcastMessage(MoeUtils.plugin.getMessage(killer, "death-logger.death",
                             "victim", victimName,
                             "reason", damageCause,

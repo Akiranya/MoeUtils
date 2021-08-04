@@ -1,6 +1,6 @@
 package co.mcsky.moeutils;
 
-import co.mcsky.moeutils.config.YamlConfigFactory;
+import co.mcsky.moecore.config.YamlConfigFactory;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.spongepowered.configurate.CommentedConfigurationNode;

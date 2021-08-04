@@ -1,7 +1,5 @@
 package co.mcsky.moeutils;
 
-import cat.nyaa.nyaacore.component.ISystemBalance;
-import cat.nyaa.nyaacore.component.NyaaComponent;
 import co.aikar.commands.PaperCommandManager;
 import co.mcsky.moeutils.data.DataSource;
 import co.mcsky.moeutils.data.DataSourceFileHandler;
@@ -22,7 +20,6 @@ public class MoeUtils extends ExtendedJavaPlugin {
 
     public static MoeUtils plugin;
     public static Economy economy;
-    public static ISystemBalance systemBalance;
 
     public MoeConfig config;
     public LanguageManager lang;
@@ -62,7 +59,6 @@ public class MoeUtils extends ExtendedJavaPlugin {
         // hook into Vault
         try {
             economy = Services.load(Economy.class);
-            systemBalance = NyaaComponent.get(ISystemBalance.class);
         } catch (Exception e) {
             getLogger().severe(e.getMessage());
             getLogger().severe("Some vault registration is not present");

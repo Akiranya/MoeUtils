@@ -1,10 +1,8 @@
 package co.mcsky.moeutils.data;
 
+import co.mcsky.moecore.config.YamlConfigFactory;
 import co.mcsky.moeutils.MoeUtils;
-import co.mcsky.moeutils.config.LocationSerializer;
-import co.mcsky.moeutils.config.YamlConfigFactory;
 import me.lucko.helper.serialize.FileStorageHandler;
-import org.bukkit.Location;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.serialize.TypeSerializerCollection;
@@ -23,7 +21,6 @@ public class DataSourceFileHandler extends FileStorageHandler<DataSource> {
     public DataSourceFileHandler() {
         super(fileName, fileExt, MoeUtils.plugin.getDataFolder());
         TypeSerializerCollection s = YamlConfigFactory.typeSerializers().childBuilder()
-                .register(Location.class, LocationSerializer.INSTANCE)
                 .register(DataSource.class, DataSourceSerializer.INSTANCE)
                 .build();
         loader = YamlConfigFactory.loader(new File(MoeUtils.plugin.getDataFolder(), fileName + fileExt));
