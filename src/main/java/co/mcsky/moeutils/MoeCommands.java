@@ -32,14 +32,14 @@ public class MoeCommands extends BaseCommand {
         sender.sendMessage(plugin.getMessage(sender, "common.reloaded"));
     }
 
-    @Subcommand("version|ver|v")
+    @Subcommand("version|ver")
     @CommandPermission("moe.admin")
     @Description("Get the version of this plugin.")
     public void version(CommandSender sender) {
         sender.sendMessage(plugin.getMessage(sender, "common.version", "version", plugin.getDescription().getVersion()));
     }
 
-    @Subcommand("ep")
+    @Subcommand("endportal")
     public class EndEyeCommand extends BaseCommand {
         @Subcommand("set")
         public void set(Player player) {

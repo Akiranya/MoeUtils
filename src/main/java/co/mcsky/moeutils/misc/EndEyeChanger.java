@@ -1,7 +1,6 @@
 package co.mcsky.moeutils.misc;
 
 import co.mcsky.moeutils.MoeUtils;
-import co.mcsky.moeutils.data.DataSource;
 import me.lucko.helper.Events;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
@@ -22,10 +21,7 @@ import java.util.List;
 
 public class EndEyeChanger implements TerminableModule {
 
-    private final DataSource dataSource;
-
-    public EndEyeChanger(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public EndEyeChanger() {
     }
 
     @Override
@@ -37,11 +33,12 @@ public class EndEyeChanger implements TerminableModule {
                 .filter(PlayerInteractEvent::hasItem)
                 .filter(e -> e.getMaterial() == Material.ENDER_EYE)
                 .filter(e -> e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
-                .filter(e -> dataSource.containsEndEyeTargetWorld(e.getPlayer().getWorld().getName()))
+                .filter(e -> MoeUtils.plugin.getDatasource().containsEndEyeTargetWorld(e.getPlayer().getWorld().getName()))
                 .handler(e -> {
                     final Player player = e.getPlayer();
                     final ItemStack hand = e.getItem();
 
+                    // take one end eye from player
                     //noinspection ConstantConditions
                     final int handAmount = hand.getAmount();
                     int resultAmount = handAmount - 1;
@@ -61,8 +58,8 @@ public class EndEyeChanger implements TerminableModule {
                 .handler(e -> {
                     EnderSignal es = (EnderSignal) e.getEntity();
                     final World world = e.getEntity().getLocation().getWorld();
-                    if (dataSource.containsEndEyeTargetWorld(world.getName())) {
-                        Location closeLocation = nearestLocation(e.getEntity().getLocation(), dataSource.getEndEyeTargetLocationsByWorld(world.getName()));
+                    if (MoeUtils.plugin.getDatasource().containsEndEyeTargetWorld(world.getName())) {
+                        Location closeLocation = nearestLocation(e.getEntity().getLocation(), MoeUtils.plugin.getDatasource().getEndEyeTargetLocationsByWorld(world.getName()));
                         es.setTargetLocation(closeLocation);
                         if (MoeUtils.plugin.config.debug) {
                             MoeUtils.plugin.getLogger().info("Found an end eye target location set");

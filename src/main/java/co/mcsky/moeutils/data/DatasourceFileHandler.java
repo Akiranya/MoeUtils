@@ -11,14 +11,14 @@ import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import java.io.File;
 import java.nio.file.Path;
 
-public class DataSourceFileHandler extends FileStorageHandler<DataSource> {
+public class DatasourceFileHandler extends FileStorageHandler<DataSource> {
 
     private final static String fileName = "data";
     private final static String fileExt = ".yml";
     private final YamlConfigurationLoader loader;
     private CommentedConfigurationNode root;
 
-    public DataSourceFileHandler(File dataFolder) {
+    public DatasourceFileHandler(File dataFolder) {
         super(fileName, fileExt, dataFolder);
         TypeSerializerCollection s = YamlConfigFactory.typeSerializers().childBuilder()
                 .register(DataSource.class, DataSourceSerializer.INSTANCE)

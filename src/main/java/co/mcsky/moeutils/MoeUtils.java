@@ -2,7 +2,7 @@ package co.mcsky.moeutils;
 
 import co.aikar.commands.PaperCommandManager;
 import co.mcsky.moeutils.data.DataSource;
-import co.mcsky.moeutils.data.DataSourceFileHandler;
+import co.mcsky.moeutils.data.DatasourceFileHandler;
 import co.mcsky.moeutils.foundores.FoundOres;
 import co.mcsky.moeutils.magic.MagicTime;
 import co.mcsky.moeutils.magic.MagicWeather;
@@ -28,8 +28,8 @@ public class MoeUtils extends ExtendedJavaPlugin {
     private MagicTime magicTime;
     private MagicWeather magicWeather;
 
-    private DataSource dataSource;
-    private DataSourceFileHandler dataSourceFileHandler;
+    private DataSource datasource;
+    private DatasourceFileHandler datasourceFileHandler;
 
     /**
      * Logs active status for given module.
@@ -75,9 +75,9 @@ public class MoeUtils extends ExtendedJavaPlugin {
         config.save(); // save config nodes into file
 
         // initialize data source
-        dataSourceFileHandler = new DataSourceFileHandler(getDataFolder());
-        dataSource = dataSourceFileHandler.load().orElse(new DataSource());
-        dataSourceFileHandler.save(dataSource);
+        datasourceFileHandler = new DatasourceFileHandler(getDataFolder());
+        datasource = datasourceFileHandler.load().orElse(new DataSource());
+        datasourceFileHandler.save(datasource);
 
         // initialize functions & initialize config nodes
         // in this stage, config node is initialized (with default values if nothing is present in the file)
@@ -89,12 +89,16 @@ public class MoeUtils extends ExtendedJavaPlugin {
 
     @Override
     protected void disable() {
-        dataSourceFileHandler.save(dataSource);
+        datasourceFileHandler.save(datasource);
     }
 
     public void reload() {
         onDisable();
         onEnable();
+    }
+
+    public DataSource getDatasource() {
+        return datasource;
     }
 
     /**
@@ -137,7 +141,7 @@ public class MoeUtils extends ExtendedJavaPlugin {
         bindModule(new DeathLogger());
         bindModule(new BetterBees());
         bindModule(new LoginGuard());
-        bindModule(new EndEyeChanger(dataSource));
+        bindModule(new EndEyeChanger());
         magicTime = bindModule(new MagicTime());
         magicWeather = bindModule(new MagicWeather());
     }
@@ -146,7 +150,7 @@ public class MoeUtils extends ExtendedJavaPlugin {
         manager = new PaperCommandManager(this);
         manager.registerDependency(MagicTime.class, magicTime);
         manager.registerDependency(MagicWeather.class, magicWeather);
-        manager.registerDependency(DataSource.class, dataSource);
+        manager.registerDependency(DataSource.class, datasource);
         manager.registerCommand(new MoeCommands());
     }
 
