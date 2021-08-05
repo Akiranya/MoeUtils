@@ -1,11 +1,11 @@
 package co.mcsky.moeutils.data;
 
 import co.mcsky.moecore.config.YamlConfigFactory;
-import co.mcsky.moeutils.MoeUtils;
 import me.lucko.helper.serialize.FileStorageHandler;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.serialize.TypeSerializerCollection;
+import org.spongepowered.configurate.yaml.NodeStyle;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.File;
@@ -20,21 +20,21 @@ public class DatasourceFileHandler extends FileStorageHandler<DataSource> {
 
     public DatasourceFileHandler(File dataFolder) {
         super(fileName, fileExt, dataFolder);
-        TypeSerializerCollection s = YamlConfigFactory.typeSerializers().childBuilder()
+        TypeSerializerCollection serializers = YamlConfigFactory.typeSerializers().childBuilder()
                 .register(DataSource.class, DataSourceSerializer.INSTANCE)
                 .build();
-        loader = YamlConfigFactory.loader(new File(dataFolder, fileName + fileExt));
-        try {
-            root = loader.load(loader.defaultOptions().serializers(s));
-        } catch (ConfigurateException e) {
-            e.printStackTrace();
-        }
+        loader = YamlConfigurationLoader.builder()
+                .file(new File(dataFolder, fileName + fileExt))
+                .defaultOptions(opt -> opt.serializers(serializers))
+                .nodeStyle(NodeStyle.BLOCK)
+                .indent(2)
+                .build();
     }
 
     @Override
     protected DataSource readFromFile(Path path) {
         try {
-            return root.get(DataSource.class);
+            return (root = loader.load()).get(DataSource.class);
         } catch (ConfigurateException e) {
             e.printStackTrace();
             return null;
