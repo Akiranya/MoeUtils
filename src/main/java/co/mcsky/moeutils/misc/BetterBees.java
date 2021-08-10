@@ -29,7 +29,8 @@ public class BetterBees implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MoeUtils.logActiveStatus("BetterBees", MoeUtils.plugin.config.better_bees_enabled)) return;
+        if (MoeUtils.logActiveStatus("BetterBees", MoeUtils.plugin.config.better_bees_enabled))
+            return;
 
         /*
           When a player right clicks any beehive or bee nest, we send messages

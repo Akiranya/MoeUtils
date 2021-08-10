@@ -142,6 +142,7 @@ public class MoeUtils extends ExtendedJavaPlugin {
         bindModule(new BetterBees());
         bindModule(new LoginGuard());
         bindModule(new EndEyeChanger());
+        bindModule(new BetterExplosion());
         magicTime = bindModule(new MagicTime());
         magicWeather = bindModule(new MagicWeather());
     }

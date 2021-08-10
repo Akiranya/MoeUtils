@@ -14,7 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -26,7 +25,8 @@ public class EndEyeChanger implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MoeUtils.logActiveStatus("EndEyeChanger", MoeUtils.plugin.config.end_eye_changer_enabled)) return;
+        if (MoeUtils.logActiveStatus("EndEyeChanger", MoeUtils.plugin.config.end_eye_changer_enabled))
+            return;
 
         // spawn an end signal entity if the world does not spawn
         Events.subscribe(PlayerInteractEvent.class)
@@ -35,19 +35,16 @@ public class EndEyeChanger implements TerminableModule {
                 .filter(e -> e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
                 .filter(e -> MoeUtils.plugin.getDatasource().containsEndEyeTargetWorld(e.getPlayer().getWorld().getName()))
                 .handler(e -> {
-                    final Player player = e.getPlayer();
-                    final ItemStack hand = e.getItem();
-
                     // take one end eye from player
                     //noinspection ConstantConditions
-                    final int handAmount = hand.getAmount();
-                    int resultAmount = handAmount - 1;
+                    int resultAmount = e.getItem().getAmount() - 1;
                     if (resultAmount <= 0) {
                         e.getPlayer().getInventory().setItemInMainHand(null);
                     } else {
                         e.getPlayer().getInventory().setItemInMainHand(e.getItem().asQuantity(resultAmount));
                     }
 
+                    final Player player = e.getPlayer();
                     player.getWorld().spawnEntity(player.getLocation(), EntityType.ENDER_SIGNAL);
                     player.playSound(player.getLocation(), Sound.ENTITY_ENDER_EYE_LAUNCH, 1, 1);
                 }).bindWith(consumer);

@@ -11,6 +11,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,7 +31,8 @@ public class DeathLogger implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MoeUtils.logActiveStatus("DeathLogger", MoeUtils.plugin.config.death_logger_enabled)) return;
+        if (MoeUtils.logActiveStatus("DeathLogger", MoeUtils.plugin.config.death_logger_enabled))
+            return;
 
         Events.subscribe(EntityDeathEvent.class)
                 .filter(e -> hashLoggedCreatures.contains(e.getEntityType()))
@@ -40,8 +42,9 @@ public class DeathLogger implements TerminableModule {
                             ? entity.getCustomName() + "(" + LanguageHelper.getEntityName(e.getEntityType(), MoeConfig.DEFAULT_LANG) + ")"
                             : LanguageHelper.getEntityName(e.getEntityType(), MoeConfig.DEFAULT_LANG);
 
-                    if (entity.getLastDamageCause() == null) return; // to avoid potential NPE
-                    String damageCause = DamageCauseLocalization.valueOf(entity.getLastDamageCause().getCause().name()).getLocalization();
+                    if (entity.getLastDamageCause() == null)
+                        return; // to avoid potential NPE
+                    String damageCause = getLocalization(entity.getLastDamageCause().getCause());
 
                     // get the player relevant to this death.
                     Player killer = entity.getKiller();
@@ -71,50 +74,37 @@ public class DeathLogger implements TerminableModule {
                 }).bindWith(consumer);
     }
 
-    /**
-     * Contains chinese localization for all damage causes.
-     */
-    @SuppressWarnings("unused")
-    public enum DamageCauseLocalization {
-
-        BLOCK_EXPLOSION("方块爆炸"),
-        CONTACT("触碰"),
-        CRAMMING("拥挤"),
-        CUSTOM("自定义"),
-        DRAGON_BREATH("龙息"),
-        DROWNING("淹死"),
-        DRYOUT("干渴"),
-        ENTITY_ATTACK("生物攻击"),
-        ENTITY_EXPLOSION("生物爆炸"),
-        ENTITY_SWEEP_ATTACK("生物横扫攻击"),
-        FALL("跌落"),
-        FALLING_BLOCK("被方块压死"),
-        FIRE("火烧"),
-        FIRE_TICK("火烧"),
-        FLY_INTO_WALL("撞墙"),
-        HOT_FLOOR("高温地板"),
-        LAVA("岩浆"),
-        LIGHTNING("闪电"),
-        MAGIC("魔法"),
-        MELTING("融化"),
-        POISON("中毒"),
-        PROJECTILE("弹射物"),
-        STARVATION("饥饿"),
-        SUFFOCATION("窒息"),
-        SUICIDE("自杀"),
-        THORNS("荆棘"),
-        VOID("虚空"),
-        WITHER("凋零");
-
-        private final String localization;
-
-        DamageCauseLocalization(String localization) {
-            this.localization = localization;
-        }
-
-        public String getLocalization() {
-            return this.localization;
-        }
-
+    private String getLocalization(EntityDamageEvent.DamageCause cause) {
+        return switch (cause) {
+            case FALL -> "跌落";
+            case FIRE, FIRE_TICK -> "火烧";
+            case LAVA -> "岩浆";
+            case VOID -> "虚空";
+            case MAGIC -> "魔法";
+            case CUSTOM -> "自定义";
+            case DRYOUT -> "干渴";
+            case FREEZE -> "冰冻";
+            case POISON -> "中毒";
+            case THORNS -> "荆棘";
+            case WITHER -> "凋零";
+            case CONTACT -> "接触";
+            case MELTING -> "融化";
+            case SUICIDE -> "自杀";
+            case CRAMMING -> "拥挤";
+            case DROWNING -> "淹死";
+            case HOT_FLOOR -> "高温地板";
+            case LIGHTNING -> "闪电";
+            case ENTITY_ATTACK -> "生物攻击";
+            case ENTITY_SWEEP_ATTACK -> "生物横扫攻击";
+            case PROJECTILE -> "弹射物";
+            case STARVATION -> "饥饿";
+            case SUFFOCATION -> "窒息";
+            case BLOCK_EXPLOSION -> "方块爆炸";
+            case ENTITY_EXPLOSION -> "实体爆炸";
+            case FALLING_BLOCK -> "跌落方块";
+            case DRAGON_BREATH -> "龙息";
+            case FLY_INTO_WALL -> "卡进墙里";
+        };
     }
+
 }

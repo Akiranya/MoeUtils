@@ -11,7 +11,8 @@ public class BetterPortals implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MoeUtils.logActiveStatus("BetterPortals", MoeUtils.plugin.config.better_portals_enabled)) return;
+        if (MoeUtils.logActiveStatus("BetterPortals", MoeUtils.plugin.config.better_portals_enabled))
+            return;
 
         Events.subscribe(PlayerPortalEvent.class)
                 .filter(e -> !e.getTo().getWorld().getWorldBorder().isInside(e.getTo()))

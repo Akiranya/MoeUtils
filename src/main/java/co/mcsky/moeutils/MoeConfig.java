@@ -40,6 +40,9 @@ public final class MoeConfig {
     public int login_protection_duration;
     public int login_protection_amplifier;
 
+    public boolean better_explosion_enabled;
+    public List<String> better_explosion_worlds;
+
     private YamlConfigurationLoader loader;
     private CommentedConfigurationNode root;
 
@@ -89,6 +92,8 @@ public final class MoeConfig {
             login_protection_duration = root.node("login-protection", "duration-in-sec").getInt(15);
             login_protection_amplifier = root.node("login-protection", "amplifier").getInt(4);
 
+            better_explosion_enabled = root.node("better-explosion", "enabled").getBoolean(false);
+            better_explosion_worlds = root.node("better-explosion", "worlds").getList(String.class, () -> List.of("world"));
         } catch (SerializationException e) {
             MoeUtils.plugin.getLogger().severe(e.getMessage());
         }

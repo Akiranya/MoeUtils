@@ -16,7 +16,8 @@ public class LoginGuard implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MoeUtils.logActiveStatus("LoginProtection", MoeUtils.plugin.config.login_protection_enabled)) return;
+        if (MoeUtils.logActiveStatus("LoginProtection", MoeUtils.plugin.config.login_protection_enabled))
+            return;
 
         Events.subscribe(PlayerJoinEvent.class).handler(e -> {
             final int duration = (int) Ticks.from(MoeUtils.plugin.config.login_protection_duration, TimeUnit.SECONDS);
