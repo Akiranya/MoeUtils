@@ -15,9 +15,9 @@ public enum WeatherOption {
      */
     public String customName() {
         return switch (this) {
-            case CLEAR -> MoeUtils.plugin.getMessage(null, "magic-weather.clear");
-            case RAIN -> MoeUtils.plugin.getMessage(null, "magic-weather.rain");
-            case THUNDER -> MoeUtils.plugin.getMessage(null, "magic-weather.thunder");
+            case CLEAR -> MoeUtils.plugin.message(null, "magic-weather.clear");
+            case RAIN -> MoeUtils.plugin.message(null, "magic-weather.rain");
+            case THUNDER -> MoeUtils.plugin.message(null, "magic-weather.thunder");
         };
     }
 

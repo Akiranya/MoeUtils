@@ -31,6 +31,8 @@ death-logger:
 found-ores:
   prefix: '&8[&e矿工茶馆&8]&r '
   found: '{player}&7 挖到了 &e{count}&7 个 &r&l{ore}!'
+  toggle-broadcast-on: '&7你选择接收挖矿广播.'
+  toggle-broadcast-off: '&7你不再接收挖矿广播.'
 magic-time:
   prefix: '&8[&d魔法时间&8]&r '
   day: '魔法白天'

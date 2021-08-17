@@ -69,7 +69,7 @@ public class BetterBees implements TerminableModule {
                 .handler(e -> {
                     final Player player = e.getPlayer();
                     if (messageReminderCooldown.test(player)) {
-                        player.sendMessage(MoeUtils.plugin.getMessage(player, "better-bees.reminder-on-place"));
+                        player.sendMessage(MoeUtils.plugin.message(player, "better-bees.reminder-on-place"));
                     }
                 }).bindWith(consumer);
     }
@@ -78,9 +78,9 @@ public class BetterBees implements TerminableModule {
         // Depending on whether the player is interacting with bee nest or beehive
         int beeCount = beehive.getEntityCount();
         if (beehive.getType() == Material.BEE_NEST) {
-            player.sendMessage(MoeUtils.plugin.getMessage(player, "better-bees.count-bee-nest", "bee_count", beeCount));
+            player.sendMessage(MoeUtils.plugin.message(player, "better-bees.count-bee-nest", "bee_count", beeCount));
         } else {
-            player.sendMessage(MoeUtils.plugin.getMessage(player, "better-bees.count-beehive", "bee_count", beeCount));
+            player.sendMessage(MoeUtils.plugin.message(player, "better-bees.count-beehive", "bee_count", beeCount));
         }
     }
 

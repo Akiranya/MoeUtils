@@ -18,9 +18,9 @@ public class BetterPortals implements TerminableModule {
                 .filter(e -> !e.getTo().getWorld().getWorldBorder().isInside(e.getTo()))
                 .handler(e -> {
                     e.setCancelled(true);
-                    e.getPlayer().sendMessage(MoeUtils.plugin.getMessage(e.getPlayer(), "better-portals.cancelled"));
+                    e.getPlayer().sendMessage(MoeUtils.plugin.message(e.getPlayer(), "better-portals.cancelled"));
                     if (MoeUtils.plugin.config.debug) {
-                        MoeUtils.plugin.getLogger().info(MoeUtils.plugin.getMessage(e.getPlayer(), "better-portals.debug", "player", e.getPlayer().getName()));
+                        MoeUtils.plugin.getLogger().info(MoeUtils.plugin.message(e.getPlayer(), "better-portals.debug", "player", e.getPlayer().getName()));
                     }
                 }).bindWith(consumer);
     }

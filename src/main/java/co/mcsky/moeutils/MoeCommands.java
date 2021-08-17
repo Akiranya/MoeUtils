@@ -5,7 +5,8 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import co.mcsky.moeutils.chat.CustomPrefix;
 import co.mcsky.moeutils.chat.CustomSuffix;
-import co.mcsky.moeutils.data.DataSource;
+import co.mcsky.moeutils.data.Datasource;
+import co.mcsky.moeutils.foundores.FoundOres;
 import co.mcsky.moeutils.magic.MagicTime;
 import co.mcsky.moeutils.magic.MagicWeather;
 import co.mcsky.moeutils.magic.TimeOption;
@@ -20,7 +21,7 @@ public class MoeCommands extends BaseCommand {
     @Dependency
     public MoeUtils plugin;
     @Dependency
-    public DataSource dataSource;
+    public Datasource datasource;
     @Dependency
     public MagicTime time;
     @Dependency
@@ -29,20 +30,18 @@ public class MoeCommands extends BaseCommand {
     public CustomPrefix customPrefix;
     @Dependency
     public CustomSuffix customSuffix;
+    @Dependency
+    public FoundOres foundOres;
 
-    @Subcommand("reload")
-    @CommandPermission("moe.admin")
-    @Description("Reload config from files.")
-    public void reload(CommandSender sender) {
-        MoeUtils.plugin.reload();
-        sender.sendMessage(plugin.getMessage(sender, "common.reloaded"));
-    }
-
-    @Subcommand("version|ver")
-    @CommandPermission("moe.admin")
-    @Description("Get the version of this plugin.")
-    public void version(CommandSender sender) {
-        sender.sendMessage(plugin.getMessage(sender, "common.version", "version", plugin.getDescription().getVersion()));
+    @Subcommand("mining-broadcast")
+    public void toggleMiningBroadcast(Player player) {
+        if (foundOres.isListener(player)) {
+            foundOres.toggleBroadcast(player);
+            player.sendMessage(MoeUtils.plugin.message(player, "found-ores.toggle-broadcast-off"));
+        } else {
+            foundOres.toggleBroadcast(player);
+            player.sendMessage(MoeUtils.plugin.message(player, "found-ores.toggle-broadcast-on"));
+        }
     }
 
     @Subcommand("prefix")
@@ -71,26 +70,41 @@ public class MoeCommands extends BaseCommand {
         customSuffix.clear(player);
     }
 
+    @Subcommand("reload")
+    @CommandPermission("moe.admin")
+    @Description("Reload config from files.")
+    public void reload(CommandSender sender) {
+        MoeUtils.plugin.reload();
+        sender.sendMessage(plugin.message(sender, "common.reloaded"));
+    }
+
+    @Subcommand("version|ver")
+    @CommandPermission("moe.admin")
+    @Description("Get the version of this plugin.")
+    public void version(CommandSender sender) {
+        sender.sendMessage(plugin.message(sender, "common.version", "version", plugin.getDescription().getVersion()));
+    }
+
     @Subcommand("portal-changer")
     @CommandPermission("moe.admin")
     public class PortalChangerCommand extends BaseCommand {
         @Subcommand("set")
         public void set(Player player) {
             final Location location = player.getLocation().toBlockLocation();
-            dataSource.addEndEyeTargetLocation(location);
-            player.sendMessage(plugin.getMessage(player, "end-eye-changer.set", "location", ACFBukkitUtil.blockLocationToString(location)));
+            datasource.getEndPortalsData().addEndEyeTargetLocation(location);
+            player.sendMessage(plugin.message(player, "end-eye-changer.set", "location", ACFBukkitUtil.blockLocationToString(location)));
         }
 
         @Subcommand("list")
         public void list(CommandSender sender) {
-            sender.sendMessage(plugin.getMessage(sender, "end-eye-changer.list-title"));
-            dataSource.getEndEyeTargetLocations().forEach(location -> sender.sendMessage(plugin.getMessage(sender, "end-eye-changer.list", "location", ACFBukkitUtil.blockLocationToString(location))));
+            sender.sendMessage(plugin.message(sender, "end-eye-changer.list-title"));
+            datasource.getEndPortalsData().getEndEyeTargetLocations().forEach(location -> sender.sendMessage(plugin.message(sender, "end-eye-changer.list", "location", ACFBukkitUtil.blockLocationToString(location))));
         }
 
         @Subcommand("clear")
         public void clear(CommandSender sender) {
-            dataSource.clearTargetLocations();
-            sender.sendMessage(plugin.getMessage(sender, "end-eye-changer.clear"));
+            datasource.getEndPortalsData().clearTargetLocations();
+            sender.sendMessage(plugin.message(sender, "end-eye-changer.clear"));
         }
     }
 
@@ -123,7 +137,7 @@ public class MoeCommands extends BaseCommand {
         @Description("Reset cooldown of magic weather.")
         public void reset(CommandSender sender) {
             weather.resetCooldown();
-            sender.sendMessage(plugin.getMessage(sender, "common.reset"));
+            sender.sendMessage(plugin.message(sender, "common.reset"));
         }
 
         @Subcommand("status")
@@ -157,7 +171,7 @@ public class MoeCommands extends BaseCommand {
         @Description("Reset cooldown of magic time.")
         public void reset(CommandSender sender) {
             time.resetCooldown();
-            sender.sendMessage(plugin.getMessage(sender, "common.reset"));
+            sender.sendMessage(plugin.message(sender, "common.reset"));
         }
 
         @Subcommand("status")

@@ -23,6 +23,7 @@ public final class MoeConfig {
     public int purge_interval;
     public List<Material> enabled_blocks;
     public List<String> enabled_worlds;
+    public int non_listener_expiry_hours;
 
     public int magic_time_cooldown;
     public int magic_time_cost;
@@ -84,6 +85,7 @@ public final class MoeConfig {
             purge_interval = foundOresNode.node("purge-interval").getInt(1800);
             enabled_blocks = foundOresNode.node("blocks").getList(Material.class, () -> List.of(Material.DIAMOND_ORE));
             enabled_worlds = foundOresNode.node("worlds").getList(String.class, () -> List.of("world"));
+            non_listener_expiry_hours = foundOresNode.node("non-listener-expiry-hours").getInt(6);
 
             final CommentedConfigurationNode magicTimeNode = root.node("magic-time");
             magic_time_cooldown = magicTimeNode.node("cooldown").getInt(600);

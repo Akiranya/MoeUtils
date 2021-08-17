@@ -33,7 +33,7 @@ public class EndEyeChanger implements TerminableModule {
                 .filter(PlayerInteractEvent::hasItem)
                 .filter(e -> e.getMaterial() == Material.ENDER_EYE)
                 .filter(e -> e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
-                .filter(e -> MoeUtils.plugin.getDatasource().containsEndEyeTargetWorld(e.getPlayer().getWorld().getName()))
+                .filter(e -> MoeUtils.plugin.getDatasource().getEndPortalsData().containsEndEyeTargetWorld(e.getPlayer().getWorld().getName()))
                 .handler(e -> {
                     // take one end eye from player
                     //noinspection ConstantConditions
@@ -55,8 +55,8 @@ public class EndEyeChanger implements TerminableModule {
                 .handler(e -> {
                     EnderSignal es = (EnderSignal) e.getEntity();
                     final World world = e.getEntity().getLocation().getWorld();
-                    if (MoeUtils.plugin.getDatasource().containsEndEyeTargetWorld(world.getName())) {
-                        Location closeLocation = nearestLocation(e.getEntity().getLocation(), MoeUtils.plugin.getDatasource().getEndEyeTargetLocationsByWorld(world.getName()));
+                    if (MoeUtils.plugin.getDatasource().getEndPortalsData().containsEndEyeTargetWorld(world.getName())) {
+                        Location closeLocation = nearestLocation(e.getEntity().getLocation(), MoeUtils.plugin.getDatasource().getEndPortalsData().getEndEyeTargetLocationsByWorld(world.getName()));
                         es.setTargetLocation(closeLocation);
                         if (MoeUtils.plugin.config.debug) {
                             MoeUtils.plugin.getLogger().info("Found an end eye target location set");

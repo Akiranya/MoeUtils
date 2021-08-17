@@ -21,14 +21,14 @@ public class CustomSuffix {
 
         // check length
         if (ChatColor.stripColor(Text.colorize(test)).length() > plugin.config.suffix_max_length) {
-            player.sendMessage(plugin.getMessage(player, "suffix.suffix-too-long", "max", plugin.config.suffix_max_length));
+            player.sendMessage(plugin.message(player, "suffix.suffix-too-long", "max", plugin.config.suffix_max_length));
             return;
         }
 
         // check disabled formatting codes
         for (String k : plugin.config.suffix_disabled_formatting_codes) {
             if (test.toUpperCase().contains("&" + k.toUpperCase())) {
-                player.sendMessage(plugin.getMessage(player, "common.blocked-format-codes", "code", "#" + k));
+                player.sendMessage(plugin.message(player, "common.blocked-format-codes", "code", "#" + k));
                 return;
             }
         }
@@ -36,21 +36,21 @@ public class CustomSuffix {
         // check blocked words
         for (String k : plugin.config.suffix_blocked_words) {
             if (test.toUpperCase().contains(k.toUpperCase())) {
-                player.sendMessage(plugin.getMessage(player, "common.blocked-words", "word", k));
+                player.sendMessage(plugin.message(player, "common.blocked-words", "word", k));
                 return;
             }
         }
 
         // check exp cost
         if (plugin.config.suffix_exp_cost > 0 && ExperienceUtils.getExpPoints(player) < plugin.config.suffix_exp_cost) {
-            player.sendMessage(plugin.getMessage(player, "common.not-enough-exp"));
+            player.sendMessage(plugin.message(player, "common.not-enough-exp"));
             return;
         }
 
         // check & charge money cost
         if (plugin.config.suffix_money_cost > 0) {
             if (!MoeUtils.economy.has(player, plugin.config.suffix_money_cost)) {
-                player.sendMessage(plugin.getMessage(player, "common.not-enough-money"));
+                player.sendMessage(plugin.message(player, "common.not-enough-money"));
                 return;
             }
             MoeCore.plugin.systemAccount().deposit(plugin.config.suffix_money_cost, plugin);
@@ -66,11 +66,11 @@ public class CustomSuffix {
 
         test = Text.colorize(test);
         LuckPermsUtil.userSetSuffixAsync(player.getUniqueId(), test, plugin.config.suffix_priority);
-        player.sendMessage(plugin.getMessage(player, "suffix.set-success", "suffix", test));
+        player.sendMessage(plugin.message(player, "suffix.set-success", "suffix", test));
     }
 
     public void clear(Player player) {
         LuckPermsUtil.userRemoveSuffixAsync(player.getUniqueId());
-        player.sendMessage(plugin.getMessage(player, "suffix.clear-success"));
+        player.sendMessage(plugin.message(player, "suffix.clear-success"));
     }
 }

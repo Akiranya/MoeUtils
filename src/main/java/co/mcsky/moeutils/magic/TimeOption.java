@@ -20,8 +20,8 @@ public enum TimeOption {
      */
     public String customName() {
         return switch (this) {
-            case DAY -> MoeUtils.plugin.getMessage(null, "magic-time.day");
-            case NIGHT -> MoeUtils.plugin.getMessage(null, "magic-time.night");
+            case DAY -> MoeUtils.plugin.message(null, "magic-time.day");
+            case NIGHT -> MoeUtils.plugin.message(null, "magic-time.night");
         };
     }
 

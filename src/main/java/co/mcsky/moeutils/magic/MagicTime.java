@@ -64,14 +64,14 @@ public class MagicTime extends MagicBase {
     }
 
     public void futureBroadcast(String timeName) {
-        String prefix = MoeUtils.plugin.getMessage(null, "magic-time.prefix");
-        String message = MoeUtils.plugin.getMessage(null, "magic-time.ended", "time", timeName);
+        String prefix = MoeUtils.plugin.message(null, "magic-time.prefix");
+        String message = MoeUtils.plugin.message(null, "magic-time.ended", "time", timeName);
         Schedulers.bukkit().runTaskLaterAsynchronously(MoeUtils.plugin, () -> MoeUtils.plugin.getServer().broadcastMessage(prefix + message), Ticks.from(cooldownAmount, TimeUnit.SECONDS));
     }
 
     public void broadcast(String timeName) {
-        String prefix = MoeUtils.plugin.getMessage(null, "magic-time.prefix");
-        String message = MoeUtils.plugin.getMessage(null, "magic-time.changed", "time", timeName);
+        String prefix = MoeUtils.plugin.message(null, "magic-time.prefix");
+        String message = MoeUtils.plugin.message(null, "magic-time.changed", "time", timeName);
         MoeUtils.plugin.getServer().broadcastMessage(prefix + message);
     }
 

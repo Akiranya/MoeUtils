@@ -11,7 +11,7 @@ import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import java.io.File;
 import java.nio.file.Path;
 
-public class DatasourceFileHandler extends FileStorageHandler<DataSource> {
+public class DatasourceFileHandler extends FileStorageHandler<Datasource> {
 
     private final static String fileName = "data";
     private final static String fileExt = ".yml";
@@ -21,7 +21,7 @@ public class DatasourceFileHandler extends FileStorageHandler<DataSource> {
     public DatasourceFileHandler(File dataFolder) {
         super(fileName, fileExt, dataFolder);
         TypeSerializerCollection serializers = YamlConfigFactory.typeSerializers().childBuilder()
-                .register(DataSource.class, DataSourceSerializer.INSTANCE)
+                .register(Datasource.class, DataSourceSerializer.INSTANCE)
                 .build();
         loader = YamlConfigurationLoader.builder()
                 .file(new File(dataFolder, fileName + fileExt))
@@ -32,9 +32,9 @@ public class DatasourceFileHandler extends FileStorageHandler<DataSource> {
     }
 
     @Override
-    protected DataSource readFromFile(Path path) {
+    protected Datasource readFromFile(Path path) {
         try {
-            return (root = loader.load()).get(DataSource.class);
+            return (root = loader.load()).get(Datasource.class);
         } catch (ConfigurateException e) {
             e.printStackTrace();
             return null;
@@ -42,7 +42,7 @@ public class DatasourceFileHandler extends FileStorageHandler<DataSource> {
     }
 
     @Override
-    protected void saveToFile(Path path, DataSource dataSource) {
+    protected void saveToFile(Path path, Datasource dataSource) {
         try {
             loader.save(root.set(dataSource));
         } catch (ConfigurateException e) {

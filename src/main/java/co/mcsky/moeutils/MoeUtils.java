@@ -3,7 +3,7 @@ package co.mcsky.moeutils;
 import co.aikar.commands.PaperCommandManager;
 import co.mcsky.moeutils.chat.CustomPrefix;
 import co.mcsky.moeutils.chat.CustomSuffix;
-import co.mcsky.moeutils.data.DataSource;
+import co.mcsky.moeutils.data.Datasource;
 import co.mcsky.moeutils.data.DatasourceFileHandler;
 import co.mcsky.moeutils.foundores.FoundOres;
 import co.mcsky.moeutils.magic.MagicTime;
@@ -24,13 +24,13 @@ public class MoeUtils extends ExtendedJavaPlugin {
     public static Economy economy;
 
     public MoeConfig config;
-    public LanguageManager lang;
-    public PaperCommandManager manager;
+    private LanguageManager lang;
 
     private MagicTime magicTime;
     private MagicWeather magicWeather;
+    private FoundOres foundOres;
 
-    private DataSource datasource;
+    private Datasource datasource;
     private DatasourceFileHandler datasourceFileHandler;
 
     /**
@@ -78,7 +78,7 @@ public class MoeUtils extends ExtendedJavaPlugin {
 
         // initialize data source
         datasourceFileHandler = new DatasourceFileHandler(getDataFolder());
-        datasource = datasourceFileHandler.load().orElse(new DataSource());
+        datasource = datasourceFileHandler.load().orElse(new Datasource());
         datasourceFileHandler.save(datasource);
 
         // initialize functions & initialize config nodes
@@ -99,7 +99,7 @@ public class MoeUtils extends ExtendedJavaPlugin {
         onEnable();
     }
 
-    public DataSource getDatasource() {
+    public Datasource getDatasource() {
         return datasource;
     }
 
@@ -115,7 +115,7 @@ public class MoeUtils extends ExtendedJavaPlugin {
      * (or the default one) with the replacements replaced (or an error message,
      * never null)
      */
-    public String getMessage(CommandSender sender, String key, Object... replacements) {
+    public String message(CommandSender sender, String key, Object... replacements) {
         if (replacements.length == 0) {
             return lang.getConfig(sender).get(key);
         } else {
@@ -139,20 +139,21 @@ public class MoeUtils extends ExtendedJavaPlugin {
     private void initializeModules() {
         // all are terminable
         bindModule(new BetterPortals());
-        bindModule(new FoundOres());
         bindModule(new DeathLogger());
         bindModule(new BetterBees());
         bindModule(new LoginGuard());
         bindModule(new EndEyeChanger());
+        foundOres = bindModule(new FoundOres());
         magicTime = bindModule(new MagicTime());
         magicWeather = bindModule(new MagicWeather());
     }
 
     private void registerCommands() {
-        manager = new PaperCommandManager(this);
+        PaperCommandManager manager = new PaperCommandManager(this);
         manager.registerDependency(MagicTime.class, magicTime);
         manager.registerDependency(MagicWeather.class, magicWeather);
-        manager.registerDependency(DataSource.class, datasource);
+        manager.registerDependency(Datasource.class, datasource);
+        manager.registerDependency(FoundOres.class, foundOres);
         manager.registerDependency(CustomPrefix.class, new CustomPrefix());
         manager.registerDependency(CustomSuffix.class, new CustomSuffix());
         manager.registerCommand(new MoeCommands());

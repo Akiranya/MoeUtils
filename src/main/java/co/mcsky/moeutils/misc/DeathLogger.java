@@ -60,12 +60,12 @@ public class DeathLogger implements TerminableModule {
                                     .reduce((acc, name) -> acc + separator + name)
                                     .get();
                         } else {
-                            killerName = MoeUtils.plugin.getMessage(null, "common.none");
+                            killerName = MoeUtils.plugin.message(null, "common.none");
                         }
                     }
 
                     String location = ACFBukkitUtil.blockLocationToString(entity.getLocation());
-                    MoeUtils.plugin.getServer().broadcastMessage(MoeUtils.plugin.getMessage(killer, "death-logger.death",
+                    MoeUtils.plugin.getServer().broadcastMessage(MoeUtils.plugin.message(killer, "death-logger.death",
                             "victim", victimName,
                             "reason", damageCause,
                             "killer", killerName,

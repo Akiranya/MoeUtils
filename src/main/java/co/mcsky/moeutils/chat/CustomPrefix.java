@@ -24,14 +24,14 @@ public class CustomPrefix {
 
         // check length
         if (ChatColor.stripColor(Text.colorize(test)).length() > plugin.config.prefix_max_length) {
-            player.sendMessage(plugin.getMessage(player, "prefix.prefix-too-long", "max", plugin.config.prefix_max_length));
+            player.sendMessage(plugin.message(player, "prefix.prefix-too-long", "max", plugin.config.prefix_max_length));
             return;
         }
 
         // check disabled formatting codes
         for (String k : plugin.config.prefix_disabled_formatting_codes) {
             if (test.toUpperCase().contains("&" + k.toUpperCase())) {
-                player.sendMessage(plugin.getMessage(player, "common.blocked-format-codes", "code", "#" + k));
+                player.sendMessage(plugin.message(player, "common.blocked-format-codes", "code", "#" + k));
                 return;
             }
         }
@@ -39,21 +39,21 @@ public class CustomPrefix {
         // check blocked words
         for (String k : plugin.config.prefix_blocked_words) {
             if (test.toUpperCase().contains(k.toUpperCase())) {
-                player.sendMessage(plugin.getMessage(player, "common.blocked-words", "word", k));
+                player.sendMessage(plugin.message(player, "common.blocked-words", "word", k));
                 return;
             }
         }
 
         // check exp cost
         if (plugin.config.prefix_exp_cost > 0 && ExperienceUtils.getExpPoints(player) < plugin.config.prefix_exp_cost) {
-            player.sendMessage(plugin.getMessage(player, "common.not-enough-exp"));
+            player.sendMessage(plugin.message(player, "common.not-enough-exp"));
             return;
         }
 
         // check & charge money cost
         if (plugin.config.prefix_money_cost > 0) {
             if (!MoeUtils.economy.has(player, plugin.config.prefix_money_cost)) {
-                player.sendMessage(plugin.getMessage(player, "common.not-enough-money"));
+                player.sendMessage(plugin.message(player, "common.not-enough-money"));
                 return;
             }
             MoeCore.plugin.systemAccount().deposit(plugin.config.prefix_money_cost, plugin);
@@ -69,11 +69,11 @@ public class CustomPrefix {
 
         test = Text.colorize(test);
         LuckPermsUtil.userSetPrefixAsync(player.getUniqueId(), test, plugin.config.prefix_priority);
-        player.sendMessage(plugin.getMessage(player, "prefix.set-success", "prefix", test));
+        player.sendMessage(plugin.message(player, "prefix.set-success", "prefix", test));
     }
 
     public void clear(Player player) {
         LuckPermsUtil.userRemovePrefixAsync(player.getUniqueId());
-        player.sendMessage(plugin.getMessage(player, "prefix.clear-success"));
+        player.sendMessage(plugin.message(player, "prefix.clear-success"));
     }
 }

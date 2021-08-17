@@ -74,14 +74,14 @@ public class MagicWeather extends MagicBase {
     }
 
     public void futureBroadcast(String weatherName, String worldName) {
-        String prefix = MoeUtils.plugin.getMessage(null, "magic-weather.prefix");
-        String message = MoeUtils.plugin.getMessage(null, "magic-weather.ended", "weather", weatherName, "world", worldName);
+        String prefix = MoeUtils.plugin.message(null, "magic-weather.prefix");
+        String message = MoeUtils.plugin.message(null, "magic-weather.ended", "weather", weatherName, "world", worldName);
         Schedulers.bukkit().runTaskLaterAsynchronously(MoeUtils.plugin, () -> MoeUtils.plugin.getServer().broadcastMessage(prefix + message), Ticks.from(cooldownAmount, TimeUnit.SECONDS));
     }
 
     public void broadcast(String weatherName, String worldName) {
-        String prefix = MoeUtils.plugin.getMessage(null, "magic-weather.prefix");
-        String message = MoeUtils.plugin.getMessage(null, "magic-weather.changed", "world", worldName, "weather", weatherName);
+        String prefix = MoeUtils.plugin.message(null, "magic-weather.prefix");
+        String message = MoeUtils.plugin.message(null, "magic-weather.changed", "world", worldName, "weather", weatherName);
         MoeUtils.plugin.getServer().broadcastMessage(prefix + message);
     }
 

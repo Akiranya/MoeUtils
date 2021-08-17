@@ -4,12 +4,12 @@ import org.bukkit.Location;
 
 import java.util.*;
 
-public class DataSource {
+public class EndPortalsData {
 
     private final List<Location> targetLocations;
     private final Map<String, List<Location>> targetLocationMap;
 
-    public DataSource() {
+    public EndPortalsData() {
         targetLocations = new ArrayList<>();
         targetLocationMap = new HashMap<>();
     }
@@ -50,4 +50,5 @@ public class DataSource {
     public List<Location> getEndEyeTargetLocations() {
         return targetLocations;
     }
+
 }
