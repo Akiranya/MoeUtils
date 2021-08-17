@@ -50,9 +50,10 @@ dependencies {
     // command framework
     compileOnly('co.aikar:acf-paper:0.5.0-SNAPSHOT')
 
+    compileOnly('net.luckperms:api:5.3')
     compileOnly('com.meowj:LangUtils:2.3-SNAPSHOT')
     compileOnly('net.milkbowl.vault:VaultAPI:1.7') { transitive = false }
 
     // moecore
-    compileOnly('com.github.Akiranya:MoeCore:0.2')
+    compileOnly('com.github.Akiranya:MoeCore:0.5.4')
 }

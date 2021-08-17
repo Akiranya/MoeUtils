@@ -1,6 +1,8 @@
 package co.mcsky.moeutils;
 
 import co.aikar.commands.PaperCommandManager;
+import co.mcsky.moeutils.chat.CustomPrefix;
+import co.mcsky.moeutils.chat.CustomSuffix;
 import co.mcsky.moeutils.data.DataSource;
 import co.mcsky.moeutils.data.DatasourceFileHandler;
 import co.mcsky.moeutils.foundores.FoundOres;
@@ -142,7 +144,6 @@ public class MoeUtils extends ExtendedJavaPlugin {
         bindModule(new BetterBees());
         bindModule(new LoginGuard());
         bindModule(new EndEyeChanger());
-        bindModule(new BetterExplosion());
         magicTime = bindModule(new MagicTime());
         magicWeather = bindModule(new MagicWeather());
     }
@@ -152,6 +153,8 @@ public class MoeUtils extends ExtendedJavaPlugin {
         manager.registerDependency(MagicTime.class, magicTime);
         manager.registerDependency(MagicWeather.class, magicWeather);
         manager.registerDependency(DataSource.class, datasource);
+        manager.registerDependency(CustomPrefix.class, new CustomPrefix());
+        manager.registerDependency(CustomSuffix.class, new CustomSuffix());
         manager.registerCommand(new MoeCommands());
     }
 

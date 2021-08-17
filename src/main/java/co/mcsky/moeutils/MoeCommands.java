@@ -3,6 +3,8 @@ package co.mcsky.moeutils;
 import co.aikar.commands.ACFBukkitUtil;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+import co.mcsky.moeutils.chat.CustomPrefix;
+import co.mcsky.moeutils.chat.CustomSuffix;
 import co.mcsky.moeutils.data.DataSource;
 import co.mcsky.moeutils.magic.MagicTime;
 import co.mcsky.moeutils.magic.MagicWeather;
@@ -18,11 +20,15 @@ public class MoeCommands extends BaseCommand {
     @Dependency
     public MoeUtils plugin;
     @Dependency
+    public DataSource dataSource;
+    @Dependency
     public MagicTime time;
     @Dependency
     public MagicWeather weather;
     @Dependency
-    public DataSource dataSource;
+    public CustomPrefix customPrefix;
+    @Dependency
+    public CustomSuffix customSuffix;
 
     @Subcommand("reload")
     @CommandPermission("moe.admin")
@@ -39,8 +45,33 @@ public class MoeCommands extends BaseCommand {
         sender.sendMessage(plugin.getMessage(sender, "common.version", "version", plugin.getDescription().getVersion()));
     }
 
-    @Subcommand("endportal")
-    public class EndEyeCommand extends BaseCommand {
+    @Subcommand("prefix")
+    @CommandPermission("moe.prefix")
+    public void prefix(Player player, String prefix) {
+        customPrefix.set(player, prefix);
+    }
+
+    @Subcommand("prefix clear")
+    @CommandPermission("moe.prefix")
+    public void prefix(Player player) {
+        customPrefix.clear(player);
+    }
+
+    @Subcommand("suffix")
+    @CommandPermission("moe.suffix")
+    public void suffix(Player player, String suffix) {
+        customSuffix.set(player, suffix);
+    }
+
+    @Subcommand("suffix clear")
+    @CommandPermission("moe.suffix")
+    public void suffix(Player player) {
+        customSuffix.clear(player);
+    }
+
+    @Subcommand("portal-changer")
+    @CommandPermission("moe.admin")
+    public class PortalChangerCommand extends BaseCommand {
         @Subcommand("set")
         public void set(Player player) {
             final Location location = player.getLocation().toBlockLocation();

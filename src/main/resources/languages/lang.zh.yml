@@ -5,11 +5,22 @@ common:
   no-perms: '&c你没有权限使用这个指令: {command}'
   only-players: '只有玩家才可以使用这个指令.'
   not-enough-money: '&7你没有足够的软妹币.'
+  not-enough-exp: '&7你没有足够的经验值.'
   reloaded: '&bMoeUtils 已重新载入.'
   version: '&b正在使用 MoeUtils {version}.'
   price: '&f你花掉了 {cost} &f软妹币.'
   cooldown: '&7冷却中:&b {time}s.'
   reset: '&b状态已重置.'
+  blocked-format-codes: '你不能使用样式代码: {code}'
+  blocked-words: '你不能使用此词汇：{word}'
+prefix:
+  prefix-too-long: '前缀长度最大为 {max} 个字符'
+  set-success: '你的前缀已设置为: {prefix}'
+  clear-success: '清除前缀成功'
+suffix:
+  suffix-too-long: '后缀长度最大为 {max} 个字符'
+  set-success: '你的后缀已设置为: {suffix}'
+  clear-success: '清除后缀成功'
 better-bees:
   count-beehive: '这个蜂箱里有 {bee_count} 只蜜蜂.'
   count-bee-nest: '这个蜂巢里有 {bee_count} 只蜜蜂.'

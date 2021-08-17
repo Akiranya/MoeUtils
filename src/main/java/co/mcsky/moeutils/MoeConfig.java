@@ -14,7 +14,7 @@ import java.util.List;
 public final class MoeConfig {
 
     public static final String DEFAULT_LANG = "zh_cn";
-    private static final String FILENAME = "config.yml";
+    private static final String CONFIG_FILENAME = "config.yml";
 
     public boolean debug;
 
@@ -40,14 +40,25 @@ public final class MoeConfig {
     public int login_protection_duration;
     public int login_protection_amplifier;
 
-    public boolean better_explosion_enabled;
-    public List<String> better_explosion_worlds;
+    public List<String> prefix_disabled_formatting_codes;
+    public List<String> prefix_blocked_words;
+    public int prefix_priority;
+    public int prefix_max_length;
+    public int prefix_exp_cost;
+    public double prefix_money_cost;
+
+    public List<String> suffix_disabled_formatting_codes;
+    public List<String> suffix_blocked_words;
+    public int suffix_priority;
+    public int suffix_max_length;
+    public int suffix_exp_cost;
+    public double suffix_money_cost;
 
     private YamlConfigurationLoader loader;
     private CommentedConfigurationNode root;
 
     public MoeConfig() {
-        loader = YamlConfigFactory.loader(new File(MoeUtils.plugin.getDataFolder(), FILENAME));
+        loader = YamlConfigFactory.loader(new File(MoeUtils.plugin.getDataFolder(), CONFIG_FILENAME));
     }
 
     /**
@@ -66,38 +77,61 @@ public final class MoeConfig {
 
         try {
             debug = root.node("debug").getBoolean(false);
-            found_ores_enabled = root.node("found-ores", "enabled").getBoolean(false);
-            max_iterations = root.node("found-ores", "max-iterations").getInt(32);
-            purge_interval = root.node("found-ores", "purge-interval").getInt(1800);
-            enabled_blocks = root.node("found-ores", "blocks").getList(Material.class, () -> List.of(Material.DIAMOND_ORE));
-            enabled_worlds = root.node("found-ores", "worlds").getList(String.class, () -> List.of("world"));
 
-            magic_time_cooldown = root.node("magic-time", "cooldown").getInt(600);
-            magic_time_cost = root.node("magic-time", "cost").getInt(50);
-            magic_weather_cooldown = root.node("magic-weather", "cooldown").getInt(600);
-            magic_weather_cost = root.node("magic-weather", "cost").getInt(50);
+            final CommentedConfigurationNode foundOresNode = root.node("found-ores");
+            found_ores_enabled = foundOresNode.node("enabled").getBoolean(false);
+            max_iterations = foundOresNode.node("max-iterations").getInt(32);
+            purge_interval = foundOresNode.node("purge-interval").getInt(1800);
+            enabled_blocks = foundOresNode.node("blocks").getList(Material.class, () -> List.of(Material.DIAMOND_ORE));
+            enabled_worlds = foundOresNode.node("worlds").getList(String.class, () -> List.of("world"));
 
-            better_bees_enabled = root.node("better-bees", "enabled").getBoolean(false);
-            require_sneak = root.node("better-bees", "require-sneak").getBoolean(false);
+            final CommentedConfigurationNode magicTimeNode = root.node("magic-time");
+            magic_time_cooldown = magicTimeNode.node("cooldown").getInt(600);
+            magic_time_cost = magicTimeNode.node("cost").getInt(50);
 
-            better_portals_enabled = root.node("better-portals", "enabled").getBoolean(false);
+            final CommentedConfigurationNode magicWeatherNode = root.node("magic-weather");
+            magic_weather_cooldown = magicWeatherNode.node("cooldown").getInt(600);
+            magic_weather_cost = magicWeatherNode.node("cost").getInt(50);
 
-            death_logger_enabled = root.node("death-logger", "enabled").getBoolean(false);
-            search_radius = root.node("death-logger", "search-radius").getInt(32);
-            logged_creatures = root.node("death-logger", "creatures").getList(EntityType.class, List.of(EntityType.VILLAGER));
+            final CommentedConfigurationNode betterBeesNode = root.node("better-bees");
+            better_bees_enabled = betterBeesNode.node("enabled").getBoolean(false);
+            require_sneak = betterBeesNode.node("require-sneak").getBoolean(false);
 
-            end_eye_changer_enabled = root.node("end-eye-changer", "enabled").getBoolean(false);
+            final CommentedConfigurationNode betterPortalsNode = root.node("better-portals");
+            better_portals_enabled = betterPortalsNode.node("enabled").getBoolean(false);
 
-            login_protection_enabled = root.node("login-protection", "enabled").getBoolean(false);
-            login_protection_duration = root.node("login-protection", "duration-in-sec").getInt(15);
-            login_protection_amplifier = root.node("login-protection", "amplifier").getInt(4);
+            final CommentedConfigurationNode deathLoggerNode = root.node("death-logger");
+            death_logger_enabled = deathLoggerNode.node("enabled").getBoolean(false);
+            search_radius = deathLoggerNode.node("search-radius").getInt(32);
+            logged_creatures = deathLoggerNode.node("creatures").getList(EntityType.class, List.of(EntityType.VILLAGER));
 
-            better_explosion_enabled = root.node("better-explosion", "enabled").getBoolean(false);
-            better_explosion_worlds = root.node("better-explosion", "worlds").getList(String.class, () -> List.of("world"));
+            final CommentedConfigurationNode endEyeChangerNode = root.node("end-eye-changer");
+            end_eye_changer_enabled = endEyeChangerNode.node("enabled").getBoolean(false);
+
+            final CommentedConfigurationNode loginProtectionNode = root.node("login-protection");
+            login_protection_enabled = loginProtectionNode.node("enabled").getBoolean(false);
+            login_protection_duration = loginProtectionNode.node("duration-in-sec").getInt(15);
+            login_protection_amplifier = loginProtectionNode.node("amplifier").getInt(4);
+
+            final CommentedConfigurationNode prefixNode = root.node("prefix");
+            prefix_disabled_formatting_codes = prefixNode.node("disabled-formatting-codes").getList(String.class);
+            prefix_blocked_words = prefixNode.node("blocked-words").getList(String.class);
+            prefix_priority = prefixNode.node("priority").getInt(10);
+            prefix_max_length = prefixNode.node("max-length").getInt(10);
+            prefix_exp_cost = prefixNode.node("exp-cost").getInt(100);
+            prefix_money_cost = prefixNode.node("money-cost").getDouble(10);
+
+            final CommentedConfigurationNode suffixNode = root.node("suffix");
+            suffix_disabled_formatting_codes = suffixNode.node("disabled-formatting-codes").getList(String.class);
+            suffix_blocked_words = suffixNode.node("blocked-words").getList(String.class);
+            suffix_priority = suffixNode.node("priority").getInt(10);
+            suffix_max_length = suffixNode.node("max-length").getInt(10);
+            suffix_exp_cost = suffixNode.node("exp-cost").getInt(100);
+            suffix_money_cost = suffixNode.node("money-cost").getDouble(10);
+
         } catch (SerializationException e) {
             MoeUtils.plugin.getLogger().severe(e.getMessage());
         }
-
     }
 
     /**
