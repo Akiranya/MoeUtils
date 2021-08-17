@@ -7,6 +7,7 @@ import me.lucko.helper.Schedulers;
 import me.lucko.helper.scheduler.Ticks;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -39,7 +40,8 @@ public class FoundOres implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MoeUtils.logActiveStatus("FoundOres", MoeUtils.plugin.config.found_ores_enabled)) return;
+        if (MoeUtils.logActiveStatus("FoundOres", MoeUtils.plugin.config.found_ores_enabled))
+            return;
 
         // clear history locations at interval
         Schedulers.sync().runRepeating(locationHistory::clear, 0, Ticks.from(MoeUtils.plugin.config.purge_interval, TimeUnit.SECONDS));
@@ -55,7 +57,7 @@ public class FoundOres implements TerminableModule {
                             "player", e.getPlayer().getDisplayName(),
                             "count", blockCounter.count(currentBlock.getLocation(), currentBlock.getType(), locationHistory),
                             "ore", I18nBlock.localizedName(currentBlock.getType()));
-                    MoeUtils.plugin.getServer().broadcastMessage(prefix + message);
+                    MoeUtils.plugin.getServer().broadcast(Component.text(prefix + message));
                 }).bindWith(consumer);
     }
 }

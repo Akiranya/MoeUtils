@@ -46,6 +46,7 @@ public class MoeCommands extends BaseCommand {
     }
 
     @Subcommand("prefix")
+    @CommandCompletion("@nothing")
     @CommandPermission("moe.prefix")
     public void prefix(Player player, String prefix) {
         customPrefix.set(player, prefix);
@@ -58,6 +59,7 @@ public class MoeCommands extends BaseCommand {
     }
 
     @Subcommand("suffix")
+    @CommandCompletion("@nothing")
     @CommandPermission("moe.suffix")
     public void suffix(Player player, String suffix) {
         customSuffix.set(player, suffix);
