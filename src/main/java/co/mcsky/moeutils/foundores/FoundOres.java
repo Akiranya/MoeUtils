@@ -1,7 +1,6 @@
 package co.mcsky.moeutils.foundores;
 
 import co.mcsky.moeutils.MoeUtils;
-import co.mcsky.moeutils.util.I18nBlock;
 import me.lucko.helper.Events;
 import me.lucko.helper.Schedulers;
 import me.lucko.helper.scheduler.Ticks;
@@ -19,6 +18,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
@@ -97,10 +97,10 @@ public class FoundOres implements TerminableModule {
                 .filter(e -> !locationHistory.contains(e.getBlock().getLocation()))
                 .handler(e -> {
                     Component prefix = Component.text(MoeUtils.plugin.message(e.getPlayer(), "found-ores.prefix"));
-                    Component message = Component.text(MoeUtils.plugin.message(e.getPlayer(), "found-ores.found",
-                            "player", e.getPlayer().getName(),
-                            "count", blockCounter.count(e.getBlock().getLocation(), e.getBlock().getType(), locationHistory),
-                            "ore", I18nBlock.localizedName(e.getBlock().getType())));
+                    Component message = Component.text(MoeUtils.plugin.message(e.getPlayer(), "found-ores.found"))
+                            .replaceText(b -> b.matchLiteral("{player}").replacement(e.getPlayer().displayName()))
+                            .replaceText(b -> b.matchLiteral("{count}").replacement(Component.text(blockCounter.count(e.getBlock().getLocation(), e.getBlock().getType(), locationHistory))))
+                            .replaceText(b -> b.matchLiteral("{ore}").replacement(new ItemStack(e.getBlock().getType()).displayName()));
 
                     // broadcast to each online player
                     Players.forEach(p -> {
