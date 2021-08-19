@@ -17,7 +17,7 @@ public class CustomSuffix {
     }
 
     public void set(Player player, String suffix) {
-        String test = suffix.replace("§", "");
+        String test = suffix;
 
         // check length
         if (ChatColor.stripColor(Text.colorize(test)).length() > plugin.config.suffix_max_length) {

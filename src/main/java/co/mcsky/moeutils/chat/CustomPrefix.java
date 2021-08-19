@@ -20,7 +20,7 @@ public class CustomPrefix {
     }
 
     public void set(Player player, String prefix) {
-        String test = prefix.replace("§", "");
+        String test = prefix;
 
         // check length
         if (ChatColor.stripColor(Text.colorize(test)).length() > plugin.config.prefix_max_length) {
