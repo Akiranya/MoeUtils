@@ -30,7 +30,7 @@ death-logger:
   death: '&8刚刚有一只&7{victim}&8从人间蒸发了 (原因: &7{reason}&8) (附近玩家: &7{killer}&8) (坐标: &7{location}&8)'
 found-ores:
   prefix: '&8[&e矿工茶馆&8]&r '
-  found: '{player}&7 挖到了 &e{count}&7 个 &r&l{ore}!'
+  found: '{player}&7 挖到了 &e{count}&7 个 &r&l{ore}'
   toggle-broadcast-on: '&7你选择接收挖矿广播.'
   toggle-broadcast-off: '&7你不再接收挖矿广播.'
 magic-time:

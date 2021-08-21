@@ -5,9 +5,9 @@ plugins {
 ext.pluginNameUpper = "MoeUtils"
 ext.majorVersion = 1
 ext.minorVersion = 8
-ext.minecraftVersion = "1.17"
-java.sourceCompatibility = JavaVersion.VERSION_16
-java.targetCompatibility = JavaVersion.VERSION_16
+ext.minecraftVersion = "1.17.1"
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 
 group = 'co.mcsky'
 archivesBaseName = "${pluginNameUpper}-mc$minecraftVersion"
@@ -25,35 +25,22 @@ compileJava {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
-    maven { url = 'https://papermc.io/repo/repository/maven-public/' }
-    maven { url = 'https://repo.minebench.de/' }
-    maven { url = 'https://repo.aikar.co/content/groups/aikar/' }
-    maven { url = 'https://ci.nyaacat.com/maven/' }
-    maven { url = 'https://repo.lucko.me' }
-    maven { url = 'https://jitpack.io' }
+
+    maven { name = 'spigot'; url = 'https://papermc.io/repo/repository/maven-public/' }
+    maven { name = 'paper'; url = 'https://papermc.io/repo/repository/maven-public/' }
+    maven { name = 'minebench'; url = 'https://repo.minebench.de/' }
+    maven { name = 'aikar'; url = 'https://repo.aikar.co/content/groups/aikar/' }
+    maven { name = 'lucko'; url = 'https://repo.lucko.me' }
+    maven { name = 'jitpack'; url = 'https://jitpack.io' }
 }
 
 dependencies {
     compileOnly('io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT')
-
-    // helper lib
     compileOnly('me.lucko:helper:5.6.8')
-
-    // config framework
-    compileOnly('org.spongepowered:configurate-core:4.1.1')
-    compileOnly('org.spongepowered:configurate-yaml:4.1.1')
-
-    // i18n framework
-    compileOnly('de.themoep.utils:lang-bukkit:1.3-SNAPSHOT')
-
-    // command framework
-    compileOnly('co.aikar:acf-paper:0.5.0-SNAPSHOT')
-
     compileOnly('net.luckperms:api:5.3')
     compileOnly('com.meowj:LangUtils:2.3-SNAPSHOT')
     compileOnly('net.milkbowl.vault:VaultAPI:1.7') { transitive = false }
-
-    // moecore
-    compileOnly('com.github.Akiranya:MoeCore:0.5.4')
+    compileOnly('co.mcsky:MoeCore:5.7')
 }
