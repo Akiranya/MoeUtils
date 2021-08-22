@@ -96,10 +96,10 @@ public class FoundOres implements TerminableModule {
                 .filter(e -> !locationHistory.contains(e.getBlock().getLocation()))
                 .handler(e -> {
                     final Text prefix = MoeUtils.text3("found-ores.prefix");
-                    final Text message = prefix.append(MoeUtils.text3("found-ores.found")
+                    final Text message = MoeUtils.text3("found-ores.found")
                             .replace("player", e.getPlayer())
                             .replace("count", blockCounter.count(e.getBlock().getLocation(), e.getBlock().getType(), locationHistory))
-                            .replace("ore", new ItemStack(e.getBlock().getType())));
+                            .replace("ore", new ItemStack(e.getBlock().getType()));
                     prefix.append(message).broadcast(Text.MessageType.CHAT, this::isListener);
                 }).bindWith(consumer);
     }
