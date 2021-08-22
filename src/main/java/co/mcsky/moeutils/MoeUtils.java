@@ -26,7 +26,7 @@ public class MoeUtils extends ExtendedJavaPlugin {
     private MoeConfig config;
     private Economy economy;
     private LanguageManager languageManager;
-    private TextRepository textConfig;
+    private TextRepository textRepository;
     private MagicTime magicTime;
     private MagicWeather magicWeather;
     private FoundOres foundOres;
@@ -80,7 +80,7 @@ public class MoeUtils extends ExtendedJavaPlugin {
     }
 
     public static Text text3(String key) {
-        return plugin.textConfig.get(key);
+        return plugin.textRepository.get(key);
     }
 
     @Override
@@ -142,7 +142,7 @@ public class MoeUtils extends ExtendedJavaPlugin {
                 return ((Player) sender).locale().getLanguage();
             return null;
         });
-        textConfig = new TextRepository(MoeUtils::text);
+        textRepository = new TextRepository(MoeUtils::text);
     }
 
     private void initializeModules() {
