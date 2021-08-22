@@ -56,7 +56,7 @@ public class CustomPrefix {
                 player.sendMessage(MoeUtils.text("common.not-enough-money"));
                 return;
             }
-            MoeCore.plugin.systemAccount().deposit(MoeUtils.config().prefix_money_cost, plugin);
+            MoeCore.systemAccount().deposit(MoeUtils.config().prefix_money_cost, plugin);
         }
         MoeUtils.economy().withdrawPlayer(player, MoeUtils.config().prefix_money_cost);
 

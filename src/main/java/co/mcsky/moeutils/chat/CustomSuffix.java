@@ -53,7 +53,7 @@ public class CustomSuffix {
                 player.sendMessage(MoeUtils.text("common.not-enough-money"));
                 return;
             }
-            MoeCore.plugin.systemAccount().deposit(MoeUtils.config().suffix_money_cost, plugin);
+            MoeCore.systemAccount().deposit(MoeUtils.config().suffix_money_cost, plugin);
         }
         MoeUtils.economy().withdrawPlayer(player, MoeUtils.config().suffix_money_cost);
 
