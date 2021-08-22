@@ -25,7 +25,7 @@ public class EndEyeChanger implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MoeUtils.logActiveStatus("EndEyeChanger", MoeUtils.plugin.config.end_eye_changer_enabled))
+        if (MoeUtils.logActiveStatus("EndEyeChanger", MoeUtils.config().end_eye_changer_enabled))
             return;
 
         // spawn an end signal entity if the world does not spawn
@@ -33,7 +33,7 @@ public class EndEyeChanger implements TerminableModule {
                 .filter(PlayerInteractEvent::hasItem)
                 .filter(e -> e.getMaterial() == Material.ENDER_EYE)
                 .filter(e -> e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
-                .filter(e -> MoeUtils.plugin.getDatasource().getEndPortalsData().containsEndEyeTargetWorld(e.getPlayer().getWorld().getName()))
+                .filter(e -> MoeUtils.datasource().getEndPortals().containsEndEyeTargetWorld(e.getPlayer().getWorld().getName()))
                 .handler(e -> {
                     // take one end eye from player
                     //noinspection ConstantConditions
@@ -55,15 +55,15 @@ public class EndEyeChanger implements TerminableModule {
                 .handler(e -> {
                     EnderSignal es = (EnderSignal) e.getEntity();
                     final World world = e.getEntity().getLocation().getWorld();
-                    if (MoeUtils.plugin.getDatasource().getEndPortalsData().containsEndEyeTargetWorld(world.getName())) {
-                        Location closeLocation = nearestLocation(e.getEntity().getLocation(), MoeUtils.plugin.getDatasource().getEndPortalsData().getEndEyeTargetLocationsByWorld(world.getName()));
+                    if (MoeUtils.datasource().getEndPortals().containsEndEyeTargetWorld(world.getName())) {
+                        Location closeLocation = nearestLocation(e.getEntity().getLocation(), MoeUtils.datasource().getEndPortals().getEndEyeTargetLocationsByWorld(world.getName()));
                         es.setTargetLocation(closeLocation);
-                        if (MoeUtils.plugin.config.debug) {
-                            MoeUtils.plugin.getLogger().info("Found an end eye target location set");
+                        if (MoeUtils.config().debug) {
+                            MoeUtils.logger().info("Found an end eye target location set");
                         }
                     } else {
-                        if (MoeUtils.plugin.config.debug) {
-                            MoeUtils.plugin.getLogger().info("%s's end eye target location is not set".formatted(world.getName()));
+                        if (MoeUtils.config().debug) {
+                            MoeUtils.logger().info("%s's end eye target location is not set".formatted(world.getName()));
                         }
                     }
                 }).bindWith(consumer);

@@ -11,16 +11,16 @@ public class BetterPortals implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MoeUtils.logActiveStatus("BetterPortals", MoeUtils.plugin.config.better_portals_enabled))
+        if (MoeUtils.logActiveStatus("BetterPortals", MoeUtils.config().better_portals_enabled))
             return;
 
         Events.subscribe(PlayerPortalEvent.class)
                 .filter(e -> !e.getTo().getWorld().getWorldBorder().isInside(e.getTo()))
                 .handler(e -> {
                     e.setCancelled(true);
-                    e.getPlayer().sendMessage(MoeUtils.plugin.message(e.getPlayer(), "better-portals.cancelled"));
-                    if (MoeUtils.plugin.config.debug) {
-                        MoeUtils.plugin.getLogger().info(MoeUtils.plugin.message(e.getPlayer(), "better-portals.debug", "player", e.getPlayer().getName()));
+                    e.getPlayer().sendMessage(MoeUtils.text("better-portals.cancelled"));
+                    if (MoeUtils.config().debug) {
+                        MoeUtils.logger().info(MoeUtils.text("better-portals.debug", "player", e.getPlayer().getName()));
                     }
                 }).bindWith(consumer);
     }

@@ -1,6 +1,8 @@
 package co.mcsky.moeutils;
 
 import co.aikar.commands.PaperCommandManager;
+import co.mcsky.moecore.text.Text;
+import co.mcsky.moecore.text.TextRepository;
 import co.mcsky.moeutils.chat.CustomPrefix;
 import co.mcsky.moeutils.chat.CustomSuffix;
 import co.mcsky.moeutils.data.Datasource;
@@ -13,29 +15,25 @@ import de.themoep.utils.lang.bukkit.LanguageManager;
 import me.lucko.helper.Services;
 import me.lucko.helper.plugin.ExtendedJavaPlugin;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
+import java.util.logging.Logger;
 
 public class MoeUtils extends ExtendedJavaPlugin {
 
     public static MoeUtils plugin;
-    public static Economy economy;
 
-    public MoeConfig config;
-    private LanguageManager lang;
-
+    private MoeConfig config;
+    private Economy economy;
+    private LanguageManager languageManager;
+    private TextRepository textConfig;
     private MagicTime magicTime;
     private MagicWeather magicWeather;
     private FoundOres foundOres;
-
     private Datasource datasource;
     private DatasourceFileHandler datasourceFileHandler;
 
     /**
-     * Logs active status for given module.
-     *
      * @param module the module name
      * @param status whether the module is set to be enabled or disabled
      * @return true, if the module is set to be disabled, otherwise false
@@ -47,6 +45,42 @@ public class MoeUtils extends ExtendedJavaPlugin {
             plugin.getLogger().info(module + " is disabled");
         }
         return !status;
+    }
+
+    public static Logger logger() {
+        return plugin.getLogger();
+    }
+
+    public static MoeConfig config() {
+        return plugin.config;
+    }
+
+    public static Economy economy() {
+        return plugin.economy;
+    }
+
+    public static Datasource datasource() {
+        return plugin.datasource;
+    }
+
+    public static String text(String key, Object... replacements) {
+        if (replacements.length == 0) {
+            return plugin.languageManager.getDefaultConfig().get(key);
+        } else {
+            String[] list = new String[replacements.length];
+            for (int i = 0; i < replacements.length; i++) {
+                if (replacements[i] instanceof Double || replacements[i] instanceof Float) {
+                    list[i] = "%.3f".formatted(((Number) replacements[i]).doubleValue());
+                } else {
+                    list[i] = replacements[i].toString();
+                }
+            }
+            return plugin.languageManager.getDefaultConfig().get(key, list);
+        }
+    }
+
+    public static Text text3(String key) {
+        return plugin.textConfig.get(key);
     }
 
     @Override
@@ -99,45 +133,19 @@ public class MoeUtils extends ExtendedJavaPlugin {
         onEnable();
     }
 
-    public Datasource getDatasource() {
-        return datasource;
-    }
-
-    /**
-     * Get a message from a language config for a certain sender
-     *
-     * @param sender       The sender to get the string for.
-     * @param key          The language key in the config
-     * @param replacements An option array for replacements. (2n)-th will be the
-     *                     placeholder, (2n+1)-th the value. Placeholders have
-     *                     to be surrounded by percentage signs: {placeholder}
-     * @return The string from the config which matches the sender's language
-     * (or the default one) with the replacements replaced (or an error message,
-     * never null)
-     */
-    public String message(CommandSender sender, String key, Object... replacements) {
-        if (replacements.length == 0) {
-            return lang.getConfig(sender).get(key);
-        } else {
-            return lang.getConfig(sender).get(key, Arrays.stream(replacements)
-                    .map(Object::toString)
-                    .toArray(String[]::new));
-        }
-    }
-
     private void initializeLanguageManager() {
-        lang = new LanguageManager(this, "languages", "zh");
-        lang.setPlaceholderPrefix("{");
-        lang.setPlaceholderSuffix("}");
-        lang.setProvider(sender -> {
+        languageManager = new LanguageManager(this, "languages", "zh");
+        languageManager.setPlaceholderPrefix("{");
+        languageManager.setPlaceholderSuffix("}");
+        languageManager.setProvider(sender -> {
             if (sender instanceof Player)
                 return ((Player) sender).locale().getLanguage();
             return null;
         });
+        textConfig = new TextRepository(MoeUtils::text);
     }
 
     private void initializeModules() {
-        // all are terminable
         bindModule(new BetterPortals());
         bindModule(new DeathLogger());
         bindModule(new BetterBees());

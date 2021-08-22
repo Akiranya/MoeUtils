@@ -6,6 +6,7 @@ import me.lucko.helper.Events;
 import me.lucko.helper.Schedulers;
 import me.lucko.helper.scheduler.Ticks;
 import me.lucko.helper.terminable.TerminableConsumer;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +22,7 @@ public class MagicWeather extends MagicBase {
     private final Map<String, String> lastPlayers;
 
     public MagicWeather() {
-        super(MoeUtils.plugin.config.magic_weather_cooldown);
+        super(MoeUtils.config().magic_weather_cooldown);
         cooldownKeys = Collections.unmodifiableMap(new HashMap<>() {{
             MoeUtils.plugin.getServer().getWorlds().forEach(world -> put(world.getName(), UUID.randomUUID()));
         }});
@@ -58,7 +59,7 @@ public class MagicWeather extends MagicBase {
     }
 
     public boolean checkBalance(Player player) {
-        return checkBalance(player, MoeUtils.plugin.config.magic_weather_cost);
+        return checkBalance(player, MoeUtils.config().magic_weather_cost);
     }
 
     public boolean checkCooldown(Player player) {
@@ -70,19 +71,21 @@ public class MagicWeather extends MagicBase {
     }
 
     public void chargePlayer(Player player) {
-        chargePlayer(player, MoeUtils.plugin.config.magic_weather_cost);
+        chargePlayer(player, MoeUtils.config().magic_weather_cost);
     }
 
     public void futureBroadcast(String weatherName, String worldName) {
-        String prefix = MoeUtils.plugin.message(null, "magic-weather.prefix");
-        String message = MoeUtils.plugin.message(null, "magic-weather.ended", "weather", weatherName, "world", worldName);
-        Schedulers.bukkit().runTaskLaterAsynchronously(MoeUtils.plugin, () -> MoeUtils.plugin.getServer().broadcastMessage(prefix + message), Ticks.from(cooldownAmount, TimeUnit.SECONDS));
+        String prefix = MoeUtils.text("magic-weather.prefix");
+        String message = MoeUtils.text("magic-weather.ended", "weather", weatherName, "world", worldName);
+        Schedulers.bukkit().runTaskLaterAsynchronously(MoeUtils.plugin, () -> {
+            MoeUtils.plugin.getServer().broadcast(Component.text(prefix + message));
+        }, Ticks.from(cooldownAmount, TimeUnit.SECONDS));
     }
 
     public void broadcast(String weatherName, String worldName) {
-        String prefix = MoeUtils.plugin.message(null, "magic-weather.prefix");
-        String message = MoeUtils.plugin.message(null, "magic-weather.changed", "world", worldName, "weather", weatherName);
-        MoeUtils.plugin.getServer().broadcastMessage(prefix + message);
+        String prefix = MoeUtils.text("magic-weather.prefix");
+        String message = MoeUtils.text("magic-weather.changed", "world", worldName, "weather", weatherName);
+        MoeUtils.plugin.getServer().broadcast(Component.text(prefix + message));
     }
 
     /**

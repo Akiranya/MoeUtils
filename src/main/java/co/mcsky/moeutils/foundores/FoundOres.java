@@ -1,13 +1,12 @@
 package co.mcsky.moeutils.foundores;
 
+import co.mcsky.moecore.text.Text;
 import co.mcsky.moeutils.MoeUtils;
 import me.lucko.helper.Events;
 import me.lucko.helper.Schedulers;
 import me.lucko.helper.scheduler.Ticks;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
-import me.lucko.helper.utils.Players;
-import net.kyori.adventure.text.Component;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
@@ -43,12 +42,12 @@ public class FoundOres implements TerminableModule {
 
     public FoundOres() {
         locationHistory = new HashSet<>();
-        blockCounter = new BlockCounter(MoeUtils.plugin.config.max_iterations);
+        blockCounter = new BlockCounter(MoeUtils.config().max_iterations);
 
         hashEnabledBlocks = new HashSet<>();
         hashEnabledWorld = new HashSet<>();
-        hashEnabledBlocks.addAll(MoeUtils.plugin.config.enabled_blocks);
-        hashEnabledWorld.addAll(MoeUtils.plugin.config.enabled_worlds);
+        hashEnabledBlocks.addAll(MoeUtils.config().enabled_blocks);
+        hashEnabledWorld.addAll(MoeUtils.config().enabled_worlds);
 
         luckPerms = LuckPermsProvider.get();
     }
@@ -65,7 +64,7 @@ public class FoundOres implements TerminableModule {
                     .key(BROADCAST_TOGGLE_KEY)
                     .value(String.valueOf(!metaValue.orElse(true)))
                     .context(ImmutableContextSet.empty())
-                    .expiry(MoeUtils.plugin.config.non_listener_expiry_hours, TimeUnit.HOURS)
+                    .expiry(MoeUtils.config().non_listener_expiry_hours, TimeUnit.HOURS)
                     .build();
             user.data().clear(NodeType.META.predicate(mn -> mn.getMetaKey().equals(BROADCAST_TOGGLE_KEY)));
             user.data().add(metaNode);
@@ -85,29 +84,23 @@ public class FoundOres implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MoeUtils.logActiveStatus("FoundOres", MoeUtils.plugin.config.found_ores_enabled))
+        if (MoeUtils.logActiveStatus("FoundOres", MoeUtils.config().found_ores_enabled))
             return;
 
         // clear history locations at interval
-        Schedulers.sync().runRepeating(locationHistory::clear, 5, Ticks.from(MoeUtils.plugin.config.purge_interval, TimeUnit.SECONDS));
+        Schedulers.sync().runRepeating(locationHistory::clear, 5, Ticks.from(MoeUtils.config().purge_interval, TimeUnit.SECONDS));
 
         Events.subscribe(BlockBreakEvent.class)
                 .filter(e -> hashEnabledBlocks.contains(e.getBlock().getType()))
                 .filter(e -> hashEnabledWorld.contains(e.getBlock().getWorld().getName()))
                 .filter(e -> !locationHistory.contains(e.getBlock().getLocation()))
                 .handler(e -> {
-                    Component prefix = Component.text(MoeUtils.plugin.message(e.getPlayer(), "found-ores.prefix"));
-                    Component message = Component.text(MoeUtils.plugin.message(e.getPlayer(), "found-ores.found"))
-                            .replaceText(b -> b.matchLiteral("{player}").replacement(e.getPlayer().displayName()))
-                            .replaceText(b -> b.matchLiteral("{count}").replacement(Component.text(blockCounter.count(e.getBlock().getLocation(), e.getBlock().getType(), locationHistory))))
-                            .replaceText(b -> b.matchLiteral("{ore}").replacement(new ItemStack(e.getBlock().getType()).displayName()));
-
-                    // broadcast to each online player
-                    Players.forEach(p -> {
-                        if (isListener(p)) {
-                            p.sendMessage(prefix.append(message));
-                        }
-                    });
+                    final Text prefix = MoeUtils.text3("found-ores.prefix");
+                    final Text message = prefix.append(MoeUtils.text3("found-ores.found")
+                            .replace("player", e.getPlayer())
+                            .replace("count", blockCounter.count(e.getBlock().getLocation(), e.getBlock().getType(), locationHistory))
+                            .replace("ore", new ItemStack(e.getBlock().getType())));
+                    prefix.append(message).broadcast(Text.MessageType.BOSS_BAR, this::isListener);
                 }).bindWith(consumer);
     }
 }

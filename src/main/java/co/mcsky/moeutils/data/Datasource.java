@@ -11,7 +11,7 @@ public class Datasource {
         endPortalsData = new EndPortalsData();
     }
 
-    public EndPortalsData getEndPortalsData() {
+    public EndPortalsData getEndPortals() {
         return endPortalsData;
     }
 

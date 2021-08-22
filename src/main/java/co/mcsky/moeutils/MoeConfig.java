@@ -69,7 +69,7 @@ public final class MoeConfig {
         try {
             root = loader.load();
         } catch (ConfigurateException e) {
-            MoeUtils.plugin.getLogger().severe(e.getMessage());
+            MoeUtils.logger().severe(e.getMessage());
             MoeUtils.plugin.getServer().getPluginManager().disablePlugin(MoeUtils.plugin);
             return;
         }
@@ -132,7 +132,7 @@ public final class MoeConfig {
             suffix_money_cost = suffixNode.node("money-cost").getDouble(10);
 
         } catch (SerializationException e) {
-            MoeUtils.plugin.getLogger().severe(e.getMessage());
+            MoeUtils.logger().severe(e.getMessage());
         }
     }
 
@@ -143,7 +143,7 @@ public final class MoeConfig {
         try {
             loader.save(root);
         } catch (ConfigurateException e) {
-            MoeUtils.plugin.getLogger().severe(e.getMessage());
+            MoeUtils.logger().severe(e.getMessage());
         }
     }
 

@@ -16,12 +16,12 @@ public class LoginGuard implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MoeUtils.logActiveStatus("LoginProtection", MoeUtils.plugin.config.login_protection_enabled))
+        if (MoeUtils.logActiveStatus("LoginProtection", MoeUtils.config().login_protection_enabled))
             return;
 
         Events.subscribe(PlayerJoinEvent.class).handler(e -> {
-            final int duration = (int) Ticks.from(MoeUtils.plugin.config.login_protection_duration, TimeUnit.SECONDS);
-            final int amplifier = MoeUtils.plugin.config.login_protection_amplifier;
+            final int duration = (int) Ticks.from(MoeUtils.config().login_protection_duration, TimeUnit.SECONDS);
+            final int amplifier = MoeUtils.config().login_protection_amplifier;
             final PotionEffect effect = new PotionEffect(PotionEffectType.ABSORPTION, duration, amplifier);
             e.getPlayer().addPotionEffect(effect);
         }).bindWith(consumer);

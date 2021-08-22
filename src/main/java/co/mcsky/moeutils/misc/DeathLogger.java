@@ -1,14 +1,12 @@
 package co.mcsky.moeutils.misc;
 
 import co.aikar.commands.ACFBukkitUtil;
-import co.mcsky.moeutils.MoeConfig;
 import co.mcsky.moeutils.MoeUtils;
-import com.meowj.langutils.lang.LanguageHelper;
 import me.lucko.helper.Events;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -16,61 +14,46 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class DeathLogger implements TerminableModule {
 
-    private final static String separator = ", ";
+    private final static Component separator = Component.text(", ");
     private final Set<EntityType> hashLoggedCreatures;
 
     public DeathLogger() {
         hashLoggedCreatures = new HashSet<>();
-        hashLoggedCreatures.addAll(MoeUtils.plugin.config.logged_creatures);
+        hashLoggedCreatures.addAll(MoeUtils.config().logged_creatures);
     }
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MoeUtils.logActiveStatus("DeathLogger", MoeUtils.plugin.config.death_logger_enabled))
+        if (MoeUtils.logActiveStatus("DeathLogger", MoeUtils.config().death_logger_enabled))
             return;
 
         Events.subscribe(EntityDeathEvent.class)
                 .filter(e -> hashLoggedCreatures.contains(e.getEntityType()))
                 .handler(e -> {
                     LivingEntity entity = e.getEntity();
-                    String victimName = entity.getCustomName() != null
-                            ? entity.getCustomName() + "(" + LanguageHelper.getEntityName(e.getEntityType(), MoeConfig.DEFAULT_LANG) + ")"
-                            : LanguageHelper.getEntityName(e.getEntityType(), MoeConfig.DEFAULT_LANG);
-
-                    if (entity.getLastDamageCause() == null)
-                        return; // to avoid potential NPE
-                    String damageCause = getLocalization(entity.getLastDamageCause().getCause());
-
-                    // get the player relevant to this death.
+                    if (entity.getLastDamageCause() == null) return;
                     Player killer = entity.getKiller();
-                    String killerName;
+                    Component killerName;
                     if (killer != null) {
-                        killerName = killer.getName();
+                        // it's a direct kill
+                        killerName = killer.displayName();
                     } else {
-                        List<Player> nearbyPlayers = e.getEntity().getLocation().getNearbyPlayers(MoeUtils.plugin.config.search_radius).stream().toList();
-                        if (nearbyPlayers.size() != 0) {
-                            // All nearby players are included.
-                            killerName = nearbyPlayers.stream()
-                                    .map(HumanEntity::getName)
-                                    .reduce((acc, name) -> acc + separator + name)
-                                    .get();
-                        } else {
-                            killerName = MoeUtils.plugin.message(null, "common.none");
-                        }
+                        // otherwise, search for nearby players
+                        killerName = entity.getLocation().getNearbyPlayers(MoeUtils.config().search_radius).stream()
+                                .map(Player::displayName)
+                                .reduce((acc, name) -> acc.append(separator).append(name))
+                                .orElse(MoeUtils.text3("common.none").asComponent());
                     }
-
                     String location = ACFBukkitUtil.blockLocationToString(entity.getLocation());
-                    MoeUtils.plugin.getServer().broadcastMessage(MoeUtils.plugin.message(killer, "death-logger.death",
-                            "victim", victimName,
-                            "reason", damageCause,
-                            "killer", killerName,
-                            "location", location));
-
+                    MoeUtils.text3("death-logger.death")
+                            .replace("victim", entity)
+                            .replace("reason", getLocalization(entity.getLastDamageCause().getCause()))
+                            .replace("killer", killerName)
+                            .replace("location", location);
                 }).bindWith(consumer);
     }
 

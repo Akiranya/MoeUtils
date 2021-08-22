@@ -6,6 +6,7 @@ import me.lucko.helper.Events;
 import me.lucko.helper.Schedulers;
 import me.lucko.helper.scheduler.Ticks;
 import me.lucko.helper.terminable.TerminableConsumer;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +19,7 @@ public class MagicTime extends MagicBase {
     private String lastPlayer;
 
     public MagicTime() {
-        super(MoeUtils.plugin.config.magic_time_cooldown);
+        super(MoeUtils.config().magic_time_cooldown);
         cooldownKey = UUID.randomUUID();
     }
 
@@ -48,7 +49,7 @@ public class MagicTime extends MagicBase {
     }
 
     public boolean checkBalance(Player player) {
-        return checkBalance(player, MoeUtils.plugin.config.magic_time_cost);
+        return checkBalance(player, MoeUtils.config().magic_time_cost);
     }
 
     public boolean checkCooldown(Player player) {
@@ -60,19 +61,21 @@ public class MagicTime extends MagicBase {
     }
 
     public void chargePlayer(Player player) {
-        chargePlayer(player, MoeUtils.plugin.config.magic_time_cost);
+        chargePlayer(player, MoeUtils.config().magic_time_cost);
     }
 
     public void futureBroadcast(String timeName) {
-        String prefix = MoeUtils.plugin.message(null, "magic-time.prefix");
-        String message = MoeUtils.plugin.message(null, "magic-time.ended", "time", timeName);
-        Schedulers.bukkit().runTaskLaterAsynchronously(MoeUtils.plugin, () -> MoeUtils.plugin.getServer().broadcastMessage(prefix + message), Ticks.from(cooldownAmount, TimeUnit.SECONDS));
+        String prefix = MoeUtils.text("magic-time.prefix");
+        String message = MoeUtils.text("magic-time.ended", "time", timeName);
+        Schedulers.bukkit().runTaskLaterAsynchronously(MoeUtils.plugin, () -> {
+            MoeUtils.plugin.getServer().broadcast(Component.text(prefix + message));
+        }, Ticks.from(cooldownAmount, TimeUnit.SECONDS));
     }
 
     public void broadcast(String timeName) {
-        String prefix = MoeUtils.plugin.message(null, "magic-time.prefix");
-        String message = MoeUtils.plugin.message(null, "magic-time.changed", "time", timeName);
-        MoeUtils.plugin.getServer().broadcastMessage(prefix + message);
+        String prefix = MoeUtils.text("magic-time.prefix");
+        String message = MoeUtils.text("magic-time.changed", "time", timeName);
+        MoeUtils.plugin.getServer().broadcast(Component.text(prefix + message));
     }
 
     /**

@@ -21,13 +21,13 @@ public class DataSourceSerializer implements TypeSerializer<Datasource> {
         final Datasource datasource = new Datasource();
         final List<Location> locations = node.node("end-eye-target-locations").getList(Location.class, new ArrayList<>());
         final List<UUID> listeners = node.node("found-ores-listeners").getList(UUID.class, new ArrayList<>());
-        datasource.getEndPortalsData().addEndEyeTargetLocation(locations);
+        datasource.getEndPortals().addEndEyeTargetLocation(locations);
         return datasource;
     }
 
     @Override
     public void serialize(Type type, @Nullable Datasource obj, ConfigurationNode node) throws SerializationException {
         Preconditions.checkNotNull(obj);
-        node.node("end-eye-target-locations").setList(Location.class, obj.getEndPortalsData().getEndEyeTargetLocations());
+        node.node("end-eye-target-locations").setList(Location.class, obj.getEndPortals().getEndEyeTargetLocations());
     }
 }
