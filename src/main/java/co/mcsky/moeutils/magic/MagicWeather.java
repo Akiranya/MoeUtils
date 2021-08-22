@@ -7,6 +7,7 @@ import me.lucko.helper.Schedulers;
 import me.lucko.helper.scheduler.Ticks;
 import me.lucko.helper.terminable.TerminableConsumer;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +25,7 @@ public class MagicWeather extends MagicBase {
     public MagicWeather() {
         super(MoeUtils.config().magic_weather_cooldown);
         cooldownKeys = Collections.unmodifiableMap(new HashMap<>() {{
-            MoeUtils.plugin.getServer().getWorlds().forEach(world -> put(world.getName(), UUID.randomUUID()));
+            Bukkit.getWorlds().forEach(world -> put(world.getName(), UUID.randomUUID()));
         }});
         lastPlayers = new HashMap<>();
     }
@@ -78,14 +79,14 @@ public class MagicWeather extends MagicBase {
         String prefix = MoeUtils.text("magic-weather.prefix");
         String message = MoeUtils.text("magic-weather.ended", "weather", weatherName, "world", worldName);
         Schedulers.bukkit().runTaskLaterAsynchronously(MoeUtils.plugin, () -> {
-            MoeUtils.plugin.getServer().broadcast(Component.text(prefix + message));
+            Bukkit.broadcast(Component.text(prefix + message));
         }, Ticks.from(cooldownAmount, TimeUnit.SECONDS));
     }
 
     public void broadcast(String weatherName, String worldName) {
         String prefix = MoeUtils.text("magic-weather.prefix");
         String message = MoeUtils.text("magic-weather.changed", "world", worldName, "weather", weatherName);
-        MoeUtils.plugin.getServer().broadcast(Component.text(prefix + message));
+        Bukkit.broadcast(Component.text(prefix + message));
     }
 
     /**

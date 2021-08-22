@@ -7,6 +7,7 @@ import me.lucko.helper.Schedulers;
 import me.lucko.helper.scheduler.Ticks;
 import me.lucko.helper.terminable.TerminableConsumer;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -43,7 +44,7 @@ public class MagicTime extends MagicBase {
         MoeUtils.plugin.getServer().getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
             // set time for all worlds so that time between worlds are synchronized
-            MoeUtils.plugin.getServer().getWorlds().forEach(time::set);
+            Bukkit.getWorlds().forEach(time::set);
             lastPlayer = player.getName();
         }
     }
@@ -68,14 +69,14 @@ public class MagicTime extends MagicBase {
         String prefix = MoeUtils.text("magic-time.prefix");
         String message = MoeUtils.text("magic-time.ended", "time", timeName);
         Schedulers.bukkit().runTaskLaterAsynchronously(MoeUtils.plugin, () -> {
-            MoeUtils.plugin.getServer().broadcast(Component.text(prefix + message));
+            Bukkit.broadcast(Component.text(prefix + message));
         }, Ticks.from(cooldownAmount, TimeUnit.SECONDS));
     }
 
     public void broadcast(String timeName) {
         String prefix = MoeUtils.text("magic-time.prefix");
         String message = MoeUtils.text("magic-time.changed", "time", timeName);
-        MoeUtils.plugin.getServer().broadcast(Component.text(prefix + message));
+        Bukkit.broadcast(Component.text(prefix + message));
     }
 
     /**

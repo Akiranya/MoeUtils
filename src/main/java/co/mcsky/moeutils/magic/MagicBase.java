@@ -40,10 +40,13 @@ public abstract class MagicBase implements TerminableModule {
     }
 
     /**
-     * Resets the cooldown to which the key specified if the cooldown is not active.
+     * Resets the cooldown to which the key specified if the cooldown is not
+     * active.
      *
-     * @param cooldownKey the key to which cooldown to be reset (i.e. to active the cooldown)
-     * @return true if the cooldown to which the key specified is not active, otherwise not
+     * @param cooldownKey the key to which cooldown to be reset (i.e. to active
+     *                    the cooldown)
+     * @return true if the cooldown to which the key specified is not active,
+     * otherwise not
      */
     boolean test(UUID cooldownKey) {
         return cooldownMap.test(cooldownKey);
@@ -75,15 +78,15 @@ public abstract class MagicBase implements TerminableModule {
     }
 
     /**
-     * Attempts to charge player with specific fee. If the charging is successful, it
-     * will send relevant messages to the player.
+     * Attempts to charge player with specific fee. If the charging is
+     * successful, it will send relevant messages to the player.
      *
      * @param player The player who is to be charged.
      * @param cost   The amount of fee applied to the specific player.
      */
     void chargePlayer(Player player, int cost) {
         MoeUtils.economy().withdrawPlayer(player, cost);
-        MoeCore.plugin.systemAccount().depositSystem(cost);
+        MoeCore.systemAccount().depositSystem(cost);
         player.sendMessage(MoeUtils.text("common.price", "cost", cost));
     }
 
