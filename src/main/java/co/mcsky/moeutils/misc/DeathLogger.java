@@ -46,7 +46,8 @@ public class DeathLogger implements TerminableModule {
                         killerName = killer.displayName();
                     } else {
                         // otherwise, search for nearby players
-                        killerName = entity.getLocation().getNearbyPlayers(MoeUtils.config().search_radius).stream()
+                        killerName = entity.getLocation().getNearbyPlayers(MoeUtils.config().search_radius)
+                                .stream()
                                 .map(Player::displayName)
                                 .reduce((acc, name) -> acc.append(separator).append(name))
                                 .orElse(MoeUtils.text3("common.none").asComponent());
