@@ -1,6 +1,7 @@
 package co.mcsky.moeutils.misc;
 
 import co.aikar.commands.ACFBukkitUtil;
+import co.mcsky.moecore.text.Text;
 import co.mcsky.moeutils.MoeUtils;
 import me.lucko.helper.Events;
 import me.lucko.helper.terminable.TerminableConsumer;
@@ -53,7 +54,8 @@ public class DeathLogger implements TerminableModule {
                             .replace("victim", entity)
                             .replace("reason", getLocalization(entity.getLastDamageCause().getCause()))
                             .replace("killer", killerName)
-                            .replace("location", location);
+                            .replace("location", location)
+                            .broadcast(Text.MessageType.CHAT);
                 }).bindWith(consumer);
     }
 

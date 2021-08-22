@@ -100,7 +100,7 @@ public class FoundOres implements TerminableModule {
                             .replace("player", e.getPlayer())
                             .replace("count", blockCounter.count(e.getBlock().getLocation(), e.getBlock().getType(), locationHistory))
                             .replace("ore", new ItemStack(e.getBlock().getType())));
-                    prefix.append(message).broadcast(Text.MessageType.BOSS_BAR, this::isListener);
+                    prefix.append(message).broadcast(Text.MessageType.CHAT, this::isListener);
                 }).bindWith(consumer);
     }
 }
