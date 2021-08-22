@@ -17,6 +17,8 @@ import me.lucko.helper.plugin.ExtendedJavaPlugin;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.logging.Logger;
 
 public class MoeUtils extends ExtendedJavaPlugin {
@@ -70,7 +72,7 @@ public class MoeUtils extends ExtendedJavaPlugin {
             String[] list = new String[replacements.length];
             for (int i = 0; i < replacements.length; i++) {
                 if (replacements[i] instanceof Double || replacements[i] instanceof Float) {
-                    list[i] = "%.3f".formatted(((Number) replacements[i]).doubleValue());
+                    list[i] = list[i] = BigDecimal.valueOf(((Number) replacements[i]).doubleValue()).setScale(3, RoundingMode.HALF_UP).toPlainString();
                 } else {
                     list[i] = replacements[i].toString();
                 }
