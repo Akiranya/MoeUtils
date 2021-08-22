@@ -2,7 +2,9 @@ package co.mcsky.moeutils.misc;
 
 import co.aikar.commands.ACFBukkitUtil;
 import co.mcsky.moecore.text.Text;
+import co.mcsky.moeutils.MoeConfig;
 import co.mcsky.moeutils.MoeUtils;
+import com.meowj.langutils.lang.LanguageHelper;
 import me.lucko.helper.Events;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
@@ -49,12 +51,16 @@ public class DeathLogger implements TerminableModule {
                                 .reduce((acc, name) -> acc.append(separator).append(name))
                                 .orElse(MoeUtils.text3("common.none").asComponent());
                     }
-                    String location = ACFBukkitUtil.blockLocationToString(entity.getLocation());
+                    String victimName = LanguageHelper.getEntityName(entity, MoeConfig.DEFAULT_LANG);
+                    if (entity.getCustomName() != null) {
+                        // add custom name if there is one
+                        victimName = victimName + "(%s)".formatted(entity.getCustomName());
+                    }
                     MoeUtils.text3("death-logger.death")
-                            .replace("victim", entity)
+                            .replace("victim", victimName)
                             .replace("reason", getLocalization(entity.getLastDamageCause().getCause()))
                             .replace("killer", killerName)
-                            .replace("location", location)
+                            .replace("location", ACFBukkitUtil.blockLocationToString(entity.getLocation()))
                             .broadcast(Text.MessageType.CHAT);
                 }).bindWith(consumer);
     }
