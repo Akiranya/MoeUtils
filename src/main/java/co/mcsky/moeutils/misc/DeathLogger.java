@@ -9,6 +9,7 @@ import me.lucko.helper.Events;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -58,10 +59,10 @@ public class DeathLogger implements TerminableModule {
                         victimName = victimName + "(%s)".formatted(entity.getCustomName());
                     }
                     MoeUtils.text3("death-logger.death")
-                            .replace("victim", victimName)
-                            .replace("reason", getLocalization(entity.getLastDamageCause().getCause()))
-                            .replace("killer", killerName)
-                            .replace("location", ACFBukkitUtil.blockLocationToString(entity.getLocation()))
+                            .replace("victim", victimName, b -> b.color(NamedTextColor.GRAY))
+                            .replace("reason", getLocalization(entity.getLastDamageCause().getCause()), b -> b.color(NamedTextColor.GRAY))
+                            .replace("killer", killerName, b -> b.color(NamedTextColor.GRAY))
+                            .replace("location", ACFBukkitUtil.blockLocationToString(entity.getLocation()), b -> b.color(NamedTextColor.GRAY))
                             .broadcast(Text.MessageType.CHAT);
                 }).bindWith(consumer);
     }
