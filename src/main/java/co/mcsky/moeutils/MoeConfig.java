@@ -14,22 +14,21 @@ import java.util.List;
 public final class MoeConfig {
 
     public static final String DEFAULT_LANG = "zh_cn";
-    private static final String CONFIG_FILENAME = "config.yml";
+    public static final String CONFIG_FILENAME = "config.yml";
+
+    private final YamlConfigurationLoader loader;
 
     public boolean debug;
-
     public boolean found_ores_enabled;
     public int max_iterations;
     public int purge_interval;
     public List<Material> enabled_blocks;
     public List<String> enabled_worlds;
     public int non_listener_expiry_hours;
-
     public int magic_time_cooldown;
     public int magic_time_cost;
     public int magic_weather_cooldown;
     public int magic_weather_cost;
-
     public boolean better_bees_enabled;
     public boolean require_sneak;
     public boolean better_portals_enabled;
@@ -40,14 +39,12 @@ public final class MoeConfig {
     public boolean login_protection_enabled;
     public int login_protection_duration;
     public int login_protection_amplifier;
-
     public List<String> prefix_disabled_formatting_codes;
     public List<String> prefix_blocked_words;
     public int prefix_priority;
     public int prefix_max_length;
     public int prefix_exp_cost;
     public double prefix_money_cost;
-
     public List<String> suffix_disabled_formatting_codes;
     public List<String> suffix_blocked_words;
     public int suffix_priority;
@@ -55,7 +52,6 @@ public final class MoeConfig {
     public int suffix_exp_cost;
     public double suffix_money_cost;
 
-    private YamlConfigurationLoader loader;
     private CommentedConfigurationNode root;
 
     public MoeConfig() {
