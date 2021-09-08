@@ -20,7 +20,8 @@ public class CustomPrefix {
     }
 
     public void set(Player player, String prefix) {
-        String test = prefix;
+        // make sure the color code in string test is \u00A7
+        String test = Text.decolorize(prefix);
 
         // check length
         if (ChatColor.stripColor(Text.colorize(test)).length() > MoeUtils.config().prefix_max_length) {

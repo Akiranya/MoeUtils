@@ -17,7 +17,8 @@ public class CustomSuffix {
     }
 
     public void set(Player player, String suffix) {
-        String test = suffix;
+        // make sure the color code in string test is \u00A7
+        String test = Text.decolorize(suffix);
 
         // check length
         if (ChatColor.stripColor(Text.colorize(test)).length() > MoeUtils.config().suffix_max_length) {
@@ -28,6 +29,7 @@ public class CustomSuffix {
         // check disabled formatting codes
         for (String k : MoeUtils.config().suffix_disabled_formatting_codes) {
             if (test.toUpperCase().contains("&" + k.toUpperCase())) {
+                // TODO not working
                 player.sendMessage(MoeUtils.text("common.blocked-format-codes", "code", "#" + k));
                 return;
             }
