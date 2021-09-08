@@ -7,6 +7,7 @@ import co.mcsky.moeutils.chat.CustomPrefix;
 import co.mcsky.moeutils.chat.CustomSuffix;
 import co.mcsky.moeutils.data.Datasource;
 import co.mcsky.moeutils.data.DatasourceFileHandler;
+import co.mcsky.moeutils.external.MoePlaceholderExpansion;
 import co.mcsky.moeutils.foundores.FoundOres;
 import co.mcsky.moeutils.magic.MagicTime;
 import co.mcsky.moeutils.magic.MagicWeather;
@@ -160,13 +161,25 @@ public class MoeUtils extends ExtendedJavaPlugin {
 
     private void registerCommands() {
         PaperCommandManager manager = new PaperCommandManager(this);
+
+        // replacements have to be added here
+        manager.getCommandReplacements().addReplacement("%main", "mu");
+
         manager.registerDependency(MagicTime.class, magicTime);
         manager.registerDependency(MagicWeather.class, magicWeather);
         manager.registerDependency(Datasource.class, datasource);
         manager.registerDependency(FoundOres.class, foundOres);
         manager.registerDependency(CustomPrefix.class, new CustomPrefix());
         manager.registerDependency(CustomSuffix.class, new CustomSuffix());
-        manager.registerCommand(new MoeCommands());
+
+        new MoeCommands(manager);
+    }
+
+    private void hookExternal() {
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new MoePlaceholderExpansion().register();
+            getLogger().info("Hooked into PlaceholderAPI");
+        }
     }
 
 }

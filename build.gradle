@@ -22,18 +22,20 @@ processResources {
 
 compileJava {
     options.encoding = 'UTF-8'
+    options.compilerArgs += ["-parameters"]
 }
 
 repositories {
     mavenLocal()
     mavenCentral()
 
-    maven { name = 'spigot'; url = 'https://papermc.io/repo/repository/maven-public/' }
     maven { name = 'paper'; url = 'https://papermc.io/repo/repository/maven-public/' }
     maven { name = 'minebench'; url = 'https://repo.minebench.de/' }
     maven { name = 'aikar'; url = 'https://repo.aikar.co/content/groups/aikar/' }
     maven { name = 'lucko'; url = 'https://repo.lucko.me' }
     maven { name = 'jitpack'; url = 'https://jitpack.io' }
+    maven { name = 'sonatype-oss-snapshots'; url = 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    maven { name = 'extendedclip'; url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
 }
 
 dependencies {
@@ -42,5 +44,6 @@ dependencies {
     compileOnly('net.luckperms:api:5.3')
     compileOnly('com.meowj:LangUtils:2.3-SNAPSHOT')
     compileOnly('net.milkbowl.vault:VaultAPI:1.7') { transitive = false }
+    compileOnly 'me.clip:placeholderapi:2.10.10'
     compileOnly('co.mcsky:MoeCore:5.7')
 }

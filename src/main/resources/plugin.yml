@@ -7,6 +7,7 @@ author: Nailm
 website: https://mimaru.me
 prefix: MoeUtils
 depend: [MoeCore, LangUtils, Vault]
+softdepend: [ PlaceholderAPI ]
 permissions:
   moe.*:
     description: Gives access to all MoeUtils commands

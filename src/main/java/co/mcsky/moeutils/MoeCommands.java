@@ -1,185 +1,32 @@
 package co.mcsky.moeutils;
 
-import co.aikar.commands.ACFBukkitUtil;
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.*;
-import co.mcsky.moeutils.chat.CustomPrefix;
-import co.mcsky.moeutils.chat.CustomSuffix;
-import co.mcsky.moeutils.data.Datasource;
-import co.mcsky.moeutils.foundores.FoundOres;
-import co.mcsky.moeutils.magic.MagicTime;
-import co.mcsky.moeutils.magic.MagicWeather;
-import co.mcsky.moeutils.magic.TimeOption;
-import co.mcsky.moeutils.magic.WeatherOption;
-import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import co.aikar.commands.PaperCommandManager;
+import co.mcsky.moeutils.command.*;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 
-@CommandAlias("mu")
-public class MoeCommands extends BaseCommand {
+public record MoeCommands(PaperCommandManager manager) {
 
-    @Dependency
-    public MoeUtils plugin;
-    @Dependency
-    public Datasource datasource;
-    @Dependency
-    public MagicTime time;
-    @Dependency
-    public MagicWeather weather;
-    @Dependency
-    public CustomPrefix customPrefix;
-    @Dependency
-    public CustomSuffix customSuffix;
-    @Dependency
-    public FoundOres foundOres;
+    public MoeCommands(PaperCommandManager manager) {
+        this.manager = manager;
 
-    @Subcommand("mining-broadcast")
-    public void toggleMiningBroadcast(Player player) {
-        if (foundOres.isListener(player)) {
-            foundOres.toggleBroadcast(player);
-            player.sendMessage(MoeUtils.text("found-ores.toggle-broadcast-off"));
-        } else {
-            foundOres.toggleBroadcast(player);
-            player.sendMessage(MoeUtils.text("found-ores.toggle-broadcast-on"));
-        }
+        // must first register conditions & completions
+        registerCompletions();
+        registerConditions();
+
+        // then register each command
+        manager.registerCommand(new AdminCommand());
+        manager.registerCommand(new ChatMetaCommand());
+        manager.registerCommand(new MagicUtilCommand());
+        manager.registerCommand(new MiniMessageCommand());
+        manager.registerCommand(new MiscCommand());
     }
 
-    @Subcommand("prefix")
-    @CommandCompletion("@nothing")
-    @CommandPermission("moe.prefix")
-    public void prefix(Player player, String prefix) {
-        customPrefix.set(player, prefix);
+    private void registerCompletions() {
+        manager.getCommandCompletions().registerCompletion("worlds", c -> Bukkit.getWorlds().stream().map(World::getName).toList());
     }
 
-    @Subcommand("prefix clear")
-    @CommandPermission("moe.prefix")
-    public void prefix(Player player) {
-        customPrefix.clear(player);
-    }
-
-    @Subcommand("suffix")
-    @CommandCompletion("@nothing")
-    @CommandPermission("moe.suffix")
-    public void suffix(Player player, String suffix) {
-        customSuffix.set(player, suffix);
-    }
-
-    @Subcommand("suffix clear")
-    @CommandPermission("moe.suffix")
-    public void suffix(Player player) {
-        customSuffix.clear(player);
-    }
-
-    @Subcommand("reload")
-    @CommandPermission("moe.admin")
-    @Description("Reload config from files.")
-    public void reload(CommandSender sender) {
-        MoeUtils.plugin.reload();
-        sender.sendMessage(MoeUtils.text("common.reloaded"));
-    }
-
-    @Subcommand("version|ver")
-    @CommandPermission("moe.admin")
-    @Description("Get the version of this plugin.")
-    public void version(CommandSender sender) {
-        sender.sendMessage(MoeUtils.text("common.version", "version", plugin.getDescription().getVersion()));
-    }
-
-    @Subcommand("portal-changer")
-    @CommandPermission("moe.admin")
-    public class PortalChangerCommand extends BaseCommand {
-        @Subcommand("set")
-        public void set(Player player) {
-            final Location location = player.getLocation().toBlockLocation();
-            datasource.getEndPortals().addEndEyeTargetLocation(location);
-            player.sendMessage(MoeUtils.text("end-eye-changer.set", "location", ACFBukkitUtil.blockLocationToString(location)));
-        }
-
-        @Subcommand("list")
-        public void list(CommandSender sender) {
-            sender.sendMessage(MoeUtils.text("end-eye-changer.list-title"));
-            datasource.getEndPortals().getEndEyeTargetLocations().forEach(location -> sender.sendMessage(MoeUtils.text("end-eye-changer.list", "location", ACFBukkitUtil.blockLocationToString(location))));
-        }
-
-        @Subcommand("clear")
-        public void clear(CommandSender sender) {
-            datasource.getEndPortals().clearTargetLocations();
-            sender.sendMessage(MoeUtils.text("end-eye-changer.clear"));
-        }
-    }
-
-    @Subcommand("weather")
-    public class WeatherCommand extends BaseCommand {
-
-        @Subcommand("sun|clear")
-        @CommandPermission("moe.magic.weather")
-        @Description("Call magic clear.")
-        public void callSun(Player player) {
-            weather.call(WeatherOption.CLEAR, player);
-        }
-
-        @Subcommand("rain|storm")
-        @CommandPermission("moe.magic.weather")
-        @Description("Call magic rain.")
-        public void callRain(Player player) {
-            weather.call(WeatherOption.RAIN, player);
-        }
-
-        @Subcommand("thunder|lightning")
-        @CommandPermission("moe.magic.weather")
-        @Description("Call magic thunder.")
-        public void callThunder(Player player) {
-            weather.call(WeatherOption.THUNDER, player);
-        }
-
-        @Subcommand("reset")
-        @CommandPermission("moe.magic.reset")
-        @Description("Reset cooldown of magic weather.")
-        public void reset(CommandSender sender) {
-            weather.resetCooldown();
-            sender.sendMessage(MoeUtils.text("common.reset"));
-        }
-
-        @Subcommand("status")
-        @CommandPermission("moe.magic.status")
-        @Description("Get the last player who called magic weather.")
-        public void status(CommandSender sender) {
-            sender.sendMessage(weather.getLastPlayers());
-        }
-
-    }
-
-    @Subcommand("time")
-    public class TimeCommand extends BaseCommand {
-
-        @Subcommand("day")
-        @CommandPermission("moe.magic.time")
-        @Description("Call magic day.")
-        public void callDay(Player player) {
-            time.call(TimeOption.DAY, player);
-        }
-
-        @Subcommand("night")
-        @CommandPermission("moe.magic.time")
-        @Description("Call magic night.")
-        public void callNight(Player player) {
-            time.call(TimeOption.NIGHT, player);
-        }
-
-        @Subcommand("reset")
-        @CommandPermission("moe.magic.reset")
-        @Description("Reset cooldown of magic time.")
-        public void reset(CommandSender sender) {
-            time.resetCooldown();
-            sender.sendMessage(MoeUtils.text("common.reset"));
-        }
-
-        @Subcommand("status")
-        @CommandPermission("moe.magic.status")
-        @Description("Get the last player who called magic time.")
-        public void status(CommandSender sender) {
-            sender.sendMessage(time.getLastPlayer());
-        }
+    private void registerConditions() {
 
     }
 
