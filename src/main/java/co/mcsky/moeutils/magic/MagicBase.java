@@ -86,7 +86,7 @@ public abstract class MagicBase implements TerminableModule {
      */
     void chargePlayer(Player player, int cost) {
         MoeUtils.economy().withdrawPlayer(player, cost);
-        MoeCore.systemAccount().depositSystem(cost);
+//        MoeCore.systemAccount().depositSystem(cost); // 去TM的循环经济
         player.sendMessage(MoeUtils.text("common.price", "cost", cost));
     }
 
