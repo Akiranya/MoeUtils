@@ -2,12 +2,14 @@ plugins {
     id 'java'
 }
 
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+}
+
 ext.pluginNameUpper = "MoeUtils"
 ext.majorVersion = 1
 ext.minorVersion = 8
-ext.minecraftVersion = "1.17.1"
-sourceCompatibility = JavaVersion.VERSION_16
-targetCompatibility = JavaVersion.VERSION_16
+ext.minecraftVersion = "1.18.1"
 
 group = 'co.mcsky'
 archivesBaseName = "${pluginNameUpper}-mc$minecraftVersion"
@@ -30,6 +32,7 @@ repositories {
     mavenCentral()
 
     maven { name = 'paper'; url = 'https://papermc.io/repo/repository/maven-public/' }
+    maven { name = 'nyaacat'; url = 'https://ci.nyaacat.com/maven/' }
     maven { name = 'minebench'; url = 'https://repo.minebench.de/' }
     maven { name = 'aikar'; url = 'https://repo.aikar.co/content/groups/aikar/' }
     maven { name = 'lucko'; url = 'https://repo.lucko.me' }
@@ -39,11 +42,11 @@ repositories {
 }
 
 dependencies {
-    compileOnly('io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT')
+    compileOnly('io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT')
     compileOnly('me.lucko:helper:5.6.8')
     compileOnly('net.luckperms:api:5.3')
     compileOnly('com.meowj:LangUtils:2.3-SNAPSHOT')
     compileOnly('net.milkbowl.vault:VaultAPI:1.7') { transitive = false }
-    compileOnly 'me.clip:placeholderapi:2.10.10'
+    compileOnly 'me.clip:placeholderapi:2.11.1'
     compileOnly('co.mcsky:MoeCore:5.7')
 }
