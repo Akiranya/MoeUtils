@@ -1,6 +1,5 @@
 package co.mcsky.moeutils.chat;
 
-import co.mcsky.moecore.MoeCore;
 import co.mcsky.moecore.experience.ExperienceUtils;
 import co.mcsky.moecore.luckperms.LuckPermsUtil;
 import co.mcsky.moeutils.MoeUtils;
@@ -55,7 +54,6 @@ public class CustomSuffix {
                 player.sendMessage(MoeUtils.text("common.not-enough-money"));
                 return;
             }
-            MoeCore.systemAccount().deposit(MoeUtils.config().suffix_money_cost, plugin);
         }
         MoeUtils.economy().withdrawPlayer(player, MoeUtils.config().suffix_money_cost);
 

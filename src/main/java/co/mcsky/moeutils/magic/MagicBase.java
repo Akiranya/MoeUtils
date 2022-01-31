@@ -73,7 +73,7 @@ public abstract class MagicBase implements TerminableModule {
     boolean checkBalance(Player player, int cost) {
         if (MoeUtils.economy().has(player, cost))
             return true;
-        player.sendMessage(MoeUtils.text("common.not_enough_money"));
+        player.sendMessage(MoeUtils.text("common.not-enough-money"));
         return false;
     }
 
@@ -86,7 +86,6 @@ public abstract class MagicBase implements TerminableModule {
      */
     void chargePlayer(Player player, int cost) {
         MoeUtils.economy().withdrawPlayer(player, cost);
-//        MoeCore.systemAccount().depositSystem(cost); // 去TM的循环经济
         player.sendMessage(MoeUtils.text("common.price", "cost", cost));
     }
 
