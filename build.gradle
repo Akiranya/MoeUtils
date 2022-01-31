@@ -32,6 +32,7 @@ repositories {
     mavenCentral()
 
     maven { name = 'paper'; url = 'https://papermc.io/repo/repository/maven-public/' }
+    maven { name = 'helper'; url = 'https://repo.lucko.me/' }
     maven { name = 'nyaacat'; url = 'https://ci.nyaacat.com/maven/' }
     maven { name = 'minebench'; url = 'https://repo.minebench.de/' }
     maven { name = 'aikar'; url = 'https://repo.aikar.co/content/groups/aikar/' }
@@ -43,7 +44,7 @@ repositories {
 
 dependencies {
     compileOnly('io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT')
-    compileOnly('me.lucko:helper:5.6.8')
+    compileOnly('me.lucko:helper:5.6.9')
     compileOnly('net.luckperms:api:5.3')
     compileOnly('com.meowj:LangUtils:2.3-SNAPSHOT')
     compileOnly('net.milkbowl.vault:VaultAPI:1.7') { transitive = false }
