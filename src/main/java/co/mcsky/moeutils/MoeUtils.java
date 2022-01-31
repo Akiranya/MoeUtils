@@ -16,10 +16,9 @@ import de.themoep.utils.lang.bukkit.LanguageManager;
 import me.lucko.helper.Services;
 import me.lucko.helper.plugin.ExtendedJavaPlugin;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.logging.Logger;
 
 public class MoeUtils extends ExtendedJavaPlugin {
@@ -68,17 +67,13 @@ public class MoeUtils extends ExtendedJavaPlugin {
 
     public static String text(String key, Object... replacements) {
         if (replacements.length == 0) {
-            return plugin.languageManager.getDefaultConfig().get(key);
+            return ChatColor.translateAlternateColorCodes('&', plugin.languageManager.getDefaultConfig().get(key));
         } else {
             String[] list = new String[replacements.length];
             for (int i = 0; i < replacements.length; i++) {
-                if (replacements[i] instanceof Double || replacements[i] instanceof Float) {
-                    list[i] = list[i] = BigDecimal.valueOf(((Number) replacements[i]).doubleValue()).setScale(3, RoundingMode.HALF_UP).toPlainString();
-                } else {
-                    list[i] = replacements[i].toString();
-                }
+                list[i] = replacements[i].toString();
             }
-            return plugin.languageManager.getDefaultConfig().get(key, list);
+            return ChatColor.translateAlternateColorCodes('&', plugin.languageManager.getDefaultConfig().get(key, list));
         }
     }
 
