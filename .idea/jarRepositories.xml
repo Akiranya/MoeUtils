@@ -86,5 +86,15 @@
       <option name="name" value="extendedclip" />
       <option name="url" value="https://repo.extendedclip.com/content/repositories/placeholderapi/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="helper" />
+      <option name="name" value="helper" />
+      <option name="url" value="https://repo.lucko.me/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="codemc" />
+      <option name="name" value="codemc" />
+      <option name="url" value="https://repo.codemc.org/repository/maven-public/" />
+    </remote-repository>
   </component>
 </project>
