@@ -2,11 +2,11 @@ name: MoeUtils
 main: co.mcsky.moeutils.MoeUtils
 version: ${version}
 api-version: '1.13'
-description: A all-in-One plugin.
+description: A all-in-one plugin.
 author: Nailm
 website: https://mimaru.me
 prefix: MoeUtils
-depend: [MoeCore, LangUtils, Vault]
+depend: [CommandAPI, MoeCore, LangUtils, Vault]
 softdepend: [ PlaceholderAPI ]
 permissions:
   moe.*:

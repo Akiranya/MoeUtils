@@ -1,6 +1,5 @@
 package co.mcsky.moeutils;
 
-import co.aikar.commands.PaperCommandManager;
 import co.mcsky.moecore.text.Text;
 import co.mcsky.moecore.text.TextRepository;
 import co.mcsky.moeutils.chat.CustomPrefix;
@@ -29,9 +28,6 @@ public class MoeUtils extends ExtendedJavaPlugin {
     private Economy economy;
     private LanguageManager languageManager;
     private TextRepository textRepository;
-    private MagicTime magicTime;
-    private MagicWeather magicWeather;
-    private FoundOres foundOres;
     private Datasource datasource;
     private DatasourceFileHandler datasourceFileHandler;
 
@@ -66,15 +62,17 @@ public class MoeUtils extends ExtendedJavaPlugin {
     }
 
     public static String text(String key, Object... replacements) {
+        String message;
         if (replacements.length == 0) {
-            return ChatColor.translateAlternateColorCodes('&', plugin.languageManager.getDefaultConfig().get(key));
+            message = plugin.languageManager.getDefaultConfig().get(key);
         } else {
             String[] list = new String[replacements.length];
             for (int i = 0; i < replacements.length; i++) {
                 list[i] = replacements[i].toString();
             }
-            return ChatColor.translateAlternateColorCodes('&', plugin.languageManager.getDefaultConfig().get(key, list));
+            message = plugin.languageManager.getDefaultConfig().get(key, list);
         }
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 
     public static Text text3(String key) {
@@ -127,8 +125,9 @@ public class MoeUtils extends ExtendedJavaPlugin {
     }
 
     public void reload() {
-        onDisable();
-        onEnable();
+        initializeModules();
+        config.save();
+        config.load();
     }
 
     private void initializeLanguageManager() {
@@ -144,30 +143,18 @@ public class MoeUtils extends ExtendedJavaPlugin {
     }
 
     private void initializeModules() {
-        bindModule(new BetterPortals());
         bindModule(new DeathLogger());
         bindModule(new BetterBees());
-        bindModule(new LoginGuard());
-        bindModule(new EndEyeChanger());
-        foundOres = bindModule(new FoundOres());
-        magicTime = bindModule(new MagicTime());
-        magicWeather = bindModule(new MagicWeather());
+//        bindModule(new BetterPortals());
+//        bindModule(new EndEyeChanger());
+//        bindModule(new LoginGuard());
     }
 
     private void registerCommands() {
-        PaperCommandManager manager = new PaperCommandManager(this);
-
-        // replacements have to be added here
-        manager.getCommandReplacements().addReplacement("%main", "mu");
-
-        manager.registerDependency(MagicTime.class, magicTime);
-        manager.registerDependency(MagicWeather.class, magicWeather);
-        manager.registerDependency(Datasource.class, datasource);
-        manager.registerDependency(FoundOres.class, foundOres);
-        manager.registerDependency(CustomPrefix.class, new CustomPrefix());
-        manager.registerDependency(CustomSuffix.class, new CustomSuffix());
-
-        new MoeCommands(manager);
+        new MoeCommands(datasource,
+                bindModule(new FoundOres()),
+                new CustomPrefix(), new CustomSuffix(),
+                bindModule(new MagicTime()), bindModule(new MagicWeather()));
     }
 
     private void hookExternal() {
