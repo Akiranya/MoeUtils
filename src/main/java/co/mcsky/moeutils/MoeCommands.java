@@ -11,7 +11,6 @@ import co.mcsky.moeutils.magic.WeatherOption;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.EntitySelectorArgument;
 import dev.jorel.commandapi.arguments.GreedyStringArgument;
-import dev.jorel.commandapi.arguments.StringArgument;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
@@ -22,12 +21,14 @@ public class MoeCommands {
     public MoeCommands(Datasource datasource, FoundOres ores, CustomPrefix prefix, CustomSuffix suffix, MagicTime time, MagicWeather weather) {
 
         CommandAPICommand reloadCommand = new CommandAPICommand("reload")
+                .withPermission("moe.admin")
                 .executes((sender, args) -> {
                     MoeUtils.plugin.reload();
                     sender.sendMessage(MoeUtils.text("common.reloaded"));
                 });
 
         CommandAPICommand versionCommand = new CommandAPICommand("version")
+                .withPermission("moe.admin")
                 .executes((sender, args) -> {
                     sender.sendMessage(MoeUtils.text("common.version", "version", MoeUtils.plugin.getDescription().getVersion()));
                 });
