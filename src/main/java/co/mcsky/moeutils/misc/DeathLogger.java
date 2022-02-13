@@ -1,6 +1,5 @@
 package co.mcsky.moeutils.misc;
 
-import co.aikar.commands.ACFBukkitUtil;
 import co.mcsky.moecore.text.Text;
 import co.mcsky.moeutils.MoeConfig;
 import co.mcsky.moeutils.MoeUtils;
@@ -62,7 +61,7 @@ public class DeathLogger implements TerminableModule {
                             .replace("victim", victimName, b -> b.color(NamedTextColor.GRAY))
                             .replace("reason", getLocalization(entity.getLastDamageCause().getCause()), b -> b.color(NamedTextColor.GRAY))
                             .replace("killer", killerName, b -> b.color(NamedTextColor.GRAY))
-                            .replace("location", ACFBukkitUtil.blockLocationToString(entity.getLocation()), b -> b.color(NamedTextColor.GRAY))
+                            .replace("location", entity.getLocation().getBlockX() + "," + entity.getLocation().getBlockY() + "," + entity.getLocation().getBlockZ() + "," + entity.getLocation().getWorld().getName(), b -> b.color(NamedTextColor.GRAY))
                             .broadcast(Text.MessageType.CHAT);
                 }).bindWith(consumer);
     }
