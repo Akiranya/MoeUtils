@@ -18,14 +18,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class EndEyeChanger implements TerminableModule {
+public class CustomEnderEye implements TerminableModule {
 
-    public EndEyeChanger() {
+    public CustomEnderEye() {
     }
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MoeUtils.logActiveStatus("EndEyeChanger", MoeUtils.config().end_eye_changer_enabled))
+        if (MoeUtils.report("CustomEnderEye", MoeUtils.config().custom_ender_eye_enabled))
             return;
 
         // spawn an end signal entity if the world does not spawn

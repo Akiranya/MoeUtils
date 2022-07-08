@@ -6,7 +6,7 @@ description: A all-in-one plugin.
 author: Nailm
 website: https://mimaru.me
 prefix: MoeUtils
-depend: [CommandAPI, MoeCore, LangUtils, Vault]
+depend: [ MoeCore, Vault, CommandAPI, LangUtils ]
 softdepend: [ PlaceholderAPI ]
 permissions:
   moe.*:

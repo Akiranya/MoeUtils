@@ -35,10 +35,7 @@ public final class MoeConfig {
     public boolean death_logger_enabled;
     public int search_radius;
     public List<EntityType> logged_creatures;
-    public boolean end_eye_changer_enabled;
-    public boolean login_protection_enabled;
-    public int login_protection_duration;
-    public int login_protection_amplifier;
+    public boolean custom_ender_eye_enabled;
     public List<String> prefix_disabled_formatting_codes;
     public List<String> prefix_blocked_words;
     public int prefix_priority;
@@ -103,13 +100,8 @@ public final class MoeConfig {
             search_radius = deathLoggerNode.node("search-radius").getInt(32);
             logged_creatures = deathLoggerNode.node("creatures").getList(EntityType.class, List.of(EntityType.VILLAGER));
 
-            final CommentedConfigurationNode endEyeChangerNode = root.node("end-eye-changer");
-            end_eye_changer_enabled = endEyeChangerNode.node("enabled").getBoolean(false);
-
-            final CommentedConfigurationNode loginProtectionNode = root.node("login-protection");
-            login_protection_enabled = loginProtectionNode.node("enabled").getBoolean(false);
-            login_protection_duration = loginProtectionNode.node("duration-in-sec").getInt(15);
-            login_protection_amplifier = loginProtectionNode.node("amplifier").getInt(4);
+            final CommentedConfigurationNode endEyeChangerNode = root.node("custom-ender-eye");
+            custom_ender_eye_enabled = endEyeChangerNode.node("enabled").getBoolean(false);
 
             final CommentedConfigurationNode prefixNode = root.node("prefix");
             prefix_disabled_formatting_codes = prefixNode.node("disabled-formatting-codes").getList(String.class);

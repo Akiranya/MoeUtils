@@ -11,7 +11,7 @@ public class BetterPortals implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MoeUtils.logActiveStatus("BetterPortals", MoeUtils.config().better_portals_enabled))
+        if (MoeUtils.report("BetterPortals", MoeUtils.config().better_portals_enabled))
             return;
 
         Events.subscribe(PlayerPortalEvent.class)

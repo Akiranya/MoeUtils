@@ -3,7 +3,7 @@ common:
   enabled: '是'
   disabled: '否'
   no-perms: '&c你没有权限使用这个指令: {command}'
-  only-players: '只有玩家才可以使用这个指令.'
+  only-players: '&c只有玩家才可以使用这个指令.'
   not-enough-money: '&7你没有足够的软妹币.'
   not-enough-exp: '&7你没有足够的经验值.'
   reloaded: '&bMoeUtils 已重新载入.'
@@ -12,7 +12,7 @@ common:
   cooldown: '&7冷却中:&b {time}s.'
   reset: '&b状态已重置.'
   blocked-format-codes: '你不能使用样式代码: {code}'
-  blocked-words: '你不能使用此词汇：{word}'
+  blocked-words: '你不能使用违禁词汇：{word}'
 prefix:
   prefix-too-long: '前缀长度最大为 {max} 个字符'
   set-success: '你的前缀已设置为: {prefix}'
@@ -21,18 +21,6 @@ suffix:
   suffix-too-long: '后缀长度最大为 {max} 个字符'
   set-success: '你的后缀已设置为: {suffix}'
   clear-success: '清除后缀成功'
-better-bees:
-  count-beehive: '这个蜂箱里有 {bee_count} 只蜜蜂.'
-  count-bee-nest: '这个蜂巢里有 {bee_count} 只蜜蜂.'
-  reminder-on-place: '&7提示: &6右击蜂箱/蜂巢&7 可查看内部蜜蜂数量.'
-  reminder-in-hand: '&7提示: &6手持蜂箱 Shift+右键空气&7 可查看内部蜜蜂数量.'
-death-logger:
-  death: '&8刚刚有一只&7{victim}&8从人间蒸发了 (原因: &7{reason}&8) (附近玩家: &7{killer}&8) (坐标: &7{location}&8)'
-found-ores:
-  prefix: '&8[&e矿工茶馆&8]&r '
-  found: '{player}&7 挖到了 &e{count}&7 个 &r&l{ore}'
-  toggle-broadcast-on: '&7你选择接收挖矿广播.'
-  toggle-broadcast-off: '&7你不再接收挖矿广播.'
 magic-time:
   prefix: '&8[&d魔法时间&8]&r '
   day: '魔法白天'
@@ -46,10 +34,22 @@ magic-weather:
   thunder: '魔法雷雨'
   changed: '&b一位神秘法师把世界 &e{world}&b 的天气变成了 &d{weather}&b.'
   ended: '&b神秘法师的 &e{weather}&b (世界 &e{world}&b) 结束了! &7(冷却就绪)'
+better-bees:
+  count-beehive: '这个蜂箱里有 {bee_count} 只蜜蜂.'
+  count-bee-nest: '这个蜂巢里有 {bee_count} 只蜜蜂.'
+  reminder-on-place: '&7提示: &6右击蜂箱/蜂巢&7 可查看内部蜜蜂数量.'
+  reminder-in-hand: '&7提示: &6手持蜂箱 潜行+右键空气&7 可查看内部蜜蜂数量.'
+found-ores:
+  prefix: '&8[&e矿工茶馆&8]&r '
+  found: '{player}&7 挖到了 &e{count}&7 个 &r&l{ore}'
+  toggle-broadcast-on: '&7你选择接收挖矿广播.'
+  toggle-broadcast-off: '&7你不再接收挖矿广播.'
 better-portals:
   cancelled: '&e监测到该地狱门的目的地在世界边界外,为了您的安全本次传送已取消.'
-  debug: 'PlayerPortalEvent has been cancelled for {player}.'
-end-eye-changer:
+  debug: 'PlayerPortalEvent is cancelled (player: {player}).'
+death-logger:
+  death: '&8一只&7{victim}&8已从人间蒸发 (&7{killer} &8|&7 {reason} &8|&7 {x};{y};{z};{world}&8)'
+custom-ender-eye:
   set: '&6{location} 已设置.'
   list: '&6坐标 -> {location}'
   list-title: '&e0o.----末影之眼的目标位置----.o0'

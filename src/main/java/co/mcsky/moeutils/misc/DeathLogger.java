@@ -7,8 +7,6 @@ import com.meowj.langutils.lang.LanguageHelper;
 import me.lucko.helper.Events;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -21,7 +19,6 @@ import java.util.Set;
 
 public class DeathLogger implements TerminableModule {
 
-    private final static Component separator = Component.text(", ");
     private final Set<EntityType> hashLoggedCreatures;
 
     public DeathLogger() {
@@ -31,7 +28,7 @@ public class DeathLogger implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MoeUtils.logActiveStatus("DeathLogger", MoeUtils.config().death_logger_enabled))
+        if (MoeUtils.report("DeathLogger", MoeUtils.config().death_logger_enabled))
             return;
 
         Events.subscribe(EntityDeathEvent.class)
@@ -40,17 +37,16 @@ public class DeathLogger implements TerminableModule {
                     LivingEntity entity = e.getEntity();
                     if (entity.getLastDamageCause() == null) return;
                     Player killer = entity.getKiller();
-                    Component killerName;
+                    String killerName;
                     if (killer != null) {
-                        // it's a direct kill
-                        killerName = killer.displayName();
+                        killerName = killer.getName();
                     } else {
-                        // otherwise, search for nearby players
+                        // search for nearby players
                         killerName = entity.getLocation().getNearbyPlayers(MoeUtils.config().search_radius)
                                 .stream()
-                                .map(Player::displayName)
-                                .reduce((acc, name) -> acc.append(separator).append(name))
-                                .orElse(MoeUtils.text3("common.none").asComponent());
+                                .map(Player::getName)
+                                .reduce((acc, name) -> acc.concat(",").concat(name))
+                                .orElse(MoeUtils.text("common.none"));
                     }
                     String victimName = LanguageHelper.getEntityName(entity, MoeConfig.DEFAULT_LANG);
                     if (entity.getCustomName() != null) {
@@ -58,10 +54,13 @@ public class DeathLogger implements TerminableModule {
                         victimName = victimName + "(%s)".formatted(entity.getCustomName());
                     }
                     MoeUtils.text3("death-logger.death")
-                            .replace("victim", victimName, b -> b.color(NamedTextColor.GRAY))
-                            .replace("reason", getLocalization(entity.getLastDamageCause().getCause()), b -> b.color(NamedTextColor.GRAY))
-                            .replace("killer", killerName, b -> b.color(NamedTextColor.GRAY))
-                            .replace("location", entity.getLocation().getBlockX() + "," + entity.getLocation().getBlockY() + "," + entity.getLocation().getBlockZ() + "," + entity.getLocation().getWorld().getName(), b -> b.color(NamedTextColor.GRAY))
+                            .replace("victim", victimName)
+                            .replace("reason", getLocalization(entity.getLastDamageCause().getCause()))
+                            .replace("killer", killerName)
+                            .replace("x", entity.getLocation().getBlockX())
+                            .replace("y", entity.getLocation().getBlockY())
+                            .replace("z", entity.getLocation().getBlockZ())
+                            .replace("world", entity.getLocation().getWorld().getName())
                             .broadcast(Text.MessageType.CHAT);
                 }).bindWith(consumer);
     }

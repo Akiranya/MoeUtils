@@ -29,7 +29,7 @@ public class BetterBees implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MoeUtils.logActiveStatus("BetterBees", MoeUtils.config().better_bees_enabled))
+        if (MoeUtils.report("BetterBees", MoeUtils.config().better_bees_enabled))
             return;
 
         /*

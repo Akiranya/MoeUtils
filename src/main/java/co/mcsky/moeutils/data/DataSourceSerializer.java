@@ -10,7 +10,6 @@ import org.spongepowered.configurate.serialize.TypeSerializer;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class DataSourceSerializer implements TypeSerializer<Datasource> {
 
@@ -19,8 +18,7 @@ public class DataSourceSerializer implements TypeSerializer<Datasource> {
     @Override
     public Datasource deserialize(Type type, ConfigurationNode node) throws SerializationException {
         final Datasource datasource = new Datasource();
-        final List<Location> locations = node.node("end-eye-target-locations").getList(Location.class, new ArrayList<>());
-        final List<UUID> listeners = node.node("found-ores-listeners").getList(UUID.class, new ArrayList<>());
+        final List<Location> locations = node.node("stronghold-locations").getList(Location.class, new ArrayList<>());
         datasource.getEndPortals().addEndEyeTargetLocation(locations);
         return datasource;
     }
@@ -28,6 +26,6 @@ public class DataSourceSerializer implements TypeSerializer<Datasource> {
     @Override
     public void serialize(Type type, @Nullable Datasource obj, ConfigurationNode node) throws SerializationException {
         Preconditions.checkNotNull(obj);
-        node.node("end-eye-target-locations").setList(Location.class, obj.getEndPortals().getEndEyeTargetLocations());
+        node.node("stronghold-locations").setList(Location.class, obj.getEndPortals().getEndEyeTargetLocations());
     }
 }

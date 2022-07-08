@@ -5,14 +5,14 @@ package co.mcsky.moeutils.data;
  */
 public class Datasource {
 
-    private final EndPortalsData endPortalsData;
+    private final StrongholdData strongholdData;
 
     public Datasource() {
-        endPortalsData = new EndPortalsData();
+        strongholdData = new StrongholdData();
     }
 
-    public EndPortalsData getEndPortals() {
-        return endPortalsData;
+    public StrongholdData getEndPortals() {
+        return strongholdData;
     }
 
 }

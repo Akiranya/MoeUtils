@@ -9,6 +9,7 @@ import co.mcsky.moeutils.magic.MagicWeather;
 import co.mcsky.moeutils.magic.TimeOption;
 import co.mcsky.moeutils.magic.WeatherOption;
 import dev.jorel.commandapi.CommandAPICommand;
+import dev.jorel.commandapi.arguments.EntitySelector;
 import dev.jorel.commandapi.arguments.EntitySelectorArgument;
 import dev.jorel.commandapi.arguments.GreedyStringArgument;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -18,7 +19,7 @@ import org.bukkit.entity.Player;
 
 public class MoeCommands {
 
-    public MoeCommands(Datasource datasource, FoundOres ores, CustomPrefix prefix, CustomSuffix suffix, MagicTime time, MagicWeather weather) {
+    public MoeCommands(Datasource datasource, CustomPrefix prefix, CustomSuffix suffix, FoundOres ores, MagicTime time, MagicWeather weather) {
 
         CommandAPICommand reloadCommand = new CommandAPICommand("reload")
                 .withPermission("moe.admin")
@@ -119,24 +120,24 @@ public class MoeCommands {
                         .executesPlayer((sender, args) -> {
                             final Location location = sender.getLocation().toBlockLocation();
                             datasource.getEndPortals().addEndEyeTargetLocation(location);
-                            sender.sendMessage(MoeUtils.text("end-eye-changer.set", "location", location.toBlockLocation().toString()));
+                            sender.sendMessage(MoeUtils.text("custom-ender-eye.set", "location", location.toBlockLocation().toString()));
                         }))
                 .withSubcommand(new CommandAPICommand("list")
                         .executesPlayer((sender, args) -> {
-                            sender.sendMessage(MoeUtils.text("end-eye-changer.list-title"));
+                            sender.sendMessage(MoeUtils.text("custom-ender-eye.list-title"));
                             for (Location location : datasource.getEndPortals().getEndEyeTargetLocations()) {
-                                sender.sendMessage(MoeUtils.text("end-eye-changer.list", "location", location.toBlockLocation().toString()));
+                                sender.sendMessage(MoeUtils.text("custom-ender-eye.list", "location", location.toBlockLocation().toString()));
                             }
                         }))
                 .withSubcommand(new CommandAPICommand("clear")
                         .executesPlayer((sender, args) -> {
                             datasource.getEndPortals().clearTargetLocations();
-                            sender.sendMessage(MoeUtils.text("end-eye-changer.clear"));
+                            sender.sendMessage(MoeUtils.text("custom-ender-eye.clear"));
                         }));
 
         CommandAPICommand tellCommand = new CommandAPICommand("tell")
                 .withPermission("moe.admin")
-                .withArguments(new EntitySelectorArgument("player", EntitySelectorArgument.EntitySelector.ONE_PLAYER))
+                .withArguments(new EntitySelectorArgument<Player>("player", EntitySelector.ONE_PLAYER))
                 .withArguments(new GreedyStringArgument("message"))
                 .executes((sender, args) -> {
                     final Player p = (Player) args[0];
