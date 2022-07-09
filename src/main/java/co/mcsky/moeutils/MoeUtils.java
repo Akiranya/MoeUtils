@@ -4,15 +4,12 @@ import co.mcsky.moecore.text.Text;
 import co.mcsky.moecore.text.TextRepository;
 import co.mcsky.moeutils.chat.CustomPrefix;
 import co.mcsky.moeutils.chat.CustomSuffix;
-import co.mcsky.moeutils.data.Datasource;
-import co.mcsky.moeutils.data.DatasourceFileHandler;
 import co.mcsky.moeutils.external.MoePlaceholderExpansion;
 import co.mcsky.moeutils.foundores.FoundOres;
 import co.mcsky.moeutils.magic.MagicTime;
 import co.mcsky.moeutils.magic.MagicWeather;
 import co.mcsky.moeutils.misc.BetterBees;
 import co.mcsky.moeutils.misc.BetterPortals;
-import co.mcsky.moeutils.misc.CustomEnderEye;
 import co.mcsky.moeutils.misc.DeathLogger;
 import de.themoep.utils.lang.bukkit.LanguageManager;
 import me.lucko.helper.Services;
@@ -34,10 +31,6 @@ public class MoeUtils extends ExtendedJavaPlugin {
     /* language loader */
     private LanguageManager languageManager;
     private TextRepository textRepository;
-
-    /* data files */
-    private Datasource datasource;
-    private DatasourceFileHandler datasourceFileHandler;
 
     /* eco & perm & chat */
     private Economy economy;
@@ -64,10 +57,6 @@ public class MoeUtils extends ExtendedJavaPlugin {
 
     public static Economy economy() {
         return plugin.economy;
-    }
-
-    public static Datasource datasource() {
-        return plugin.datasource;
     }
 
     public static String text(String key, Object... replacements) {
@@ -115,18 +104,12 @@ public class MoeUtils extends ExtendedJavaPlugin {
         config.load();
         config.save(); // save config nodes into file
 
-        // initialize data source
-        datasourceFileHandler = new DatasourceFileHandler(getDataFolder());
-        datasource = datasourceFileHandler.load().orElse(new Datasource());
-        datasourceFileHandler.save(datasource);
-
         initializeModules();
         registerCommands();
     }
 
     @Override
     protected void disable() {
-        datasourceFileHandler.save(datasource);
     }
 
     public void reload() {
@@ -148,7 +131,6 @@ public class MoeUtils extends ExtendedJavaPlugin {
 
     private void initializeModules() {
         bindModule(new BetterPortals());
-        bindModule(new CustomEnderEye());
         bindModule(new DeathLogger());
         bindModule(new BetterBees());
     }
@@ -156,7 +138,7 @@ public class MoeUtils extends ExtendedJavaPlugin {
     private void registerCommands() {
         if (!commandsRegistered) {
             commandsRegistered = true; // mark commands registered
-            new MoeCommands(datasource, new CustomPrefix(), new CustomSuffix(), bindModule(new FoundOres()), bindModule(new MagicTime()), bindModule(new MagicWeather()));
+            new MoeCommands(new CustomPrefix(), new CustomSuffix(), bindModule(new FoundOres()), bindModule(new MagicTime()), bindModule(new MagicWeather()));
         }
     }
 
