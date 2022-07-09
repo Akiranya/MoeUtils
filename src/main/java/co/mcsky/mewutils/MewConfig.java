@@ -35,7 +35,6 @@ public final class MewConfig {
     public boolean death_logger_enabled;
     public int search_radius;
     public List<EntityType> logged_creatures;
-    public boolean custom_ender_eye_enabled;
     public List<String> prefix_disabled_formatting_codes;
     public List<String> prefix_blocked_words;
     public int prefix_priority;
@@ -99,9 +98,6 @@ public final class MewConfig {
             death_logger_enabled = deathLoggerNode.node("enabled").getBoolean(false);
             search_radius = deathLoggerNode.node("search-radius").getInt(32);
             logged_creatures = deathLoggerNode.node("creatures").getList(EntityType.class, List.of(EntityType.VILLAGER));
-
-            final CommentedConfigurationNode endEyeChangerNode = root.node("custom-ender-eye");
-            custom_ender_eye_enabled = endEyeChangerNode.node("enabled").getBoolean(false);
 
             final CommentedConfigurationNode prefixNode = root.node("prefix");
             prefix_disabled_formatting_codes = prefixNode.node("disabled-formatting-codes").getList(String.class);

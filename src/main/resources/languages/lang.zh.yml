@@ -49,8 +49,3 @@ better-portals:
   debug: 'PlayerPortalEvent is cancelled (player: {player}).'
 death-logger:
   death: '&8一只&7{victim}&8已从人间蒸发 (&7{killer} &8|&7 {reason} &8|&7 {x};{y};{z};{world}&8)'
-custom-ender-eye:
-  set: '&6{location} 已设置.'
-  list: '&6坐标 -> {location}'
-  list-title: '&e0o.----末影之眼的目标位置----.o0'
-  clear: '&6已清除所有坐标.'
