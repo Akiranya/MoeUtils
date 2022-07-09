@@ -1,7 +1,7 @@
-package co.mcsky.moeutils.magic;
+package co.mcsky.mewutils.magic;
 
-import co.mcsky.moeutils.MoeUtils;
-import co.mcsky.moeutils.magic.events.MagicWeatherEvent;
+import co.mcsky.mewutils.MewUtils;
+import co.mcsky.mewutils.magic.events.MagicWeatherEvent;
 import me.lucko.helper.Events;
 import me.lucko.helper.Schedulers;
 import me.lucko.helper.scheduler.Ticks;
@@ -23,7 +23,7 @@ public class MagicWeather extends MagicBase {
     private final Map<String, String> lastPlayers;
 
     public MagicWeather() {
-        super(MoeUtils.config().magic_weather_cooldown);
+        super(MewUtils.config().magic_weather_cooldown);
         cooldownKeys = Collections.unmodifiableMap(new HashMap<>() {{
             Bukkit.getWorlds().forEach(world -> put(world.getName(), UUID.randomUUID()));
         }});
@@ -52,7 +52,7 @@ public class MagicWeather extends MagicBase {
      */
     public void call(WeatherOption weather, Player player) {
         MagicWeatherEvent event = new MagicWeatherEvent(player, weather);
-        MoeUtils.plugin.getServer().getPluginManager().callEvent(event);
+        MewUtils.plugin.getServer().getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
             weather.set(player.getWorld());
             lastPlayers.put(player.getWorld().getName(), player.getName());
@@ -60,7 +60,7 @@ public class MagicWeather extends MagicBase {
     }
 
     public boolean checkBalance(Player player) {
-        return checkBalance(player, MoeUtils.config().magic_weather_cost);
+        return checkBalance(player, MewUtils.config().magic_weather_cost);
     }
 
     public boolean checkCooldown(Player player) {
@@ -72,20 +72,20 @@ public class MagicWeather extends MagicBase {
     }
 
     public void chargePlayer(Player player) {
-        chargePlayer(player, MoeUtils.config().magic_weather_cost);
+        chargePlayer(player, MewUtils.config().magic_weather_cost);
     }
 
     public void futureBroadcast(String weatherName, String worldName) {
-        String prefix = MoeUtils.text("magic-weather.prefix");
-        String message = MoeUtils.text("magic-weather.ended", "weather", weatherName, "world", worldName);
-        Schedulers.bukkit().runTaskLaterAsynchronously(MoeUtils.plugin, () -> {
+        String prefix = MewUtils.text("magic-weather.prefix");
+        String message = MewUtils.text("magic-weather.ended", "weather", weatherName, "world", worldName);
+        Schedulers.bukkit().runTaskLaterAsynchronously(MewUtils.plugin, () -> {
             Bukkit.broadcast(Component.text(prefix + message));
         }, Ticks.from(cooldownAmount, TimeUnit.SECONDS));
     }
 
     public void broadcast(String weatherName, String worldName) {
-        String prefix = MoeUtils.text("magic-weather.prefix");
-        String message = MoeUtils.text("magic-weather.changed", "world", worldName, "weather", weatherName);
+        String prefix = MewUtils.text("magic-weather.prefix");
+        String message = MewUtils.text("magic-weather.changed", "world", worldName, "weather", weatherName);
         Bukkit.broadcast(Component.text(prefix + message));
     }
 

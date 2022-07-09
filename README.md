@@ -1,4 +1,4 @@
-# MoeUtils
+# MewUtils
 
 一个基于 Bukkit 的小功能合集插件，专门为 [上古时代服务器](https://mimaru.me) 定制。
 
@@ -33,7 +33,7 @@
 
 # Dependencies
 
-MoeUtils 需要以下前置插件：
+MewUtils 需要以下前置插件：
 
 - [Vault](https://github.com/MilkBowl/Vault)
 - [LangUtils](https://github.com/MascusJeoraly/LanguageUtils)

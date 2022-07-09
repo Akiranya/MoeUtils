@@ -1,6 +1,6 @@
-package co.mcsky.moeutils.magic;
+package co.mcsky.mewutils.magic;
 
-import co.mcsky.moeutils.MoeUtils;
+import co.mcsky.mewutils.MewUtils;
 import org.bukkit.World;
 
 public enum TimeOption {
@@ -20,8 +20,8 @@ public enum TimeOption {
      */
     public String customName() {
         return switch (this) {
-            case DAY -> MoeUtils.text("magic-time.day");
-            case NIGHT -> MoeUtils.text("magic-time.night");
+            case DAY -> MewUtils.text("magic-time.day");
+            case NIGHT -> MewUtils.text("magic-time.night");
         };
     }
 

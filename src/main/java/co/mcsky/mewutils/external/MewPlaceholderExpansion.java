@@ -1,13 +1,13 @@
-package co.mcsky.moeutils.external;
+package co.mcsky.mewutils.external;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.jetbrains.annotations.NotNull;
 
-public class MoePlaceholderExpansion extends PlaceholderExpansion {
+public class MewPlaceholderExpansion extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getIdentifier() {
-        return "moeutils";
+        return "mewutils";
     }
 
     @Override

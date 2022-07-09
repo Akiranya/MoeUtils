@@ -1,6 +1,6 @@
-package co.mcsky.moeutils.magic;
+package co.mcsky.mewutils.magic;
 
-import co.mcsky.moeutils.MoeUtils;
+import co.mcsky.mewutils.MewUtils;
 import org.bukkit.World;
 
 public enum WeatherOption {
@@ -15,9 +15,9 @@ public enum WeatherOption {
      */
     public String customName() {
         return switch (this) {
-            case CLEAR -> MoeUtils.text("magic-weather.clear");
-            case RAIN -> MoeUtils.text("magic-weather.rain");
-            case THUNDER -> MoeUtils.text("magic-weather.thunder");
+            case CLEAR -> MewUtils.text("magic-weather.clear");
+            case RAIN -> MewUtils.text("magic-weather.rain");
+            case THUNDER -> MewUtils.text("magic-weather.thunder");
         };
     }
 

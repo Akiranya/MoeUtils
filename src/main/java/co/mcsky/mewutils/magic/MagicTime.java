@@ -1,7 +1,7 @@
-package co.mcsky.moeutils.magic;
+package co.mcsky.mewutils.magic;
 
-import co.mcsky.moeutils.MoeUtils;
-import co.mcsky.moeutils.magic.events.MagicTimeEvent;
+import co.mcsky.mewutils.MewUtils;
+import co.mcsky.mewutils.magic.events.MagicTimeEvent;
 import me.lucko.helper.Events;
 import me.lucko.helper.Schedulers;
 import me.lucko.helper.scheduler.Ticks;
@@ -20,7 +20,7 @@ public class MagicTime extends MagicBase {
     private String lastPlayer;
 
     public MagicTime() {
-        super(MoeUtils.config().magic_time_cooldown);
+        super(MewUtils.config().magic_time_cooldown);
         cooldownKey = UUID.randomUUID();
     }
 
@@ -41,7 +41,7 @@ public class MagicTime extends MagicBase {
 
     public void call(TimeOption time, Player player) {
         MagicTimeEvent event = new MagicTimeEvent(player, time);
-        MoeUtils.plugin.getServer().getPluginManager().callEvent(event);
+        MewUtils.plugin.getServer().getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
             // set time for all worlds so that time between worlds are synchronized
             Bukkit.getWorlds().forEach(time::set);
@@ -50,7 +50,7 @@ public class MagicTime extends MagicBase {
     }
 
     public boolean checkBalance(Player player) {
-        return checkBalance(player, MoeUtils.config().magic_time_cost);
+        return checkBalance(player, MewUtils.config().magic_time_cost);
     }
 
     public boolean checkCooldown(Player player) {
@@ -62,20 +62,20 @@ public class MagicTime extends MagicBase {
     }
 
     public void chargePlayer(Player player) {
-        chargePlayer(player, MoeUtils.config().magic_time_cost);
+        chargePlayer(player, MewUtils.config().magic_time_cost);
     }
 
     public void futureBroadcast(String timeName) {
-        String prefix = MoeUtils.text("magic-time.prefix");
-        String message = MoeUtils.text("magic-time.ended", "time", timeName);
-        Schedulers.bukkit().runTaskLaterAsynchronously(MoeUtils.plugin, () -> {
+        String prefix = MewUtils.text("magic-time.prefix");
+        String message = MewUtils.text("magic-time.ended", "time", timeName);
+        Schedulers.bukkit().runTaskLaterAsynchronously(MewUtils.plugin, () -> {
             Bukkit.broadcast(Component.text(prefix + message));
         }, Ticks.from(cooldownAmount, TimeUnit.SECONDS));
     }
 
     public void broadcast(String timeName) {
-        String prefix = MoeUtils.text("magic-time.prefix");
-        String message = MoeUtils.text("magic-time.changed", "time", timeName);
+        String prefix = MewUtils.text("magic-time.prefix");
+        String message = MewUtils.text("magic-time.changed", "time", timeName);
         Bukkit.broadcast(Component.text(prefix + message));
     }
 

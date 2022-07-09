@@ -1,16 +1,16 @@
-package co.mcsky.moeutils;
+package co.mcsky.mewutils;
 
-import co.mcsky.moecore.text.Text;
-import co.mcsky.moecore.text.TextRepository;
-import co.mcsky.moeutils.chat.CustomPrefix;
-import co.mcsky.moeutils.chat.CustomSuffix;
-import co.mcsky.moeutils.external.MoePlaceholderExpansion;
-import co.mcsky.moeutils.foundores.FoundOres;
-import co.mcsky.moeutils.magic.MagicTime;
-import co.mcsky.moeutils.magic.MagicWeather;
-import co.mcsky.moeutils.misc.BetterBees;
-import co.mcsky.moeutils.misc.BetterPortals;
-import co.mcsky.moeutils.misc.DeathLogger;
+import co.mcsky.mewcore.text.Text;
+import co.mcsky.mewcore.text.TextRepository;
+import co.mcsky.mewutils.chat.CustomPrefix;
+import co.mcsky.mewutils.chat.CustomSuffix;
+import co.mcsky.mewutils.external.MewPlaceholderExpansion;
+import co.mcsky.mewutils.foundores.FoundOres;
+import co.mcsky.mewutils.magic.MagicTime;
+import co.mcsky.mewutils.magic.MagicWeather;
+import co.mcsky.mewutils.misc.BetterBees;
+import co.mcsky.mewutils.misc.BetterPortals;
+import co.mcsky.mewutils.misc.DeathLogger;
 import de.themoep.utils.lang.bukkit.LanguageManager;
 import me.lucko.helper.Services;
 import me.lucko.helper.plugin.ExtendedJavaPlugin;
@@ -20,13 +20,13 @@ import org.bukkit.entity.Player;
 
 import java.util.logging.Logger;
 
-public class MoeUtils extends ExtendedJavaPlugin {
+public final class MewUtils extends ExtendedJavaPlugin {
 
     /* plugin inst */
-    public static MoeUtils plugin;
+    public static MewUtils plugin;
 
     /* configuration */
-    private MoeConfig config;
+    private MewConfig config;
 
     /* language loader */
     private LanguageManager languageManager;
@@ -51,7 +51,7 @@ public class MoeUtils extends ExtendedJavaPlugin {
         return plugin.getLogger();
     }
 
-    public static MoeConfig config() {
+    public static MewConfig config() {
         return plugin.config;
     }
 
@@ -100,7 +100,7 @@ public class MoeUtils extends ExtendedJavaPlugin {
         initializeLanguageManager();
 
         // initialize config manager
-        config = new MoeConfig();
+        config = new MewConfig();
         config.load();
         config.save(); // save config nodes into file
 
@@ -126,7 +126,7 @@ public class MoeUtils extends ExtendedJavaPlugin {
                 return ((Player) sender).locale().getLanguage();
             return null;
         });
-        textRepository = new TextRepository(MoeUtils::text);
+        textRepository = new TextRepository(MewUtils::text);
     }
 
     private void initializeModules() {
@@ -138,13 +138,13 @@ public class MoeUtils extends ExtendedJavaPlugin {
     private void registerCommands() {
         if (!commandsRegistered) {
             commandsRegistered = true; // mark commands registered
-            new MoeCommands(new CustomPrefix(), new CustomSuffix(), bindModule(new FoundOres()), bindModule(new MagicTime()), bindModule(new MagicWeather()));
+            new MewCommands(new CustomPrefix(), new CustomSuffix(), bindModule(new FoundOres()), bindModule(new MagicTime()), bindModule(new MagicWeather()));
         }
     }
 
     private void hookExternal() {
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            new MoePlaceholderExpansion().register();
+            new MewPlaceholderExpansion().register();
             getLogger().info("Hooked into PlaceholderAPI");
         }
     }

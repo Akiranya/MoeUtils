@@ -1,7 +1,7 @@
-package co.mcsky.moeutils.magic;
+package co.mcsky.mewutils.magic;
 
-import co.mcsky.moecore.MoeCore;
-import co.mcsky.moeutils.MoeUtils;
+import co.mcsky.mewcore.MewCore;
+import co.mcsky.mewutils.MewUtils;
 import me.lucko.helper.cooldown.Cooldown;
 import me.lucko.helper.cooldown.CooldownMap;
 import me.lucko.helper.terminable.module.TerminableModule;
@@ -35,7 +35,7 @@ public abstract class MagicBase implements TerminableModule {
     boolean testSilently(Player player, UUID cooldownKey) {
         if (cooldownMap.testSilently(cooldownKey))
             return true;
-        player.sendMessage(MoeUtils.text("common.cooldown", "time", cooldownMap.remainingTime(cooldownKey, TimeUnit.SECONDS)));
+        player.sendMessage(MewUtils.text("common.cooldown", "time", cooldownMap.remainingTime(cooldownKey, TimeUnit.SECONDS)));
         return false;
     }
 
@@ -71,9 +71,9 @@ public abstract class MagicBase implements TerminableModule {
      * @return True if the player has sufficient balance. False else wise.
      */
     boolean checkBalance(Player player, int cost) {
-        if (MoeUtils.economy().has(player, cost))
+        if (MewUtils.economy().has(player, cost))
             return true;
-        player.sendMessage(MoeUtils.text("common.not-enough-money"));
+        player.sendMessage(MewUtils.text("common.not-enough-money"));
         return false;
     }
 
@@ -85,8 +85,8 @@ public abstract class MagicBase implements TerminableModule {
      * @param cost   The amount of fee applied to the specific player.
      */
     void chargePlayer(Player player, int cost) {
-        MoeUtils.economy().withdrawPlayer(player, cost);
-        player.sendMessage(MoeUtils.text("common.price", "cost", cost));
+        MewUtils.economy().withdrawPlayer(player, cost);
+        player.sendMessage(MewUtils.text("common.price", "cost", cost));
     }
 
 }

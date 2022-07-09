@@ -1,12 +1,11 @@
-package co.mcsky.moeutils.misc;
+package co.mcsky.mewutils.misc;
 
-import co.mcsky.moecore.text.Text;
-import co.mcsky.moeutils.MoeConfig;
-import co.mcsky.moeutils.MoeUtils;
-import com.meowj.langutils.lang.LanguageHelper;
+import co.mcsky.mewcore.text.Text;
+import co.mcsky.mewutils.MewUtils;
 import me.lucko.helper.Events;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -23,12 +22,12 @@ public class DeathLogger implements TerminableModule {
 
     public DeathLogger() {
         hashLoggedCreatures = new HashSet<>();
-        hashLoggedCreatures.addAll(MoeUtils.config().logged_creatures);
+        hashLoggedCreatures.addAll(MewUtils.config().logged_creatures);
     }
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MoeUtils.report("DeathLogger", MoeUtils.config().death_logger_enabled))
+        if (MewUtils.report("DeathLogger", MewUtils.config().death_logger_enabled))
             return;
 
         Events.subscribe(EntityDeathEvent.class)
@@ -42,18 +41,20 @@ public class DeathLogger implements TerminableModule {
                         killerName = killer.getName();
                     } else {
                         // search for nearby players
-                        killerName = entity.getLocation().getNearbyPlayers(MoeUtils.config().search_radius)
+                        killerName = entity.getLocation().getNearbyPlayers(MewUtils.config().search_radius)
                                 .stream()
                                 .map(Player::getName)
                                 .reduce((acc, name) -> acc.concat(",").concat(name))
-                                .orElse(MoeUtils.text("common.none"));
+                                .orElse(MewUtils.text("common.none"));
                     }
-                    String victimName = LanguageHelper.getEntityName(entity, MoeConfig.DEFAULT_LANG);
-                    if (entity.getCustomName() != null) {
+                    Component victimName;
+                    if (entity.customName() != null) {
                         // add custom name if there is one
-                        victimName = victimName + "(%s)".formatted(entity.getCustomName());
+                        victimName = entity.name().append(Component.text("(%s)".formatted(entity.customName())));
+                    } else {
+                        victimName = entity.name();
                     }
-                    MoeUtils.text3("death-logger.death")
+                    MewUtils.text3("death-logger.death")
                             .replace("victim", victimName)
                             .replace("reason", getLocalization(entity.getLastDamageCause().getCause()))
                             .replace("killer", killerName)

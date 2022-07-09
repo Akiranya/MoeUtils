@@ -1,30 +1,30 @@
-name: MoeUtils
-main: co.mcsky.moeutils.MoeUtils
+name: MewUtils
+main: co.mcsky.mewutils.MewUtils
 version: ${version}
 api-version: '1.13'
 description: A all-in-one plugin.
 author: Nailm
-website: https://mimaru.me
-prefix: MoeUtils
-depend: [ MoeCore, Vault, CommandAPI, LangUtils ]
+website: https://mewcraft.me
+prefix: MewUtils
+depend: [ MewCore, Vault, CommandAPI, LangUtils ]
 softdepend: [ PlaceholderAPI ]
 permissions:
-  moe.*:
-    description: Gives access to all MoeUtils commands
+  mew.*:
+    description: Gives access to all MewUtils commands
     default: false
     children:
-      moe.user: true
-      moe.admin: true
-  moe.admin:
+      mew.user: true
+      mew.admin: true
+  mew.admin:
     description: Permission nodes for operators
     default: op
     children:
-      moe.reload: true
-      moe.magic.reset: true
-      moe.magic.status: true
-  moe.user:
+      mew.reload: true
+      mew.magic.reset: true
+      mew.magic.status: true
+  mew.user:
     description: Basic permission nodes for players
     default: true
     children:
-      moe.magic.time: true
-      moe.magic.weather: true
+      mew.magic.time: true
+      mew.magic.weather: true

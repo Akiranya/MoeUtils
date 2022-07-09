@@ -1,33 +1,40 @@
-package co.mcsky.moeutils.magic.events;
+package co.mcsky.mewutils.magic.events;
 
-import co.mcsky.moeutils.magic.TimeOption;
+import co.mcsky.mewutils.magic.WeatherOption;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class MagicTimeEvent extends Event implements Cancellable {
+public class MagicWeatherEvent extends Event implements Cancellable {
 
-    private static final HandlerList handlers = new HandlerList();
+    public static final HandlerList handlers = new HandlerList();
+    private final World world;
     private final Player player;
-    private final TimeOption time;
+    private final WeatherOption weather;
     private boolean cancelled;
 
-    public MagicTimeEvent(Player player, TimeOption time) {
+    public MagicWeatherEvent(Player player, WeatherOption weather) {
         this.player = player;
-        this.time = time;
+        this.world = player.getWorld();
+        this.weather = weather;
     }
 
     public static HandlerList getHandlerList() {
         return handlers;
     }
 
+    public World getWorld() {
+        return world;
+    }
+
     public Player getPlayer() {
         return player;
     }
 
-    public TimeOption getTime() {
-        return time;
+    public WeatherOption getWeather() {
+        return weather;
     }
 
     @Override

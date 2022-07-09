@@ -1,6 +1,6 @@
-package co.mcsky.moeutils;
+package co.mcsky.mewutils;
 
-import co.mcsky.moecore.config.YamlConfigFactory;
+import co.mcsky.mewcore.config.YamlConfigFactory;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -11,7 +11,7 @@ import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import java.io.File;
 import java.util.List;
 
-public final class MoeConfig {
+public final class MewConfig {
 
     public static final String DEFAULT_LANG = "zh_cn";
     public static final String CONFIG_FILENAME = "config.yml";
@@ -51,8 +51,8 @@ public final class MoeConfig {
 
     private CommentedConfigurationNode root;
 
-    public MoeConfig() {
-        loader = YamlConfigFactory.loader(new File(MoeUtils.plugin.getDataFolder(), CONFIG_FILENAME));
+    public MewConfig() {
+        loader = YamlConfigFactory.loader(new File(MewUtils.plugin.getDataFolder(), CONFIG_FILENAME));
     }
 
     /**
@@ -62,8 +62,8 @@ public final class MoeConfig {
         try {
             root = loader.load();
         } catch (ConfigurateException e) {
-            MoeUtils.logger().severe(e.getMessage());
-            MoeUtils.plugin.getServer().getPluginManager().disablePlugin(MoeUtils.plugin);
+            MewUtils.logger().severe(e.getMessage());
+            MewUtils.plugin.getServer().getPluginManager().disablePlugin(MewUtils.plugin);
             return;
         }
 
@@ -120,7 +120,7 @@ public final class MoeConfig {
             suffix_money_cost = suffixNode.node("money-cost").getDouble(10);
 
         } catch (SerializationException e) {
-            MoeUtils.logger().severe(e.getMessage());
+            MewUtils.logger().severe(e.getMessage());
         }
     }
 
@@ -131,7 +131,7 @@ public final class MoeConfig {
         try {
             loader.save(root);
         } catch (ConfigurateException e) {
-            MoeUtils.logger().severe(e.getMessage());
+            MewUtils.logger().severe(e.getMessage());
         }
     }
 

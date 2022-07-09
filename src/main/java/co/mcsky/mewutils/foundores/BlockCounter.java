@@ -1,4 +1,4 @@
-package co.mcsky.moeutils.foundores;
+package co.mcsky.mewutils.foundores;
 
 import org.bukkit.Location;
 import org.bukkit.Material;

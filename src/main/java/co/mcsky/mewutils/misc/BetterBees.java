@@ -1,6 +1,6 @@
-package co.mcsky.moeutils.misc;
+package co.mcsky.mewutils.misc;
 
-import co.mcsky.moeutils.MoeUtils;
+import co.mcsky.mewutils.MewUtils;
 import me.lucko.helper.Events;
 import me.lucko.helper.cooldown.Cooldown;
 import me.lucko.helper.cooldown.CooldownMap;
@@ -29,7 +29,7 @@ public class BetterBees implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MoeUtils.report("BetterBees", MoeUtils.config().better_bees_enabled))
+        if (MewUtils.report("BetterBees", MewUtils.config().better_bees_enabled))
             return;
 
         /*
@@ -69,7 +69,7 @@ public class BetterBees implements TerminableModule {
                 .handler(e -> {
                     final Player player = e.getPlayer();
                     if (messageReminderCooldown.test(player)) {
-                        player.sendMessage(MoeUtils.text("better-bees.reminder-on-place"));
+                        player.sendMessage(MewUtils.text("better-bees.reminder-on-place"));
                     }
                 }).bindWith(consumer);
     }
@@ -78,14 +78,14 @@ public class BetterBees implements TerminableModule {
         // Depending on whether the player is interacting with bee nest or beehive
         int beeCount = beehive.getEntityCount();
         if (beehive.getType() == Material.BEE_NEST) {
-            player.sendMessage(MoeUtils.text("better-bees.count-bee-nest", "bee_count", beeCount));
+            player.sendMessage(MewUtils.text("better-bees.count-bee-nest", "bee_count", beeCount));
         } else {
-            player.sendMessage(MoeUtils.text("better-bees.count-beehive", "bee_count", beeCount));
+            player.sendMessage(MewUtils.text("better-bees.count-beehive", "bee_count", beeCount));
         }
     }
 
     private boolean isSneaking(Player player) {
-        return player.isSneaking() || !MoeUtils.config().require_sneak;
+        return player.isSneaking() || !MewUtils.config().require_sneak;
     }
 
     private boolean isBeehive(Material type) {
