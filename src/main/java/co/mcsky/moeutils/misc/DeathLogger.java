@@ -95,6 +95,7 @@ public class DeathLogger implements TerminableModule {
             case FALLING_BLOCK -> "跌落方块";
             case DRAGON_BREATH -> "龙息";
             case FLY_INTO_WALL -> "卡进墙里";
+            case SONIC_BOOM -> "声波";
         };
     }
 

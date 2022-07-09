@@ -42,7 +42,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.19-R0.1-SNAPSHOT")
     compileOnly("dev.jorel:commandapi-core:8.4.1")
     compileOnly('me.lucko:helper:5.6.10')
     compileOnly('net.luckperms:api:5.4')
