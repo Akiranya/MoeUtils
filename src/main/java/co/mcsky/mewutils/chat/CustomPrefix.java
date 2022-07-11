@@ -1,7 +1,7 @@
 package co.mcsky.mewutils.chat;
 
-import co.mcsky.mewcore.experience.ExperienceUtils;
-import co.mcsky.mewcore.luckperms.LuckPermsUtil;
+import co.mcsky.mewcore.util.UtilExperience;
+import co.mcsky.mewcore.util.UtilLuckPerms;
 import co.mcsky.mewutils.MewUtils;
 import me.lucko.helper.text3.Text;
 import net.md_5.bungee.api.ChatColor;
@@ -45,7 +45,7 @@ public class CustomPrefix {
         }
 
         // check exp cost
-        if (MewUtils.config().prefix_exp_cost > 0 && ExperienceUtils.getExpPoints(player) < MewUtils.config().prefix_exp_cost) {
+        if (MewUtils.config().prefix_exp_cost > 0 && UtilExperience.getExpPoints(player) < MewUtils.config().prefix_exp_cost) {
             player.sendMessage(MewUtils.text("common.not-enough-exp"));
             return;
         }
@@ -63,16 +63,16 @@ public class CustomPrefix {
 
         // charge exp
         if (MewUtils.config().prefix_exp_cost > 0) {
-            ExperienceUtils.subtractExpPoints(player, MewUtils.config().prefix_exp_cost);
+            UtilExperience.subtractExpPoints(player, MewUtils.config().prefix_exp_cost);
         }
 
         test = Text.colorize(test);
-        LuckPermsUtil.userSetPrefixAsync(player.getUniqueId(), test, MewUtils.config().prefix_priority);
+        UtilLuckPerms.userSetPrefixAsync(player.getUniqueId(), test, MewUtils.config().prefix_priority);
         player.sendMessage(MewUtils.text("prefix.set-success", "prefix", test));
     }
 
     public void clear(Player player) {
-        LuckPermsUtil.userRemovePrefixAsync(player.getUniqueId());
+        UtilLuckPerms.userRemovePrefixAsync(player.getUniqueId());
         player.sendMessage(MewUtils.text("prefix.clear-success"));
     }
 }
