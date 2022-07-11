@@ -6,7 +6,7 @@ description: A all-in-one plugin.
 author: Nailm
 website: https://mewcraft.me
 prefix: MewUtils
-depend: [ MewCore, Vault, CommandAPI, LangUtils ]
+depend: [ MewCore, CommandAPI, Vault ]
 softdepend: [ PlaceholderAPI ]
 permissions:
   mew.*:

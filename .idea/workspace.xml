@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b3cf319c-8b1e-445c-90d3-cf723ae34fee" name="Default Changelist" comment="Refactors command code and adds MiniMessage command">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/MoeUtils.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/MoeUtils.main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/co/mcsky/moeutils/magic/MagicBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/mcsky/moeutils/magic/MagicBase.java" afterDir="false" />
+    <list default="true" id="b3cf319c-8b1e-445c-90d3-cf723ae34fee" name="Default Changelist" comment="Update plugin.yml to remove LangUtils">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
+    <list id="a8fca1e9-c3a5-46d9-be6e-5f87f6ba249f" name="IDE Stuff" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -32,29 +30,18 @@
             <expand>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="MoeUtils" type="f1a62948:ProjectNode" />
+                <item name="MewUtils" type="f1a62948:ProjectNode" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="MoeUtils" type="f1a62948:ProjectNode" />
+                <item name="MewUtils" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="MoeUtils" type="f1a62948:ProjectNode" />
+                <item name="MewUtils" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="build" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="MoeUtils" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="documentation" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="MoeUtils" type="f1a62948:ProjectNode" />
-                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
               </path>
             </expand>
             <select />
@@ -93,7 +80,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/co/mcsky/moeutils" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -113,71 +100,8 @@
       <command value="gradle jar --refresh-dependencies" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.MoeUtils [jar]">
-    <configuration name="MoeUtils [buildDependents]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="buildDependents" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="MoeUtils [buildNeeded]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="buildNeeded" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="MoeUtils [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="clean" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="MoeUtils [jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager">
+    <configuration name="MewUtils [jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -200,10 +124,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.MoeUtils [jar]" />
-        <item itemvalue="Gradle.MoeUtils [buildNeeded]" />
-        <item itemvalue="Gradle.MoeUtils [buildDependents]" />
-        <item itemvalue="Gradle.MoeUtils [clean]" />
+        <item itemvalue="Gradle.MewUtils [jar]" />
       </list>
     </recent_temporary>
   </component>
@@ -211,6 +132,7 @@
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="b3cf319c-8b1e-445c-90d3-cf723ae34fee" name="Default Changelist" comment="" />
+      <changelist id="a8fca1e9-c3a5-46d9-be6e-5f87f6ba249f" name="IDE Stuff" comment="" />
       <created>1626795070718</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -263,84 +185,21 @@
       <workItem from="1633397398940" duration="1807000" />
       <workItem from="1633849320726" duration="9901000" />
       <workItem from="1635528411357" duration="675000" />
-      <workItem from="1643475663908" duration="4518000" />
-    </task>
-    <task id="LOCAL-00001" summary="Update">
-      <created>1627502514630</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1627502514630</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Overhaul of refactor!">
-      <created>1627571989836</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1627571989836</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Many updates:&#10;&#10;1. Adds logActiveStatus() to improve code reusability&#10;2. Replace homemade cooldown class with me.lucko.helper.cooldown.Cooldown">
-      <created>1627612053971</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1627612053971</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Removes unused class and moves DamageCauseLocalization into DeathLogger">
-      <created>1627612514723</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1627612514723</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Fixes wrong lang key">
-      <created>1627704253527</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1627704253527</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Removes an unused field">
-      <created>1627705343564</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1627705343564</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Moves package">
-      <created>1627711095199</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1627711095199</updated>
-    </task>
-    <task id="LOCAL-00008" summary="Fixes item duplication bug (first try)">
-      <created>1628056925900</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1628056925900</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Fixes item duplication bug (first try)">
-      <created>1628056960149</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1628056960149</updated>
-    </task>
-    <task id="LOCAL-00010" summary="Dont use static import">
-      <created>1628057216944</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1628057216944</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Inlines code">
-      <created>1628084001557</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1628084001557</updated>
+      <workItem from="1643475663908" duration="28550000" />
+      <workItem from="1643823431010" duration="97000" />
+      <workItem from="1643823542776" duration="1245000" />
+      <workItem from="1643826273851" duration="363000" />
+      <workItem from="1643826682458" duration="9441000" />
+      <workItem from="1644377201396" duration="2460000" />
+      <workItem from="1644757692808" duration="144000" />
+      <workItem from="1647169046312" duration="9064000" />
+      <workItem from="1647240686241" duration="122000" />
+      <workItem from="1647248222048" duration="662000" />
+      <workItem from="1656407683231" duration="2263000" />
+      <workItem from="1656918247533" duration="1277000" />
+      <workItem from="1657281007603" duration="14753000" />
+      <workItem from="1657360358876" duration="1226000" />
+      <workItem from="1657514339416" duration="250000" />
     </task>
     <task id="LOCAL-00012" summary="Decoupling">
       <created>1628085379535</created>
@@ -552,7 +411,140 @@
       <option name="project" value="LOCAL" />
       <updated>1631122547476</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="Fuck circular economy">
+      <created>1643571083765</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1643571083765</updated>
+    </task>
+    <task id="LOCAL-00043" summary="IDE stuff">
+      <created>1643571104839</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1643571104839</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Update helper version">
+      <created>1643636637999</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1643636637999</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Fuck circular economy">
+      <created>1643636650548</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1643636650548</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Fuck circular economy">
+      <created>1643636663826</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1643636663826</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Fix: 配置文件的颜色代码不能正常工作">
+      <created>1643636719219</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1643636719219</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Reformat gradle stuff">
+      <created>1644724556937</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1644724556937</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Fixed Java 17 compatibility issue">
+      <created>1644724682433</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1644724682433</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Reformat location string">
+      <created>1644724701030</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1644724701030</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Embrace CommandAPI!">
+      <created>1644724728273</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1644724728273</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Fixed missing permission requirement">
+      <created>1644757808193</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1644757808194</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Update">
+      <created>1657281187336</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1657281187336</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Update to 1.19">
+      <created>1657350831948</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1657350831948</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Removed BetterPortal">
+      <created>1657351418160</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1657351418160</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Renamed project to MewUtils and update deprecated methods">
+      <created>1657355516065</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1657355516065</updated>
+    </task>
+    <task id="LOCAL-00057" summary="Renamed project to MewUtils and update deprecated methods">
+      <created>1657355632420</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1657355632420</updated>
+    </task>
+    <task id="LOCAL-00058" summary="Removed missing code of custom ender eye">
+      <created>1657357023596</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1657357023597</updated>
+    </task>
+    <task id="LOCAL-00059" summary="Support new utils of mewcore">
+      <created>1657514486566</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1657514486567</updated>
+    </task>
+    <task id="LOCAL-00060" summary="Update plugin.yml to remove LangUtils">
+      <created>1657514509864</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1657514509864</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -579,22 +571,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Dont use static import" />
-    <MESSAGE value="Inlines code" />
-    <MESSAGE value="Decoupling" />
-    <MESSAGE value="Updates plugin dependencies in plugin,yml" />
-    <MESSAGE value="Updates plugin dependencies in plugin.yml" />
-    <MESSAGE value="Renames module" />
-    <MESSAGE value="Adds parameter for data folder" />
-    <MESSAGE value="Use getter methods to get datasource" />
-    <MESSAGE value="Updates dependency" />
-    <MESSAGE value="Use builder to create loader instance" />
-    <MESSAGE value="Adds BetterExplosion" />
-    <MESSAGE value="Adds commands to set custom prefix/suffix" />
-    <MESSAGE value="Use TextComponent" />
-    <MESSAGE value="Adds an option to toggle mining broadcast" />
-    <MESSAGE value="Embrace component" />
-    <MESSAGE value="Removes unnecessary string replacement" />
     <MESSAGE value="Embrace maven local" />
     <MESSAGE value="Fixes broadcast" />
     <MESSAGE value="Fixes duplicate messages" />
@@ -604,7 +580,23 @@
     <MESSAGE value="Code cleanup" />
     <MESSAGE value="Fixes broken formatting code check" />
     <MESSAGE value="Refactors command code and adds MiniMessage command" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactors command code and adds MiniMessage command" />
+    <MESSAGE value="IDE stuff" />
+    <MESSAGE value="Update helper version" />
+    <MESSAGE value="Fuck circular economy" />
+    <MESSAGE value="Fix: 配置文件的颜色代码不能正常工作" />
+    <MESSAGE value="Reformat gradle stuff" />
+    <MESSAGE value="Fixed Java 17 compatibility issue" />
+    <MESSAGE value="Reformat location string" />
+    <MESSAGE value="Embrace CommandAPI!" />
+    <MESSAGE value="Fixed missing permission requirement" />
+    <MESSAGE value="Update" />
+    <MESSAGE value="Update to 1.19" />
+    <MESSAGE value="Removed BetterPortal" />
+    <MESSAGE value="Renamed project to MewUtils and update deprecated methods" />
+    <MESSAGE value="Removed missing code of custom ender eye" />
+    <MESSAGE value="Support new utils of mewcore" />
+    <MESSAGE value="Update plugin.yml to remove LangUtils" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update plugin.yml to remove LangUtils" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
