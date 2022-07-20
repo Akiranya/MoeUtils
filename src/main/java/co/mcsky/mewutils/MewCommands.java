@@ -14,7 +14,7 @@ public class MewCommands {
     }
 
     public void register() {
-        new CommandAPICommand(COMMAND_NAME)
+        final CommandAPICommand mu = new CommandAPICommand(COMMAND_NAME)
                 .withAliases("mu")
                 .withSubcommand(new CommandReload(plugin).get())
                 .withSubcommand(new CommandVersion(plugin).get())
@@ -23,9 +23,12 @@ public class MewCommands {
                 .withSubcommand(new CommandWeather(plugin).get())
                 .withSubcommand(new CommandTime(plugin).get())
                 .withSubcommand(new CommandToggle(plugin).get())
-                .withSubcommand(new CommandTell(plugin).get())
-                .withSubcommand(new CommandFireball(plugin).get())
-                .register();
+                .withSubcommand(new CommandTell(plugin).get());
+
+        // add every optional commands
+        new CommandFireball(plugin).get().forEach(mu::withSubcommand);
+
+        mu.register();
     }
 
     public void unregister() {
