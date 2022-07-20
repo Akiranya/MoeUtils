@@ -2,12 +2,7 @@ package co.mcsky.mewutils;
 
 import co.mcsky.mewcore.text.Text;
 import co.mcsky.mewcore.text.TextRepository;
-import co.mcsky.mewutils.chat.CustomPrefix;
-import co.mcsky.mewutils.chat.CustomSuffix;
 import co.mcsky.mewutils.external.MewPlaceholderExpansion;
-import co.mcsky.mewutils.foundores.FoundOres;
-import co.mcsky.mewutils.magic.MagicTime;
-import co.mcsky.mewutils.magic.MagicWeather;
 import co.mcsky.mewutils.misc.BetterBees;
 import co.mcsky.mewutils.misc.BetterPortals;
 import co.mcsky.mewutils.misc.DeathLogger;
@@ -35,8 +30,8 @@ public final class MewUtils extends ExtendedJavaPlugin {
     /* eco & perm & chat */
     private Economy economy;
 
-    /* a flag to avoid registering commands twice */
-    private boolean commandsRegistered = false;
+    /* commands */
+    private MewCommands commands;
 
     public static boolean report(String module, boolean status) {
         if (status) {
@@ -110,6 +105,7 @@ public final class MewUtils extends ExtendedJavaPlugin {
 
     @Override
     protected void disable() {
+        commands.unregister();
     }
 
     public void reload() {
@@ -136,10 +132,12 @@ public final class MewUtils extends ExtendedJavaPlugin {
     }
 
     private void registerCommands() {
-        if (!commandsRegistered) {
-            commandsRegistered = true; // mark commands registered
-            new MewCommands(new CustomPrefix(), new CustomSuffix(), bindModule(new FoundOres()), bindModule(new MagicTime()), bindModule(new MagicWeather()));
-        }
+        commands = new MewCommands(this);
+        commands.register();
+    }
+
+    private void unregisterCommands() {
+        commands.unregister();
     }
 
     private void hookExternal() {
