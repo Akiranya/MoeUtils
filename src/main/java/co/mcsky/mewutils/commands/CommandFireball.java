@@ -53,6 +53,7 @@ public class CommandFireball implements Supplier<List<CommandAPICommand>> {
         final BooleanArgument rideArg = new BooleanArgument("ride");
 
         final CommandAPICommand executesConsole = new CommandAPICommand("fireball")
+                .withPermission("mew.admin")
                 .withArguments(projArg, speedArg, rideArg)
                 .withArguments(new PlayerArgument("player"))
                 .executes((sender, args) -> {
@@ -63,6 +64,7 @@ public class CommandFireball implements Supplier<List<CommandAPICommand>> {
                     launch(proj, speed, ride, player);
                 });
         final CommandAPICommand executesPlayer = new CommandAPICommand("fireball")
+                .withPermission("mew.admin")
                 .withArguments(projArg, speedArg, rideArg)
                 .executesPlayer((sender, args) -> {
                     String proj = types.containsKey((String) args[0]) ? (String) args[0] : "fireball";
