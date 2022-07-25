@@ -52,7 +52,7 @@ public class MagicWeather extends MagicBase {
      */
     public void call(WeatherOption weather, Player player) {
         MagicWeatherEvent event = new MagicWeatherEvent(player, weather);
-        MewUtils.plugin.getServer().getPluginManager().callEvent(event);
+        MewUtils.p.getServer().getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
             weather.set(player.getWorld());
             lastPlayers.put(player.getWorld().getName(), player.getName());
@@ -78,7 +78,7 @@ public class MagicWeather extends MagicBase {
     public void futureBroadcast(String weatherName, String worldName) {
         String prefix = MewUtils.text("magic-weather.prefix");
         String message = MewUtils.text("magic-weather.ended", "weather", weatherName, "world", worldName);
-        Schedulers.bukkit().runTaskLaterAsynchronously(MewUtils.plugin, () -> {
+        Schedulers.bukkit().runTaskLaterAsynchronously(MewUtils.p, () -> {
             Bukkit.broadcast(Component.text(prefix + message));
         }, Ticks.from(cooldownAmount, TimeUnit.SECONDS));
     }

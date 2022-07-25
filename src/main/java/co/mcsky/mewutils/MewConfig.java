@@ -19,28 +19,42 @@ public final class MewConfig {
     private final YamlConfigurationLoader loader;
 
     public boolean debug;
+
+    // ore announcer
     public boolean found_ores_enabled;
     public int max_iterations;
     public int purge_interval;
     public List<Material> enabled_blocks;
     public List<String> enabled_worlds;
     public int non_listener_expiry_hours;
+
+    // magic time and weather
     public int magic_time_cooldown;
     public int magic_time_cost;
     public int magic_weather_cooldown;
     public int magic_weather_cost;
+
+    // better bees
     public boolean better_bees_enabled;
     public boolean require_sneak;
+
+    // better portals
     public boolean better_portals_enabled;
+
+    // death logger
     public boolean death_logger_enabled;
     public int search_radius;
     public List<EntityType> logged_creatures;
+
+    // custom prefix
     public List<String> prefix_disabled_formatting_codes;
     public List<String> prefix_blocked_words;
     public int prefix_priority;
     public int prefix_max_length;
     public int prefix_exp_cost;
     public double prefix_money_cost;
+
+    // custom suffix
     public List<String> suffix_disabled_formatting_codes;
     public List<String> suffix_blocked_words;
     public int suffix_priority;
@@ -48,10 +62,17 @@ public final class MewConfig {
     public int suffix_exp_cost;
     public double suffix_money_cost;
 
+    // slow elytra
+    public boolean slow_elytra_enabled;
+    public List<String> slow_elytra_worlds;
+    public double slow_elytra_tps_threshold;
+    public double slow_elytra_velocity_multiply;
+    public int slow_elytra_cooldown;
+
     private CommentedConfigurationNode root;
 
     public MewConfig() {
-        loader = YamlConfigFactory.loader(new File(MewUtils.plugin.getDataFolder(), CONFIG_FILENAME));
+        loader = YamlConfigFactory.loader(new File(MewUtils.p.getDataFolder(), CONFIG_FILENAME));
     }
 
     /**
@@ -62,7 +83,7 @@ public final class MewConfig {
             root = loader.load();
         } catch (ConfigurateException e) {
             MewUtils.logger().severe(e.getMessage());
-            MewUtils.plugin.getServer().getPluginManager().disablePlugin(MewUtils.plugin);
+            MewUtils.p.getServer().getPluginManager().disablePlugin(MewUtils.p);
             return;
         }
 
@@ -114,6 +135,13 @@ public final class MewConfig {
             suffix_max_length = suffixNode.node("max-length").getInt(10);
             suffix_exp_cost = suffixNode.node("exp-cost").getInt(100);
             suffix_money_cost = suffixNode.node("money-cost").getDouble(10);
+
+            final CommentedConfigurationNode slowElytraNode = root.node("slow-elytra");
+            slow_elytra_enabled = slowElytraNode.node("enabled").getBoolean(true);
+            slow_elytra_worlds = slowElytraNode.node("limited-worlds").getList(String.class, List.of("ex", "ex_nether", "ex_the_end"));
+            slow_elytra_cooldown = slowElytraNode.node("cooldown").getInt(10000);
+            slow_elytra_tps_threshold = slowElytraNode.node("tps-threshold").getDouble(19D);
+            slow_elytra_velocity_multiply = slowElytraNode.node("velocity-multiply").getDouble(0.2);
 
         } catch (SerializationException e) {
             MewUtils.logger().severe(e.getMessage());

@@ -15,7 +15,7 @@ public class CustomSuffix {
     private final MewUtils plugin;
 
     public CustomSuffix() {
-        plugin = MewUtils.plugin;
+        plugin = MewUtils.p;
     }
 
     public void set(Player player, String suffix) {

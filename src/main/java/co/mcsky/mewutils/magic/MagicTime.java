@@ -41,7 +41,7 @@ public class MagicTime extends MagicBase {
 
     public void call(TimeOption time, Player player) {
         MagicTimeEvent event = new MagicTimeEvent(player, time);
-        MewUtils.plugin.getServer().getPluginManager().callEvent(event);
+        MewUtils.p.getServer().getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
             // set time for all worlds so that time between worlds are synchronized
             Bukkit.getWorlds().forEach(time::set);
@@ -68,7 +68,7 @@ public class MagicTime extends MagicBase {
     public void futureBroadcast(String timeName) {
         String prefix = MewUtils.text("magic-time.prefix");
         String message = MewUtils.text("magic-time.ended", "time", timeName);
-        Schedulers.bukkit().runTaskLaterAsynchronously(MewUtils.plugin, () -> {
+        Schedulers.bukkit().runTaskLaterAsynchronously(MewUtils.p, () -> {
             Bukkit.broadcast(Component.text(prefix + message));
         }, Ticks.from(cooldownAmount, TimeUnit.SECONDS));
     }

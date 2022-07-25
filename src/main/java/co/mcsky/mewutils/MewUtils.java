@@ -6,6 +6,7 @@ import co.mcsky.mewutils.external.MewPlaceholderExpansion;
 import co.mcsky.mewutils.misc.BetterBees;
 import co.mcsky.mewutils.misc.BetterPortals;
 import co.mcsky.mewutils.misc.DeathLogger;
+import co.mcsky.mewutils.misc.SlowElytra;
 import de.themoep.utils.lang.bukkit.LanguageManager;
 import me.lucko.helper.Services;
 import me.lucko.helper.plugin.ExtendedJavaPlugin;
@@ -18,7 +19,7 @@ import java.util.logging.Logger;
 public final class MewUtils extends ExtendedJavaPlugin {
 
     /* plugin inst */
-    public static MewUtils plugin;
+    public static MewUtils p;
 
     /* configuration */
     private MewConfig config;
@@ -43,33 +44,33 @@ public final class MewUtils extends ExtendedJavaPlugin {
     }
 
     public static Logger logger() {
-        return plugin.getLogger();
+        return p.getLogger();
     }
 
     public static MewConfig config() {
-        return plugin.config;
+        return p.config;
     }
 
     public static Economy economy() {
-        return plugin.economy;
+        return p.economy;
     }
 
     public static String text(String key, Object... replacements) {
         String message;
         if (replacements.length == 0) {
-            message = plugin.languageManager.getDefaultConfig().get(key);
+            message = p.languageManager.getDefaultConfig().get(key);
         } else {
             String[] list = new String[replacements.length];
             for (int i = 0; i < replacements.length; i++) {
                 list[i] = replacements[i].toString();
             }
-            message = plugin.languageManager.getDefaultConfig().get(key, list);
+            message = p.languageManager.getDefaultConfig().get(key, list);
         }
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
     public static Text text3(String key) {
-        return plugin.textRepository.get(key);
+        return p.textRepository.get(key);
     }
 
     @Override
@@ -79,7 +80,7 @@ public final class MewUtils extends ExtendedJavaPlugin {
 
     @Override
     protected void enable() {
-        plugin = this;
+        p = this;
 
         // hook into Vault
         try {
@@ -129,6 +130,7 @@ public final class MewUtils extends ExtendedJavaPlugin {
         bindModule(new BetterPortals());
         bindModule(new DeathLogger());
         bindModule(new BetterBees());
+        bindModule(new SlowElytra());
     }
 
     private void registerCommands() {

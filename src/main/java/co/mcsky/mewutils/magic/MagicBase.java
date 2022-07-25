@@ -1,6 +1,5 @@
 package co.mcsky.mewutils.magic;
 
-import co.mcsky.mewcore.MewCore;
 import co.mcsky.mewutils.MewUtils;
 import me.lucko.helper.cooldown.Cooldown;
 import me.lucko.helper.cooldown.CooldownMap;

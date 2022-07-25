@@ -15,7 +15,7 @@ public class CustomPrefix {
     private final MewUtils plugin;
 
     public CustomPrefix() {
-        plugin = MewUtils.plugin;
+        plugin = MewUtils.p;
     }
 
     public void set(Player player, String prefix) {
