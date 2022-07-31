@@ -8,6 +8,7 @@ import me.lucko.helper.cooldown.Cooldown;
 import me.lucko.helper.cooldown.CooldownMap;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
+import me.lucko.helper.utils.Log;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -43,7 +44,9 @@ public class SlowElytra implements TerminableModule {
 
             // halt any boost if tps low
             if (underTPSThreshold()) {
-                MewUtils.logger().info("Elytra boost canceled (firework; TPS)");
+                if (MewUtils.config().debug) {
+                    Log.info("Elytra boost canceled (firework; TPS)");
+                }
                 e.setShouldConsume(false);
                 e.setCancelled(true);
                 return;
@@ -52,8 +55,10 @@ public class SlowElytra implements TerminableModule {
             // handle cooldown
             Player p = e.getPlayer();
             if (isInLimitWorld(p) && !cooldownMap.test(p.getUniqueId())) {
-                MewUtils.logger().info("Elytra boost canceled (firework; cooldown)");
-                MewUtils.logger().info("Cooldown remaining: " + cooldownMap.remainingMillis(p.getUniqueId()) + "ms");
+                if (MewUtils.config().debug) {
+                    Log.info("Elytra boost canceled (firework; cooldown)");
+                    Log.info("Cooldown remaining: " + cooldownMap.remainingMillis(p.getUniqueId()) + "ms");
+                }
                 e.setShouldConsume(false);
                 e.setCancelled(true);
             }
@@ -66,7 +71,9 @@ public class SlowElytra implements TerminableModule {
 
             // halt any boost if tps low
             if (underTPSThreshold()) {
-                MewUtils.logger().info("Elytra boost canceled (projectile; TPS)");
+                if (MewUtils.config().debug) {
+                    Log.info("Elytra boost canceled (projectile; TPS)");
+                }
                 e.setCancelled(true);
                 return;
             }
@@ -74,8 +81,10 @@ public class SlowElytra implements TerminableModule {
             // handle cooldown
             Projectile proj = e.getEntity();
             if (proj.getShooter() instanceof Player p && proj instanceof Arrow && p.isGliding() && isInLimitWorld(p) && !cooldownMap.test(p.getUniqueId())) {
-                MewUtils.logger().info("Elytra boost canceled (projectile; cooldown)");
-                MewUtils.logger().info("Cooldown remaining: " + cooldownMap.remainingMillis(p.getUniqueId()) + "ms");
+                if (MewUtils.config().debug) {
+                    Log.info("Elytra boost canceled (projectile; cooldown)");
+                    Log.info("Cooldown remaining: " + cooldownMap.remainingMillis(p.getUniqueId()) + "ms");
+                }
                 e.setCancelled(true);
             }
 
@@ -87,14 +96,18 @@ public class SlowElytra implements TerminableModule {
 
             // halt any boost if tps low
             if (underTPSThreshold()) {
-                MewUtils.logger().info("Elytra boost canceled (trident; TPS)");
+                if (MewUtils.config().debug) {
+                    Log.info("Elytra boost canceled (trident; TPS)");
+                }
                 p.setVelocity(p.getVelocity().multiply(0));
                 return;
             }
 
             if (p.isGliding() && isInLimitWorld(p) && !cooldownMap.test(p.getUniqueId())) {
-                MewUtils.logger().info("Elytra boost canceled (trident; cooldown)");
-                MewUtils.logger().info("Cooldown remaining: " + cooldownMap.remainingMillis(p.getUniqueId()) + "ms");
+                if (MewUtils.config().debug) {
+                    Log.info("Elytra boost canceled (trident; cooldown)");
+                    Log.info("Cooldown remaining: " + cooldownMap.remainingMillis(p.getUniqueId()) + "ms");
+                }
                 Vector slowVel = p.getVelocity().multiply(MewUtils.config().slow_elytra_velocity_multiply);
                 Schedulers.sync().runLater(() -> p.setVelocity(slowVel), 1);
             }

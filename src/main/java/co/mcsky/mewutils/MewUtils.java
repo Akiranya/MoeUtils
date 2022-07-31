@@ -34,6 +34,16 @@ public final class MewUtils extends ExtendedJavaPlugin {
     /* commands */
     private MewCommands commands;
 
+    public static void debug(String message) {
+        if (MewUtils.config().debug)
+            MewUtils.p.getLogger().info("[DEBUG] " + message);
+    }
+
+    public static void debug(Throwable message) {
+        if (MewUtils.config().debug)
+            MewUtils.p.getLogger().info("[DEBUG] " + message.getMessage());
+    }
+
     public static boolean report(String module, boolean status) {
         if (status) {
             logger().info(module + " is enabled");
