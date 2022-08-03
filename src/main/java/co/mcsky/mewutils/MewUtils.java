@@ -44,7 +44,7 @@ public final class MewUtils extends ExtendedJavaPlugin {
             MewUtils.p.getLogger().info("[DEBUG] " + message.getMessage());
     }
 
-    public static boolean report(String module, boolean status) {
+    public static boolean logEnabledStatus(String module, boolean status) {
         if (status) {
             logger().info(module + " is enabled");
         } else {

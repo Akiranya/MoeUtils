@@ -34,7 +34,7 @@ public class SlowElytra implements TerminableModule {
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
 
-        if (MewUtils.report("SlowElytra", MewUtils.config().slow_elytra_enabled))
+        if (MewUtils.logEnabledStatus("SlowElytra", MewUtils.config().slow_elytra_enabled))
             return;
 
         // suppress FIREWORK boost
@@ -66,24 +66,25 @@ public class SlowElytra implements TerminableModule {
 
         // suppress PROJECTILE boost
         Events.subscribe(ProjectileLaunchEvent.class).handler(e -> {
-
             if (e.isCancelled()) return;
-
-            // halt any boost if tps low
-            if (underTPSThreshold()) {
-                if (MewUtils.config().debug) {
-                    Log.info("Elytra boost canceled (projectile; TPS)");
-                }
-                e.setCancelled(true);
-                return;
-            }
-
-            // handle cooldown
             Projectile proj = e.getEntity();
-            if (proj.getShooter() instanceof Player p && proj instanceof Arrow && p.isGliding() && isInLimitWorld(p) && !cooldownMap.test(p.getUniqueId())) {
-                if (MewUtils.config().debug) {
-                    Log.info("Elytra boost canceled (projectile; cooldown)");
-                    Log.info("Cooldown remaining: " + cooldownMap.remainingMillis(p.getUniqueId()) + "ms");
+            if (proj instanceof Arrow && proj.getShooter() instanceof Player p && p.isGliding() && isInLimitWorld(p)) {
+                if (underTPSThreshold()) {
+                    // halt any boost if tps low
+
+                    if (MewUtils.config().debug) {
+                        Log.info("Elytra boost canceled (projectile; TPS)");
+                    }
+                    e.setCancelled(true);
+                    return;
+                }
+                if (!cooldownMap.test(p.getUniqueId())) {
+                    // handle cooldown
+
+                    if (MewUtils.config().debug) {
+                        Log.info("Elytra boost canceled (projectile; cooldown)");
+                        Log.info("Cooldown remaining: " + cooldownMap.remainingMillis(p.getUniqueId()) + "ms");
+                    }
                 }
                 e.setCancelled(true);
             }
@@ -93,25 +94,27 @@ public class SlowElytra implements TerminableModule {
         // suppress TRIDENT boost
         Events.subscribe(PlayerRiptideEvent.class).handler(e -> {
             Player p = e.getPlayer();
+            if (p.isGliding() && isInLimitWorld(p)) {
+                if (underTPSThreshold()) {
+                    // halt any boost if tps low
 
-            // halt any boost if tps low
-            if (underTPSThreshold()) {
-                if (MewUtils.config().debug) {
-                    Log.info("Elytra boost canceled (trident; TPS)");
+                    if (MewUtils.config().debug) {
+                        Log.info("Elytra boost canceled (trident; TPS)");
+                    }
+                    p.setVelocity(p.getVelocity().multiply(0));
+                    return;
                 }
-                p.setVelocity(p.getVelocity().multiply(0));
-                return;
-            }
+                if (!cooldownMap.test(p.getUniqueId())) {
+                    // handle cooldown
 
-            if (p.isGliding() && isInLimitWorld(p) && !cooldownMap.test(p.getUniqueId())) {
-                if (MewUtils.config().debug) {
-                    Log.info("Elytra boost canceled (trident; cooldown)");
-                    Log.info("Cooldown remaining: " + cooldownMap.remainingMillis(p.getUniqueId()) + "ms");
+                    if (MewUtils.config().debug) {
+                        Log.info("Elytra boost canceled (trident; cooldown)");
+                        Log.info("Cooldown remaining: " + cooldownMap.remainingMillis(p.getUniqueId()) + "ms");
+                    }
+                    Vector slowVelocity = p.getVelocity().multiply(MewUtils.config().slow_elytra_velocity_multiply);
+                    Schedulers.sync().runLater(() -> p.setVelocity(slowVelocity), 1);
                 }
-                Vector slowVel = p.getVelocity().multiply(MewUtils.config().slow_elytra_velocity_multiply);
-                Schedulers.sync().runLater(() -> p.setVelocity(slowVel), 1);
             }
-
         }).bindWith(consumer);
 
     }

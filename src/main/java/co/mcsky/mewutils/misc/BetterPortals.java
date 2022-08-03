@@ -12,7 +12,7 @@ public class BetterPortals implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MewUtils.report("BetterPortals", MewUtils.config().better_portals_enabled))
+        if (MewUtils.logEnabledStatus("BetterPortals", MewUtils.config().better_portals_enabled))
             return;
 
         Events.subscribe(PlayerPortalEvent.class)

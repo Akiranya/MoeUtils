@@ -4,15 +4,14 @@ import co.mcsky.mewcore.text.Text;
 import co.mcsky.mewutils.MewUtils;
 import me.lucko.helper.Events;
 import me.lucko.helper.Schedulers;
+import me.lucko.helper.metadata.Metadata;
+import me.lucko.helper.metadata.MetadataKey;
+import me.lucko.helper.metadata.MetadataMap;
 import me.lucko.helper.scheduler.Ticks;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.cacheddata.CachedMetaData;
-import net.luckperms.api.context.ImmutableContextSet;
-import net.luckperms.api.node.NodeType;
-import net.luckperms.api.node.types.MetaNode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -21,13 +20,12 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class FoundOres implements TerminableModule {
 
-    public static final String BROADCAST_TOGGLE_KEY = "mew:mining-listener";
+    public static final MetadataKey<Boolean> BROADCAST_TOGGLE_KEY = MetadataKey.createBooleanKey("receive-mining-broadcast");
 
     // necessary for this function to work
     private final Set<Location> locationHistory;
@@ -54,37 +52,20 @@ public class FoundOres implements TerminableModule {
 
     /**
      * Toggles the player whether to receive mining broadcast.
-     *
-     * @param player the player
      */
     public void toggleBroadcast(Player player) {
-        luckPerms.getUserManager().modifyUser(player.getUniqueId(), user -> {
-            final Optional<Boolean> metaValue = user.getCachedData().getMetaData().getMetaValue(BROADCAST_TOGGLE_KEY, Boolean::parseBoolean);
-            final MetaNode metaNode = MetaNode.builder()
-                    .key(BROADCAST_TOGGLE_KEY)
-                    .value(String.valueOf(!metaValue.orElse(true)))
-                    .context(ImmutableContextSet.empty())
-                    .expiry(MewUtils.config().non_listener_expiry_hours, TimeUnit.HOURS)
-                    .build();
-            user.data().clear(NodeType.META.predicate(mn -> mn.getMetaKey().equals(BROADCAST_TOGGLE_KEY)));
-            user.data().add(metaNode);
-        });
+        final MetadataMap map = Metadata.provideForPlayer(player);
+        map.put(BROADCAST_TOGGLE_KEY, !isListener(player));
     }
 
-    /**
-     * Checks whether the player is listening the mining broadcast.
-     *
-     * @param player the player
-     * @return true if the player is listening to the broadcast, otherwise false
-     */
     public boolean isListener(Player player) {
-        CachedMetaData metaData = luckPerms.getPlayerAdapter(Player.class).getMetaData(player);
-        return metaData.getMetaValue(BROADCAST_TOGGLE_KEY, Boolean::parseBoolean).orElse(true);
+        final MetadataMap map = Metadata.provideForPlayer(player);
+        return map.getOrPut(BROADCAST_TOGGLE_KEY, () -> true);
     }
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MewUtils.report("FoundOres", MewUtils.config().found_ores_enabled))
+        if (MewUtils.logEnabledStatus("FoundOres", MewUtils.config().found_ores_enabled))
             return;
 
         // clear history locations at interval
