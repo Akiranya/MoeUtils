@@ -34,7 +34,7 @@ public class SlowElytra implements TerminableModule {
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
 
-        if (MewUtils.logEnabledStatus("SlowElytra", MewUtils.config().slow_elytra_enabled))
+        if (MewUtils.logStatus("SlowElytra", MewUtils.config().slow_elytra_enabled))
             return;
 
         // suppress FIREWORK boost

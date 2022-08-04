@@ -6,6 +6,7 @@ import me.lucko.helper.Events;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -27,7 +28,7 @@ public class DeathLogger implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MewUtils.logEnabledStatus("DeathLogger", MewUtils.config().death_logger_enabled))
+        if (MewUtils.logStatus("DeathLogger", MewUtils.config().death_logger_enabled))
             return;
 
         Events.subscribe(EntityDeathEvent.class)
@@ -50,7 +51,10 @@ public class DeathLogger implements TerminableModule {
                     Component victimName;
                     if (entity.customName() != null) {
                         // add custom name if there is one
-                        victimName = entity.name().append(Component.text("(%s)".formatted(entity.customName())));
+                        victimName = MiniMessage.miniMessage().deserialize("{name}({customName})")
+                                .replaceText(b -> b.matchLiteral("{name}").replacement(entity.name()))
+                                .replaceText(b -> b.matchLiteral("{customName}").replacement(entity.customName()))
+                                .hoverEvent(entity.asHoverEvent());
                     } else {
                         victimName = entity.name();
                     }
@@ -96,7 +100,7 @@ public class DeathLogger implements TerminableModule {
             case FALLING_BLOCK -> "跌落方块";
             case DRAGON_BREATH -> "龙息";
             case FLY_INTO_WALL -> "卡进墙里";
-            case SONIC_BOOM -> "声波";
+            case SONIC_BOOM -> "音爆";
         };
     }
 

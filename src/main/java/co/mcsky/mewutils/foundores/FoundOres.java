@@ -65,7 +65,7 @@ public class FoundOres implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MewUtils.logEnabledStatus("FoundOres", MewUtils.config().found_ores_enabled))
+        if (MewUtils.logStatus("FoundOres", MewUtils.config().found_ores_enabled))
             return;
 
         // clear history locations at interval
