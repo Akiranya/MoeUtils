@@ -12,12 +12,6 @@ import org.bukkit.entity.Player;
 import java.util.function.Supplier;
 
 public class CommandTell implements Supplier<CommandAPICommand> {
-    private final MewUtils plugin;
-
-    public CommandTell(MewUtils plugin) {
-        this.plugin = plugin;
-    }
-
     @Override
     public CommandAPICommand get() {
         return new CommandAPICommand("tell")

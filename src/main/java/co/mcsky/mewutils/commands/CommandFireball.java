@@ -16,8 +16,6 @@ import java.util.stream.IntStream;
 
 public class CommandFireball implements Supplier<List<CommandAPICommand>> {
 
-    private final MewUtils plugin;
-
     public static final String FIREBALL_META_KEY = "mew_fireball_proj";
     public static final int MAX_SPEED = 8;
     public static final Map<String, Class<? extends Projectile>> types;
@@ -40,10 +38,6 @@ public class CommandFireball implements Supplier<List<CommandAPICommand>> {
         types = builder.build();
         typesArray = types.keySet().toArray(String[]::new);
         speedsArray = IntStream.range(0, MAX_SPEED + 1).boxed().map(String::valueOf).toArray(String[]::new);
-    }
-
-    public CommandFireball(MewUtils plugin) {
-        this.plugin = plugin;
     }
 
     @Override
@@ -81,7 +75,7 @@ public class CommandFireball implements Supplier<List<CommandAPICommand>> {
         final Projectile projectile = player.getWorld().spawn(player.getEyeLocation().add(direction.getX(), direction.getY(), direction.getZ()), types.get(proj));
         projectile.setShooter(player);
         projectile.setVelocity(direction);
-        projectile.setMetadata(FIREBALL_META_KEY, new FixedMetadataValue(plugin, true));
+        projectile.setMetadata(FIREBALL_META_KEY, new FixedMetadataValue(MewUtils.p, true));
 
         if (ride) {
             projectile.addPassenger(player);

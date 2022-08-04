@@ -10,8 +10,6 @@ import me.lucko.helper.metadata.MetadataMap;
 import me.lucko.helper.scheduler.Ticks;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -35,9 +33,6 @@ public class FoundOres implements TerminableModule {
     private final Set<Material> hashEnabledBlocks;
     private final Set<String> hashEnabledWorld;
 
-    // use metadata to store broadcast toggle
-    private final LuckPerms luckPerms;
-
     public FoundOres() {
         locationHistory = new HashSet<>();
         blockCounter = new BlockCounter(MewUtils.config().max_iterations);
@@ -46,8 +41,6 @@ public class FoundOres implements TerminableModule {
         hashEnabledWorld = new HashSet<>();
         hashEnabledBlocks.addAll(MewUtils.config().enabled_blocks);
         hashEnabledWorld.addAll(MewUtils.config().enabled_worlds);
-
-        luckPerms = LuckPermsProvider.get();
     }
 
     /**

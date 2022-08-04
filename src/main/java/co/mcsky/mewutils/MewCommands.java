@@ -7,26 +7,21 @@ import dev.jorel.commandapi.CommandAPICommand;
 public class MewCommands {
 
     private static final String COMMAND_NAME = "mewutils";
-    private final MewUtils plugin;
-
-    public MewCommands(MewUtils plugin) {
-        this.plugin = plugin;
-    }
 
     public void register() {
         final CommandAPICommand mu = new CommandAPICommand(COMMAND_NAME)
                 .withAliases("mu")
-                .withSubcommand(new CommandReload(plugin).get())
-                .withSubcommand(new CommandVersion(plugin).get())
-                .withSubcommand(new CommandPrefix(plugin).get())
-                .withSubcommand(new CommandSuffix(plugin).get())
-                .withSubcommand(new CommandWeather(plugin).get())
-                .withSubcommand(new CommandTime(plugin).get())
-                .withSubcommand(new CommandToggle(plugin).get())
-                .withSubcommand(new CommandTell(plugin).get());
+                .withSubcommand(new CommandReload().get())
+                .withSubcommand(new CommandVersion().get())
+                .withSubcommand(new CommandPrefix().get())
+                .withSubcommand(new CommandSuffix().get())
+                .withSubcommand(new CommandWeather().get())
+                .withSubcommand(new CommandTime().get())
+                .withSubcommand(new CommandToggle().get())
+                .withSubcommand(new CommandTell().get());
 
         // add every optional commands
-        new CommandFireball(plugin).get().forEach(mu::withSubcommand);
+        new CommandFireball().get().forEach(mu::withSubcommand);
 
         mu.register();
     }

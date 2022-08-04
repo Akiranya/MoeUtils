@@ -82,7 +82,7 @@ public final class MewConfig {
         try {
             root = loader.load();
         } catch (ConfigurateException e) {
-            MewUtils.logger().severe(e.getMessage());
+            e.printStackTrace();
             MewUtils.p.getServer().getPluginManager().disablePlugin(MewUtils.p);
             return;
         }
@@ -143,7 +143,7 @@ public final class MewConfig {
             slow_elytra_velocity_multiply = slowElytraNode.node("velocity-multiply").getDouble(0.2);
 
         } catch (SerializationException e) {
-            MewUtils.logger().severe(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -154,7 +154,7 @@ public final class MewConfig {
         try {
             loader.save(root);
         } catch (ConfigurateException e) {
-            MewUtils.logger().severe(e.getMessage());
+            e.printStackTrace();
         }
     }
 

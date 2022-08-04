@@ -9,34 +9,26 @@ import java.util.function.Supplier;
 
 public class CommandTime implements Supplier<CommandAPICommand> {
 
-    private final MewUtils plugin;
-    private final MagicTime time;
-
-    public CommandTime(MewUtils plugin) {
-        this.plugin = plugin;
-        this.time = new MagicTime();
-    }
-
     @Override
     public CommandAPICommand get() {
         return new CommandAPICommand("time")
                 .withSubcommand(new CommandAPICommand("day")
                         .executesPlayer((sender, args) -> {
-                            time.call(TimeOption.DAY, sender);
+                            MewUtils.p.getMagicTime().call(TimeOption.DAY, sender);
                         }))
                 .withSubcommand(new CommandAPICommand("night")
                         .executesPlayer((sender, args) -> {
-                            time.call(TimeOption.NIGHT, sender);
+                            MewUtils.p.getMagicTime().call(TimeOption.NIGHT, sender);
                         }))
                 .withSubcommand(new CommandAPICommand("status")
                         .withPermission("mew.admin")
                         .executesPlayer((sender, args) -> {
-                            sender.sendMessage(time.getLastPlayer());
+                            sender.sendMessage(MewUtils.p.getMagicTime().getLastPlayer());
                         }))
                 .withSubcommand(new CommandAPICommand("reset")
                         .withPermission("mew.admin")
                         .executesPlayer((sender, args) -> {
-                            time.resetCooldown();
+                            MewUtils.p.getMagicTime().resetCooldown();
                             sender.sendMessage(MewUtils.text("common.reset"));
                         }));
     }

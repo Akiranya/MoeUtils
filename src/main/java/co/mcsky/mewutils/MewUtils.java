@@ -3,6 +3,9 @@ package co.mcsky.mewutils;
 import co.mcsky.mewcore.text.Text;
 import co.mcsky.mewcore.text.TextRepository;
 import co.mcsky.mewutils.external.MewPlaceholderExpansion;
+import co.mcsky.mewutils.foundores.FoundOres;
+import co.mcsky.mewutils.magic.MagicTime;
+import co.mcsky.mewutils.magic.MagicWeather;
 import co.mcsky.mewutils.misc.BetterBees;
 import co.mcsky.mewutils.misc.BetterPortals;
 import co.mcsky.mewutils.misc.DeathLogger;
@@ -10,11 +13,10 @@ import co.mcsky.mewutils.misc.SlowElytra;
 import de.themoep.utils.lang.bukkit.LanguageManager;
 import me.lucko.helper.Services;
 import me.lucko.helper.plugin.ExtendedJavaPlugin;
+import me.lucko.helper.utils.Log;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-
-import java.util.logging.Logger;
 
 public final class MewUtils extends ExtendedJavaPlugin {
 
@@ -34,27 +36,32 @@ public final class MewUtils extends ExtendedJavaPlugin {
     /* commands */
     private MewCommands commands;
 
+    /* modules */
+    private MagicTime magicTime;
+    private MagicWeather magicWeather;
+    private BetterPortals betterPortals;
+    private BetterBees betterBees;
+    private DeathLogger deathLogger;
+    private SlowElytra slowElytra;
+    private FoundOres foundOres;
+
     public static void debug(String message) {
         if (MewUtils.config().debug)
-            MewUtils.p.getLogger().info("[DEBUG] " + message);
+            Log.info("[DEBUG] " + message);
     }
 
     public static void debug(Throwable message) {
         if (MewUtils.config().debug)
-            MewUtils.p.getLogger().info("[DEBUG] " + message.getMessage());
+            Log.info("[DEBUG] " + message.getMessage());
     }
 
     public static boolean logStatus(String module, boolean status) {
         if (status) {
-            logger().info(module + " is enabled");
+            Log.info(module + " is enabled");
         } else {
-            logger().info(module + " is disabled");
+            Log.info(module + " is disabled");
         }
         return !status;
-    }
-
-    public static Logger logger() {
-        return p.getLogger();
     }
 
     public static MewConfig config() {
@@ -83,6 +90,34 @@ public final class MewUtils extends ExtendedJavaPlugin {
         return p.textRepository.get(key);
     }
 
+    public MagicTime getMagicTime() {
+        return magicTime;
+    }
+
+    public MagicWeather getMagicWeather() {
+        return magicWeather;
+    }
+
+    public BetterPortals getBetterPortals() {
+        return betterPortals;
+    }
+
+    public BetterBees getBetterBees() {
+        return betterBees;
+    }
+
+    public DeathLogger getDeathLogger() {
+        return deathLogger;
+    }
+
+    public SlowElytra getSlowElytra() {
+        return slowElytra;
+    }
+
+    public FoundOres getFoundOres() {
+        return foundOres;
+    }
+
     @Override
     protected void load() {
 
@@ -96,8 +131,8 @@ public final class MewUtils extends ExtendedJavaPlugin {
         try {
             economy = Services.load(Economy.class);
         } catch (Exception e) {
-            getLogger().severe(e.getMessage());
-            getLogger().severe("Some vault registration is not present");
+            Log.severe(e.getMessage());
+            Log.severe("Some vault registration is not present");
             disable();
             return;
         }
@@ -137,14 +172,17 @@ public final class MewUtils extends ExtendedJavaPlugin {
     }
 
     private void initializeModules() {
-        bindModule(new BetterPortals());
-        bindModule(new DeathLogger());
-        bindModule(new BetterBees());
-        bindModule(new SlowElytra());
+        magicTime = bindModule(new MagicTime());
+        magicWeather = bindModule(new MagicWeather());
+        betterPortals = bindModule(new BetterPortals());
+        deathLogger = bindModule(new DeathLogger());
+        betterBees = bindModule(new BetterBees());
+        slowElytra = bindModule(new SlowElytra());
+        foundOres = bindModule(new FoundOres());
     }
 
     private void registerCommands() {
-        commands = new MewCommands(this);
+        commands = new MewCommands();
         commands.register();
     }
 
@@ -155,7 +193,7 @@ public final class MewUtils extends ExtendedJavaPlugin {
     private void hookExternal() {
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new MewPlaceholderExpansion().register();
-            getLogger().info("Hooked into PlaceholderAPI");
+            Log.info("Hooked into PlaceholderAPI");
         }
     }
 
