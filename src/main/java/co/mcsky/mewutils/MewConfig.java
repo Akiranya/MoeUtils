@@ -65,6 +65,7 @@ public final class MewConfig {
     // slow elytra
     public boolean slow_elytra_enabled;
     public List<String> slow_elytra_worlds;
+    public List<String> slow_elytra_methods;
     public double slow_elytra_tps_threshold;
     public double slow_elytra_velocity_multiply;
     public int slow_elytra_cooldown;
@@ -138,6 +139,7 @@ public final class MewConfig {
             final CommentedConfigurationNode slowElytraNode = root.node("slow-elytra");
             slow_elytra_enabled = slowElytraNode.node("enabled").getBoolean(true);
             slow_elytra_worlds = slowElytraNode.node("limited-worlds").getList(String.class, List.of("ex", "ex_nether", "ex_the_end"));
+            slow_elytra_methods = slowElytraNode.node("limited-methods").getList(String.class, List.of("FIREWORK", "RIPTIDE", "BOW"));
             slow_elytra_cooldown = slowElytraNode.node("cooldown").getInt(10000);
             slow_elytra_tps_threshold = slowElytraNode.node("tps-threshold").getDouble(19D);
             slow_elytra_velocity_multiply = slowElytraNode.node("velocity-multiply").getDouble(0.2);

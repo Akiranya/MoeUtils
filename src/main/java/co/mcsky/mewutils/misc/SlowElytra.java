@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerRiptideEvent;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -26,6 +27,7 @@ public class SlowElytra implements TerminableModule {
 
     private final CooldownMap<UUID> cooldownMap;
     private Set<String> limitedWorlds;
+    private Set<BoostMethod> limitedMethods;
 
     public SlowElytra() {
         cooldownMap = CooldownMap.create(Cooldown.of(MewUtils.config().slow_elytra_cooldown, TimeUnit.MILLISECONDS));
@@ -39,11 +41,11 @@ public class SlowElytra implements TerminableModule {
 
         // suppress FIREWORK boost
         Events.subscribe(PlayerElytraBoostEvent.class).handler(e -> {
-
+            if (!isMethodLimited(BoostMethod.FIREWORK)) return;
             if (e.isCancelled()) return;
-
-            // halt any boost if tps low
             if (underTPSThreshold()) {
+                // halt any boost if tps low
+
                 if (MewUtils.config().debug) {
                     Log.info("Elytra boost canceled (firework; TPS)");
                 }
@@ -52,7 +54,7 @@ public class SlowElytra implements TerminableModule {
                 return;
             }
             Player p = e.getPlayer();
-            if (isInLimitWorld(p) && !cooldownMap.test(p.getUniqueId())) {
+            if (inLimitedWorld(p) && !cooldownMap.test(p.getUniqueId())) {
                 // handle cooldown
 
                 if (MewUtils.config().debug) {
@@ -64,11 +66,12 @@ public class SlowElytra implements TerminableModule {
             }
         }).bindWith(consumer);
 
-        // suppress PROJECTILE boost
+        // suppress BOW boost
         Events.subscribe(ProjectileLaunchEvent.class).handler(e -> {
+            if (!isMethodLimited(BoostMethod.BOW)) return;
             if (e.isCancelled()) return;
             Projectile proj = e.getEntity();
-            if (proj instanceof Arrow && proj.getShooter() instanceof Player p && p.isGliding() && isInLimitWorld(p)) {
+            if (proj instanceof Arrow && proj.getShooter() instanceof Player p && p.isGliding() && inLimitedWorld(p)) {
                 if (underTPSThreshold()) {
                     // halt any boost if tps low
 
@@ -93,8 +96,9 @@ public class SlowElytra implements TerminableModule {
 
         // suppress TRIDENT boost
         Events.subscribe(PlayerRiptideEvent.class).handler(e -> {
+            if (!isMethodLimited(BoostMethod.RIPTIDE)) return;
             Player p = e.getPlayer();
-            if (p.isGliding() && isInLimitWorld(p)) {
+            if (p.isGliding() && inLimitedWorld(p)) {
                 if (underTPSThreshold()) {
                     // halt any boost if tps low
 
@@ -119,7 +123,14 @@ public class SlowElytra implements TerminableModule {
 
     }
 
-    private boolean isInLimitWorld(Player player) {
+    private boolean isMethodLimited(BoostMethod method) {
+        if (limitedMethods == null) {
+            limitedMethods = EnumSet.copyOf(MewUtils.config().slow_elytra_methods.stream().map(BoostMethod::valueOf).toList());
+        }
+        return limitedMethods.contains(method);
+    }
+
+    private boolean inLimitedWorld(Player player) {
         if (limitedWorlds == null)
             limitedWorlds = new HashSet<>(MewUtils.config().slow_elytra_worlds);
         return limitedWorlds.contains(player.getWorld().getName());
@@ -127,6 +138,12 @@ public class SlowElytra implements TerminableModule {
 
     private boolean underTPSThreshold() {
         return MewUtils.p.getServer().getTPS()[0] <= MewUtils.config().slow_elytra_tps_threshold;
+    }
+
+    public enum BoostMethod {
+        FIREWORK,
+        RIPTIDE,
+        BOW,
     }
 
 }
