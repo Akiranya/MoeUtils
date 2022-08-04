@@ -51,8 +51,7 @@ public class DeathLogger implements TerminableModule {
                     Component victimName;
                     if (entity.customName() != null) {
                         // add custom name if there is one
-                        victimName = MiniMessage.miniMessage().deserialize("{name}({customName})")
-                                .replaceText(b -> b.matchLiteral("{name}").replacement(entity.name()))
+                        victimName = MiniMessage.miniMessage().deserialize("<lang:%s>({customName})".formatted(entity.getType().translationKey()))
                                 .replaceText(b -> b.matchLiteral("{customName}").replacement(entity.customName()))
                                 .hoverEvent(entity.asHoverEvent());
                     } else {
