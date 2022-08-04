@@ -51,10 +51,10 @@ public class SlowElytra implements TerminableModule {
                 e.setCancelled(true);
                 return;
             }
-
-            // handle cooldown
             Player p = e.getPlayer();
             if (isInLimitWorld(p) && !cooldownMap.test(p.getUniqueId())) {
+                // handle cooldown
+
                 if (MewUtils.config().debug) {
                     Log.info("Elytra boost canceled (firework; cooldown)");
                     Log.info("Cooldown remaining: " + cooldownMap.remainingMillis(p.getUniqueId()) + "ms");
