@@ -70,6 +70,11 @@ public final class MewConfig {
     public double slow_elytra_velocity_multiply;
     public int slow_elytra_cooldown;
 
+    // merge limit
+    public boolean merge_limit_enabled;
+    public int merge_limit_threshold;
+    public List<Material> merge_limit_types;
+
     private CommentedConfigurationNode root;
 
     public MewConfig() {
@@ -143,6 +148,11 @@ public final class MewConfig {
             slow_elytra_cooldown = slowElytraNode.node("cooldown").getInt(10000);
             slow_elytra_tps_threshold = slowElytraNode.node("tps-threshold").getDouble(19D);
             slow_elytra_velocity_multiply = slowElytraNode.node("velocity-multiply").getDouble(0.2);
+
+            final CommentedConfigurationNode mergeLimitNode = root.node("merge-limit");
+            merge_limit_enabled = mergeLimitNode.node("enabled").getBoolean(true);
+            merge_limit_threshold = mergeLimitNode.node("threshold").getInt(100);
+            merge_limit_types = mergeLimitNode.node("types").getList(Material.class, () -> List.of(Material.WHITE_CARPET));
 
         } catch (SerializationException e) {
             e.printStackTrace();

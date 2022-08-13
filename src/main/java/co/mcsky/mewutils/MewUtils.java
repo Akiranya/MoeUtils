@@ -6,10 +6,7 @@ import co.mcsky.mewutils.external.MewPlaceholderExpansion;
 import co.mcsky.mewutils.foundores.FoundOres;
 import co.mcsky.mewutils.magic.MagicTime;
 import co.mcsky.mewutils.magic.MagicWeather;
-import co.mcsky.mewutils.misc.BetterBees;
-import co.mcsky.mewutils.misc.BetterPortals;
-import co.mcsky.mewutils.misc.DeathLogger;
-import co.mcsky.mewutils.misc.SlowElytra;
+import co.mcsky.mewutils.misc.*;
 import de.themoep.utils.lang.bukkit.LanguageManager;
 import me.lucko.helper.Services;
 import me.lucko.helper.plugin.ExtendedJavaPlugin;
@@ -44,6 +41,7 @@ public final class MewUtils extends ExtendedJavaPlugin {
     private DeathLogger deathLogger;
     private SlowElytra slowElytra;
     private FoundOres foundOres;
+    private MergeLimit mergeLimit;
 
     public static void debug(String message) {
         if (MewUtils.config().debug)
@@ -146,7 +144,8 @@ public final class MewUtils extends ExtendedJavaPlugin {
         config.save(); // save config nodes into file
 
         initializeModules();
-        registerCommands();
+        commands = new MewCommands();
+        commands.register();
     }
 
     @Override
@@ -179,15 +178,7 @@ public final class MewUtils extends ExtendedJavaPlugin {
         betterBees = bindModule(new BetterBees());
         slowElytra = bindModule(new SlowElytra());
         foundOres = bindModule(new FoundOres());
-    }
-
-    private void registerCommands() {
-        commands = new MewCommands();
-        commands.register();
-    }
-
-    private void unregisterCommands() {
-        commands.unregister();
+        mergeLimit = bindModule(new MergeLimit());
     }
 
     private void hookExternal() {
