@@ -61,6 +61,7 @@ task deploy {
             def jarFileName = jar.archiveFile.get().toString().replace("-dev", "")
             workingDir '.'
             commandLine 'scp', jarFileName, 'dev:data/devmisc/plugins'
+            commandLine 'scp', jarFileName, 'mc-main:data/devmisc/plugins'
         }
     }
 }
