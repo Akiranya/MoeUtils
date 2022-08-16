@@ -9,7 +9,7 @@ public class MewCommands {
     private static final String COMMAND_NAME = "mewutils";
 
     public void register() {
-        final CommandAPICommand mu = new CommandAPICommand(COMMAND_NAME)
+        new CommandAPICommand(COMMAND_NAME)
                 .withAliases("mu")
                 .withSubcommand(new CommandReload().get())
                 .withSubcommand(new CommandVersion().get())
@@ -18,12 +18,10 @@ public class MewCommands {
                 .withSubcommand(new CommandWeather().get())
                 .withSubcommand(new CommandTime().get())
                 .withSubcommand(new CommandToggle().get())
-                .withSubcommand(new CommandTell().get());
-
-        // add every optional commands
-        new CommandFireball().get().forEach(mu::withSubcommand);
-
-        mu.register();
+                .withSubcommand(new CommandTell().get())
+                .withSubcommands(new CommandVillager().get())
+                .withSubcommands(new CommandFireball().get())
+                .register();
     }
 
     public void unregister() {

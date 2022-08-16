@@ -9,12 +9,11 @@ import org.bukkit.entity.*;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
-import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-public class CommandFireball implements Supplier<List<CommandAPICommand>> {
+public class CommandFireball implements Supplier<CommandAPICommand[]> {
 
     public static final String FIREBALL_META_KEY = "mew_fireball_proj";
     public static final int MAX_SPEED = 8;
@@ -41,7 +40,7 @@ public class CommandFireball implements Supplier<List<CommandAPICommand>> {
     }
 
     @Override
-    public List<CommandAPICommand> get() {
+    public CommandAPICommand[] get() {
         final Argument<String> projArg = new StringArgument("projectile").replaceSuggestions(ArgumentSuggestions.strings(typesArray));
         final Argument<Double> speedArg = new DoubleArgument("speed", 0, MAX_SPEED).replaceSuggestions(ArgumentSuggestions.strings(speedsArray));
         final BooleanArgument rideArg = new BooleanArgument("ride");
@@ -67,7 +66,7 @@ public class CommandFireball implements Supplier<List<CommandAPICommand>> {
                     launch(proj, speed, ride, sender);
                 });
 
-        return List.of(executesConsole, executesPlayer);
+        return new CommandAPICommand[]{executesConsole, executesPlayer};
     }
 
     private void launch(String proj, double speed, boolean ride, LivingEntity player) {
