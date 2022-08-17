@@ -6,6 +6,7 @@ import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.*;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
+import org.bukkit.inventory.MerchantRecipe;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -110,6 +111,19 @@ public class CommandVillager implements Supplier<CommandAPICommand[]> {
                     }
                 });
 
+        final CommandAPICommand restock = new CommandAPICommand("restock")
+                .withPermission("mew.admin.villager.restock")
+                .withArguments(new EntitySelectorArgument<Villager>("villagers", EntitySelector.MANY_ENTITIES))
+                .executesPlayer((sender, args) -> {
+                    @SuppressWarnings("unchecked")
+                    Collection<Villager> villagers = (Collection<Villager>) args[0];
+                    for (Villager villager : villagers) {
+                        for (MerchantRecipe recipe : villager.getRecipes()) {
+                            recipe.setUses(0);
+                        }
+                    }
+                });
+
         final CommandAPICommand view = new CommandAPICommand("view")
                 .withPermission("mew.user.villager.view")
                 .withArguments(new EntitySelectorArgument<Villager>("villager", EntitySelector.ONE_ENTITY))
@@ -137,6 +151,7 @@ public class CommandVillager implements Supplier<CommandAPICommand[]> {
                 setType,
                 setReputation,
                 setRestocksToday,
+                restock,
                 view);
 
         return new CommandAPICommand[]{villager};
