@@ -16,8 +16,8 @@ ext.minorVersion = 16
 ext.minecraftVersion = "1.19"
 
 group = 'co.mcsky'
+version = "$majorVersion.$minorVersion" as Object
 archivesBaseName = "${pluginNameUpper}-mc$minecraftVersion"
-version = "$majorVersion.$minorVersion".toString()
 
 repositories {
     mavenLocal()
