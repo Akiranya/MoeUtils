@@ -13,8 +13,6 @@ public class MewCommands {
                 .withAliases("mu")
                 .withSubcommand(new CommandReload().get())
                 .withSubcommand(new CommandVersion().get())
-                .withSubcommand(new CommandPrefix().get())
-                .withSubcommand(new CommandSuffix().get())
                 .withSubcommand(new CommandWeather().get())
                 .withSubcommand(new CommandTime().get())
                 .withSubcommand(new CommandToggle().get())

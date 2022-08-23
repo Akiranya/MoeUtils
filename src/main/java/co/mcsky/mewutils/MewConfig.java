@@ -46,22 +46,6 @@ public final class MewConfig {
     public int search_radius;
     public List<EntityType> logged_creatures;
 
-    // custom prefix
-    public List<String> prefix_disabled_formatting_codes;
-    public List<String> prefix_blocked_words;
-    public int prefix_priority;
-    public int prefix_max_length;
-    public int prefix_exp_cost;
-    public double prefix_money_cost;
-
-    // custom suffix
-    public List<String> suffix_disabled_formatting_codes;
-    public List<String> suffix_blocked_words;
-    public int suffix_priority;
-    public int suffix_max_length;
-    public int suffix_exp_cost;
-    public double suffix_money_cost;
-
     // slow elytra
     public boolean slow_elytra_enabled;
     public List<String> slow_elytra_worlds;
@@ -124,22 +108,6 @@ public final class MewConfig {
             death_logger_enabled = deathLoggerNode.node("enabled").getBoolean(false);
             search_radius = deathLoggerNode.node("search-radius").getInt(32);
             logged_creatures = deathLoggerNode.node("creatures").getList(EntityType.class, List.of(EntityType.VILLAGER));
-
-            final CommentedConfigurationNode prefixNode = root.node("prefix");
-            prefix_disabled_formatting_codes = prefixNode.node("disabled-formatting-codes").getList(String.class);
-            prefix_blocked_words = prefixNode.node("blocked-words").getList(String.class);
-            prefix_priority = prefixNode.node("priority").getInt(10);
-            prefix_max_length = prefixNode.node("max-length").getInt(10);
-            prefix_exp_cost = prefixNode.node("exp-cost").getInt(100);
-            prefix_money_cost = prefixNode.node("money-cost").getDouble(10);
-
-            final CommentedConfigurationNode suffixNode = root.node("suffix");
-            suffix_disabled_formatting_codes = suffixNode.node("disabled-formatting-codes").getList(String.class);
-            suffix_blocked_words = suffixNode.node("blocked-words").getList(String.class);
-            suffix_priority = suffixNode.node("priority").getInt(10);
-            suffix_max_length = suffixNode.node("max-length").getInt(10);
-            suffix_exp_cost = suffixNode.node("exp-cost").getInt(100);
-            suffix_money_cost = suffixNode.node("money-cost").getDouble(10);
 
             final CommentedConfigurationNode slowElytraNode = root.node("slow-elytra");
             slow_elytra_enabled = slowElytraNode.node("enabled").getBoolean(true);
