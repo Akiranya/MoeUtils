@@ -1,82 +1,63 @@
 # 通用的提示消息
 common:
-  none: '无'
-  enabled: '是'
-  disabled: '否'
-  no-perms: '&c你没有权限使用这个指令: {command}'
-  only-players: '&c只有玩家才可以使用这个指令.'
-  not-enough-money: '&7你没有足够的软妹币.'
-  not-enough-exp: '&7你没有足够的经验值.'
-  reloaded: '&bMewUtils 已重新载入.'
-  version: '&b正在使用 MewUtils {version}.'
-  price: '&f你花掉了 {cost} &f软妹币.'
-  cooldown: '&7冷却中:&b {time}s.'
-  reset: '&b状态已重置.'
-  blocked-format-codes: '你不能使用样式代码: {code}'
-  blocked-words: '你不能使用违禁词汇：{word}'
-
-# 冷却相关的提示消息
-# cooldown.head 和 cooldown.tail 支持以下占位符
-#   {amount}    总共可用的点数
-#   {remaining} 当前充能完成所需的时间（秒）
-cooldown:
-  head: '<gold>加速充能中</gold> '
-  tail: ' <gray>×</gray><yellow>{amount}</yellow> <aqua>{remaining}s</aqua>'
-  progressBar:
-    left: '<dark_gray>[</dark_gray>'
-    full: '<aqua>|</aqua>'
-    empty: '<gray>|</gray>'
-    right: '<dark_gray>]</dark_gray>'
-
-# 设置前缀
-prefix:
-  prefix-too-long: '前缀长度最大为 {max} 个字符'
-  set-success: '你的前缀已设置为: {prefix}'
-  clear-success: '清除前缀成功'
-
-# 设置后缀
-suffix:
-  suffix-too-long: '后缀长度最大为 {max} 个字符'
-  set-success: '你的后缀已设置为: {suffix}'
-  clear-success: '清除后缀成功'
+    none: '无'
+    enabled: '是'
+    disabled: '否'
+    not-enough-money: '&7你没有足够的软妹币.'
+    not-enough-exp: '&7你没有足够的经验值.'
+    reloaded: '&bMewUtils 已重新载入.'
+    version: '&b正在使用 MewUtils {version}.'
+    price: '&f你花掉了 {cost} &f软妹币.'
+    cooldown: '&7冷却中:&b {time}s.'
+    reset: '&b状态已重置.'
 
 # 魔法时间
 magic-time:
-  prefix: '&8[&d魔法时间&8]&r '
-  day: '魔法白天'
-  night: '魔法夜晚'
-  changed: '&b一位神秘的魔法师把所有世界的时间变成了 &d{time}&b.'
-  ended: '&d{time}&b 结束了! &7(冷却就绪)'
+    prefix: '&8[&d魔法时间&8]&r '
+    day: '魔法白天'
+    night: '魔法夜晚'
+    changed: '&b一位神秘的魔法师把所有世界的时间变成了 &d{time}&b.'
+    ended: '&d{time}&b 结束了! &7(冷却就绪)'
 
 # 魔法天气
 magic-weather:
-  prefix: '&8[&d魔法天气&8]&r '
-  clear: '魔法晴天'
-  rain: '魔法阴天'
-  thunder: '魔法雷雨'
-  changed: '&b一位神秘法师把世界 &e{world}&b 的天气变成了 &d{weather}&b.'
-  ended: '&b神秘法师的 &e{weather}&b (世界 &e{world}&b) 结束了! &7(冷却就绪)'
+    prefix: '&8[&d魔法天气&8]&r '
+    clear: '魔法晴天'
+    rain: '魔法阴天'
+    thunder: '魔法雷雨'
+    changed: '&b一位神秘法师把世界 &e{world}&b 的天气变成了 &d{weather}&b.'
+    ended: '&b神秘法师的 &e{weather}&b (世界 &e{world}&b) 结束了! &7(冷却就绪)'
 
-# 更好的蜜蜂
+# 更好的蜂箱
 better-bees:
-  count-beehive: '这个蜂箱里有 {bee_count} 只蜜蜂.'
-  count-bee-nest: '这个蜂巢里有 {bee_count} 只蜜蜂.'
-  reminder-on-place: '&7提示: &6右击蜂箱/蜂巢&7 可查看内部蜜蜂数量.'
-  reminder-in-hand: '&7提示: &6手持蜂箱 潜行+右键空气&7 可查看内部蜜蜂数量.'
+    count-beehive: '这个蜂箱里有 {bee_count} 只蜜蜂.'
+    count-bee-nest: '这个蜂巢里有 {bee_count} 只蜜蜂.'
+    reminder-on-place: '&7提示: &6右击蜂箱/蜂巢&7 可查看内部蜜蜂数量.'
+    reminder-in-hand: '&7提示: &6手持蜂箱 潜行+右键空气&7 可查看内部蜜蜂数量.'
 
 # 更好的传送门
 better-portals:
-  cancelled: '&e监测到该地狱门的目的地在世界边界外,为了您的安全本次传送已取消.'
-  debug: 'PlayerPortalEvent is cancelled (player: {player}).'
+    cancelled: '&e监测到该地狱门的目的地在世界边界外,为了您的安全本次传送已取消.'
+    debug: 'PlayerPortalEvent is cancelled (player: {player}).'
 
 # 挖矿公告
 found-ores:
-  prefix: '&8[&e矿工茶馆&8]&r '
-  found: '{player}&7 挖到了 &e{count}&7 个 &r&l{ore}'
-  toggle-broadcast-on: '&7你选择接收挖矿广播.'
-  toggle-broadcast-off: '&7你不再接收挖矿广播.'
+    prefix: '&8[&e矿工茶馆&8]&r '
+    found: '{player}&7 挖到了 &e{count}&7 个 &r&l{ore}'
+    toggle-broadcast-on: '&7你选择接收挖矿广播.'
+    toggle-broadcast-off: '&7你不再接收挖矿广播.'
 
-# 生物死亡通报
+# 死亡通报
 death-logger:
-  death: '&8一只&7{victim}&8已从人间蒸发 (&7{killer} &8|&7 {reason} &8|&7 {x};{y};{z};{world}&8)'
+    death: '&8一只&7{victim}&8已从人间蒸发 (&7{killer} &8|&7 {reason} &8|&7 {x};{y};{z};{world}&8)'
 
+# 鞘翅减速
+slow-elytra:
+    no-boost-when-tps-low: '服务器TPS过低, 鞘翅加速暂不可用!'
+    cooldown-progressbar:
+        head: '<gold>鞘翅加速充能中</gold> '
+        tail: ' <gray>×</gray><yellow>{amount}</yellow> <aqua>{remaining}s</aqua>'
+        left: '<dark_gray>[</dark_gray>'
+        full: '<aqua>|</aqua>'
+        empty: '<gray>|</gray>'
+        right: '<dark_gray>]</dark_gray>'

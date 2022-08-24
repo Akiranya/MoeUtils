@@ -12,7 +12,7 @@ compileJava {
 
 ext.pluginNameUpper = "MewUtils"
 ext.majorVersion = 1
-ext.minorVersion = 16
+ext.minorVersion = 17
 ext.minecraftVersion = "1.19"
 
 group = 'co.mcsky'
@@ -35,7 +35,7 @@ repositories {
 dependencies {
     // API
     compileOnly("io.papermc.paper:paper-api:1.19-R0.1-SNAPSHOT")
-    compileOnly('co.mcsky:MewCore:5.9')
+    compileOnly('co.mcsky:MewCore:5.10')
     compileOnly('de.themoep.utils:lang-bukkit:1.3-SNAPSHOT')
 
     // Plugin library

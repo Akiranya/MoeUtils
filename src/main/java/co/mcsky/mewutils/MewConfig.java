@@ -53,6 +53,9 @@ public final class MewConfig {
     public double slow_elytra_tps_threshold;
     public double slow_elytra_velocity_multiply;
     public int slow_elytra_cooldown;
+    public int slow_elytra_cooldown_charge;
+    public int slow_elytra_bar_width;
+    public int slow_elytra_bar_stay_time;
 
     // merge limit
     public boolean merge_limit_enabled;
@@ -114,8 +117,11 @@ public final class MewConfig {
             slow_elytra_worlds = slowElytraNode.node("limited-worlds").getList(String.class, List.of("ex", "ex_nether", "ex_the_end"));
             slow_elytra_methods = slowElytraNode.node("limited-methods").getList(String.class, List.of("FIREWORK", "RIPTIDE", "BOW"));
             slow_elytra_cooldown = slowElytraNode.node("cooldown").getInt(10000);
+            slow_elytra_cooldown_charge = slowElytraNode.node("charge").getInt(3);
             slow_elytra_tps_threshold = slowElytraNode.node("tps-threshold").getDouble(19D);
             slow_elytra_velocity_multiply = slowElytraNode.node("velocity-multiply").getDouble(0.2);
+            slow_elytra_bar_width = slowElytraNode.node("bar-width").getInt(75);
+            slow_elytra_bar_stay_time = slowElytraNode.node("bar-stay-time").getInt(3);
 
             final CommentedConfigurationNode mergeLimitNode = root.node("merge-limit");
             merge_limit_enabled = mergeLimitNode.node("enabled").getBoolean(true);

@@ -1,20 +1,21 @@
 package co.mcsky.mewutils.misc;
 
+import co.mcsky.mewcore.cooldown.ChargeBasedCooldownMap;
+import co.mcsky.mewcore.progressbar.ProgressbarGenerator;
+import co.mcsky.mewcore.progressbar.ProgressbarMessenger;
 import co.mcsky.mewutils.MewUtils;
+import com.destroystokyo.paper.event.entity.ProjectileCollideEvent;
 import com.destroystokyo.paper.event.player.PlayerElytraBoostEvent;
 import me.lucko.helper.Events;
 import me.lucko.helper.Schedulers;
 import me.lucko.helper.cooldown.Cooldown;
-import me.lucko.helper.cooldown.CooldownMap;
+import me.lucko.helper.event.filter.EventFilters;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
 import me.lucko.helper.utils.Log;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerRiptideEvent;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumSet;
@@ -25,12 +26,28 @@ import java.util.concurrent.TimeUnit;
 
 public class SlowElytra implements TerminableModule {
 
-    private final CooldownMap<UUID> cooldownMap;
-    private Set<String> limitedWorlds;
-    private Set<BoostMethod> limitedMethods;
+    private final ChargeBasedCooldownMap<UUID> cooldownMap;
+    private final Set<String> restrictedWorlds;
+    private final Set<BoostMethod> restrictedBoost;
+    private final ProgressbarMessenger progressbarMessenger;
 
     public SlowElytra() {
-        cooldownMap = CooldownMap.create(Cooldown.of(MewUtils.config().slow_elytra_cooldown, TimeUnit.MILLISECONDS));
+        cooldownMap = ChargeBasedCooldownMap.create(
+                Cooldown.of(MewUtils.config().slow_elytra_cooldown, TimeUnit.MILLISECONDS),
+                uuid -> MewUtils.config().slow_elytra_cooldown_charge
+        );
+        restrictedWorlds = new HashSet<>(MewUtils.config().slow_elytra_worlds);
+        restrictedBoost = EnumSet.copyOf(MewUtils.config().slow_elytra_methods.stream().map(BoostMethod::valueOf).toList());
+        progressbarMessenger = new ProgressbarMessenger(
+                MewUtils.config().slow_elytra_bar_stay_time,
+                ProgressbarGenerator.Builder.builder()
+                        .left(MewUtils.text("slow-elytra.cooldown-progressbar.left"))
+                        .full(MewUtils.text("slow-elytra.cooldown-progressbar.full"))
+                        .empty(MewUtils.text("slow-elytra.cooldown-progressbar.empty"))
+                        .right(MewUtils.text("slow-elytra.cooldown-progressbar.right"))
+                        .width(MewUtils.config().slow_elytra_bar_width)
+                        .build()
+        );
     }
 
     @Override
@@ -40,100 +57,131 @@ public class SlowElytra implements TerminableModule {
             return;
 
         // suppress FIREWORK boost
-        Events.subscribe(PlayerElytraBoostEvent.class).handler(e -> {
-            if (!isMethodLimited(BoostMethod.FIREWORK)) return;
-            if (e.isCancelled()) return;
-            if (underTPSThreshold()) {
-                // halt any boost if tps low
+        Events.subscribe(PlayerElytraBoostEvent.class)
+                .filter(EventFilters.ignoreCancelled())
+                .handler(e -> {
+                    if (!isBoostRestricted(BoostMethod.FIREWORK)) return;
+                    var player = e.getPlayer();
 
-                if (MewUtils.config().debug) {
-                    Log.info("Elytra boost canceled (firework; TPS)");
-                }
-                e.setShouldConsume(false);
-                e.setCancelled(true);
-                return;
-            }
-            Player p = e.getPlayer();
-            if (inLimitedWorld(p) && !cooldownMap.test(p.getUniqueId())) {
-                // handle cooldown
+                    // Halt any boost if tps low
+                    if (underTPSThreshold()) {
+                        player.sendMessage(MewUtils.text("slow-elytra.no-boost-when-tps-low"));
+                        e.setShouldConsume(false);
+                        e.setCancelled(true);
+                        if (MewUtils.config().debug) {
+                            Log.info("Elytra boost canceled (firework; TPS)");
+                        }
+                        return;
+                    }
 
-                if (MewUtils.config().debug) {
-                    Log.info("Elytra boost canceled (firework; cooldown)");
-                    Log.info("Cooldown remaining: " + cooldownMap.remainingMillis(p.getUniqueId()) + "ms");
-                }
-                e.setShouldConsume(false);
-                e.setCancelled(true);
-            }
-        }).bindWith(consumer);
+                    // Handle cooldown
+                    var cooldown = cooldownMap.get(player.getUniqueId());
+                    if (inRestrictedWorld(player) && !cooldown.test()) {
+                        e.setShouldConsume(false);
+                        e.setCancelled(true);
+                        if (MewUtils.config().debug) {
+                            Log.info("Elytra boost canceled  " + player.getName() + " (firework; cooldown)");
+                            Log.info("Cooldown remaining: " + cooldown.remainingMillisFull() + "ms");
+                        }
+                    }
+
+                    // Always show progressbar when boosting
+                    progressbarMessenger.show(
+                            player,
+                            () -> (float) cooldown.elapsedOne() / cooldown.getBaseTimeout(),
+                            () -> MewUtils.text("slow-elytra.cooldown-progressbar.head"),
+                            () -> MewUtils.text("slow-elytra.cooldown-progressbar.tail", "remaining", String.valueOf(cooldown.remainingTime(TimeUnit.SECONDS)), "amount", String.valueOf(cooldown.getAvailable()))
+                    );
+                }).bindWith(consumer);
 
         // suppress BOW boost
-        Events.subscribe(ProjectileLaunchEvent.class).handler(e -> {
-            if (!isMethodLimited(BoostMethod.BOW)) return;
-            if (e.isCancelled()) return;
-            Projectile proj = e.getEntity();
-            if (proj instanceof Arrow && proj.getShooter() instanceof Player p && p.isGliding() && inLimitedWorld(p)) {
-                if (underTPSThreshold()) {
-                    // halt any boost if tps low
+        Events.subscribe(ProjectileCollideEvent.class)
+                .filter(EventFilters.ignoreCancelled())
+                .handler(event -> {
+                    if (!isBoostRestricted(BoostMethod.BOW)) return;
+                    if (event.getCollidedWith() instanceof Player player &&
+                        event.getEntity() instanceof Arrow arrow &&
+                        arrow.getShooter() instanceof Player &&
+                        player.isGliding() &&
+                        inRestrictedWorld(player)
+                    ) {
 
-                    if (MewUtils.config().debug) {
-                        Log.info("Elytra boost canceled (projectile; TPS)");
+                        // Halt any boost if tps low
+                        if (underTPSThreshold()) {
+                            // halt any boost if tps low
+
+                            if (MewUtils.config().debug) {
+                                Log.info("Elytra boost canceled (projectile; TPS)");
+                            }
+                            event.setCancelled(true);
+                            return;
+                        }
+
+                        // Handle cooldown
+                        var cooldown = cooldownMap.get(player.getUniqueId());
+                        if (!cooldown.test()) {
+                            event.setCancelled(true);
+                            if (MewUtils.config().debug) {
+                                Log.info("Elytra boost canceled " + player.getName() + " (projectile; cooldown)");
+                                Log.info("Cooldown remaining: " + cooldown.remainingMillisFull() + "ms");
+                            }
+                        }
+
+                        // Always show progressbar when boosting
+                        progressbarMessenger.show(
+                                player,
+                                () -> (float) cooldown.elapsedOne() / cooldown.getBaseTimeout(),
+                                () -> MewUtils.text("slow-elytra.cooldown-progressbar.head"),
+                                () -> MewUtils.text("slow-elytra.cooldown-progressbar.tail", "remaining", String.valueOf(cooldown.remainingTime(TimeUnit.SECONDS)), "amount", String.valueOf(cooldown.getAvailable()))
+                        );
                     }
-                    e.setCancelled(true);
-                    return;
-                }
-                if (!cooldownMap.test(p.getUniqueId())) {
-                    // handle cooldown
-
-                    if (MewUtils.config().debug) {
-                        Log.info("Elytra boost canceled (projectile; cooldown)");
-                        Log.info("Cooldown remaining: " + cooldownMap.remainingMillis(p.getUniqueId()) + "ms");
-                    }
-                }
-                e.setCancelled(true);
-            }
-
-        }).bindWith(consumer);
+                }).bindWith(consumer);
 
         // suppress TRIDENT boost
         Events.subscribe(PlayerRiptideEvent.class).handler(e -> {
-            if (!isMethodLimited(BoostMethod.RIPTIDE)) return;
-            Player p = e.getPlayer();
-            if (p.isGliding() && inLimitedWorld(p)) {
+            if (!isBoostRestricted(BoostMethod.RIPTIDE)) return;
+            var player = e.getPlayer();
+            if (player.isGliding() && inRestrictedWorld(player)) {
+
+                // Halt any boost if tps low
                 if (underTPSThreshold()) {
-                    // halt any boost if tps low
 
                     if (MewUtils.config().debug) {
-                        Log.info("Elytra boost canceled (trident; TPS)");
+                        Log.info("Elytra boost canceled " + player.getName() + " (trident; TPS)");
                     }
-                    p.setVelocity(p.getVelocity().multiply(0));
+                    player.setVelocity(player.getVelocity().multiply(0));
                     return;
                 }
-                if (!cooldownMap.test(p.getUniqueId())) {
-                    // handle cooldown
 
+                // Handle cooldown
+                var cooldown = cooldownMap.get(player.getUniqueId());
+                if (!cooldown.test()) {
+                    var slow = player.getVelocity().multiply(MewUtils.config().slow_elytra_velocity_multiply);
+                    Schedulers.sync().runLater(() -> player.setVelocity(slow), 1);
                     if (MewUtils.config().debug) {
-                        Log.info("Elytra boost canceled (trident; cooldown)");
-                        Log.info("Cooldown remaining: " + cooldownMap.remainingMillis(p.getUniqueId()) + "ms");
+                        Log.info("Elytra boost canceled for " + player.getName() + " (trident; cooldown)");
+                        Log.info("Cooldown remaining: " + cooldown.remainingMillisFull() + "ms");
                     }
-                    Vector slowVelocity = p.getVelocity().multiply(MewUtils.config().slow_elytra_velocity_multiply);
-                    Schedulers.sync().runLater(() -> p.setVelocity(slowVelocity), 1);
                 }
+
+                // Always show progressbar when boosting
+                progressbarMessenger.show(
+                        player,
+                        () -> (float) cooldown.elapsedOne() / cooldown.getBaseTimeout(),
+                        () -> MewUtils.text("slow-elytra.cooldown-progressbar.head"),
+                        () -> MewUtils.text("slow-elytra.cooldown-progressbar.tail", "remaining", String.valueOf(cooldown.remainingTime(TimeUnit.SECONDS)), "amount", String.valueOf(cooldown.getAvailable()))
+                );
             }
         }).bindWith(consumer);
 
     }
 
-    private boolean isMethodLimited(BoostMethod method) {
-        if (limitedMethods == null) {
-            limitedMethods = EnumSet.copyOf(MewUtils.config().slow_elytra_methods.stream().map(BoostMethod::valueOf).toList());
-        }
-        return limitedMethods.contains(method);
+    private boolean isBoostRestricted(BoostMethod method) {
+        return restrictedBoost.contains(method);
     }
 
-    private boolean inLimitedWorld(Player player) {
-        if (limitedWorlds == null)
-            limitedWorlds = new HashSet<>(MewUtils.config().slow_elytra_worlds);
-        return limitedWorlds.contains(player.getWorld().getName());
+    private boolean inRestrictedWorld(Player player) {
+        return restrictedWorlds.contains(player.getWorld().getName());
     }
 
     private boolean underTPSThreshold() {
