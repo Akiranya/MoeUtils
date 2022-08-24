@@ -65,12 +65,12 @@ public class SlowElytra implements TerminableModule {
 
                     // Halt any boost if tps low
                     if (underTPSThreshold()) {
-                        player.sendMessage(MewUtils.text("slow-elytra.no-boost-when-tps-low"));
-                        e.setShouldConsume(false);
-                        e.setCancelled(true);
                         if (MewUtils.config().debug) {
                             Log.info("Elytra boost canceled (firework; TPS)");
                         }
+                        player.sendMessage(MewUtils.text("slow-elytra.no-boost-when-tps-low"));
+                        e.setShouldConsume(false);
+                        e.setCancelled(true);
                         return;
                     }
 
@@ -113,6 +113,7 @@ public class SlowElytra implements TerminableModule {
                             if (MewUtils.config().debug) {
                                 Log.info("Elytra boost canceled (projectile; TPS)");
                             }
+                            player.sendMessage(MewUtils.text("slow-elytra.no-boost-when-tps-low"));
                             event.setCancelled(true);
                             return;
                         }
@@ -149,6 +150,7 @@ public class SlowElytra implements TerminableModule {
                     if (MewUtils.config().debug) {
                         Log.info("Elytra boost canceled " + player.getName() + " (trident; TPS)");
                     }
+                    player.sendMessage(MewUtils.text("slow-elytra.no-boost-when-tps-low"));
                     player.setVelocity(player.getVelocity().multiply(0));
                     return;
                 }
