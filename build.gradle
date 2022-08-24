@@ -12,7 +12,7 @@ compileJava {
 
 ext.pluginNameUpper = "MewUtils"
 ext.majorVersion = 1
-ext.minorVersion = 17
+ext.minorVersion = 18
 ext.minecraftVersion = "1.19"
 
 group = 'co.mcsky'
