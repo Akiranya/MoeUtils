@@ -51,6 +51,11 @@ found-ores:
 death-logger:
     death: '&8一只&7{victim}&8已从人间蒸发 (&7{killer} &8|&7 {reason} &8|&7 {x};{y};{z};{world}&8)'
 
+# 史莱姆区块
+slime-chunk:
+    found: '这个区块里好像有史莱姆在跳动!'
+    not-fount: '这个区块似乎没有史莱姆的气息...'
+
 # 鞘翅减速
 slow-elytra:
     no-boost-when-tps-low: '服务器TPS过低, 鞘翅加速暂不可用!'

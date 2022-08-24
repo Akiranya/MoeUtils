@@ -21,6 +21,7 @@ public class MewCommands {
                 .withSubcommand(new CommandTell().get())
                 .withSubcommands(new CommandVillager().get())
                 .withSubcommands(new CommandFireball().get())
+                .withSubcommand(new CommandSlimeChunk().get())
                 .register();
     }
 
