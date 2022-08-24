@@ -135,22 +135,24 @@ public final class MewUtils extends ExtendedJavaPlugin {
             return;
         }
 
-        // initialize language manager
-        initializeLanguageManager();
+        // init language manager
+        initLanguages();
 
-        // initialize config manager
+        // init config manager
         config = new MewConfig();
         config.load();
-        config.save(); // save config nodes into file
+        config.save();
 
-        initializeModules();
-        commands = new MewCommands();
-        commands.register();
+        initModules();
+        if (!MewCommands.firstLoad) {
+            commands = new MewCommands();
+            commands.register();
+        }
     }
 
     @Override
     protected void disable() {
-        commands.unregister();
+
     }
 
     public void reload() {
@@ -158,7 +160,7 @@ public final class MewUtils extends ExtendedJavaPlugin {
         onEnable();
     }
 
-    private void initializeLanguageManager() {
+    private void initLanguages() {
         languageManager = new LanguageManager(this, "languages", "zh");
         languageManager.setPlaceholderPrefix("{");
         languageManager.setPlaceholderSuffix("}");
@@ -170,7 +172,7 @@ public final class MewUtils extends ExtendedJavaPlugin {
         textRepository = new TextRepository(MewUtils::text);
     }
 
-    private void initializeModules() {
+    private void initModules() {
         magicTime = bindModule(new MagicTime());
         magicWeather = bindModule(new MagicWeather());
         betterPortals = bindModule(new BetterPortals());

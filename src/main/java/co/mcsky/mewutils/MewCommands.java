@@ -6,9 +6,11 @@ import dev.jorel.commandapi.CommandAPICommand;
 
 public class MewCommands {
 
-    private static final String COMMAND_NAME = "mewutils";
+    public static final String COMMAND_NAME = "mewutils";
+    public static boolean firstLoad = false;
 
     public void register() {
+        firstLoad = true;
         new CommandAPICommand(COMMAND_NAME)
                 .withAliases("mu")
                 .withSubcommand(new CommandReload().get())

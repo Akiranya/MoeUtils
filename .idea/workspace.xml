@@ -4,11 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b3cf319c-8b1e-445c-90d3-cf723ae34fee" name="Default Changelist" comment="Update plugin.yml to remove LangUtils">
+    <list default="true" id="b3cf319c-8b1e-445c-90d3-cf723ae34fee" name="Default Changelist" comment="Improve SlowElytra.java">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/mcsky/mewutils/MewCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/mcsky/mewutils/MewCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/mcsky/mewutils/MewConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/mcsky/mewutils/MewConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/mcsky/mewutils/MewUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/mcsky/mewutils/MewUtils.java" afterDir="false" />
     </list>
-    <list id="a8fca1e9-c3a5-46d9-be6e-5f87f6ba249f" name="IDE Stuff" comment="" />
+    <list id="a8fca1e9-c3a5-46d9-be6e-5f87f6ba249f" name="IDE Stuff" comment="Refactored commands &amp; added fireball command">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,6 +47,23 @@
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="build" type="c8890929:TasksNode$1" />
               </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="MewUtils" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="other" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="MewUtils" type="f1a62948:ProjectNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="MewUtils" type="f1a62948:ProjectNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
+                <item name="compileClasspath" type="62daadca:ExternalSystemViewDefaultContributor$DependencyScopeExternalSystemNode" />
+              </path>
             </expand>
             <select />
           </tree_state>
@@ -69,6 +90,26 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/.idea/workspace.xml">
+      <ranges>
+        <range start1="6" end1="7" start2="6" end2="13" changelist="b3cf319c-8b1e-445c-90d3-cf723ae34fee" />
+        <range start1="8" end1="9" start2="14" end2="14" changelist="b3cf319c-8b1e-445c-90d3-cf723ae34fee" />
+        <range start1="10" end1="11" start2="15" end2="15" changelist="b3cf319c-8b1e-445c-90d3-cf723ae34fee" />
+        <range start1="44" end1="44" start2="48" end2="65" changelist="b3cf319c-8b1e-445c-90d3-cf723ae34fee" />
+        <range start1="71" end1="71" start2="92" end2="112" changelist="b3cf319c-8b1e-445c-90d3-cf723ae34fee" />
+        <range start1="84" end1="86" start2="125" end2="128" changelist="b3cf319c-8b1e-445c-90d3-cf723ae34fee" />
+        <range start1="102" end1="103" start2="144" end2="187" changelist="b3cf319c-8b1e-445c-90d3-cf723ae34fee" />
+        <range start1="124" end1="124" start2="208" end2="227" changelist="b3cf319c-8b1e-445c-90d3-cf723ae34fee" />
+        <range start1="126" end1="126" start2="229" end2="230" changelist="b3cf319c-8b1e-445c-90d3-cf723ae34fee" />
+        <range start1="127" end1="127" start2="231" end2="232" changelist="b3cf319c-8b1e-445c-90d3-cf723ae34fee" />
+        <range start1="201" end1="384" start2="306" end2="330" changelist="b3cf319c-8b1e-445c-90d3-cf723ae34fee" />
+        <range start1="546" end1="547" start2="492" end2="675" changelist="a8fca1e9-c3a5-46d9-be6e-5f87f6ba249f" />
+        <range start1="573" end1="592" start2="701" end2="701" changelist="a8fca1e9-c3a5-46d9-be6e-5f87f6ba249f" />
+        <range start1="597" end1="599" start2="706" end2="727" changelist="a8fca1e9-c3a5-46d9-be6e-5f87f6ba249f" />
+      </ranges>
+    </file>
+  </component>
   <component name="ProjectId" id="1vaL5fxeUuKRodJKb4p6m7Jw89o" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -82,8 +123,9 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.15429688" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="http.proxy" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -100,7 +142,49 @@
       <command value="gradle jar --refresh-dependencies" />
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Gradle.MewUtils [deploy]">
+    <configuration name="MewUtils [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="MewUtils [deploy]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="deploy" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <configuration name="MewUtils [jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -122,9 +206,30 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="DEV MISC" type="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" />
+      <option name="HOST" value="play.mewcraft.cc" />
+      <option name="PORT" value="5005" />
+      <option name="AUTO_RESTART" value="false" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="5005" />
+        <option name="LOCAL" value="false" />
+      </RunnerSettings>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Gradle.MewUtils [clean]" />
+      <item itemvalue="Gradle.MewUtils [jar]" />
+      <item itemvalue="Gradle.MewUtils [deploy]" />
+      <item itemvalue="Remote JVM Debug.DEV MISC" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.MewUtils [deploy]" />
         <item itemvalue="Gradle.MewUtils [jar]" />
+        <item itemvalue="Gradle.MewUtils [clean]" />
       </list>
     </recent_temporary>
   </component>
@@ -199,189 +304,30 @@
       <workItem from="1656918247533" duration="1277000" />
       <workItem from="1657281007603" duration="14753000" />
       <workItem from="1657360358876" duration="1226000" />
-      <workItem from="1657514339416" duration="250000" />
-    </task>
-    <task id="LOCAL-00012" summary="Decoupling">
-      <created>1628085379535</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1628085379535</updated>
-    </task>
-    <task id="LOCAL-00013" summary="Updates plugin dependencies in plugin,yml">
-      <created>1628089530328</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1628089530328</updated>
-    </task>
-    <task id="LOCAL-00014" summary="Updates plugin dependencies in plugin,yml">
-      <created>1628090533343</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1628090533343</updated>
-    </task>
-    <task id="LOCAL-00015" summary="Updates plugin dependencies in plugin.yml">
-      <created>1628090548989</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1628090548989</updated>
-    </task>
-    <task id="LOCAL-00016" summary="Renames module">
-      <created>1628093838176</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1628093838176</updated>
-    </task>
-    <task id="LOCAL-00017" summary="Adds parameter for data folder">
-      <created>1628098990283</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1628098990283</updated>
-    </task>
-    <task id="LOCAL-00018" summary="Use getter methods to get datasource">
-      <created>1628142602134</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1628142602134</updated>
-    </task>
-    <task id="LOCAL-00019" summary="Updates dependency">
-      <created>1628142609705</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1628142609705</updated>
-    </task>
-    <task id="LOCAL-00020" summary="Use builder to create loader instance">
-      <created>1628147893595</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1628147893595</updated>
-    </task>
-    <task id="LOCAL-00021" summary="Adds BetterExplosion">
-      <created>1628563620157</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1628563620157</updated>
-    </task>
-    <task id="LOCAL-00022" summary="Adds commands to set custom prefix/suffix">
-      <created>1629204708464</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1629204708464</updated>
-    </task>
-    <task id="LOCAL-00023" summary="Adds commands to set custom prefix/suffix">
-      <created>1629204715142</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1629204715142</updated>
-    </task>
-    <task id="LOCAL-00024" summary="Use TextComponent">
-      <created>1629210678055</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1629210678055</updated>
-    </task>
-    <task id="LOCAL-00025" summary="Adds an option to toggle mining broadcast">
-      <created>1629228214365</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1629228214365</updated>
-    </task>
-    <task id="LOCAL-00026" summary="Embrace component">
-      <created>1629359408101</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1629359408101</updated>
-    </task>
-    <task id="LOCAL-00027" summary="Removes unnecessary string replacement">
-      <created>1629368014846</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1629368014846</updated>
-    </task>
-    <task id="LOCAL-00028" summary="Embrace maven local">
-      <created>1629558991888</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1629558991888</updated>
-    </task>
-    <task id="LOCAL-00029" summary="Code cleanup">
-      <created>1629625172180</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1629625172180</updated>
-    </task>
-    <task id="LOCAL-00030" summary="Fixes broadcast">
-      <created>1629626777342</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1629626777342</updated>
-    </task>
-    <task id="LOCAL-00031" summary="Code cleanup">
-      <created>1629627527503</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1629627527503</updated>
-    </task>
-    <task id="LOCAL-00032" summary="Fixes duplicate messages">
-      <created>1629627641089</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1629627641089</updated>
-    </task>
-    <task id="LOCAL-00033" summary="Code cleanup">
-      <created>1629627814729</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1629627814729</updated>
-    </task>
-    <task id="LOCAL-00034" summary="Code cleanup">
-      <created>1629629955555</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1629629955555</updated>
-    </task>
-    <task id="LOCAL-00035" summary="Renames">
-      <created>1629631984794</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1629631984794</updated>
-    </task>
-    <task id="LOCAL-00036" summary="Code cleanup">
-      <created>1629632090678</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1629632090678</updated>
-    </task>
-    <task id="LOCAL-00037" summary="Use BidDecimal to round up">
-      <created>1629632488649</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1629632488649</updated>
+      <workItem from="1657514339416" duration="856000" />
+      <workItem from="1658236182933" duration="7388000" />
+      <workItem from="1658298867536" duration="533000" />
+      <workItem from="1658299603190" duration="68000" />
+      <workItem from="1658299679313" duration="140000" />
+      <workItem from="1658299979076" duration="3643000" />
+      <workItem from="1658305122045" duration="2948000" />
+      <workItem from="1658393032898" duration="1230000" />
+      <workItem from="1658399160568" duration="4327000" />
+      <workItem from="1658640952459" duration="3088000" />
+      <workItem from="1658686737855" duration="16083000" />
+      <workItem from="1658823564110" duration="652000" />
+      <workItem from="1658911217099" duration="3714000" />
+      <workItem from="1659006285435" duration="823000" />
+      <workItem from="1659016550402" duration="3161000" />
+      <workItem from="1659028234862" duration="1208000" />
+      <workItem from="1659105064294" duration="1236000" />
+      <workItem from="1659145860633" duration="5622000" />
+      <workItem from="1659532021572" duration="14602000" />
+      <workItem from="1659630599939" duration="2676000" />
+      <workItem from="1660272243125" duration="6997000" />
+      <workItem from="1660633966703" duration="25917000" />
+      <workItem from="1660838857502" duration="303000" />
+      <workItem from="1661234944832" duration="19421000" />
     </task>
     <task id="LOCAL-00038" summary="Adds color for text replacement">
       <created>1629704255359</created>
