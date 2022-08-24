@@ -54,7 +54,7 @@ death-logger:
 # 史莱姆区块
 slime-chunk:
     found: '这个区块里好像有史莱姆在跳动!'
-    not-fount: '这个区块似乎没有史莱姆的气息...'
+    not-found: '这个区块似乎没有史莱姆的气息...'
 
 # 鞘翅减速
 slow-elytra:
