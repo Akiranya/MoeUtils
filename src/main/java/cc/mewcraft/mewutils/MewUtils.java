@@ -3,18 +3,20 @@ package cc.mewcraft.mewutils;
 import cc.mewcraft.lib.lang.bukkit.LanguageManager;
 import cc.mewcraft.mewcore.text.Text;
 import cc.mewcraft.mewcore.text.TextRepository;
+import cc.mewcraft.mewutils.announceore.FoundOres;
 import cc.mewcraft.mewutils.command.CommandManager;
+import cc.mewcraft.mewutils.magic.MagicTime;
 import cc.mewcraft.mewutils.magic.MagicWeather;
 import cc.mewcraft.mewutils.misc.*;
 import cc.mewcraft.mewutils.placeholder.MewUtilsExpansion;
-import cc.mewcraft.mewutils.announceore.FoundOres;
-import cc.mewcraft.mewutils.magic.MagicTime;
 import me.lucko.helper.Services;
 import me.lucko.helper.plugin.ExtendedJavaPlugin;
 import me.lucko.helper.utils.Log;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
 
 public final class MewUtils extends ExtendedJavaPlugin {
 
@@ -73,11 +75,9 @@ public final class MewUtils extends ExtendedJavaPlugin {
         if (replacements.length == 0) {
             message = p.languageManager.getDefaultConfig().get(key);
         } else {
-            String[] list = new String[replacements.length];
-            for (int i = 0; i < replacements.length; i++) {
-                list[i] = replacements[i].toString();
-            }
-            message = p.languageManager.getDefaultConfig().get(key, list);
+            message = p.languageManager.getDefaultConfig().get(key,
+                Arrays.stream(replacements).map(Object::toString).toArray(String[]::new)
+            );
         }
         return ChatColor.translateAlternateColorCodes('&', message);
     }
