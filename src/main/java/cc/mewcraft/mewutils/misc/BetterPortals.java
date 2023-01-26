@@ -12,7 +12,7 @@ public class BetterPortals implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MewUtils.logStatus("BetterPortals", MewUtils.config().better_portals_enabled))
+        if (MewUtils.logModule("BetterPortals", MewUtils.config().better_portals_enabled))
             return;
 
         Events.subscribe(PlayerPortalEvent.class)
@@ -21,7 +21,7 @@ public class BetterPortals implements TerminableModule {
                     e.setCancelled(true);
                     e.getPlayer().sendMessage(MewUtils.text("better-portals.cancelled"));
                     if (MewUtils.config().debug) {
-                        Log.info(MewUtils.text("better-portals.debug", "player", e.getPlayer().getName()));
+                        MewUtils.log(MewUtils.text("better-portals.debug", "player", e.getPlayer().getName()));
                     }
                 }).bindWith(consumer);
     }

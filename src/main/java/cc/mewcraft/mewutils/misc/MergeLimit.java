@@ -21,7 +21,7 @@ public class MergeLimit implements TerminableModule {
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
 
-        if (MewUtils.logStatus("MergeLimit", MewUtils.config().merge_limit_enabled)) {
+        if (MewUtils.logModule("MergeLimit", MewUtils.config().merge_limit_enabled)) {
             return;
         }
 

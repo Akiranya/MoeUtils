@@ -53,7 +53,7 @@ public class SlowElytra implements TerminableModule {
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
 
-        if (MewUtils.logStatus("SlowElytra", MewUtils.config().slow_elytra_enabled))
+        if (MewUtils.logModule("SlowElytra", MewUtils.config().slow_elytra_enabled))
             return;
 
         // suppress FIREWORK boost
@@ -66,7 +66,7 @@ public class SlowElytra implements TerminableModule {
                     // Halt any boost if tps low
                     if (underTPSThreshold()) {
                         if (MewUtils.config().debug) {
-                            Log.info("Elytra boost canceled (firework; TPS)");
+                            MewUtils.log("Elytra boost canceled (firework; TPS)");
                         }
                         player.sendMessage(MewUtils.text("slow-elytra.no-boost-when-tps-low"));
                         e.setShouldConsume(false);
@@ -80,8 +80,8 @@ public class SlowElytra implements TerminableModule {
                         e.setShouldConsume(false);
                         e.setCancelled(true);
                         if (MewUtils.config().debug) {
-                            Log.info("Elytra boost canceled  " + player.getName() + " (firework; cooldown)");
-                            Log.info("Cooldown remaining: " + cooldown.remainingMillisFull() + "ms");
+                            MewUtils.log("Elytra boost canceled  " + player.getName() + " (firework; cooldown)");
+                            MewUtils.log("Cooldown remaining: " + cooldown.remainingMillisFull() + "ms");
                         }
                     }
 
@@ -111,7 +111,7 @@ public class SlowElytra implements TerminableModule {
                             // halt any boost if tps low
 
                             if (MewUtils.config().debug) {
-                                Log.info("Elytra boost canceled (projectile; TPS)");
+                                MewUtils.log("Elytra boost canceled (projectile; TPS)");
                             }
                             player.sendMessage(MewUtils.text("slow-elytra.no-boost-when-tps-low"));
                             event.setCancelled(true);
@@ -123,8 +123,8 @@ public class SlowElytra implements TerminableModule {
                         if (!cooldown.test()) {
                             event.setCancelled(true);
                             if (MewUtils.config().debug) {
-                                Log.info("Elytra boost canceled " + player.getName() + " (projectile; cooldown)");
-                                Log.info("Cooldown remaining: " + cooldown.remainingMillisFull() + "ms");
+                                MewUtils.log("Elytra boost canceled " + player.getName() + " (projectile; cooldown)");
+                                MewUtils.log("Cooldown remaining: " + cooldown.remainingMillisFull() + "ms");
                             }
                         }
 
@@ -148,7 +148,7 @@ public class SlowElytra implements TerminableModule {
                 if (underTPSThreshold()) {
 
                     if (MewUtils.config().debug) {
-                        Log.info("Elytra boost canceled " + player.getName() + " (trident; TPS)");
+                        MewUtils.log("Elytra boost canceled " + player.getName() + " (trident; TPS)");
                     }
                     player.sendMessage(MewUtils.text("slow-elytra.no-boost-when-tps-low"));
                     player.setVelocity(player.getVelocity().multiply(0));
@@ -161,8 +161,8 @@ public class SlowElytra implements TerminableModule {
                     var slow = player.getVelocity().multiply(MewUtils.config().slow_elytra_velocity_multiply);
                     Schedulers.sync().runLater(() -> player.setVelocity(slow), 1);
                     if (MewUtils.config().debug) {
-                        Log.info("Elytra boost canceled for " + player.getName() + " (trident; cooldown)");
-                        Log.info("Cooldown remaining: " + cooldown.remainingMillisFull() + "ms");
+                        MewUtils.log("Elytra boost canceled for " + player.getName() + " (trident; cooldown)");
+                        MewUtils.log("Cooldown remaining: " + cooldown.remainingMillisFull() + "ms");
                     }
                 }
 

@@ -29,7 +29,7 @@ public class BetterBees implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MewUtils.logStatus("BetterBees", MewUtils.config().better_bees_enabled))
+        if (MewUtils.logModule("BetterBees", MewUtils.config().better_bees_enabled))
             return;
 
         /*

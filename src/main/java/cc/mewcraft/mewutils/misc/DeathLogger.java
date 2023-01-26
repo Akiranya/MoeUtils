@@ -28,7 +28,7 @@ public class DeathLogger implements TerminableModule {
 
     @Override
     public void setup(@NotNull TerminableConsumer consumer) {
-        if (MewUtils.logStatus("DeathLogger", MewUtils.config().death_logger_enabled))
+        if (MewUtils.logModule("DeathLogger", MewUtils.config().death_logger_enabled))
             return;
 
         Events.subscribe(EntityDeathEvent.class)

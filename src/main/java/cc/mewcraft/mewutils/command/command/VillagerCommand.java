@@ -4,6 +4,7 @@ import cc.mewcraft.lib.commandframework.Command;
 import cc.mewcraft.lib.commandframework.arguments.standard.EnumArgument;
 import cc.mewcraft.lib.commandframework.arguments.standard.IntegerArgument;
 import cc.mewcraft.lib.commandframework.bukkit.arguments.selector.MultipleEntitySelector;
+import cc.mewcraft.lib.commandframework.bukkit.arguments.selector.SingleEntitySelector;
 import cc.mewcraft.lib.commandframework.bukkit.parsers.PlayerArgument;
 import cc.mewcraft.lib.commandframework.bukkit.parsers.selector.MultipleEntitySelectorArgument;
 import cc.mewcraft.lib.commandframework.bukkit.parsers.selector.SingleEntitySelectorArgument;
@@ -48,7 +49,7 @@ public class VillagerCommand extends AbstractCommand {
 
         Command<CommandSender> setType = builder
             .literal("set")
-            .argument(MultipleEntitySelectorArgument.of("entities"))
+            .argument(MultipleEntitySelectorArgument.of("selector"))
             .literal("type")
             .argument(EnumArgument.of(Villager.Type.class, "type"))
             .handler(commandContext -> {
@@ -62,7 +63,7 @@ public class VillagerCommand extends AbstractCommand {
 
         Command<CommandSender> setLevel = builder
             .literal("set")
-            .argument(MultipleEntitySelectorArgument.of("entities"))
+            .argument(MultipleEntitySelectorArgument.of("selector"))
             .literal("level")
             .argument(IntegerArgument.of("level"))
             .handler(commandContext -> {
@@ -76,7 +77,7 @@ public class VillagerCommand extends AbstractCommand {
 
         Command<CommandSender> setExp = builder
             .literal("set")
-            .argument(MultipleEntitySelectorArgument.of("entities"))
+            .argument(MultipleEntitySelectorArgument.of("selector"))
             .literal("exp")
             .argument(IntegerArgument.of("exp"))
             .handler(commandContext -> {
@@ -90,7 +91,7 @@ public class VillagerCommand extends AbstractCommand {
 
         Command<CommandSender> setProfession = builder
             .literal("set")
-            .argument(MultipleEntitySelectorArgument.of("entities"))
+            .argument(MultipleEntitySelectorArgument.of("selector"))
             .literal("profession")
             .argument(EnumArgument.of(Villager.Profession.class, "profession"))
             .handler(commandContext -> {
@@ -105,7 +106,7 @@ public class VillagerCommand extends AbstractCommand {
 
         Command<CommandSender> setReputation = builder
             .literal("set")
-            .argument(MultipleEntitySelectorArgument.of("entities"))
+            .argument(MultipleEntitySelectorArgument.of("selector"))
             .literal("reputation")
             .argument(PlayerArgument.of("player"))
             .argument(EnumArgument.of(ReputationType.class, "reputationType"))
@@ -130,7 +131,7 @@ public class VillagerCommand extends AbstractCommand {
 
         Command<CommandSender> restock = builder
             .literal("restock")
-            .argument(MultipleEntitySelectorArgument.of("entities"))
+            .argument(MultipleEntitySelectorArgument.of("selector"))
             .handler(commandContext -> {
                 MultipleEntitySelector selector = commandContext.get("selector");
 
@@ -144,14 +145,14 @@ public class VillagerCommand extends AbstractCommand {
 
         Command<CommandSender> view = builder
             .literal("view")
-            .argument(SingleEntitySelectorArgument.of("entity"))
+            .argument(SingleEntitySelectorArgument.of("selector"))
             .argument(PlayerArgument.of("player"))
             .handler(commandContext -> {
-                Object entity = commandContext.get("entity");
+                SingleEntitySelector entity = commandContext.get("selector");
                 Player player = commandContext.get("player");
                 CommandSender sender = commandContext.getSender();
 
-                if (entity instanceof Villager villager) {
+                if (entity.getEntity() instanceof Villager villager) {
                     sender.sendMessage("");
                     sender.sendMessage("Type: " + villager.getVillagerType().name());
                     sender.sendMessage("Level: " + villager.getVillagerLevel());

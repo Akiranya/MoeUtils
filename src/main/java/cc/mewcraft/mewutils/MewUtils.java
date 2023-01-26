@@ -12,6 +12,8 @@ import cc.mewcraft.mewutils.placeholder.MewUtilsExpansion;
 import me.lucko.helper.Services;
 import me.lucko.helper.plugin.ExtendedJavaPlugin;
 import me.lucko.helper.utils.Log;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -44,20 +46,27 @@ public final class MewUtils extends ExtendedJavaPlugin {
     private MergeLimit mergeLimit;
 
     public static void debug(String message) {
-        if (MewUtils.config().debug)
-            Log.info("[DEBUG] " + message);
+        if (MewUtils.config().debug) p.getLogger().warning("[DEBUG] " + message);
     }
 
     public static void debug(Throwable message) {
-        if (MewUtils.config().debug)
-            Log.info("[DEBUG] " + message.getMessage());
+        if (MewUtils.config().debug) p.getLogger().warning("[DEBUG] " + message.getMessage());
     }
 
-    public static boolean logStatus(String module, boolean status) {
+    public static void log(final String msg) {
+        p.getLogger().info(msg);
+    }
+
+    public static boolean logModule(String module, boolean status) {
         if (status) {
-            Log.info(module + " is enabled");
+            p.getComponentLogger().info(Component.text()
+                .append(Component.text(module).color(TextColor.fromHexString("#99ffcc")))
+                .appendSpace()
+                .append(Component.text("is enabled!").asComponent())
+                .build()
+            );
         } else {
-            Log.info(module + " is disabled");
+            p.getComponentLogger().info(module + " is disabled!");
         }
         return !status;
     }
@@ -126,8 +135,8 @@ public final class MewUtils extends ExtendedJavaPlugin {
         try {
             economy = Services.load(Economy.class);
         } catch (Exception e) {
-            Log.severe(e.getMessage());
-            Log.severe("Some vault registration is not present");
+            getLogger().severe("Failed to hook into Vault!");
+            e.printStackTrace();
             disable();
             return;
         }
@@ -184,7 +193,7 @@ public final class MewUtils extends ExtendedJavaPlugin {
     private void hookExternal() {
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new MewUtilsExpansion().register();
-            Log.info("Hooked into PlaceholderAPI");
+            MewUtils.log("Hooked into PlaceholderAPI");
         }
     }
 
