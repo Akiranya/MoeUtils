@@ -12,7 +12,7 @@ import cc.mewcraft.lib.commandframework.minecraft.extras.MinecraftExceptionHandl
 import cc.mewcraft.lib.commandframework.paper.PaperCommandManager;
 import cc.mewcraft.lib.geantyref.TypeToken;
 import cc.mewcraft.mewutils.MewUtils;
-import cc.mewcraft.mewutils.command.command.FireballCommand;
+import cc.mewcraft.mewutils.command.command.*;
 import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.Nullable;
@@ -63,7 +63,13 @@ public class CommandManager extends PaperCommandManager<CommandSender> {
 
         // ---- Register all commands ----
         Stream.of(
-            new FireballCommand(this)
+            new FireballCommand(this),
+            new InternalCommand(this),
+            new SlimeChunkCommand(this),
+            new TimeCommand(this),
+            new ToggleCommand(this),
+            new VillagerCommand(this),
+            new WeatherCommand(this)
         ).forEach(AbstractCommand::register);
     }
 
