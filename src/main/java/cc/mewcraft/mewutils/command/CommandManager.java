@@ -4,7 +4,7 @@ import cc.mewcraft.lib.commandframework.Command;
 import cc.mewcraft.lib.commandframework.arguments.flags.CommandFlag;
 import cc.mewcraft.lib.commandframework.brigadier.CloudBrigadierManager;
 import cc.mewcraft.lib.commandframework.bukkit.CloudBukkitCapabilities;
-import cc.mewcraft.lib.commandframework.execution.AsynchronousCommandExecutionCoordinator;
+import cc.mewcraft.lib.commandframework.execution.CommandExecutionCoordinator;
 import cc.mewcraft.lib.commandframework.keys.CloudKey;
 import cc.mewcraft.lib.commandframework.keys.SimpleCloudKey;
 import cc.mewcraft.lib.commandframework.minecraft.extras.AudienceProvider;
@@ -32,7 +32,7 @@ public class CommandManager extends PaperCommandManager<CommandSender> {
     public CommandManager(MewUtils plugin) throws Exception {
         super(
             plugin,
-            AsynchronousCommandExecutionCoordinator.<CommandSender>builder().build(),
+            CommandExecutionCoordinator.simpleCoordinator(),
             Function.identity(),
             Function.identity()
         );
