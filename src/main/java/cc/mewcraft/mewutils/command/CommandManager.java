@@ -5,12 +5,9 @@ import cc.mewcraft.lib.commandframework.arguments.flags.CommandFlag;
 import cc.mewcraft.lib.commandframework.brigadier.CloudBrigadierManager;
 import cc.mewcraft.lib.commandframework.bukkit.CloudBukkitCapabilities;
 import cc.mewcraft.lib.commandframework.execution.CommandExecutionCoordinator;
-import cc.mewcraft.lib.commandframework.keys.CloudKey;
-import cc.mewcraft.lib.commandframework.keys.SimpleCloudKey;
 import cc.mewcraft.lib.commandframework.minecraft.extras.AudienceProvider;
 import cc.mewcraft.lib.commandframework.minecraft.extras.MinecraftExceptionHandler;
 import cc.mewcraft.lib.commandframework.paper.PaperCommandManager;
-import cc.mewcraft.lib.geantyref.TypeToken;
 import cc.mewcraft.mewutils.MewUtils;
 import cc.mewcraft.mewutils.command.command.*;
 import org.bukkit.command.CommandSender;
@@ -26,7 +23,6 @@ import java.util.stream.Stream;
 @NonNull
 public class CommandManager extends PaperCommandManager<CommandSender> {
 
-    public static final CloudKey<MewUtils> PLUGIN = SimpleCloudKey.of("mewutils:plugin", TypeToken.get(MewUtils.class));
     private final Map<String, CommandFlag.Builder<?>> flagRegistry = new HashMap<>();
 
     public CommandManager(MewUtils plugin) throws Exception {
@@ -48,13 +44,10 @@ public class CommandManager extends PaperCommandManager<CommandSender> {
         }
 
         // ---- Register Asynchronous Completion Listener ----
-        if (hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
-            registerAsynchronousCompletions();
-            plugin.getLogger().info("Successfully registered asynchronous command completion listener.");
-        }
-
-        // ---- Inject instances into the command context ----
-        this.registerCommandPreProcessor(ctx -> ctx.getCommandContext().store(PLUGIN, plugin));
+        // if (hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
+        //     registerAsynchronousCompletions();
+        //     plugin.getLogger().info("Successfully registered asynchronous command completion listener.");
+        // }
 
         // ---- Change default exception messages ----
         new MinecraftExceptionHandler<CommandSender>()
