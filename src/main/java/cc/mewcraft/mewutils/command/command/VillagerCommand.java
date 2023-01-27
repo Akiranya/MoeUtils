@@ -65,7 +65,7 @@ public class VillagerCommand extends AbstractCommand {
             .literal("set")
             .argument(MultipleEntitySelectorArgument.of("selector"))
             .literal("level")
-            .argument(IntegerArgument.of("level"))
+            .argument(IntegerArgument.<CommandSender>builder("level").withMax(5).withMin(0))
             .handler(commandContext -> {
                 MultipleEntitySelector selector = commandContext.get("selector");
                 int level = commandContext.get("level");
@@ -79,7 +79,7 @@ public class VillagerCommand extends AbstractCommand {
             .literal("set")
             .argument(MultipleEntitySelectorArgument.of("selector"))
             .literal("exp")
-            .argument(IntegerArgument.of("exp"))
+            .argument(IntegerArgument.<CommandSender>builder("exp").withMin(0))
             .handler(commandContext -> {
                 MultipleEntitySelector selector = commandContext.get("selector");
                 int exp = commandContext.get("exp");
@@ -110,7 +110,7 @@ public class VillagerCommand extends AbstractCommand {
             .literal("reputation")
             .argument(PlayerArgument.of("player"))
             .argument(EnumArgument.of(ReputationType.class, "reputationType"))
-            .argument(IntegerArgument.of("reputationValue"))
+            .argument(IntegerArgument.<CommandSender>builder("reputationValue").withMin(0))
             .handler(commandContext -> {
                 MultipleEntitySelector selector = commandContext.get("selector");
                 Player player = commandContext.get("player");
