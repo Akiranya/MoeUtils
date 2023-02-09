@@ -1,6 +1,7 @@
 package cc.mewcraft.mewutils.furniture;
 
 import cc.mewcraft.mewutils.MewUtils;
+import com.google.inject.Inject;
 import me.lucko.helper.item.ItemStackBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -21,6 +22,7 @@ public class FurnitureDyeHandler {
 
     private final MewUtils plugin;
 
+    @Inject
     public FurnitureDyeHandler(final MewUtils plugin) {
         this.plugin = plugin;
     }

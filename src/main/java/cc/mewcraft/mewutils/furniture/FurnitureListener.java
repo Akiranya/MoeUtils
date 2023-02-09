@@ -1,6 +1,7 @@
 package cc.mewcraft.mewutils.furniture;
 
 import cc.mewcraft.mewutils.MewUtils;
+import com.google.inject.Inject;
 import dev.lone.itemsadder.api.Events.FurnitureInteractEvent;
 import me.lucko.helper.Events;
 import me.lucko.helper.terminable.TerminableConsumer;
@@ -13,9 +14,10 @@ public class FurnitureListener implements TerminableModule {
     private final MewUtils plugin;
     private final FurnitureDyeHandler handler;
 
-    public FurnitureListener(final MewUtils plugin) {
+    @Inject
+    public FurnitureListener(final MewUtils plugin, final FurnitureDyeHandler handler) {
         this.plugin = plugin;
-        this.handler = new FurnitureDyeHandler(plugin);
+        this.handler = handler;
     }
 
     @Override public void setup(@NotNull final TerminableConsumer consumer) {

@@ -6,6 +6,7 @@ import cc.mewcraft.mewcore.text.Text;
 import cc.mewcraft.mewcore.text.TextRepository;
 import cc.mewcraft.mewutils.announceore.FoundOres;
 import cc.mewcraft.mewutils.command.CommandManager;
+import cc.mewcraft.mewutils.furniture.FurnitureDyeHandler;
 import cc.mewcraft.mewutils.furniture.FurnitureModule;
 import cc.mewcraft.mewutils.magic.MagicTime;
 import cc.mewcraft.mewutils.magic.MagicWeather;
@@ -186,7 +187,7 @@ public final class MewUtils extends ExtendedJavaPlugin {
         slowElytra = bindModule(new SlowElytra());
         foundOres = bindModule(new FoundOres());
         mergeLimit = bindModule(new MergeLimit());
-        new FurnitureModule(this);
+        new FurnitureModule(this, new FurnitureDyeHandler(this));
     }
 
     private void hookExternal() {

@@ -63,6 +63,7 @@ dependencies {
 
     // To be shaded
     implementation("net.wesjd", "anvilgui", "1.6.3-SNAPSHOT")
+    implementation("com.google.inject", "guice", "5.1.0")
 }
 
 bukkit {
@@ -105,6 +106,7 @@ tasks {
     shadowJar {
         val path = "cc.mewcraft.shade."
         relocate("net.wesjd.anvilgui", path + "anvilgui")
+        relocate("com.google.inject", path + "inject")
         archiveFileName.set("MewUtils-${project.version}.jar")
     }
     register("deployJar") {
