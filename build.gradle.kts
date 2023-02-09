@@ -7,6 +7,7 @@ plugins {
     id("net.kyori.indra") version indraVersion
     id("net.kyori.indra.git") version indraVersion
     id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "cc.mewcraft"
@@ -26,6 +27,7 @@ repositories {
     maven("https://jitpack.io") {
         content {
             includeGroup("com.github.MilkBowl")
+            includeGroup("com.github.LoneDev6")
         }
     }
     maven("https://repo.lucko.me/") {
@@ -38,6 +40,11 @@ repositories {
             includeGroup("me.clip")
         }
     }
+    maven("https://repo.codemc.io/repository/maven-snapshots/") {
+        content {
+            includeGroup("net.wesjd")
+        }
+    }
 }
 
 dependencies {
@@ -45,13 +52,17 @@ dependencies {
     compileOnly("io.papermc.paper", "paper-api", "1.19.3-R0.1-SNAPSHOT")
 
     // Plugin libs
-    compileOnly("cc.mewcraft", "MewCore", "5.11")
+    compileOnly("cc.mewcraft", "MewCore", "5.12")
     compileOnly("me.lucko", "helper", "5.6.13") { isTransitive = false }
 
     // 3rd party plugins
     compileOnly("net.luckperms", "api", "5.4")
     compileOnly("com.github.MilkBowl", "VaultAPI", "1.7") { isTransitive = false }
     compileOnly("me.clip", "placeholderapi", "2.11.2") { isTransitive = false }
+    compileOnly("com.github.LoneDev6", "API-ItemsAdder", "3.2.5")
+
+    // To be shaded
+    implementation("net.wesjd", "anvilgui", "1.6.3-SNAPSHOT")
 }
 
 bukkit {
@@ -62,7 +73,7 @@ bukkit {
     apiVersion = "1.17"
     authors = listOf("Nailm")
     depend = listOf("helper", "MewCore", "Vault")
-    softDepend = listOf("PlaceholderAPI")
+    softDepend = listOf("PlaceholderAPI", "ItemsAdder")
     permissions {
         register("mew.admin") {
             description = "Permission nodes for operators."
@@ -86,12 +97,20 @@ bukkit {
 
 tasks {
     jar {
+        archiveClassifier.set("nonshade")
+    }
+    assemble {
+        dependsOn(shadowJar)
+    }
+    shadowJar {
+        val path = "cc.mewcraft.shade."
+        relocate("net.wesjd.anvilgui", path + "anvilgui")
         archiveFileName.set("MewUtils-${project.version}.jar")
     }
     register("deployJar") {
         doLast {
             exec {
-                commandLine("rsync", jar.get().archiveFile.get().asFile.absoluteFile, "dev:data/dev/jar")
+                commandLine("rsync", shadowJar.get().archiveFile.get().asFile.absoluteFile, "dev:data/dev/jar")
             }
         }
     }

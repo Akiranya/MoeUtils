@@ -1,17 +1,18 @@
 package cc.mewcraft.mewutils;
 
 import cc.mewcraft.lib.lang.bukkit.LanguageManager;
+import cc.mewcraft.mewcore.hook.HookChecker;
 import cc.mewcraft.mewcore.text.Text;
 import cc.mewcraft.mewcore.text.TextRepository;
 import cc.mewcraft.mewutils.announceore.FoundOres;
 import cc.mewcraft.mewutils.command.CommandManager;
+import cc.mewcraft.mewutils.furniture.FurnitureModule;
 import cc.mewcraft.mewutils.magic.MagicTime;
 import cc.mewcraft.mewutils.magic.MagicWeather;
 import cc.mewcraft.mewutils.misc.*;
 import cc.mewcraft.mewutils.placeholder.MewUtilsExpansion;
 import me.lucko.helper.Services;
 import me.lucko.helper.plugin.ExtendedJavaPlugin;
-import me.lucko.helper.utils.Log;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.milkbowl.vault.economy.Economy;
@@ -80,14 +81,9 @@ public final class MewUtils extends ExtendedJavaPlugin {
     }
 
     public static String text(String key, Object... replacements) {
-        String message;
-        if (replacements.length == 0) {
-            message = p.languageManager.getDefaultConfig().get(key);
-        } else {
-            message = p.languageManager.getDefaultConfig().get(key,
-                Arrays.stream(replacements).map(Object::toString).toArray(String[]::new)
-            );
-        }
+        String message = replacements.length == 0
+            ? p.languageManager.getDefaultConfig().get(key)
+            : p.languageManager.getDefaultConfig().get(key, Arrays.stream(replacements).map(Object::toString).toArray(String[]::new));
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
@@ -180,14 +176,17 @@ public final class MewUtils extends ExtendedJavaPlugin {
     }
 
     private void initModules() {
-        magicTime = bindModule(new MagicTime());
-        magicWeather = bindModule(new MagicWeather());
+        if (HookChecker.hasVault()) {
+            magicTime = bindModule(new MagicTime());
+            magicWeather = bindModule(new MagicWeather());
+        }
         betterPortals = bindModule(new BetterPortals());
         deathLogger = bindModule(new DeathLogger());
         betterBees = bindModule(new BetterBees());
         slowElytra = bindModule(new SlowElytra());
         foundOres = bindModule(new FoundOres());
         mergeLimit = bindModule(new MergeLimit());
+        new FurnitureModule(this);
     }
 
     private void hookExternal() {
