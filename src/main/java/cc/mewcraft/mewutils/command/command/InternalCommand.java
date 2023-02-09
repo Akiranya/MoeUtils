@@ -19,7 +19,7 @@ public class InternalCommand extends AbstractCommand {
             .handler(context -> {
                 CommandSender sender = context.getSender();
                 MewUtils.p.reload();
-                sender.sendMessage(MewUtils.text("common.reloaded"));
+                MewUtils.translations().of("common.reloaded").send(sender);
             }).build();
         commandManager.register(reloadCommand);
     }

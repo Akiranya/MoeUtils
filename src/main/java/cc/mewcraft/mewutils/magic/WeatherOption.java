@@ -15,9 +15,9 @@ public enum WeatherOption {
      */
     public String customName() {
         return switch (this) {
-            case CLEAR -> MewUtils.text("magic-weather.clear");
-            case RAIN -> MewUtils.text("magic-weather.rain");
-            case THUNDER -> MewUtils.text("magic-weather.thunder");
+            case CLEAR -> MewUtils.translations().of("magic_weather.clear").plain();
+            case RAIN -> MewUtils.translations().of("magic_weather.rain").plain();
+            case THUNDER -> MewUtils.translations().of("magic_weather.thunder").plain();
         };
     }
 

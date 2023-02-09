@@ -1,12 +1,10 @@
 package cc.mewcraft.mewutils.misc;
 
 import cc.mewcraft.mewutils.MewUtils;
-import cc.mewcraft.mewcore.text.Text;
 import me.lucko.helper.Events;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -15,6 +13,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public class DeathLogger implements TerminableModule {
@@ -32,41 +31,35 @@ public class DeathLogger implements TerminableModule {
             return;
 
         Events.subscribe(EntityDeathEvent.class)
-                .filter(e -> hashLoggedCreatures.contains(e.getEntityType()))
-                .handler(e -> {
-                    LivingEntity entity = e.getEntity();
-                    if (entity.getLastDamageCause() == null) return;
-                    Player killer = entity.getKiller();
-                    String killerName;
-                    if (killer != null) {
-                        killerName = killer.getName();
-                    } else {
-                        // search for nearby players
-                        killerName = entity.getLocation().getNearbyPlayers(MewUtils.config().search_radius)
-                                .stream()
-                                .map(Player::getName)
-                                .reduce((acc, name) -> acc.concat(",").concat(name))
-                                .orElse(MewUtils.text("common.none"));
-                    }
-                    Component victimName;
-                    if (entity.customName() != null) {
-                        // add custom name if there is one
-                        victimName = MiniMessage.miniMessage().deserialize("<lang:%s>({customName})".formatted(entity.getType().translationKey()))
-                                .replaceText(b -> b.matchLiteral("{customName}").replacement(entity.customName()))
-                                .hoverEvent(entity.asHoverEvent());
-                    } else {
-                        victimName = entity.name();
-                    }
-                    MewUtils.text3("death-logger.death")
-                            .replace("victim", victimName)
-                            .replace("reason", getLocalization(entity.getLastDamageCause().getCause()))
-                            .replace("killer", killerName)
-                            .replace("x", entity.getLocation().getBlockX())
-                            .replace("y", entity.getLocation().getBlockY())
-                            .replace("z", entity.getLocation().getBlockZ())
-                            .replace("world", entity.getLocation().getWorld().getName())
-                            .broadcast(Text.MessageType.CHAT);
-                }).bindWith(consumer);
+            .filter(e -> hashLoggedCreatures.contains(e.getEntityType()))
+            .handler(this::onEntityDeath)
+            .bindWith(consumer);
+    }
+
+    private void onEntityDeath(EntityDeathEvent e) {
+        LivingEntity entity = e.getEntity();
+
+        if (entity.getLastDamageCause() == null)
+            return;
+
+        MewUtils.translations().of("death_logger.death")
+            .replace("victim", Optional.ofNullable(entity.customName()).orElse(entity.name()))
+            .replace("reason", getLocalization(entity.getLastDamageCause().getCause()))
+            .replace("killer", Optional.ofNullable(entity.getKiller())
+                .map(Player::getName)
+                .orElseGet(() -> entity
+                    .getLocation()
+                    .getNearbyPlayers(MewUtils.config().search_radius)
+                    .stream()
+                    .map(Player::getName)
+                    .reduce((acc, name) -> acc.concat(",").concat(name))
+                    .orElse(MewUtils.translations().of("common.none").plain())
+                ))
+            .replace("x", entity.getLocation().getBlockX())
+            .replace("y", entity.getLocation().getBlockY())
+            .replace("z", entity.getLocation().getBlockZ())
+            .replace("world", entity.getLocation().getWorld().getName())
+            .send(Bukkit.getServer());
     }
 
     private String getLocalization(EntityDamageEvent.DamageCause cause) {
@@ -102,5 +95,4 @@ public class DeathLogger implements TerminableModule {
             case SONIC_BOOM -> "音爆";
         };
     }
-
 }

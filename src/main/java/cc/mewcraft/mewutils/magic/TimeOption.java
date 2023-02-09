@@ -20,8 +20,8 @@ public enum TimeOption {
      */
     public String customName() {
         return switch (this) {
-            case DAY -> MewUtils.text("magic-time.day");
-            case NIGHT -> MewUtils.text("magic-time.night");
+            case DAY -> MewUtils.translations().of("magic_time.day").plain();
+            case NIGHT -> MewUtils.translations().of("magic_time.night").plain();
         };
     }
 

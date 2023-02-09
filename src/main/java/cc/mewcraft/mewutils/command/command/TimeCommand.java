@@ -36,9 +36,9 @@ public class TimeCommand extends AbstractCommand {
         }).build();
 
         Command<CommandSender> resetCommand = builder.literal("reset").handler(commandContext -> {
-            Player sender = (Player) commandContext.getSender();
+            Player player = (Player) commandContext.getSender();
             MewUtils.p.getMagicTime().resetCooldown();
-            sender.sendMessage(MewUtils.text("common.reset"));
+            MewUtils.translations().of("common.reset").send(player);
         }).build();
 
         commandManager.register(dayCommand, nightCommand, statusCommand, resetCommand);

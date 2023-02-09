@@ -22,9 +22,9 @@ public class SlimeChunkCommand extends AbstractCommand {
             .handler(context -> {
                 Player player = context.get("player");
                 if (player.getChunk().isSlimeChunk()) {
-                    player.sendMessage(MewUtils.text("slime-chunk.found"));
+                    MewUtils.translations().of("slime_chunk.found").send(player);
                 } else {
-                    player.sendMessage(MewUtils.text("slime-chunk.not-found"));
+                    MewUtils.translations().of("slime_chunk.not-found").send(player);
                 }
             }).build();
         commandManager.register(slimechunkCommand);

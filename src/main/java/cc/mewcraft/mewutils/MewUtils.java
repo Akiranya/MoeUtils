@@ -1,9 +1,7 @@
 package cc.mewcraft.mewutils;
 
-import cc.mewcraft.lib.lang.bukkit.LanguageManager;
 import cc.mewcraft.mewcore.hook.HookChecker;
-import cc.mewcraft.mewcore.text.Text;
-import cc.mewcraft.mewcore.text.TextRepository;
+import cc.mewcraft.mewcore.message.Translations;
 import cc.mewcraft.mewutils.announceore.FoundOres;
 import cc.mewcraft.mewutils.command.CommandManager;
 import cc.mewcraft.mewutils.furniture.FurnitureDyeHandler;
@@ -17,10 +15,6 @@ import me.lucko.helper.plugin.ExtendedJavaPlugin;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
-import java.util.Arrays;
 
 public final class MewUtils extends ExtendedJavaPlugin {
 
@@ -31,8 +25,7 @@ public final class MewUtils extends ExtendedJavaPlugin {
     private MewConfig config;
 
     /* language loader */
-    private LanguageManager languageManager;
-    private TextRepository textRepository;
+    private Translations translations;
 
     /* eco & perm & chat */
     private Economy economy;
@@ -81,15 +74,8 @@ public final class MewUtils extends ExtendedJavaPlugin {
         return p.economy;
     }
 
-    public static String text(String key, Object... replacements) {
-        String message = replacements.length == 0
-            ? p.languageManager.getDefaultConfig().get(key)
-            : p.languageManager.getDefaultConfig().get(key, Arrays.stream(replacements).map(Object::toString).toArray(String[]::new));
-        return ChatColor.translateAlternateColorCodes('&', message);
-    }
-
-    public static Text text3(String key) {
-        return p.textRepository.get(key);
+    public static Translations translations() {
+        return p.translations;
     }
 
     public MagicTime getMagicTime() {
@@ -138,8 +124,7 @@ public final class MewUtils extends ExtendedJavaPlugin {
             return;
         }
 
-        initLanguages();
-
+        translations = new Translations(this);
         config = new MewConfig();
         config.load();
         config.save();
@@ -162,18 +147,6 @@ public final class MewUtils extends ExtendedJavaPlugin {
     public void reload() {
         onDisable();
         onEnable();
-    }
-
-    private void initLanguages() {
-        languageManager = new LanguageManager(this, "languages", "zh");
-        languageManager.setPlaceholderPrefix("{");
-        languageManager.setPlaceholderSuffix("}");
-        languageManager.setProvider(sender -> {
-            if (sender instanceof Player)
-                return ((Player) sender).locale().getLanguage();
-            return null;
-        });
-        textRepository = new TextRepository(MewUtils::text);
     }
 
     private void initModules() {

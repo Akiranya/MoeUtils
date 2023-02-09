@@ -47,8 +47,8 @@ public class WeatherCommand extends AbstractCommand {
             .literal("reset")
             .permission("mew.admin")
             .handler(commandContext -> {
-                Player sender = (Player) commandContext.getSender();
-                sender.sendMessage(MewUtils.text("common.reset"));
+                Player player = (Player) commandContext.getSender();
+                MewUtils.translations().of("common.reset").send(player);
             }).build();
 
         commandManager.register(

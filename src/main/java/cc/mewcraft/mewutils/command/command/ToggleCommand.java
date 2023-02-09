@@ -20,14 +20,14 @@ public class ToggleCommand extends AbstractCommand {
             .literal("toggle")
             .senderType(Player.class)
             .handler(commandContext -> {
-                Player sender = (Player) commandContext.getSender();
+                Player player = (Player) commandContext.getSender();
                 FoundOres oreAnnouncer = MewUtils.p.getFoundOres();
-                if (oreAnnouncer.isListener(sender)) {
-                    oreAnnouncer.toggleBroadcast(sender);
-                    sender.sendMessage(MewUtils.text("found-ores.toggle-broadcast-off"));
+                if (oreAnnouncer.isListener(player.getUniqueId())) {
+                    oreAnnouncer.toggleBroadcast(player.getUniqueId());
+                    MewUtils.translations().of("found_ores.toggle-broadcast-off").send(player);
                 } else {
-                    oreAnnouncer.toggleBroadcast(sender);
-                    sender.sendMessage(MewUtils.text("found-ores.toggle-broadcast-on"));
+                    oreAnnouncer.toggleBroadcast(player.getUniqueId());
+                    MewUtils.translations().of("found_ores.toggle-broadcast-on").send(player);
                 }
             }).build();
         commandManager.register(toggleCommand);

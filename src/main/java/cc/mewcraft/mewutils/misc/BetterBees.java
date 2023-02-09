@@ -37,26 +37,26 @@ public class BetterBees implements TerminableModule {
           about the number of bees inside the block to the player.
          */
         Events.subscribe(PlayerInteractEvent.class)
-                .filter(e -> !e.isBlockInHand())
-                .filter(e -> e.getHand() == EquipmentSlot.HAND)
-                .handler(e -> {
-                    if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                        // Check block clicked
+            .filter(e -> !e.isBlockInHand())
+            .filter(e -> e.getHand() == EquipmentSlot.HAND)
+            .handler(e -> {
+                if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                    // Check block clicked
 
-                        Player player = e.getPlayer();
-                        if (isBeehive(e.getClickedBlock().getType()) && isSneaking(player)) {
-                            sendMessage((Beehive) e.getClickedBlock().getState(), player);
-                        }
-                    } else if (e.getAction() == Action.RIGHT_CLICK_AIR) {
-                        // Check item in hand
-
-                        ItemStack item = e.getItem();
-                        Player player = e.getPlayer();
-                        if (isBeehive(item.getType()) && isSneaking(player)) {
-                            sendMessage((Beehive) item.getItemMeta(), player);
-                        }
+                    Player player = e.getPlayer();
+                    if (isBeehive(e.getClickedBlock().getType()) && isSneaking(player)) {
+                        sendMessage((Beehive) e.getClickedBlock().getState(), player);
                     }
-                }).bindWith(consumer);
+                } else if (e.getAction() == Action.RIGHT_CLICK_AIR) {
+                    // Check item in hand
+
+                    ItemStack item = e.getItem();
+                    Player player = e.getPlayer();
+                    if (isBeehive(item.getType()) && isSneaking(player)) {
+                        sendMessage((Beehive) item.getItemMeta(), player);
+                    }
+                }
+            }).bindWith(consumer);
 
 
         /*
@@ -65,22 +65,22 @@ public class BetterBees implements TerminableModule {
           block.
          */
         Events.subscribe(BlockPlaceEvent.class)
-                .filter(e -> isBeehive(e.getBlockPlaced().getType()))
-                .handler(e -> {
-                    final Player player = e.getPlayer();
-                    if (messageReminderCooldown.test(player)) {
-                        player.sendMessage(MewUtils.text("better-bees.reminder-on-place"));
-                    }
-                }).bindWith(consumer);
+            .filter(e -> isBeehive(e.getBlockPlaced().getType()))
+            .handler(e -> {
+                final Player player = e.getPlayer();
+                if (messageReminderCooldown.test(player)) {
+                    MewUtils.translations().of("better_bees.reminder-on-place").send(player);
+                }
+            }).bindWith(consumer);
     }
 
     private void sendMessage(Beehive beehive, Player player) {
         // Depending on whether the player is interacting with bee nest or beehive
         int beeCount = beehive.getEntityCount();
         if (beehive.getType() == Material.BEE_NEST) {
-            player.sendMessage(MewUtils.text("better-bees.count-bee-nest", "bee_count", beeCount));
+            MewUtils.translations().of("better_bees.count-bee-nest").replace("bee_count", beeCount).send(player);
         } else {
-            player.sendMessage(MewUtils.text("better-bees.count-beehive", "bee_count", beeCount));
+            MewUtils.translations().of("better_bees.count-beehive").replace("bee_count", beeCount).send(player);
         }
     }
 

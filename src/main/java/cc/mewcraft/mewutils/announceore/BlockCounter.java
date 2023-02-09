@@ -21,24 +21,24 @@ public class BlockCounter {
      * 这是搜索邻居的标准，可以根据要求进行修改。
      */
     private final BlockFace[] neighbors = {
-            NORTH,
-            EAST,
-            SOUTH,
-            WEST,
-            UP,
-            DOWN,
-            NORTH_EAST,
-            NORTH_WEST,
-            SOUTH_EAST,
-            SOUTH_WEST,
-            WEST_NORTH_WEST,
-            NORTH_NORTH_WEST,
-            NORTH_NORTH_EAST,
-            EAST_NORTH_EAST,
-            EAST_SOUTH_EAST,
-            SOUTH_SOUTH_EAST,
-            SOUTH_SOUTH_WEST,
-            WEST_SOUTH_WEST
+        NORTH,
+        EAST,
+        SOUTH,
+        WEST,
+        UP,
+        DOWN,
+        NORTH_EAST,
+        NORTH_WEST,
+        SOUTH_EAST,
+        SOUTH_WEST,
+        WEST_NORTH_WEST,
+        NORTH_NORTH_WEST,
+        NORTH_NORTH_EAST,
+        EAST_NORTH_EAST,
+        EAST_SOUTH_EAST,
+        SOUTH_SOUTH_EAST,
+        SOUTH_SOUTH_WEST,
+        WEST_SOUTH_WEST
     };
 
     public BlockCounter(int searchBound) {
@@ -62,11 +62,11 @@ public class BlockCounter {
     /**
      * @param start      Start location.
      * @param target     The type of block you want to search for.
-     * @param discovered A set containing locations where blocks are already
-     *                   marked as discovered on which the finder will not
-     *                   count.
-     * @return The number of blocks of same type as {@code target} which are the
-     * neighbors of the block at location {@code start}.
+     * @param discovered A set containing locations where blocks are already marked as discovered on which the finder
+     *                   will not count.
+     *
+     * @return The number of blocks of same type as {@code target} which are the neighbors of the block at location
+     * {@code start}.
      */
     public int count(Location start, Material target, Set<Location> discovered) {
         if (discovered == null) {

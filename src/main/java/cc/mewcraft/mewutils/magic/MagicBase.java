@@ -23,29 +23,29 @@ public abstract class MagicBase implements TerminableModule {
     }
 
     /**
-     * Checks if the specific player has their cooldown ready. If the cooldown
-     * were NOT ready, it would send relevant messages to the player. Messages
-     * will not be sent if the cooldown is ready.
+     * Checks if the specific player has their cooldown ready. If the cooldown were NOT ready, it would send relevant
+     * messages to the player. Messages will not be sent if the cooldown is ready.
      *
      * @param player      The player you want to check cooldown.
      * @param cooldownKey The cooldown key and this should be unique.
+     *
      * @return True if the cooldown is ready. False else wise.
      */
     boolean testSilently(Player player, UUID cooldownKey) {
         if (cooldownMap.testSilently(cooldownKey))
             return true;
-        player.sendMessage(MewUtils.text("common.cooldown", "time", cooldownMap.remainingTime(cooldownKey, TimeUnit.SECONDS)));
+        MewUtils.translations().of("common.cooldown")
+            .replace("time", cooldownMap.remainingTime(cooldownKey, TimeUnit.SECONDS))
+            .send(player);
         return false;
     }
 
     /**
-     * Resets the cooldown to which the key specified if the cooldown is not
-     * active.
+     * Resets the cooldown to which the key specified if the cooldown is not active.
      *
-     * @param cooldownKey the key to which cooldown to be reset (i.e. to active
-     *                    the cooldown)
-     * @return true if the cooldown to which the key specified is not active,
-     * otherwise not
+     * @param cooldownKey the key to which cooldown to be reset (i.e. to activate the cooldown)
+     *
+     * @return true if the cooldown to which the key specified is not active, otherwise not
      */
     boolean test(UUID cooldownKey) {
         return cooldownMap.test(cooldownKey);
@@ -61,31 +61,31 @@ public abstract class MagicBase implements TerminableModule {
     }
 
     /**
-     * Checks if the specific player has sufficient balance. If the balance is
-     * NOT sufficient, it would send relevant messages to the player. Messages
-     * will not be sent if the player has sufficient balance.
+     * Checks if the specific player has sufficient balance. If the balance is NOT sufficient, it would send relevant
+     * messages to the player. Messages will not be sent if the player has sufficient balance.
      *
      * @param player The player who is to be charged.
      * @param cost   How much we charge the player.
+     *
      * @return True if the player has sufficient balance. False else wise.
      */
     boolean checkBalance(Player player, int cost) {
         if (MewUtils.economy().has(player, cost))
             return true;
-        player.sendMessage(MewUtils.text("common.not-enough-money"));
+        MewUtils.translations().of("common.not_enough-money").send(player);
         return false;
     }
 
     /**
-     * Attempts to charge player with specific fee. If the charging is
-     * successful, it will send relevant messages to the player.
+     * Attempts to charge player with specific fee. If the charging is successful, it will send relevant messages to the
+     * player.
      *
      * @param player The player who is to be charged.
      * @param cost   The amount of fee applied to the specific player.
      */
     void chargePlayer(Player player, int cost) {
         MewUtils.economy().withdrawPlayer(player, cost);
-        player.sendMessage(MewUtils.text("common.price", "cost", cost));
+        MewUtils.translations().of("common.price").replace("cost", cost).send(player);
     }
 
 }

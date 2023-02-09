@@ -76,16 +76,16 @@ public class MagicWeather extends MagicBase {
     }
 
     public void futureBroadcast(String weatherName, String worldName) {
-        String prefix = MewUtils.text("magic-weather.prefix");
-        String message = MewUtils.text("magic-weather.ended", "weather", weatherName, "world", worldName);
+        String prefix = MewUtils.translations().of("magic_weather.prefix").plain();
+        String message = MewUtils.translations().of("magic_weather.ended").replace("weather", weatherName).replace("world", worldName).plain();
         Schedulers.bukkit().runTaskLaterAsynchronously(MewUtils.p, () -> {
-            Bukkit.broadcast(Component.text(prefix + message));
+            Bukkit.getServer().sendMessage(Component.text(prefix + message));
         }, Ticks.from(cooldownAmount, TimeUnit.SECONDS));
     }
 
     public void broadcast(String weatherName, String worldName) {
-        String prefix = MewUtils.text("magic-weather.prefix");
-        String message = MewUtils.text("magic-weather.changed", "world", worldName, "weather", weatherName);
+        String prefix = MewUtils.translations().of("magic_weather.prefix").plain();
+        String message = MewUtils.translations().of("magic_weather.changed").replace("world", worldName).replace("weather", weatherName).plain();
         Bukkit.broadcast(Component.text(prefix + message));
     }
 
@@ -102,10 +102,10 @@ public class MagicWeather extends MagicBase {
     public String getLastPlayers() {
         StringBuilder sb = new StringBuilder();
         lastPlayers.forEach(((world, player) -> sb.append("[ ")
-                .append(world)
-                .append(": ")
-                .append(player)
-                .append(" ]")));
+            .append(world)
+            .append(": ")
+            .append(player)
+            .append(" ]")));
         return sb.toString();
     }
 }

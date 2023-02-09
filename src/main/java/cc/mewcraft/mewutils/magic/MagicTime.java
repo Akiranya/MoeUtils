@@ -66,16 +66,16 @@ public class MagicTime extends MagicBase {
     }
 
     public void futureBroadcast(String timeName) {
-        String prefix = MewUtils.text("magic-time.prefix");
-        String message = MewUtils.text("magic-time.ended", "time", timeName);
+        String prefix = MewUtils.translations().of("magic_time.prefix").plain();
+        String message = MewUtils.translations().of("magic_time.ended").replace("time", timeName).plain();
         Schedulers.bukkit().runTaskLaterAsynchronously(MewUtils.p, () -> {
-            Bukkit.broadcast(Component.text(prefix + message));
+            Bukkit.getServer().sendMessage(Component.text(prefix + message));
         }, Ticks.from(cooldownAmount, TimeUnit.SECONDS));
     }
 
     public void broadcast(String timeName) {
-        String prefix = MewUtils.text("magic-time.prefix");
-        String message = MewUtils.text("magic-time.changed", "time", timeName);
+        String prefix = MewUtils.translations().of("magic_time.prefix").plain();
+        String message = MewUtils.translations().of("magic_time.changed").replace("time", timeName).plain();
         Bukkit.broadcast(Component.text(prefix + message));
     }
 

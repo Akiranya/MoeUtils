@@ -52,7 +52,7 @@ dependencies {
     compileOnly("io.papermc.paper", "paper-api", "1.19.3-R0.1-SNAPSHOT")
 
     // Plugin libs
-    compileOnly("cc.mewcraft", "MewCore", "5.12")
+    compileOnly("cc.mewcraft", "MewCore", "5.13")
     compileOnly("me.lucko", "helper", "5.6.13") { isTransitive = false }
 
     // 3rd party plugins

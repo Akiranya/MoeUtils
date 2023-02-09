@@ -1,0 +1,68 @@
+# 通用
+common:
+  none: '无'
+  enabled: '是'
+  disabled: '否'
+  not_enough_money: '<gray>你没有足够的软妹币.'
+  not_enough_exp: '<gray>你没有足够的经验值.'
+  reloaded: '<gray>MewUtils 已重新载入.'
+  version: '<gray>正在使用 MewUtils <version>.'
+  price: '<gray>你花掉了 <green><cost> 软妹币.'
+  cooldown: '<gray>冷却中: <aqua><time>s.'
+  reset: '<gray>状态已重置.'
+
+# 魔法时间
+magic_time:
+  prefix: '<dark_gray>[<light_purple>魔法时间</light_purple>]</dark_gray> '
+  day: '魔法白天'
+  night: '魔法夜晚'
+  changed: '<aqua>一位神秘的魔法师把所有世界的时间变成了 <light_purple><time></light_purple>.'
+  ended: '<light_purple><time><aqua> 结束了! <gray>(冷却就绪)'
+
+# 魔法天气
+magic_weather:
+  prefix: '<dark_gray>[<light_purple>魔法天气</light_purple>]</dark_gray> '
+  clear: '魔法晴天'
+  rain: '魔法阴天'
+  thunder: '魔法雷雨'
+  changed: '<aqua>一位神秘法师把世界 <yellow><world></yellow> 的天气变成了 <light_purple><weather></light_purple>.'
+  ended: '<aqua>神秘法师的 <yellow><weather></yellow> (世界 <yellow><world></yellow>) 结束了! <gray>(冷却就绪)</gray>'
+
+# 更好的蜂箱
+better_bees:
+  count_beehive: '<gray>这个蜂箱里有 <bee_count> 只蜜蜂.'
+  count_bee_nest: '<gray>这个蜂巢里有 <bee_count> 只蜜蜂.'
+  reminder_on_place: '<gray>提示: <gold>右击蜂箱/蜂巢</gold> 可查看内部蜜蜂数量.'
+  reminder_in_hand: '<gray>提示: <gold>手持蜂箱 潜行+右键空气</gold> 可查看内部蜜蜂数量.'
+
+# 更好的传送门
+better_portals:
+  cancelled: '<gray>监测到该地狱门的目的地在世界边界外,为了您的安全本次传送已取消.'
+  debug: 'PlayerPortalEvent is cancelled (player: <player>).'
+
+# 挖矿公告
+found_ores:
+  prefix: '<dark_gray>[<yellow>矿工茶馆</yellow>]</dark_gray> '
+  found: '<dark_gray><gray><player></gray> 挖到了 <yellow><count></yellow> 个 <gray><ore>'
+  toggle_broadcast_on: '<gray>你选择接收挖矿广播.'
+  toggle_broadcast_off: '<gray>你不再接收挖矿广播.'
+
+# 死亡通报
+death_logger:
+  death: '<dark_gray>一只<gray><victim></gray>已从人间蒸发 (<gray><killer></gray> | <gray><reason></gray> | <gray><x>;<y>;<z>;<world></gray>)'
+
+# 史莱姆区块
+slime_chunk:
+  found: '这个区块里好像有史莱姆在跳动!'
+  not_found: '这个区块似乎没有史莱姆的气息...'
+
+# 鞘翅减速
+slow_elytra:
+  no_boost_when_tps_low: '服务器TPS过低, 鞘翅加速暂不可用!'
+  cooldown_progressbar:
+    head: '<gold>鞘翅加速充能中</gold> '
+    tail: ' <gray>×</gray><yellow><amount></yellow> <aqua><remaining>s</aqua>'
+    left: '<dark_gray>[</dark_gray>'
+    full: '<aqua>|</aqua>'
+    empty: '<gray>|</gray>'
+    right: '<dark_gray>]</dark_gray>'
