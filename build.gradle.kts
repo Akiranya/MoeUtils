@@ -3,10 +3,10 @@ import net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission
 plugins {
     `java-library`
     `maven-publish`
-    id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
     val indraVersion = "3.0.1"
     id("net.kyori.indra") version indraVersion
     id("net.kyori.indra.git") version indraVersion
+    id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
 }
 
 group = "cc.mewcraft"
@@ -46,18 +46,12 @@ dependencies {
 
     // Plugin libs
     compileOnly("cc.mewcraft", "MewCore", "5.11")
-    compileOnly("me.lucko", "helper", "5.6.13") {
-        isTransitive = false
-    }
+    compileOnly("me.lucko", "helper", "5.6.13") { isTransitive = false }
 
     // 3rd party plugins
     compileOnly("net.luckperms", "api", "5.4")
-    compileOnly("com.github.MilkBowl", "VaultAPI", "1.7") {
-        isTransitive = false
-    }
-    compileOnly("me.clip", "placeholderapi", "2.11.2") {
-        isTransitive = false
-    }
+    compileOnly("com.github.MilkBowl", "VaultAPI", "1.7") { isTransitive = false }
+    compileOnly("me.clip", "placeholderapi", "2.11.2") { isTransitive = false }
 }
 
 bukkit {
