@@ -1,60 +1,16 @@
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission
 
 plugins {
-    `java-library`
-    `maven-publish`
-    val indraVersion = "3.0.1"
-    id("net.kyori.indra") version indraVersion
-    id("net.kyori.indra.git") version indraVersion
+    id("cc.mewcraft.common")
     id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "cc.mewcraft"
-description = "MewUtils"
 version = "1.18".decorateVersion()
-
-repositories {
-    mavenLocal()
-    mavenCentral()
-
-    maven("https://papermc.io/repo/repository/maven-public/") {
-        content {
-            includeGroup("io.papermc.paper")
-            includeGroup("net.md-5")
-        }
-    }
-    maven("https://jitpack.io") {
-        content {
-            includeGroup("com.github.MilkBowl")
-            includeGroup("com.github.LoneDev6")
-        }
-    }
-    maven("https://repo.lucko.me/") {
-        content {
-            includeGroup("me.lucko")
-        }
-    }
-    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") {
-        content {
-            includeGroup("me.clip")
-        }
-    }
-    maven("https://repo.codemc.io/repository/maven-snapshots/") {
-        content {
-            includeGroup("net.wesjd")
-        }
-    }
-}
+description = "A plugin consisting of many small features"
 
 dependencies {
-    // Server API
-    compileOnly("io.papermc.paper", "paper-api", "1.19.3-R0.1-SNAPSHOT")
-
-    // Plugin libs
-    compileOnly("cc.mewcraft", "MewCore", "5.13")
-    compileOnly("me.lucko", "helper", "5.6.13") { isTransitive = false }
-
     // 3rd party plugins
     compileOnly("net.luckperms", "api", "5.4")
     compileOnly("com.github.MilkBowl", "VaultAPI", "1.7") { isTransitive = false }
@@ -119,22 +75,6 @@ tasks {
     register("deployJarFresh") {
         dependsOn(build)
         finalizedBy(named("deployJar"))
-    }
-}
-
-indra {
-    javaVersions().target(17)
-}
-
-java {
-    withSourcesJar()
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            from(components["java"])
-        }
     }
 }
 
