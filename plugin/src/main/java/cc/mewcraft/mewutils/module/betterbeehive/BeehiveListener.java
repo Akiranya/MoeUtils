@@ -64,7 +64,7 @@ public class BeehiveListener implements AutoCloseableListener {
 
         Player player = event.getPlayer();
         if (this.messageReminderCooldown.test(player)) {
-            this.lang.of("reminder-on-place").send(player);
+            this.lang.of("reminder_on_place").send(player);
         }
     }
 
@@ -80,9 +80,9 @@ public class BeehiveListener implements AutoCloseableListener {
         int beeCount = beehive.getEntityCount();
         // Depending on whether the player is interacting with bee nest or bee hive
         if (beehive.getType() == Material.BEE_NEST)
-            this.lang.of("count-bee-nest").replace("bee_count", beeCount).send(player);
+            this.lang.of("count_bee_nest").replace("bee_count", beeCount).send(player);
         else
-            this.lang.of("count-beehive").replace("bee_count", beeCount).send(player);
+            this.lang.of("count_beehive").replace("bee_count", beeCount).send(player);
     }
 
 }

@@ -51,7 +51,7 @@ public class DeathLoggerModule extends ModuleBase implements AutoCloseableListen
         if (entity.getLastDamageCause() == null)
             return;
 
-        getLang().of("death_logger.death")
+        getLang().of("death")
             .replace("victim", Optional.ofNullable(entity.customName()).orElse(entity.name()))
             .replace("reason", getLocalization(entity.getLastDamageCause().getCause()))
             .replace("killer", Optional.ofNullable(entity.getKiller()).map(Player::getName).orElseGet(() -> entity

@@ -47,10 +47,10 @@ public class ElytraLimiterModule extends ModuleBase {
         this.progressbarMessenger = new ProgressbarMessenger(
             getConfigNode().node("bar_stay_time").getInt(),
             ProgressbarGenerator.Builder.builder()
-                .left(getLang().of("slow_elytra.cooldown-progressbar.left").plain())
-                .full(getLang().of("slow_elytra.cooldown-progressbar.full").plain())
-                .empty(getLang().of("slow_elytra.cooldown-progressbar.empty").plain())
-                .right(getLang().of("slow_elytra.cooldown-progressbar.right").plain())
+                .left(getLang().of("slow_elytra.cooldown_progressbar.left").plain())
+                .full(getLang().of("slow_elytra.cooldown_progressbar.full").plain())
+                .empty(getLang().of("slow_elytra.cooldown_progressbar.empty").plain())
+                .right(getLang().of("slow_elytra.cooldown_progressbar.right").plain())
                 .width(getConfigNode().node("bar_width").getInt())
                 .build()
         );

@@ -1,7 +1,6 @@
 package cc.mewcraft.mewutils.module.slimeutility;
 
 import cc.mewcraft.lib.commandframework.bukkit.parsers.PlayerArgument;
-import cc.mewcraft.mewutils.MewUtils;
 import cc.mewcraft.mewutils.api.MewPlugin;
 import cc.mewcraft.mewutils.api.module.ModuleBase;
 import com.google.inject.Inject;
@@ -23,9 +22,9 @@ public class SlimeUtilityModule extends ModuleBase {
             .handler(context -> {
                 Player player = context.get("player");
                 if (player.getChunk().isSlimeChunk()) {
-                    MewUtils.translations().of("slime_chunk.found").send(player);
+                    getLang().of("found").send(player);
                 } else {
-                    MewUtils.translations().of("slime_chunk.not-found").send(player);
+                    getLang().of("not_found").send(player);
                 }
             })
         );

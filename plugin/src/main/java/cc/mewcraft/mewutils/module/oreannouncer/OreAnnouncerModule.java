@@ -57,10 +57,10 @@ public class OreAnnouncerModule extends ModuleBase implements AutoCloseableListe
                 Player player = (Player) commandContext.getSender();
                 if (isSubscriber(player.getUniqueId())) {
                     toggleSubscription(player.getUniqueId());
-                    getLang().of("toggle-broadcast-off").send(player);
+                    getLang().of("toggle_broadcast_off").send(player);
                 } else {
                     toggleSubscription(player.getUniqueId());
-                    getLang().of("toggle-broadcast-on").send(player);
+                    getLang().of("toggle_broadcast_on").send(player);
                 }
             })
         );

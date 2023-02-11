@@ -32,7 +32,7 @@ public class ElytraBoostListener implements AutoCloseableListener {
         // Halt any boost if tps low
         if (this.module.underTPSThreshold()) {
             Log.debug("Elytra boost canceled (firework; TPS)");
-            this.module.getLang().of("no-boost-when-tps-low").send(player);
+            this.module.getLang().of("no_boost_when_tps_low").send(player);
             event.setShouldConsume(false);
             event.setCancelled(true);
             return;
@@ -51,8 +51,8 @@ public class ElytraBoostListener implements AutoCloseableListener {
         this.module.getProgressbarMessenger().show(
             player,
             () -> (float) cooldown.elapsedOne() / cooldown.getBaseTimeout(),
-            () -> this.module.getLang().of("cooldown-progressbar.head").plain(),
-            () -> this.module.getLang().of("cooldown-progressbar.tail")
+            () -> this.module.getLang().of("cooldown_progressbar.head").plain(),
+            () -> this.module.getLang().of("cooldown_progressbar.tail")
                 .replace("remaining", cooldown.remainingTime(TimeUnit.SECONDS))
                 .replace("amount", cooldown.getAvailable())
                 .plain()
@@ -74,7 +74,7 @@ public class ElytraBoostListener implements AutoCloseableListener {
             // Halt any boost if tps low
             if (this.module.underTPSThreshold()) {
                 Log.debug("Elytra boost canceled (projectile; TPS)");
-                this.module.getLang().of("no-boost-when-tps-low").send(player);
+                this.module.getLang().of("no_boost_when_tps_low").send(player);
                 event.setCancelled(true);
                 return;
             }
@@ -91,8 +91,8 @@ public class ElytraBoostListener implements AutoCloseableListener {
             this.module.getProgressbarMessenger().show(
                 player,
                 () -> (float) cooldown.elapsedOne() / cooldown.getBaseTimeout(),
-                () -> this.module.getLang().of("cooldown-progressbar.head").plain(),
-                () -> this.module.getLang().of("cooldown-progressbar.tail")
+                () -> this.module.getLang().of("cooldown_progressbar.head").plain(),
+                () -> this.module.getLang().of("cooldown_progressbar.tail")
                     .replace("remaining", cooldown.remainingTime(TimeUnit.SECONDS))
                     .replace("amount", cooldown.getAvailable())
                     .plain()
@@ -111,7 +111,7 @@ public class ElytraBoostListener implements AutoCloseableListener {
             // Halt any boost if tps low
             if (this.module.underTPSThreshold()) {
                 Log.debug("Elytra boost canceled " + player.getName() + " (trident; TPS)");
-                this.module.getLang().of("no-boost-when-tps-low").send(player);
+                this.module.getLang().of("no_boost_when_tps_low").send(player);
                 player.setVelocity(player.getVelocity().multiply(0));
                 return;
             }
@@ -130,8 +130,8 @@ public class ElytraBoostListener implements AutoCloseableListener {
             this.module.getProgressbarMessenger().show(
                 player,
                 () -> (float) cooldown.elapsedOne() / cooldown.getBaseTimeout(),
-                () -> this.module.getLang().of("slow_elytra.cooldown-progressbar.head").plain(),
-                () -> this.module.getLang().of("slow_elytra.cooldown-progressbar.tail")
+                () -> this.module.getLang().of("slow_elytra.cooldown_progressbar.head").plain(),
+                () -> this.module.getLang().of("slow_elytra.cooldown_progressbar.tail")
                     .replace("remaining", cooldown.remainingTime(TimeUnit.SECONDS))
                     .replace("amount", cooldown.getAvailable())
                     .plain()
