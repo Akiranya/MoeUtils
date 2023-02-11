@@ -1,4 +1,4 @@
 enabled: true
 search_radius: 64
-creatures:
+entities:
   - VILLAGER

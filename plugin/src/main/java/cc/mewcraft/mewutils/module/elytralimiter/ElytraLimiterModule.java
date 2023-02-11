@@ -41,7 +41,7 @@ public class ElytraLimiterModule extends ModuleBase {
 
         this.cooldownMap = ChargeBasedCooldownMap.create(
             Cooldown.of(getConfigNode().node("cooldown").getInt(), TimeUnit.MILLISECONDS),
-            uuid -> getConfigNode().node("cooldown_charge").getInt()
+            uuid -> getConfigNode().node("charge").getInt()
         );
 
         this.progressbarMessenger = new ProgressbarMessenger(

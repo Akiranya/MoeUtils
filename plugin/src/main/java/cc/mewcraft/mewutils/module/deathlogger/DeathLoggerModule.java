@@ -29,7 +29,7 @@ public class DeathLoggerModule extends ModuleBase implements AutoCloseableListen
     }
 
     @Override protected void load() throws Exception {
-        this.logTypes = getConfigNode().node("logged_creatures")
+        this.logTypes = getConfigNode().node("entities")
             .getList(String.class, List.of())
             .stream()
             .map(s -> EntityType.valueOf(s.toUpperCase(Locale.ROOT)))

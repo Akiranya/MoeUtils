@@ -23,12 +23,12 @@ public class DropOverflowModule extends ModuleBase implements AutoCloseableListe
     }
 
     @Override protected void load() throws Exception {
-        this.types = getConfigNode().node("merge_limit_types")
+        this.types = getConfigNode().node("types")
             .getList(String.class, List.of())
             .stream()
             .map(Material::matchMaterial)
             .collect(Collectors.toCollection(() -> EnumSet.noneOf(Material.class)));
-        this.mergeLimitThreshold = getConfigNode().node("merge_limit_threshold").getInt();
+        this.mergeLimitThreshold = getConfigNode().node("threshold").getInt();
     }
 
     @Override protected void enable() {
