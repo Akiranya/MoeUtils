@@ -23,6 +23,7 @@ import com.google.inject.Injector;
 import me.lucko.helper.Services;
 import me.lucko.helper.plugin.ExtendedJavaPlugin;
 import me.lucko.helper.utils.Log;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -30,6 +31,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static net.kyori.adventure.text.Component.text;
 
 public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
 
@@ -73,10 +76,16 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
     }
 
     @Override
-    protected void load() {
-        this.modules = new ArrayList<>();
+    protected void enable() {
+        getComponentLogger().info(text("Enabling...").color(NamedTextColor.AQUA));
+
+        INSTANCE = this;
+
+        // --- Load main translations ---
 
         this.translations = new Translations(this);
+
+        // --- Load main config ---
 
         try {
             YamlConfigurationLoader loader = YamlConfigurationLoader.builder().file(getDataFolder().toPath().resolve("config.yml").toFile()).indent(2).build();
@@ -87,18 +96,18 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
             e.printStackTrace();
         }
 
+        // --- Initialise commands ---
+
         try {
             this.commandRegistry = new CommandRegistry(this);
             prepareInternalCommands();
         } catch (Exception e) {
             getLogger().severe("Failed to initialise commands! See the stacktrace below for more details");
             e.printStackTrace();
+            return;
         }
-    }
 
-    @Override
-    protected void enable() {
-        INSTANCE = this;
+        // --- Hook 3rd party ---
 
         try {
             this.economy = Services.load(Economy.class);
@@ -119,6 +128,7 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
 
         // --- Load modules ---
 
+        this.modules = new ArrayList<>();
         this.modules.add(injector.getInstance(BetterBeehiveModule.class));
         this.modules.add(injector.getInstance(BetterPortalModule.class));
         this.modules.add(injector.getInstance(DeathLoggerModule.class));
@@ -141,11 +151,14 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
         }
 
         // --- Make all commands effective ---
+
         this.commandRegistry.registerCommands();
     }
 
     @Override
     protected void disable() {
+        getComponentLogger().info(text("Disabling...").color(NamedTextColor.AQUA));
+
         for (ModuleBase module : this.modules) {
             try {
                 module.onDisable();
