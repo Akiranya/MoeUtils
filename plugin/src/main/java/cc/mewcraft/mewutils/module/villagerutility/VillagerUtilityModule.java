@@ -187,11 +187,10 @@ public class VillagerUtilityModule extends ModuleBase {
             restock,
             view
         );
-
     }
 
     @Override public String getId() {
-        return "villagerutility";
+        return "villagerutil";
     }
 
     @Override public boolean canEnable() {

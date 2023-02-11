@@ -1,6 +1,5 @@
 package cc.mewcraft.mewutils.module.betterportal;
 
-import cc.mewcraft.mewutils.MewUtils;
 import cc.mewcraft.mewutils.api.MewPlugin;
 import cc.mewcraft.mewutils.api.listener.AutoCloseableListener;
 import cc.mewcraft.mewutils.api.module.ModuleBase;
@@ -27,14 +26,11 @@ public class BetterPortalModule extends ModuleBase implements AutoCloseableListe
 
         event.setCancelled(true);
         Player player = event.getPlayer();
-        MewUtils.translations().of("better_portals.cancelled").send(player);
-        if (MewUtils.config().debug) {
-            MewUtils.translations().of("better_portals.debug").replace("player", player.getName()).send(player);
-        }
+        getLang().of("cancelled").send(player);
     }
 
     @Override public String getId() {
-        return "betterportals";
+        return "betterportal";
     }
 
     @Override public boolean canEnable() {

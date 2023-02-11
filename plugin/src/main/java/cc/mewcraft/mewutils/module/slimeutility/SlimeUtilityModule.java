@@ -32,7 +32,7 @@ public class SlimeUtilityModule extends ModuleBase {
     }
 
     @Override public String getId() {
-        return "slimeutility";
+        return "slimeutil";
     }
 
     @Override public boolean canEnable() {

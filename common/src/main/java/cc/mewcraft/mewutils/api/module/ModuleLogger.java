@@ -10,32 +10,36 @@ public interface ModuleLogger extends ModuleIdentifier {
 
     MewPlugin getPlugin();
 
+    default String getPrefix() {
+        return "[" + getId() + "] ";
+    }
+
     // --- plain string logger ---
 
     default void info(String msg) {
-        getPlugin().getLogger().info(msg);
+        getPlugin().getLogger().info(getPrefix() + msg);
     }
 
     default void warn(String msg) {
-        getPlugin().getLogger().warning(msg);
+        getPlugin().getLogger().warning(getPrefix() + msg);
     }
 
     default void error(String msg) {
-        getPlugin().getLogger().severe(msg);
+        getPlugin().getLogger().severe(getPrefix() + msg);
     }
 
     // --- component logger ---
 
     default void info(Component msg) {
-        getPlugin().getComponentLogger().info(text("[" + getId() + "] ").append(msg));
+        getPlugin().getComponentLogger().info(text(getPrefix()).append(msg));
     }
 
     default void warn(Component msg) {
-        getPlugin().getComponentLogger().warn(text("[" + getId() + "] ").append(msg));
+        getPlugin().getComponentLogger().warn(text(getPrefix()).append(msg));
     }
 
     default void error(Component msg) {
-        getPlugin().getComponentLogger().error(text("[" + getId() + "] ").append(msg));
+        getPlugin().getComponentLogger().error(text(getPrefix()).append(msg));
     }
 
 }

@@ -1,6 +1,6 @@
 package cc.mewcraft.mewutils.module.betterbeehive;
 
-import cc.mewcraft.mewutils.MewUtils;
+import cc.mewcraft.mewcore.message.Translations;
 import cc.mewcraft.mewutils.api.listener.AutoCloseableListener;
 import me.lucko.helper.cooldown.Cooldown;
 import me.lucko.helper.cooldown.CooldownMap;
@@ -18,9 +18,13 @@ import java.util.concurrent.TimeUnit;
 
 public class BeehiveListener implements AutoCloseableListener {
 
+    private final BetterBeehiveModule module;
+    private final Translations lang;
     private final CooldownMap<Player> messageReminderCooldown;
 
-    public BeehiveListener() {
+    public BeehiveListener(final BetterBeehiveModule module) {
+        this.module = module;
+        this.lang = module.getLang();
         this.messageReminderCooldown = CooldownMap.create(Cooldown.of(5, TimeUnit.MINUTES));
     }
 
@@ -60,12 +64,12 @@ public class BeehiveListener implements AutoCloseableListener {
 
         Player player = event.getPlayer();
         if (this.messageReminderCooldown.test(player)) {
-            MewUtils.translations().of("better_bees.reminder-on-place").send(player);
+            this.lang.of("reminder-on-place").send(player);
         }
     }
 
     private boolean isSneaking(Player player) {
-        return player.isSneaking() || !MewUtils.config().require_sneak;
+        return player.isSneaking() || !this.module.getConfigNode().node("require_sneak").getBoolean();
     }
 
     private boolean isBeehive(Material type) {
@@ -76,9 +80,9 @@ public class BeehiveListener implements AutoCloseableListener {
         int beeCount = beehive.getEntityCount();
         // Depending on whether the player is interacting with bee nest or bee hive
         if (beehive.getType() == Material.BEE_NEST)
-            MewUtils.translations().of("better_bees.count-bee-nest").replace("bee_count", beeCount).send(player);
+            this.lang.of("count-bee-nest").replace("bee_count", beeCount).send(player);
         else
-            MewUtils.translations().of("better_bees.count-beehive").replace("bee_count", beeCount).send(player);
+            this.lang.of("count-beehive").replace("bee_count", beeCount).send(player);
     }
 
 }

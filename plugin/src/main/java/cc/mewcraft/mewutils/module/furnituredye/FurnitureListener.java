@@ -1,4 +1,4 @@
-package cc.mewcraft.mewutils.module.furnituredyer;
+package cc.mewcraft.mewutils.module.furnituredye;
 
 import cc.mewcraft.mewutils.api.listener.AutoCloseableListener;
 import dev.lone.itemsadder.api.Events.FurnitureInteractEvent;
@@ -7,9 +7,9 @@ import org.bukkit.event.EventHandler;
 
 public class FurnitureListener implements AutoCloseableListener {
 
-    private final FurnitureModule module;
+    private final FurnitureDyeModule module;
 
-    public FurnitureListener(final FurnitureModule module) {
+    public FurnitureListener(final FurnitureDyeModule module) {
         this.module = module;
     }
 

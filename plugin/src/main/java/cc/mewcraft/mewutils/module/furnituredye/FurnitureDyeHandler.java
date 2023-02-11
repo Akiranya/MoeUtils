@@ -1,4 +1,4 @@
-package cc.mewcraft.mewutils.module.furnituredyer;
+package cc.mewcraft.mewutils.module.furnituredye;
 
 import com.google.inject.Inject;
 import me.lucko.helper.item.ItemStackBuilder;

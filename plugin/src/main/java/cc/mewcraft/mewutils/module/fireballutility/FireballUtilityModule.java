@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-public class FireballModule extends ModuleBase {
+public class FireballUtilityModule extends ModuleBase {
 
     public static final String FIREBALL_META_KEY = "mew_fireball_proj";
     public static final int MAX_SPEED = 8;
@@ -47,7 +47,7 @@ public class FireballModule extends ModuleBase {
     }
 
     @Inject
-    public FireballModule(final MewPlugin parent) {
+    public FireballUtilityModule(final MewPlugin parent) {
         super(parent);
     }
 
@@ -88,7 +88,7 @@ public class FireballModule extends ModuleBase {
     }
 
     @Override public String getId() {
-        return "fireballutility";
+        return "fireballutil";
     }
 
     @Override public boolean canEnable() {

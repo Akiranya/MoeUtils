@@ -1,6 +1,5 @@
 package cc.mewcraft.mewutils.module.oreannouncer;
 
-import cc.mewcraft.mewutils.MewUtils;
 import cc.mewcraft.mewutils.api.MewPlugin;
 import cc.mewcraft.mewutils.api.listener.AutoCloseableListener;
 import cc.mewcraft.mewutils.api.module.ModuleBase;
@@ -10,27 +9,36 @@ import me.lucko.helper.metadata.MetadataKey;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.framework.qual.DefaultQualifier;
 
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
+@DefaultQualifier(NonNull.class)
 public class OreAnnouncerModule extends ModuleBase implements AutoCloseableListener {
 
     public static final MetadataKey<Boolean> BROADCAST_TOGGLE_KEY = MetadataKey.createBooleanKey("subscribe.announcement.ore");
 
-    private final BlockCounter blockCounter;
-    private final Set<Material> enabledMaterials;
-    private final Set<String> enabledWorlds;
+    private @MonotonicNonNull BlockCounter blockCounter;
+    private @MonotonicNonNull Set<Material> enabledMaterials;
+    private @MonotonicNonNull Set<String> enabledWorlds;
 
     @Inject
     public OreAnnouncerModule(MewPlugin plugin) {
         super(plugin);
+    }
 
-        this.blockCounter = new BlockCounter(MewUtils.config().max_iterations);
-        this.enabledMaterials = EnumSet.copyOf(MewUtils.config().enabled_blocks);
-        this.enabledWorlds = new HashSet<>(MewUtils.config().enabled_worlds);
+    @Override
+    protected void load() throws Exception {
+        this.blockCounter = new BlockCounter(getConfigNode().node("max_iterations").getInt());
+        this.enabledWorlds = new HashSet<>(getConfigNode().node("worlds").getList(String.class, List.of()));
+        this.enabledMaterials = getConfigNode().node("blocks")
+            .getList(String.class, List.of())
+            .stream()
+            .map(Material::matchMaterial)
+            .collect(Collectors.toCollection(() -> EnumSet.noneOf(Material.class)));
     }
 
     @Override
@@ -49,10 +57,10 @@ public class OreAnnouncerModule extends ModuleBase implements AutoCloseableListe
                 Player player = (Player) commandContext.getSender();
                 if (isSubscriber(player.getUniqueId())) {
                     toggleSubscription(player.getUniqueId());
-                    MewUtils.translations().of("found_ores.toggle-broadcast-off").send(player);
+                    getLang().of("toggle-broadcast-off").send(player);
                 } else {
                     toggleSubscription(player.getUniqueId());
-                    MewUtils.translations().of("found_ores.toggle-broadcast-on").send(player);
+                    getLang().of("toggle-broadcast-on").send(player);
                 }
             })
         );

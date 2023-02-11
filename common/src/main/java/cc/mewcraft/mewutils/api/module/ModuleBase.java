@@ -1,8 +1,10 @@
 package cc.mewcraft.mewutils.api.module;
 
 import cc.mewcraft.lib.commandframework.Command;
+import cc.mewcraft.lib.configurate.CommentedConfigurationNode;
 import cc.mewcraft.lib.configurate.yaml.YamlConfigurationLoader;
 import cc.mewcraft.mewcore.message.Translations;
+import cc.mewcraft.mewcore.util.UtilFile;
 import cc.mewcraft.mewutils.api.MewPlugin;
 import cc.mewcraft.mewutils.api.command.CommandRegistry;
 import cc.mewcraft.mewutils.api.listener.AutoCloseableListener;
@@ -13,8 +15,11 @@ import me.lucko.helper.terminable.composite.CompositeTerminable;
 import me.lucko.helper.terminable.module.TerminableModule;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.framework.qual.DefaultQualifier;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
@@ -23,45 +28,60 @@ import java.util.function.Function;
 import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.text;
 
+@DefaultQualifier(NonNull.class)
 public abstract class ModuleBase
     implements TerminableConsumer, ModuleLogger, ModuleRequirement {
 
     private final MewPlugin plugin;
-    private Path moduleDirectory;
-    private CompositeTerminable terminableRegistry;
-    private Translations lang;
-    private YamlConfigurationLoader config;
+    private final Path moduleDirectory;
+    private final CompositeTerminable terminableRegistry;
+    private final Translations lang;
+    private final YamlConfigurationLoader config;
+    private @MonotonicNonNull CommentedConfigurationNode configNode;
 
     @Inject
     public ModuleBase(MewPlugin parent) {
         this.plugin = parent;
-    }
 
-    protected void load() {}
-
-    protected void enable() {}
-
-    protected void disable() {}
-
-    public final void onLoad() {
+        // backed closeable of this module
         this.terminableRegistry = CompositeTerminable.create();
 
+        // create dedicated directory for this module
         this.moduleDirectory = Paths.get(this.plugin.getDataFolder().getPath()).resolve("modules").resolve(getId());
         if (this.moduleDirectory.toFile().mkdirs()) {
             info("module directory does not exist - creating one");
         }
 
+        // dedicated language files for this module
         this.lang = new Translations(this.plugin, this.moduleDirectory.resolve("lang").toString(), "zh");
+
+        // dedicated config file for this module
+        File configFile = this.moduleDirectory.resolve("config.yml").toFile();
+        if (!configFile.exists()) {
+            // copy default config.yml if not existing
+            UtilFile.copyResourcesRecursively(parent.getClassLoader0().getResource("modules/" + getId() + "/config.yml"), configFile);
+        }
         this.config = YamlConfigurationLoader.builder()
-            .file(this.moduleDirectory.resolve("config.yml").toFile())
+            .file(configFile)
             .indent(2)
             .build();
+    }
+
+    protected void load() throws Exception {}
+
+    protected void enable() throws Exception {}
+
+    protected void disable() throws Exception {}
+
+    public final void onLoad() throws Exception {
+        // load the config file into node
+        this.configNode = this.config.load();
 
         // call subclass
         load();
     }
 
-    public final void onEnable() {
+    public final void onEnable() throws Exception {
         if (!canEnable()) {
             warn(getId() + " is not enabled due to requirement not met");
             return;
@@ -85,7 +105,7 @@ public abstract class ModuleBase
         );
     }
 
-    public final void onDisable() {
+    public final void onDisable() throws Exception {
         // call subclass
         disable();
 
@@ -103,8 +123,12 @@ public abstract class ModuleBase
         return this.lang;
     }
 
-    public final YamlConfigurationLoader getConfig() {
+    public final YamlConfigurationLoader getConfigLoader() {
         return this.config;
+    }
+
+    public final CommentedConfigurationNode getConfigNode() {
+        return requireNonNull(this.configNode);
     }
 
     public final Path getDataFolder() {
@@ -143,7 +167,7 @@ public abstract class ModuleBase
     }
 
     @Override
-    public final @NonNull MewPlugin getPlugin() {
+    public final MewPlugin getPlugin() {
         return this.plugin;
     }
 

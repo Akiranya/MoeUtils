@@ -1,16 +1,16 @@
-package cc.mewcraft.mewutils.module.furnituredyer;
+package cc.mewcraft.mewutils.module.furnituredye;
 
 import cc.mewcraft.mewcore.hook.HookChecker;
 import cc.mewcraft.mewutils.api.MewPlugin;
 import cc.mewcraft.mewutils.api.module.ModuleBase;
 import com.google.inject.Inject;
 
-public class FurnitureModule extends ModuleBase {
+public class FurnitureDyeModule extends ModuleBase {
 
     private final FurnitureDyeHandler dyeHandler;
 
     @Inject
-    public FurnitureModule(final MewPlugin plugin) {
+    public FurnitureDyeModule(final MewPlugin plugin) {
         super(plugin);
 
         this.dyeHandler = new FurnitureDyeHandler(plugin);

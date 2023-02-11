@@ -1,6 +1,5 @@
 package cc.mewcraft.mewutils.module.dropoverflow;
 
-import cc.mewcraft.mewutils.MewUtils;
 import cc.mewcraft.mewutils.api.MewPlugin;
 import cc.mewcraft.mewutils.api.listener.AutoCloseableListener;
 import cc.mewcraft.mewutils.api.module.ModuleBase;
@@ -10,16 +9,26 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.ItemMergeEvent;
 
 import java.util.EnumSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DropOverflowModule extends ModuleBase implements AutoCloseableListener {
 
-    private final EnumSet<Material> types;
+    private EnumSet<Material> types;
+    private int mergeLimitThreshold;
 
     @Inject
     public DropOverflowModule(MewPlugin plugin) {
         super(plugin);
+    }
 
-        this.types = EnumSet.copyOf(MewUtils.config().merge_limit_types);
+    @Override protected void load() throws Exception {
+        this.types = getConfigNode().node("merge_limit_types")
+            .getList(String.class, List.of())
+            .stream()
+            .map(Material::matchMaterial)
+            .collect(Collectors.toCollection(() -> EnumSet.noneOf(Material.class)));
+        this.mergeLimitThreshold = getConfigNode().node("merge_limit_threshold").getInt();
     }
 
     @Override protected void enable() {
@@ -29,8 +38,8 @@ public class DropOverflowModule extends ModuleBase implements AutoCloseableListe
     @EventHandler
     public void onMerge(ItemMergeEvent event) {
         if (this.types.contains(event.getEntity().getItemStack().getType())) {
-            if (event.getEntity().getItemStack().getAmount() > MewUtils.config().merge_limit_threshold ||
-                event.getTarget().getItemStack().getAmount() > MewUtils.config().merge_limit_threshold) {
+            if (event.getEntity().getItemStack().getAmount() > this.mergeLimitThreshold ||
+                event.getTarget().getItemStack().getAmount() > this.mergeLimitThreshold) {
                 event.getEntity().remove();
                 event.getTarget().remove();
             }

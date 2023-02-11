@@ -1,6 +1,8 @@
 package cc.mewcraft.mewutils;
 
-import cc.mewcraft.mewcore.hook.HookChecker;
+import cc.mewcraft.lib.configurate.ConfigurateException;
+import cc.mewcraft.lib.configurate.ConfigurationNode;
+import cc.mewcraft.lib.configurate.yaml.YamlConfigurationLoader;
 import cc.mewcraft.mewcore.message.Translations;
 import cc.mewcraft.mewutils.api.MewPlugin;
 import cc.mewcraft.mewutils.api.command.CommandRegistry;
@@ -10,17 +12,17 @@ import cc.mewcraft.mewutils.module.betterportal.BetterPortalModule;
 import cc.mewcraft.mewutils.module.deathlogger.DeathLoggerModule;
 import cc.mewcraft.mewutils.module.dropoverflow.DropOverflowModule;
 import cc.mewcraft.mewutils.module.elytralimiter.ElytraLimiterModule;
-import cc.mewcraft.mewutils.module.fireballutility.FireballModule;
-import cc.mewcraft.mewutils.module.furnituredyer.FurnitureModule;
+import cc.mewcraft.mewutils.module.fireballutility.FireballUtilityModule;
+import cc.mewcraft.mewutils.module.furnituredye.FurnitureDyeModule;
 import cc.mewcraft.mewutils.module.oreannouncer.OreAnnouncerModule;
 import cc.mewcraft.mewutils.module.slimeutility.SlimeUtilityModule;
 import cc.mewcraft.mewutils.module.villagerutility.VillagerUtilityModule;
-import cc.mewcraft.mewutils.placeholder.MewUtilsExpansion;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import me.lucko.helper.Services;
 import me.lucko.helper.plugin.ExtendedJavaPlugin;
+import me.lucko.helper.utils.Log;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -33,26 +35,24 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
 
     public static MewUtils INSTANCE;
 
-    private MewConfig config; // main config
+    // --- data ---
+    private ConfigurationNode configNode; // main config
     private Translations translations; // main translations
+
+    // --- 3rd party ---
     private Economy economy;
+
+    // --- modules ---
     private List<ModuleBase> modules;
+
+    // --- commands ---
     private CommandRegistry commandRegistry;
 
-    public static void debug(String message) {
-        if (MewUtils.config().debug) INSTANCE.getLogger().warning("[DEBUG] " + message);
-    }
+    // --- variables ---
+    private boolean debug;
 
-    public static void debug(Throwable message) {
-        if (MewUtils.config().debug) INSTANCE.getLogger().warning("[DEBUG] " + message.getMessage());
-    }
-
-    public static void log(final String msg) {
-        INSTANCE.getLogger().info(msg);
-    }
-
-    public static MewConfig config() {
-        return INSTANCE.config;
+    public static ConfigurationNode config() {
+        return INSTANCE.configNode;
     }
 
     public static Translations translations() {
@@ -68,15 +68,25 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
         onEnable();
     }
 
-    private void hookExternal() {
-        if (HookChecker.hasPlaceholderAPI()) {
-            new MewUtilsExpansion().register();
-            MewUtils.log("Hooked into PlaceholderAPI");
-        }
+    public boolean devMode() {
+        return this.debug;
     }
 
     @Override
     protected void load() {
+        this.modules = new ArrayList<>();
+
+        this.translations = new Translations(this);
+
+        try {
+            YamlConfigurationLoader loader = YamlConfigurationLoader.builder().file(getDataFolder().toPath().resolve("config.yml").toFile()).indent(2).build();
+            this.configNode = loader.load();
+            this.debug = this.configNode.node("debug").getBoolean();
+        } catch (ConfigurateException e) {
+            getLogger().severe("Failed to load main config! See the stacktrace below for more details");
+            e.printStackTrace();
+        }
+
         try {
             this.commandRegistry = new CommandRegistry(this);
             prepareInternalCommands();
@@ -84,8 +94,6 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
             getLogger().severe("Failed to initialise commands! See the stacktrace below for more details");
             e.printStackTrace();
         }
-
-        this.modules = new ArrayList<>();
     }
 
     @Override
@@ -95,14 +103,9 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
         try {
             this.economy = Services.load(Economy.class);
         } catch (Exception e) {
-            getLogger().severe("Failed to hook into Vault! See the stacktrace below for more details");
+            Log.severe("Failed to hook into Vault! See the stacktrace below for more details");
             e.printStackTrace();
         }
-
-        this.translations = new Translations(this);
-        this.config = new MewConfig();
-        this.config.load();
-        this.config.save();
 
         // --- Configure guice ---
 
@@ -120,16 +123,21 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
         this.modules.add(injector.getInstance(BetterPortalModule.class));
         this.modules.add(injector.getInstance(DeathLoggerModule.class));
         this.modules.add(injector.getInstance(ElytraLimiterModule.class));
-        this.modules.add(injector.getInstance(FireballModule.class));
-        this.modules.add(injector.getInstance(FurnitureModule.class));
+        this.modules.add(injector.getInstance(FireballUtilityModule.class));
+        this.modules.add(injector.getInstance(FurnitureDyeModule.class));
         this.modules.add(injector.getInstance(DropOverflowModule.class));
         this.modules.add(injector.getInstance(OreAnnouncerModule.class));
         this.modules.add(injector.getInstance(SlimeUtilityModule.class));
         this.modules.add(injector.getInstance(VillagerUtilityModule.class));
 
         for (ModuleBase module : this.modules) {
-            module.onLoad();
-            module.onEnable();
+            try {
+                module.onLoad();
+                module.onEnable();
+            } catch (Exception e) {
+                Log.severe("Module " + module.getId() + " failed to load/enable! Check the stacktrace below for more details");
+                e.printStackTrace();
+            }
         }
 
         // --- Make all commands effective ---
@@ -138,12 +146,31 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
 
     @Override
     protected void disable() {
-        this.modules.forEach(ModuleBase::onDisable);
+        for (ModuleBase module : this.modules) {
+            try {
+                module.onDisable();
+            } catch (Exception e) {
+                Log.severe("Module " + module.getId() + " failed to disbale! Check the stacktrace below for more details");
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     public CommandRegistry getCommandRegistry() {
         return this.commandRegistry;
+    }
+
+    @Override public ClassLoader getClassLoader0() {
+        return getClassLoader();
+    }
+
+    @Override public Translations getLang() {
+        return this.translations;
+    }
+
+    @Override public ConfigurationNode getConfigNode() {
+        return this.configNode;
     }
 
     private void prepareInternalCommands() {
@@ -155,9 +182,16 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
             .handler(context -> {
                 CommandSender sender = context.getSender();
                 reload();
-                MewUtils.translations().of("common.reloaded").send(sender);
+                MewUtils.translations().of("reloaded").send(sender);
             }).build()
         );
     }
+
+    // private void hookPlaceholderAPI() {
+    //     if (HookChecker.hasPlaceholderAPI()) {
+    //         new MewUtilsExpansion().register();
+    //         Log.info("Hooked into PlaceholderAPI");
+    //     }
+    // }
 
 }

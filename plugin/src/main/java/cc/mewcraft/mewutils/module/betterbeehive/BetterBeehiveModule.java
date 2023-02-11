@@ -13,7 +13,7 @@ public class BetterBeehiveModule extends ModuleBase {
 
     @Override
     protected void enable() {
-        registerListener(new BeehiveListener());
+        registerListener(new BeehiveListener(this));
     }
 
     @Override

@@ -3,48 +3,61 @@ package cc.mewcraft.mewutils.module.elytralimiter;
 import cc.mewcraft.mewcore.cooldown.ChargeBasedCooldownMap;
 import cc.mewcraft.mewcore.progressbar.ProgressbarGenerator;
 import cc.mewcraft.mewcore.progressbar.ProgressbarMessenger;
-import cc.mewcraft.mewutils.MewUtils;
 import cc.mewcraft.mewutils.api.MewPlugin;
 import cc.mewcraft.mewutils.api.module.ModuleBase;
 import com.google.inject.Inject;
 import me.lucko.helper.cooldown.Cooldown;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.framework.qual.DefaultQualifier;
 
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @DefaultQualifier(NonNull.class)
 public class ElytraLimiterModule extends ModuleBase {
 
-    private final Set<String> restrictedWorlds;
-    private final Set<BoostMethod> restrictedBoost;
-    private final ProgressbarMessenger progressbarMessenger;
-    private final ChargeBasedCooldownMap<UUID> cooldownMap;
+    private @MonotonicNonNull Set<String> restrictedWorlds;
+    private @MonotonicNonNull Set<BoostMethod> restrictedBoost;
+    private @MonotonicNonNull ProgressbarMessenger progressbarMessenger;
+    private @MonotonicNonNull ChargeBasedCooldownMap<UUID> cooldownMap;
+    private double velocityMultiply;
+    private double tpsThreshold;
 
     @Inject
     public ElytraLimiterModule(MewPlugin plugin) {
         super(plugin);
+    }
 
-        this.restrictedBoost = EnumSet.copyOf(MewUtils.config().slow_elytra_methods.stream().map(BoostMethod::valueOf).toList());
-        this.restrictedWorlds = new HashSet<>(MewUtils.config().slow_elytra_worlds);
-        this.progressbarMessenger = new ProgressbarMessenger(MewUtils.config().slow_elytra_bar_stay_time,
+    @Override protected void load() throws Exception {
+        this.restrictedWorlds = new HashSet<>(getConfigNode().node("worlds").getList(String.class, List.of()));
+
+        this.restrictedBoost = getConfigNode().node("methods")
+            .getList(String.class, List.of())
+            .stream().map(BoostMethod::valueOf)
+            .collect(Collectors.toCollection(() -> EnumSet.noneOf(BoostMethod.class)));
+
+        this.cooldownMap = ChargeBasedCooldownMap.create(
+            Cooldown.of(getConfigNode().node("cooldown").getInt(), TimeUnit.MILLISECONDS),
+            uuid -> getConfigNode().node("cooldown_charge").getInt()
+        );
+
+        this.progressbarMessenger = new ProgressbarMessenger(
+            getConfigNode().node("bar_stay_time").getInt(),
             ProgressbarGenerator.Builder.builder()
-                .left(MewUtils.translations().of("slow_elytra.cooldown-progressbar.left").plain())
-                .full(MewUtils.translations().of("slow_elytra.cooldown-progressbar.full").plain())
-                .empty(MewUtils.translations().of("slow_elytra.cooldown-progressbar.empty").plain())
-                .right(MewUtils.translations().of("slow_elytra.cooldown-progressbar.right").plain())
-                .width(MewUtils.config().slow_elytra_bar_width)
+                .left(getLang().of("slow_elytra.cooldown-progressbar.left").plain())
+                .full(getLang().of("slow_elytra.cooldown-progressbar.full").plain())
+                .empty(getLang().of("slow_elytra.cooldown-progressbar.empty").plain())
+                .right(getLang().of("slow_elytra.cooldown-progressbar.right").plain())
+                .width(getConfigNode().node("bar_width").getInt())
                 .build()
         );
-        this.cooldownMap = ChargeBasedCooldownMap.create(
-            Cooldown.of(MewUtils.config().slow_elytra_cooldown, TimeUnit.MILLISECONDS),
-            uuid -> MewUtils.config().slow_elytra_cooldown_charge
-        );
+
+        this.velocityMultiply = getConfigNode().node("velocity_multiply").getDouble();
+
+        this.tpsThreshold = getConfigNode().node("tps_threshold").getDouble();
     }
 
     @Override protected void enable() {
@@ -68,7 +81,11 @@ public class ElytraLimiterModule extends ModuleBase {
     }
 
     public boolean underTPSThreshold() {
-        return MewUtils.INSTANCE.getServer().getTPS()[0] <= MewUtils.config().slow_elytra_tps_threshold;
+        return getPlugin().getServer().getTPS()[0] <= this.tpsThreshold;
+    }
+
+    public double getVelocityMultiply() {
+        return this.velocityMultiply;
     }
 
     @Override
@@ -80,5 +97,4 @@ public class ElytraLimiterModule extends ModuleBase {
     public boolean canEnable() {
         return true;
     }
-
 }

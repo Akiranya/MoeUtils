@@ -1,6 +1,5 @@
 package cc.mewcraft.mewutils.module.deathlogger;
 
-import cc.mewcraft.mewutils.MewUtils;
 import cc.mewcraft.mewutils.api.MewPlugin;
 import cc.mewcraft.mewutils.api.listener.AutoCloseableListener;
 import cc.mewcraft.mewutils.api.module.ModuleBase;
@@ -13,20 +12,29 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DeathLoggerModule extends ModuleBase implements AutoCloseableListener {
 
-    private final Set<EntityType> hashLoggedCreatures;
+    private Set<EntityType> logTypes;
+    private int searchRadius;
 
     @Inject
     public DeathLoggerModule(MewPlugin plugin) {
         super(plugin);
+    }
 
-        this.hashLoggedCreatures = new HashSet<>();
-        this.hashLoggedCreatures.addAll(MewUtils.config().logged_creatures);
+    @Override protected void load() throws Exception {
+        this.logTypes = getConfigNode().node("logged_creatures")
+            .getList(String.class, List.of())
+            .stream()
+            .map(s -> EntityType.valueOf(s.toUpperCase(Locale.ROOT)))
+            .collect(Collectors.toSet());
+        this.searchRadius = getConfigNode().node("search_radius").getInt();
     }
 
     @Override protected void enable() {
@@ -37,22 +45,22 @@ public class DeathLoggerModule extends ModuleBase implements AutoCloseableListen
     public void onDeath(EntityDeathEvent event) {
         LivingEntity entity = event.getEntity();
 
-        if (!this.hashLoggedCreatures.contains(event.getEntityType()))
+        if (!this.logTypes.contains(event.getEntityType()))
             return;
 
         if (entity.getLastDamageCause() == null)
             return;
 
-        MewUtils.translations().of("death_logger.death")
+        getLang().of("death_logger.death")
             .replace("victim", Optional.ofNullable(entity.customName()).orElse(entity.name()))
             .replace("reason", getLocalization(entity.getLastDamageCause().getCause()))
             .replace("killer", Optional.ofNullable(entity.getKiller()).map(Player::getName).orElseGet(() -> entity
                 .getLocation()
-                .getNearbyPlayers(MewUtils.config().search_radius)
+                .getNearbyPlayers(this.searchRadius)
                 .stream()
                 .map(Player::getName)
                 .reduce((acc, name) -> acc.concat(",").concat(name))
-                .orElse(MewUtils.translations().of("common.none").plain())
+                .orElse(getPlugin().getLang().of("none").plain())
             ))
             .replace("x", entity.getLocation().getBlockX())
             .replace("y", entity.getLocation().getBlockY())
