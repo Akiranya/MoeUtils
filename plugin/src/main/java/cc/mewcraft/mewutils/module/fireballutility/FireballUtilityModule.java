@@ -22,7 +22,7 @@ import java.util.stream.IntStream;
 
 public class FireballUtilityModule extends ModuleBase {
 
-    public static final String FIREBALL_META_KEY = "mew_fireball_proj";
+    public static final String FIREBALL_META_KEY = "mew_fireball_projectile";
     public static final int MAX_SPEED = 8;
     public static final Map<String, Class<? extends Projectile>> types;
     public static final String[] typesArray;
@@ -52,7 +52,8 @@ public class FireballUtilityModule extends ModuleBase {
     }
 
     @Override protected void enable() {
-        registerCommand(commandRegistry -> commandRegistry.commandBuilder("mewutils")
+        registerCommand(commandRegistry -> commandRegistry
+            .commandBuilder("mewutils")
             .permission("mew.admin")
             .literal("fireball")
             .argument(StringArgument.<CommandSender>builder("projectile").withSuggestionsProvider((context, sting) -> List.of(typesArray)))
@@ -84,7 +85,7 @@ public class FireballUtilityModule extends ModuleBase {
             projectile.addPassenger(player);
         }
 
-        Schedulers.sync().runLater(projectile::remove, 100);
+        Schedulers.sync().runLater(projectile::remove, 100).bindWith(this);
     }
 
     @Override public String getId() {
