@@ -2,146 +2,65 @@ package cc.mewcraft.mewutils;
 
 import cc.mewcraft.mewcore.hook.HookChecker;
 import cc.mewcraft.mewcore.message.Translations;
-import cc.mewcraft.mewutils.announceore.FoundOres;
-import cc.mewcraft.mewutils.command.CommandManager;
-import cc.mewcraft.mewutils.furniture.FurnitureDyeHandler;
-import cc.mewcraft.mewutils.furniture.FurnitureModule;
-import cc.mewcraft.mewutils.magic.MagicTime;
-import cc.mewcraft.mewutils.magic.MagicWeather;
-import cc.mewcraft.mewutils.misc.*;
+import cc.mewcraft.mewutils.api.MewPlugin;
+import cc.mewcraft.mewutils.api.command.CommandRegistry;
+import cc.mewcraft.mewutils.api.module.ModuleBase;
+import cc.mewcraft.mewutils.module.betterbeehive.BetterBeehiveModule;
+import cc.mewcraft.mewutils.module.betterportal.BetterPortalModule;
+import cc.mewcraft.mewutils.module.deathlogger.DeathLoggerModule;
+import cc.mewcraft.mewutils.module.dropoverflow.DropOverflowModule;
+import cc.mewcraft.mewutils.module.elytralimiter.ElytraLimiterModule;
+import cc.mewcraft.mewutils.module.fireballutility.FireballModule;
+import cc.mewcraft.mewutils.module.furnituredyer.FurnitureModule;
+import cc.mewcraft.mewutils.module.oreannouncer.OreAnnouncerModule;
+import cc.mewcraft.mewutils.module.slimeutility.SlimeUtilityModule;
+import cc.mewcraft.mewutils.module.villagerutility.VillagerUtilityModule;
 import cc.mewcraft.mewutils.placeholder.MewUtilsExpansion;
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import me.lucko.helper.Services;
 import me.lucko.helper.plugin.ExtendedJavaPlugin;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 
-public final class MewUtils extends ExtendedJavaPlugin {
+import java.util.ArrayList;
+import java.util.List;
 
-    /* plugin inst */
-    public static MewUtils p;
+public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
 
-    /* configuration */
-    private MewConfig config;
+    public static MewUtils INSTANCE;
 
-    /* language loader */
-    private Translations translations;
-
-    /* eco & perm & chat */
+    private MewConfig config; // main config
+    private Translations translations; // main translations
     private Economy economy;
-
-    /* modules */
-    private MagicTime magicTime;
-    private MagicWeather magicWeather;
-    private BetterPortals betterPortals;
-    private BetterBees betterBees;
-    private DeathLogger deathLogger;
-    private SlowElytra slowElytra;
-    private FoundOres foundOres;
-    private MergeLimit mergeLimit;
+    private List<ModuleBase> modules;
+    private CommandRegistry commandRegistry;
 
     public static void debug(String message) {
-        if (MewUtils.config().debug) p.getLogger().warning("[DEBUG] " + message);
+        if (MewUtils.config().debug) INSTANCE.getLogger().warning("[DEBUG] " + message);
     }
 
     public static void debug(Throwable message) {
-        if (MewUtils.config().debug) p.getLogger().warning("[DEBUG] " + message.getMessage());
+        if (MewUtils.config().debug) INSTANCE.getLogger().warning("[DEBUG] " + message.getMessage());
     }
 
     public static void log(final String msg) {
-        p.getLogger().info(msg);
-    }
-
-    public static boolean logModule(String module, boolean status) {
-        if (status) {
-            p.getComponentLogger().info(Component.text()
-                .append(Component.text(module).color(TextColor.fromHexString("#99ffcc")))
-                .appendSpace()
-                .append(Component.text("is enabled!").asComponent())
-                .build()
-            );
-        } else {
-            p.getComponentLogger().info(module + " is disabled!");
-        }
-        return !status;
+        INSTANCE.getLogger().info(msg);
     }
 
     public static MewConfig config() {
-        return p.config;
-    }
-
-    public static Economy economy() {
-        return p.economy;
+        return INSTANCE.config;
     }
 
     public static Translations translations() {
-        return p.translations;
+        return INSTANCE.translations;
     }
 
-    public MagicTime getMagicTime() {
-        return magicTime;
-    }
-
-    public MagicWeather getMagicWeather() {
-        return magicWeather;
-    }
-
-    public BetterPortals getBetterPortals() {
-        return betterPortals;
-    }
-
-    public BetterBees getBetterBees() {
-        return betterBees;
-    }
-
-    public DeathLogger getDeathLogger() {
-        return deathLogger;
-    }
-
-    public SlowElytra getSlowElytra() {
-        return slowElytra;
-    }
-
-    public FoundOres getFoundOres() {
-        return foundOres;
-    }
-
-    @Override
-    protected void load() {
-
-    }
-
-    @Override
-    protected void enable() {
-        p = this;
-
-        try {
-            economy = Services.load(Economy.class);
-        } catch (Exception e) {
-            getLogger().severe("Failed to hook into Vault!");
-            e.printStackTrace();
-            disable();
-            return;
-        }
-
-        translations = new Translations(this);
-        config = new MewConfig();
-        config.load();
-        config.save();
-
-        initModules();
-
-        try {
-            new CommandManager(this);
-        } catch (Exception e) {
-            getLogger().severe("Failed to initialise commands!");
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void disable() {
-
+    public static Economy economy() {
+        return INSTANCE.economy;
     }
 
     public void reload() {
@@ -149,25 +68,96 @@ public final class MewUtils extends ExtendedJavaPlugin {
         onEnable();
     }
 
-    private void initModules() {
-        if (HookChecker.hasVault()) {
-            magicTime = bindModule(new MagicTime());
-            magicWeather = bindModule(new MagicWeather());
-        }
-        betterPortals = bindModule(new BetterPortals());
-        deathLogger = bindModule(new DeathLogger());
-        betterBees = bindModule(new BetterBees());
-        slowElytra = bindModule(new SlowElytra());
-        foundOres = bindModule(new FoundOres());
-        mergeLimit = bindModule(new MergeLimit());
-        new FurnitureModule(this, new FurnitureDyeHandler(this));
-    }
-
     private void hookExternal() {
-        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+        if (HookChecker.hasPlaceholderAPI()) {
             new MewUtilsExpansion().register();
             MewUtils.log("Hooked into PlaceholderAPI");
         }
+    }
+
+    @Override
+    protected void load() {
+        try {
+            this.commandRegistry = new CommandRegistry(this);
+            prepareInternalCommands();
+        } catch (Exception e) {
+            getLogger().severe("Failed to initialise commands! See the stacktrace below for more details");
+            e.printStackTrace();
+        }
+
+        this.modules = new ArrayList<>();
+    }
+
+    @Override
+    protected void enable() {
+        INSTANCE = this;
+
+        try {
+            this.economy = Services.load(Economy.class);
+        } catch (Exception e) {
+            getLogger().severe("Failed to hook into Vault! See the stacktrace below for more details");
+            e.printStackTrace();
+        }
+
+        this.translations = new Translations(this);
+        this.config = new MewConfig();
+        this.config.load();
+        this.config.save();
+
+        // --- Configure guice ---
+
+        Injector injector = Guice.createInjector(new AbstractModule() {
+            @Override protected void configure() {
+                bind(Plugin.class).toInstance(MewUtils.this);
+                bind(MewPlugin.class).toInstance(MewUtils.this);
+                bind(JavaPlugin.class).toInstance(MewUtils.this);
+            }
+        });
+
+        // --- Load modules ---
+
+        this.modules.add(injector.getInstance(BetterBeehiveModule.class));
+        this.modules.add(injector.getInstance(BetterPortalModule.class));
+        this.modules.add(injector.getInstance(DeathLoggerModule.class));
+        this.modules.add(injector.getInstance(ElytraLimiterModule.class));
+        this.modules.add(injector.getInstance(FireballModule.class));
+        this.modules.add(injector.getInstance(FurnitureModule.class));
+        this.modules.add(injector.getInstance(DropOverflowModule.class));
+        this.modules.add(injector.getInstance(OreAnnouncerModule.class));
+        this.modules.add(injector.getInstance(SlimeUtilityModule.class));
+        this.modules.add(injector.getInstance(VillagerUtilityModule.class));
+
+        for (ModuleBase module : this.modules) {
+            module.onLoad();
+            module.onEnable();
+        }
+
+        // --- Make all commands effective ---
+        this.commandRegistry.registerCommands();
+    }
+
+    @Override
+    protected void disable() {
+        this.modules.forEach(ModuleBase::onDisable);
+    }
+
+    @Override
+    public CommandRegistry getCommandRegistry() {
+        return this.commandRegistry;
+    }
+
+    private void prepareInternalCommands() {
+        // for now, it's just a reload command
+        this.commandRegistry.prepareCommand(this.commandRegistry
+            .commandBuilder("mewutils")
+            .permission("mew.admin")
+            .literal("reload")
+            .handler(context -> {
+                CommandSender sender = context.getSender();
+                reload();
+                MewUtils.translations().of("common.reloaded").send(sender);
+            }).build()
+        );
     }
 
 }

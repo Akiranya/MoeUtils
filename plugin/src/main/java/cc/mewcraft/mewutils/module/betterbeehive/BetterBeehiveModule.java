@@ -1,0 +1,29 @@
+package cc.mewcraft.mewutils.module.betterbeehive;
+
+import cc.mewcraft.mewutils.api.MewPlugin;
+import cc.mewcraft.mewutils.api.module.ModuleBase;
+import com.google.inject.Inject;
+
+public class BetterBeehiveModule extends ModuleBase {
+
+    @Inject
+    public BetterBeehiveModule(MewPlugin plugin) {
+        super(plugin);
+    }
+
+    @Override
+    protected void enable() {
+        registerListener(new BeehiveListener());
+    }
+
+    @Override
+    public String getId() {
+        return "betterbeehive";
+    }
+
+    @Override
+    public boolean canEnable() {
+        return true;
+    }
+
+}

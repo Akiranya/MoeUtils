@@ -1,4 +1,4 @@
 rootProject.name = "MewUtils"
 
-include(":api")
+include(":common")
 include(":plugin")

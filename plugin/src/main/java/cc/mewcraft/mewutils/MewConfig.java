@@ -64,7 +64,7 @@ public final class MewConfig {
     private CommentedConfigurationNode root;
 
     public MewConfig() {
-        loader = YamlConfigFactory.loader(new File(MewUtils.p.getDataFolder(), CONFIG_FILENAME));
+        loader = YamlConfigFactory.loader(new File(MewUtils.INSTANCE.getDataFolder(), CONFIG_FILENAME));
     }
 
     /**
@@ -75,7 +75,7 @@ public final class MewConfig {
             root = loader.load();
         } catch (ConfigurateException e) {
             e.printStackTrace();
-            MewUtils.p.getServer().getPluginManager().disablePlugin(MewUtils.p);
+            MewUtils.INSTANCE.getServer().getPluginManager().disablePlugin(MewUtils.INSTANCE);
             return;
         }
 

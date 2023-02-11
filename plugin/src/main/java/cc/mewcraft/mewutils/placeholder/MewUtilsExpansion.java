@@ -17,7 +17,7 @@ public class MewUtilsExpansion extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getVersion() {
-        return "0.1";
+        return "0.1.0";
     }
 
 }

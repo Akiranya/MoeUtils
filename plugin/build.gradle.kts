@@ -11,6 +11,7 @@ version = "1.18".decorateVersion()
 description = "A plugin consisting of many small features"
 
 dependencies {
+
     // 3rd party plugins
     compileOnly("net.luckperms", "api", "5.4")
     compileOnly("com.github.MilkBowl", "VaultAPI", "1.7") { isTransitive = false }
@@ -18,6 +19,7 @@ dependencies {
     compileOnly("com.github.LoneDev6", "API-ItemsAdder", "3.2.5")
 
     // To be shaded
+    implementation(project(":common"))
     implementation("net.wesjd", "anvilgui", "1.6.3-SNAPSHOT")
     implementation("com.google.inject", "guice", "5.1.0")
 }
