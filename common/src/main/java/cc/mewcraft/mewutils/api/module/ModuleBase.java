@@ -21,7 +21,6 @@ import org.checkerframework.framework.qual.DefaultQualifier;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
@@ -47,13 +46,13 @@ public abstract class ModuleBase
         this.terminableRegistry = CompositeTerminable.create();
 
         // create dedicated directory for this module
-        this.moduleDirectory = Paths.get(this.plugin.getDataFolder().getPath()).resolve("modules").resolve(getId());
+        this.moduleDirectory = this.plugin.getDataFolder().toPath().resolve("modules").resolve(getId());
         if (this.moduleDirectory.toFile().mkdirs()) {
             info("module directory does not exist - creating one");
         }
 
         // dedicated language files for this module
-        this.lang = new Translations(this.plugin, this.moduleDirectory.resolve("lang").toString(), "zh");
+        this.lang = new Translations(this.plugin, Path.of("modules").resolve(getId()).resolve("lang").toString(), "zh");
 
         // dedicated config file for this module
         File configFile = this.moduleDirectory.resolve("config.yml").toFile();
