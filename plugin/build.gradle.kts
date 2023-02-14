@@ -62,10 +62,19 @@ tasks {
         dependsOn(shadowJar)
     }
     shadowJar {
-        val path = "cc.mewcraft.shade."
-        relocate("net.wesjd.anvilgui", path + "anvilgui")
-        relocate("com.google.inject", path + "inject")
         archiveFileName.set("MewUtils-${project.version}.jar")
+
+        val path = "cc.mewcraft.shade."
+
+        // AnvilGui
+        relocate("net.wesjd.anvilgui", path + "anvilgui")
+
+        // Google Guice
+        relocate("javax", path + "javax")
+        relocate("com.google", path + "google")
+        relocate("org.aopalliance", path + "aopalliance")
+
+        minimize()
     }
     register("deployJar") {
         doLast {
