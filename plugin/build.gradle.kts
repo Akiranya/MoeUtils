@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "cc.mewcraft"
-version = "1.19.0".decorateVersion()
+version = "1.19.1".decorateVersion()
 description = "A plugin consisting of many small features"
 
 dependencies {
@@ -75,6 +75,14 @@ tasks {
         relocate("org.aopalliance", path + "aopalliance")
 
         minimize()
+    }
+    processResources {
+        filesMatching("**/paper-plugin.yml") {
+            expand(mapOf(
+                "version" to "${project.version}",
+                "description" to project.description
+            ))
+        }
     }
     register("deployJar") {
         doLast {
