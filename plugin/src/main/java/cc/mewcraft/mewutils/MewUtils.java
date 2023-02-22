@@ -66,11 +66,6 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
         return INSTANCE.economy;
     }
 
-    public void reload() {
-        onDisable();
-        onEnable();
-    }
-
     public boolean devMode() {
         return this.debug;
     }
@@ -167,6 +162,11 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void reload() {
+        onDisable();
+        onEnable();
     }
 
     @Override
