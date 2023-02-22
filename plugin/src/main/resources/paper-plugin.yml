@@ -5,7 +5,9 @@ main: cc.mewcraft.mewutils.MewUtils
 api-version: 1.19
 authors: [ Nailm ]
 load-before: [ ]
-load-after: [ ]
+load-after:
+  - name: helper
+  - name: MewCore
 dependencies:
   - name: helper
     required: true
@@ -14,7 +16,7 @@ dependencies:
     required: true
     bootstrap: false
   - name: Vault
-    required: true
+    required: false
     bootstrap: false
   - name: PlaceholderAPI
     required: false
