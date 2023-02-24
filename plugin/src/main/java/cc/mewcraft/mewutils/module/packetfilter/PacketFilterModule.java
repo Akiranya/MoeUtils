@@ -14,7 +14,7 @@ public class PacketFilterModule extends ModuleBase implements AutoCloseableListe
     Set<UUID> afkPlayers; // players who are afk-ing
     Set<Integer> whitelistEntityIds; // ids of entity whose packets should not be blocked
     EnumSet<EntityType> filteredEntityTypes; // allowed entity packet types
-    Set<PacketType> blockedPacketTypes; // packet types to be blocked
+    Set<PacketType> blockedPacketTypes; // packet types to be blocked // TODO don't import ProtocolLib classes here
 
     public PacketFilterModule(final MewPlugin parent) {
         super(parent);
