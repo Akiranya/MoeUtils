@@ -1,4 +1,3 @@
-enabled: true
 search_radius: 64
 entities:
   - VILLAGER

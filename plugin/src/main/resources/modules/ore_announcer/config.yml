@@ -1,4 +1,3 @@
-enabled: false
 max_iterations: 64
 blocks:
   - DIAMOND_ORE

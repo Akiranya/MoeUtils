@@ -28,7 +28,7 @@ public class ProtocolLibHook implements Terminable {
                 if (component == null)
                     return;
                 String oldValue = component.getJson();
-                if (module.verbose)
+                if (module.getParentPlugin().isDevMode())
                     module.info(oldValue);
                 String newValue = module.replacement.get(oldValue);
                 if (newValue != null) {

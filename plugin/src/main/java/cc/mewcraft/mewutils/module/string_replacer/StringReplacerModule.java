@@ -15,7 +15,6 @@ import java.util.Map;
 
 public class StringReplacerModule extends ModuleBase implements AutoCloseableListener {
 
-    boolean verbose;
     Map<String, String> replacement;
 
     @Inject
@@ -27,8 +26,6 @@ public class StringReplacerModule extends ModuleBase implements AutoCloseableLis
         this.replacement = new HashMap<>();
 
         // Read the config values
-
-        this.verbose = getConfigNode().node("verbose").getBoolean(false);
 
         getConfigNode().node("replacement").getList(new TypeToken<Map<String, String>>() {}, List.of())
             .forEach(map -> {

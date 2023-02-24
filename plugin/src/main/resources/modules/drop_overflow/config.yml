@@ -1,4 +1,3 @@
-enabled: true
 threshold: 32
 types:
   - RAIL
