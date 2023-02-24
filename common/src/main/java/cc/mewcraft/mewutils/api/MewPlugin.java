@@ -7,12 +7,12 @@ import org.bukkit.plugin.Plugin;
 
 public interface MewPlugin extends Plugin {
 
-    CommandRegistry getCommandRegistry();
-
-    ClassLoader getClassLoader0();
-
     Translations getLang();
 
     ConfigurationNode getConfigNode();
+
+    CommandRegistry getCommandRegistry();
+
+    ClassLoader getClassLoader0();
 
 }
