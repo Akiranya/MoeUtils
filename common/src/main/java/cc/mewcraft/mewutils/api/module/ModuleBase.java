@@ -20,8 +20,11 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.framework.qual.DefaultQualifier;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
@@ -173,20 +176,28 @@ public abstract class ModuleBase
 
     public final <T extends AutoCloseableListener> void registerListener(@NonNull T listener) {
         requireNonNull(listener, "listener");
-        getPlugin().getServer().getPluginManager().registerEvents(
-            bind(listener), getPlugin()
+        getParentPlugin().getServer().getPluginManager().registerEvents(
+            bind(listener), getParentPlugin()
         );
     }
 
     public final void registerCommand(@NonNull Function<CommandRegistry, Command.Builder<CommandSender>> command) {
         requireNonNull(command, "command");
-        CommandRegistry registry = getPlugin().getCommandRegistry();
+        CommandRegistry registry = getParentPlugin().getCommandRegistry();
         registry.prepareCommand(
             command.apply(registry).build()
         );
     }
 
-    public final boolean hasPlugin(String name) {
+    @SuppressWarnings("unchecked")
+    @Nullable
+    public <T> T getPlugin(@Nonnull String name, @Nonnull Class<T> pluginClass) {
+        Objects.requireNonNull(name, "name");
+        Objects.requireNonNull(pluginClass, "pluginClass");
+        return (T) Bukkit.getServer().getPluginManager().getPlugin(name);
+    }
+
+    public final boolean isPluginPresent(String name) {
         return Bukkit.getServer().getPluginManager().getPlugin(name) != null;
     }
 
@@ -203,7 +214,7 @@ public abstract class ModuleBase
     }
 
     @Override
-    public final MewPlugin getPlugin() {
+    public final MewPlugin getParentPlugin() {
         return this.plugin;
     }
 

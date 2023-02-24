@@ -35,7 +35,7 @@ public class VillagerUtilityModule extends ModuleBase {
     }
 
     private void registerCommands() {
-        CommandRegistry commandRegistry = getPlugin().getCommandRegistry();
+        CommandRegistry commandRegistry = getParentPlugin().getCommandRegistry();
 
         Command.Builder<CommandSender> baseBuilder = commandRegistry
             .commandBuilder("mewutils")

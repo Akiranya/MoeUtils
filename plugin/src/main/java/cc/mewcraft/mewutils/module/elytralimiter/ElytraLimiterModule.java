@@ -81,7 +81,7 @@ public class ElytraLimiterModule extends ModuleBase {
     }
 
     public boolean underTPSThreshold() {
-        return getPlugin().getServer().getTPS()[0] <= this.tpsThreshold;
+        return getParentPlugin().getServer().getTPS()[0] <= this.tpsThreshold;
     }
 
     public double getVelocityMultiply() {

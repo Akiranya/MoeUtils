@@ -60,7 +60,7 @@ public class DeathLoggerModule extends ModuleBase implements AutoCloseableListen
                 .stream()
                 .map(Player::getName)
                 .reduce((acc, name) -> acc.concat(",").concat(name))
-                .orElse(getPlugin().getLang().of("none").plain())
+                .orElse(getParentPlugin().getLang().of("none").plain())
             ))
             .replace("x", entity.getLocation().getBlockX())
             .replace("y", entity.getLocation().getBlockY())
