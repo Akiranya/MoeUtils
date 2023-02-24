@@ -52,14 +52,14 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
     private CommandRegistry commandRegistry;
 
     // --- variables ---
-    private boolean debug;
+    private boolean verbose;
 
     // public static Economy economy() {
     //     return INSTANCE.economy;
     // }
 
     public boolean devMode() {
-        return this.debug;
+        return this.verbose;
     }
 
     @Override
@@ -74,10 +74,11 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
 
         // --- Load main config ---
 
+        saveDefaultConfig();
         try {
             YamlConfigurationLoader loader = YamlConfigurationLoader.builder().file(getDataFolder().toPath().resolve("config.yml").toFile()).indent(2).build();
             this.configNode = loader.load();
-            this.debug = this.configNode.node("debug").getBoolean();
+            this.verbose = this.configNode.node("verbose").getBoolean();
         } catch (ConfigurateException e) {
             getLogger().severe("Failed to load main config! See the stacktrace below for more details");
             e.printStackTrace();
