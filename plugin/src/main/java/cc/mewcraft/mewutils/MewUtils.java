@@ -17,6 +17,7 @@ import cc.mewcraft.mewutils.module.furnituredye.FurnitureDyeModule;
 import cc.mewcraft.mewutils.module.oreannouncer.OreAnnouncerModule;
 import cc.mewcraft.mewutils.module.packetfilter.PacketFilterModule;
 import cc.mewcraft.mewutils.module.slimeutility.SlimeUtilityModule;
+import cc.mewcraft.mewutils.module.stringreplacer.StringReplacerModule;
 import cc.mewcraft.mewutils.module.villagerutility.VillagerUtilityModule;
 import cc.mewcraft.mewutils.util.Log;
 import com.google.inject.AbstractModule;
@@ -41,7 +42,7 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
     private ConfigurationNode configNode; // main config
     private Translations translations; // main translations
 
-    // --- 3rd party ---
+    // --- hooks ---
     // private Economy economy;
 
     // --- modules ---
@@ -52,14 +53,6 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
 
     // --- variables ---
     private boolean debug;
-
-    public static Translations lang() {
-        return INSTANCE.translations;
-    }
-
-    public static ConfigurationNode config() {
-        return INSTANCE.configNode;
-    }
 
     // public static Economy economy() {
     //     return INSTANCE.economy;
@@ -134,6 +127,7 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
         this.modules.add(injector.getInstance(SlimeUtilityModule.class));
         this.modules.add(injector.getInstance(VillagerUtilityModule.class));
         this.modules.add(injector.getInstance(PacketFilterModule.class));
+        this.modules.add(injector.getInstance(StringReplacerModule.class));
 
         for (ModuleBase module : this.modules) {
             try {
@@ -195,7 +189,7 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
             .handler(context -> {
                 CommandSender sender = context.getSender();
                 reload();
-                MewUtils.lang().of("reloaded").send(sender);
+                getLang().of("reloaded").send(sender);
             }).build()
         );
     }

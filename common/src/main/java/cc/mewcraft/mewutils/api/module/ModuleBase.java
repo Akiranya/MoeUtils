@@ -18,10 +18,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.framework.qual.DefaultQualifier;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Objects;
@@ -191,7 +190,7 @@ public abstract class ModuleBase
 
     @SuppressWarnings("unchecked")
     @Nullable
-    public <T> T getPlugin(@Nonnull String name, @Nonnull Class<T> pluginClass) {
+    public <T> T getPlugin(@NonNull String name, @NonNull Class<T> pluginClass) {
         Objects.requireNonNull(name, "name");
         Objects.requireNonNull(pluginClass, "pluginClass");
         return (T) Bukkit.getServer().getPluginManager().getPlugin(name);

@@ -11,8 +11,6 @@ version = "1.20.0".decorateVersion()
 description = "A plugin consisting of many small features"
 
 dependencies {
-    compileOnly(files("libs/FontMaster-1.0.jar"))
-
     // 3rd party plugins
     compileOnly("net.luckperms", "api", "5.4")
     compileOnly("com.github.MilkBowl", "VaultAPI", "1.7") {
