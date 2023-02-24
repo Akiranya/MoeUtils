@@ -63,12 +63,14 @@ tasks {
         // AnvilGui
         relocate("net.wesjd.anvilgui", path + "anvilgui")
 
-        // Google Guice
+        // Guice
         relocate("javax", path + "javax")
         relocate("com.google", path + "google")
         relocate("org.aopalliance", path + "aopalliance")
 
-        minimize()
+        minimize {
+            exclude(dependency("net.wesjd:.*:.*"))
+        }
     }
     processResources {
         filesMatching("**/paper-plugin.yml") {

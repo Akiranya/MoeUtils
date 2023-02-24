@@ -58,9 +58,7 @@ dependencies {
 
     // Plugin libs
     compileOnly("cc.mewcraft", "MewCore", "5.13.1")
-    compileOnly("me.lucko", "helper", "5.6.13") {
-        isTransitive = false
-    }
+    compileOnly("me.lucko", "helper", "5.6.13")
 
     // To be shaded
     implementation("com.google.inject", "guice", "5.1.0")
