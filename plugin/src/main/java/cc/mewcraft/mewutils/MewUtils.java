@@ -15,6 +15,7 @@ import cc.mewcraft.mewutils.module.elytralimiter.ElytraLimiterModule;
 import cc.mewcraft.mewutils.module.fireballutility.FireballUtilityModule;
 import cc.mewcraft.mewutils.module.furnituredye.FurnitureDyeModule;
 import cc.mewcraft.mewutils.module.oreannouncer.OreAnnouncerModule;
+import cc.mewcraft.mewutils.module.packetfilter.PacketFilterModule;
 import cc.mewcraft.mewutils.module.slimeutility.SlimeUtilityModule;
 import cc.mewcraft.mewutils.module.villagerutility.VillagerUtilityModule;
 import cc.mewcraft.mewutils.util.Log;
@@ -134,6 +135,7 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
         this.modules.add(injector.getInstance(OreAnnouncerModule.class));
         this.modules.add(injector.getInstance(SlimeUtilityModule.class));
         this.modules.add(injector.getInstance(VillagerUtilityModule.class));
+        this.modules.add(injector.getInstance(PacketFilterModule.class));
 
         for (ModuleBase module : this.modules) {
             try {

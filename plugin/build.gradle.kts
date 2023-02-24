@@ -7,10 +7,11 @@ plugins {
 }
 
 group = "cc.mewcraft"
-version = "1.19.1".decorateVersion()
+version = "1.20.0".decorateVersion()
 description = "A plugin consisting of many small features"
 
 dependencies {
+    compileOnly(files("libs/FontMaster-1.0.jar"))
 
     // 3rd party plugins
     compileOnly("net.luckperms", "api", "5.4")
@@ -21,6 +22,8 @@ dependencies {
         exclude("org.jetbrains")
     }
     compileOnly("com.github.LoneDev6", "API-ItemsAdder", "3.2.5")
+    compileOnly("com.comphenix.protocol:ProtocolLib:5.0.0-SNAPSHOT")
+    compileOnly("net.essentialsx", "EssentialsX", "2.19.0") { isTransitive = false }
 
     // To be shaded
     implementation(project(":common"))
@@ -35,8 +38,8 @@ bukkit {
     description = "Provides tiny features that can't make a big project"
     apiVersion = "1.17"
     authors = listOf("Nailm")
-    depend = listOf("helper", "MewCore", "Vault")
-    softDepend = listOf("PlaceholderAPI", "ItemsAdder")
+    depend = listOf("helper", "MewCore")
+    softDepend = listOf("Vault", "PlaceholderAPI", "ItemsAdder", "ProtocolLib", "Essentials")
     permissions {
         register("mew.admin") {
             description = "Permission nodes for operators."

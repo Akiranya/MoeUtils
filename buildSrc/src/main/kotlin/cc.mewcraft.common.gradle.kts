@@ -40,6 +40,16 @@ repositories {
             includeGroup("net.wesjd")
         }
     }
+    maven("https://repo.dmulloy2.net/repository/public/") {
+        content {
+            includeGroup("com.comphenix.protocol")
+        }
+    }
+    maven("https://repo.essentialsx.net/releases/") {
+        content {
+            includeGroup("net.essentialsx")
+        }
+    }
 }
 
 dependencies {
