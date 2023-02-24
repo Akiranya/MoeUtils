@@ -2,7 +2,6 @@ package cc.mewcraft.mewutils.module.elytra_limiter;
 
 import cc.mewcraft.mewcore.cooldown.ChargeBasedCooldown;
 import cc.mewcraft.mewcore.listener.AutoCloseableListener;
-import cc.mewcraft.mewutils.util.Log;
 import com.destroystokyo.paper.event.player.PlayerElytraBoostEvent;
 import me.lucko.helper.Schedulers;
 import org.bukkit.entity.Arrow;
@@ -31,7 +30,7 @@ public class ElytraBoostListener implements AutoCloseableListener {
 
         // Halt any boost if tps low
         if (this.module.underTPSThreshold()) {
-            Log.debug("Elytra boost canceled (firework; TPS)");
+            this.module.debug("Elytra boost canceled (firework; TPS)");
             this.module.getLang().of("no_boost_when_tps_low").send(player);
             event.setShouldConsume(false);
             event.setCancelled(true);
@@ -43,8 +42,8 @@ public class ElytraBoostListener implements AutoCloseableListener {
         if (this.module.inRestrictedWorld(player) && !cooldown.test()) {
             event.setShouldConsume(false);
             event.setCancelled(true);
-            Log.debug("Elytra boost canceled  " + player.getName() + " (firework; cooldown)");
-            Log.debug("Cooldown remaining: " + cooldown.remainingMillisFull() + "ms");
+            this.module.debug("Elytra boost canceled  " + player.getName() + " (firework; cooldown)");
+            this.module.debug("Cooldown remaining: " + cooldown.remainingMillisFull() + "ms");
         }
 
         // Always show progressbar when boosting
@@ -73,7 +72,7 @@ public class ElytraBoostListener implements AutoCloseableListener {
 
             // Halt any boost if tps low
             if (this.module.underTPSThreshold()) {
-                Log.debug("Elytra boost canceled (projectile; TPS)");
+                this.module.debug("Elytra boost canceled (projectile; TPS)");
                 this.module.getLang().of("no_boost_when_tps_low").send(player);
                 event.setCancelled(true);
                 return;
@@ -83,8 +82,8 @@ public class ElytraBoostListener implements AutoCloseableListener {
             var cooldown = this.module.getCooldownMap().get(player.getUniqueId());
             if (!cooldown.test()) {
                 event.setCancelled(true);
-                Log.debug("Elytra boost canceled " + player.getName() + " (projectile; cooldown)");
-                Log.debug("Cooldown remaining: " + cooldown.remainingMillisFull() + "ms");
+                this.module.debug("Elytra boost canceled " + player.getName() + " (projectile; cooldown)");
+                this.module.debug("Cooldown remaining: " + cooldown.remainingMillisFull() + "ms");
             }
 
             // Always show progressbar when boosting
@@ -110,7 +109,7 @@ public class ElytraBoostListener implements AutoCloseableListener {
 
             // Halt any boost if tps low
             if (this.module.underTPSThreshold()) {
-                Log.debug("Elytra boost canceled " + player.getName() + " (trident; TPS)");
+                this.module.debug("Elytra boost canceled " + player.getName() + " (trident; TPS)");
                 this.module.getLang().of("no_boost_when_tps_low").send(player);
                 player.setVelocity(player.getVelocity().multiply(0));
                 return;
@@ -122,8 +121,8 @@ public class ElytraBoostListener implements AutoCloseableListener {
                 Vector slow = player.getVelocity().multiply(this.module.getVelocityMultiply());
                 Schedulers.sync().runLater(() -> player.setVelocity(slow), 1);
 
-                Log.debug("Elytra boost canceled for " + player.getName() + " (trident; cooldown)");
-                Log.debug("Cooldown remaining: " + cooldown.remainingMillisFull() + "ms");
+                this.module.debug("Elytra boost canceled for " + player.getName() + " (trident; cooldown)");
+                this.module.debug("Cooldown remaining: " + cooldown.remainingMillisFull() + "ms");
             }
 
             // Always show progressbar when boosting

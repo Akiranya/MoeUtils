@@ -28,6 +28,10 @@ public interface ModuleLogger extends ModuleIdentifier {
         getParentPlugin().getLogger().severe(getPrefix() + msg);
     }
 
+    default void debug(String msg) {
+        if (getParentPlugin().isDevMode()) getParentPlugin().getLogger().info(getPrefix() + msg);
+    }
+
     // --- component logger ---
 
     default void info(Component msg) {

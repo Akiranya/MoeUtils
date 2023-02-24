@@ -16,6 +16,8 @@ public interface MewPlugin extends Plugin {
 
     ClassLoader getClassLoader0();
 
+    boolean isDevMode();
+
     boolean isModuleOn(ModuleBase module);
 
 }

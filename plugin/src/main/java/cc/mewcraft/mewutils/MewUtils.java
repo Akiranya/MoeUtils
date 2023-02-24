@@ -61,6 +61,7 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
     //     return INSTANCE.economy;
     // }
 
+    @Override
     public boolean isDevMode() {
         return this.verbose;
     }
