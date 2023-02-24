@@ -38,7 +38,7 @@ import java.util.logging.Level;
 public class Log {
 
     public static void debug(@NonNull String s) {
-        if (MewUtils.INSTANCE.devMode()) info(s);
+        if (MewUtils.INSTANCE.isDevMode()) info(s);
     }
 
     public static void info(@NonNull String s) {

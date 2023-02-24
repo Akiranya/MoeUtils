@@ -37,9 +37,10 @@ public abstract class ModuleBase
     private final MewPlugin plugin;
     private final Path moduleDirectory;
     private final CompositeTerminable terminableRegistry;
-    private final Translations lang;
     private final YamlConfigurationLoader config;
     private @MonotonicNonNull CommentedConfigurationNode configNode;
+    private @MonotonicNonNull Translations lang;
+    private boolean moduleOn;
 
     @Inject
     public ModuleBase(MewPlugin parent) {
@@ -50,12 +51,8 @@ public abstract class ModuleBase
 
         // create dedicated directory for this module
         this.moduleDirectory = this.plugin.getDataFolder().toPath().resolve("modules").resolve(getId());
-        if (this.moduleDirectory.toFile().mkdirs()) {
+        if (this.moduleDirectory.toFile().mkdirs())
             info("module directory does not exist - creating one");
-        }
-
-        // dedicated language files for this module
-        this.lang = new Translations(this.plugin, Path.of("modules").resolve(getId()).resolve("lang").toString(), "zh");
 
         // dedicated config file for this module
         File configFile = this.moduleDirectory.resolve("config.yml").toFile();
@@ -102,13 +99,19 @@ public abstract class ModuleBase
         // load the config file into node
         this.configNode = this.config.load();
 
+        // dedicated language files for this module
+        Path langPath = Path.of("modules").resolve(getId()).resolve("lang");
+        if (langPath.toFile().mkdirs())
+            info("translation directory does not exist - creating one");
+        this.lang = new Translations(this.plugin, langPath.toString(), "zh");
+
         // call subclass
         load();
     }
 
     public final void onEnable() throws Exception {
         if (!checkRequirement()) {
-            warn(getId() + " is not enabled due to requirement not met");
+            warn(getLongId() + " is not enabled due to requirement not met");
             return;
         }
 
@@ -124,7 +127,7 @@ public abstract class ModuleBase
         enable();
 
         this.plugin.getComponentLogger().info(text()
-            .append(text(getId()).color(NamedTextColor.GOLD))
+            .append(text(getLongId()).color(NamedTextColor.GOLD))
             .appendSpace().append(text("is enabled!"))
             .build()
         );
@@ -147,7 +150,7 @@ public abstract class ModuleBase
         this.terminableRegistry.closeAndReportException();
 
         this.plugin.getComponentLogger().info(text()
-            .append(text(getId()).color(NamedTextColor.GOLD))
+            .append(text(getLongId()).color(NamedTextColor.GOLD))
             .appendSpace().append(text("is disabled!"))
             .build()
         );

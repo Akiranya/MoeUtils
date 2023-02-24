@@ -3,6 +3,7 @@ package cc.mewcraft.mewutils.api;
 import cc.mewcraft.lib.configurate.ConfigurationNode;
 import cc.mewcraft.mewcore.message.Translations;
 import cc.mewcraft.mewutils.api.command.CommandRegistry;
+import cc.mewcraft.mewutils.api.module.ModuleBase;
 import org.bukkit.plugin.Plugin;
 
 public interface MewPlugin extends Plugin {
@@ -14,5 +15,7 @@ public interface MewPlugin extends Plugin {
     CommandRegistry getCommandRegistry();
 
     ClassLoader getClassLoader0();
+
+    boolean isModuleOn(ModuleBase module);
 
 }

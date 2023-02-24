@@ -11,7 +11,7 @@ public interface ModuleLogger extends ModuleIdentifier {
     MewPlugin getParentPlugin();
 
     default String getPrefix() {
-        return "[" + getId() + "] ";
+        return "[" + getLongId() + "] ";
     }
 
     // --- plain string logger ---

@@ -1,0 +1,15 @@
+# 你可以在这里设置启用的模块
+# true: 启用 false: 禁用
+
+better-beehive: true
+better-portal: true
+death-logger: true
+drop-overflow: true
+elytra-limiter: true
+fireball-utils: true
+furniture-dye: true
+ore-announcer: true
+packet-filter: true
+slime-utils: true
+string-replacer: true
+villager-utils: true

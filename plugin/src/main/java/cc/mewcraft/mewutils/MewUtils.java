@@ -7,18 +7,18 @@ import cc.mewcraft.mewcore.message.Translations;
 import cc.mewcraft.mewutils.api.MewPlugin;
 import cc.mewcraft.mewutils.api.command.CommandRegistry;
 import cc.mewcraft.mewutils.api.module.ModuleBase;
-import cc.mewcraft.mewutils.module.betterbeehive.BetterBeehiveModule;
-import cc.mewcraft.mewutils.module.betterportal.BetterPortalModule;
-import cc.mewcraft.mewutils.module.deathlogger.DeathLoggerModule;
-import cc.mewcraft.mewutils.module.dropoverflow.DropOverflowModule;
-import cc.mewcraft.mewutils.module.elytralimiter.ElytraLimiterModule;
-import cc.mewcraft.mewutils.module.fireballutils.FireballUtilsModule;
-import cc.mewcraft.mewutils.module.furnituredye.FurnitureDyeModule;
-import cc.mewcraft.mewutils.module.oreannouncer.OreAnnouncerModule;
-import cc.mewcraft.mewutils.module.packetfilter.PacketFilterModule;
-import cc.mewcraft.mewutils.module.slimeutils.SlimeUtilsModule;
-import cc.mewcraft.mewutils.module.stringreplacer.StringReplacerModule;
-import cc.mewcraft.mewutils.module.villagerutils.VillagerUtilsModule;
+import cc.mewcraft.mewutils.module.better_beehive.BetterBeehiveModule;
+import cc.mewcraft.mewutils.module.better_portal.BetterPortalModule;
+import cc.mewcraft.mewutils.module.death_logger.DeathLoggerModule;
+import cc.mewcraft.mewutils.module.drop_overflow.DropOverflowModule;
+import cc.mewcraft.mewutils.module.elytra_limiter.ElytraLimiterModule;
+import cc.mewcraft.mewutils.module.fireball_utils.FireballUtilsModule;
+import cc.mewcraft.mewutils.module.furniture_dye.FurnitureDyeModule;
+import cc.mewcraft.mewutils.module.ore_announcer.OreAnnouncerModule;
+import cc.mewcraft.mewutils.module.packet_filter.PacketFilterModule;
+import cc.mewcraft.mewutils.module.slime_utils.SlimeUtilsModule;
+import cc.mewcraft.mewutils.module.string_replacer.StringReplacerModule;
+import cc.mewcraft.mewutils.module.villager_utils.VillagerUtilsModule;
 import cc.mewcraft.mewutils.util.Log;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -32,14 +32,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.base.CaseFormat.LOWER_HYPHEN;
+import static com.google.common.base.CaseFormat.LOWER_UNDERSCORE;
 import static net.kyori.adventure.text.Component.text;
 
 public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
 
     public static MewUtils INSTANCE;
 
-    // --- data ---
+    // --- config ---
     private ConfigurationNode configNode; // main config
+    private ConfigurationNode moduleNode; // module on/off
     private Translations translations; // main translations
 
     // --- hooks ---
@@ -58,8 +61,17 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
     //     return INSTANCE.economy;
     // }
 
-    public boolean devMode() {
+    public boolean isDevMode() {
         return this.verbose;
+    }
+
+    @Override
+    public boolean isModuleOn(ModuleBase module) {
+        if (this.moduleNode == null) {
+            Log.severe("main config is not initialised yet");
+            return false;
+        }
+        return this.moduleNode.node(LOWER_UNDERSCORE.to(LOWER_HYPHEN, module.getId())).getBoolean();
     }
 
     @Override
@@ -74,11 +86,16 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
 
         // --- Load main config ---
 
-        saveDefaultConfig();
         try {
-            YamlConfigurationLoader loader = YamlConfigurationLoader.builder().file(getDataFolder().toPath().resolve("config.yml").toFile()).indent(2).build();
-            this.configNode = loader.load();
+            // Load main config: "config.yml"
+            saveDefaultConfig();
+            YamlConfigurationLoader mainConfigLoader = YamlConfigurationLoader.builder().file(getDataFolder().toPath().resolve("config.yml").toFile()).indent(2).build();
+            this.configNode = mainConfigLoader.load();
             this.verbose = this.configNode.node("verbose").getBoolean();
+
+            // Load module config: "modules.yml"
+            YamlConfigurationLoader moduleEntryLoader = YamlConfigurationLoader.builder().file(getDataFolder().toPath().resolve("modules.yml").toFile()).indent(2).build();
+            this.moduleNode = moduleEntryLoader.load();
         } catch (ConfigurateException e) {
             getLogger().severe("Failed to load main config! See the stacktrace below for more details");
             e.printStackTrace();
@@ -131,11 +148,15 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
         this.modules.add(injector.getInstance(StringReplacerModule.class));
 
         for (ModuleBase module : this.modules) {
+            if (!isModuleOn(module)) {
+                Log.info("Module " + module.getLongId() + " is disabled in the config");
+                continue;
+            }
             try {
                 module.onLoad();
                 module.onEnable();
             } catch (Exception e) {
-                Log.severe("Module " + module.getId() + " failed to load/enable! Check the stacktrace below for more details");
+                Log.severe("Module " + module.getLongId() + " failed to load/enable! Check the stacktrace below for more details");
                 e.printStackTrace();
             }
         }
@@ -153,7 +174,7 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
             try {
                 module.onDisable();
             } catch (Exception e) {
-                Log.severe("Module " + module.getId() + " failed to disbale! Check the stacktrace below for more details");
+                Log.severe("Module " + module.getLongId() + " failed to disbale! Check the stacktrace below for more details");
                 e.printStackTrace();
             }
         }
