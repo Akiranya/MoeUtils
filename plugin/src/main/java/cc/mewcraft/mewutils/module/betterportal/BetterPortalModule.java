@@ -29,7 +29,7 @@ public class BetterPortalModule extends ModuleBase implements AutoCloseableListe
         getLang().of("cancelled").send(player);
     }
 
-    @Override public boolean canEnable() {
+    @Override public boolean checkRequirement() {
         return true;
     }
 

@@ -46,7 +46,7 @@ public class DropOverflowModule extends ModuleBase implements AutoCloseableListe
         }
     }
 
-    @Override public boolean canEnable() {
+    @Override public boolean checkRequirement() {
         return true;
     }
 

@@ -83,7 +83,7 @@ public class OreAnnouncerModule extends ModuleBase implements AutoCloseableListe
         return this.enabledMaterials.contains(block.getType()) && this.enabledWorlds.contains(block.getWorld().getName()) && !this.blockCounter.isDiscovered(block.getLocation());
     }
 
-    @Override public boolean canEnable() {
+    @Override public boolean checkRequirement() {
         return true;
     }
 

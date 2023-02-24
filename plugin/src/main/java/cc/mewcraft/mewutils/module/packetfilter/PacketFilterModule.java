@@ -51,7 +51,7 @@ public class PacketFilterModule extends ModuleBase implements AutoCloseableListe
         new ProtocolLibHook(this).bindWith(this);
     }
 
-    @Override public boolean canEnable() {
+    @Override public boolean checkRequirement() {
         return isPluginPresent("Essentials") && isPluginPresent("ProtocolLib");
     }
 

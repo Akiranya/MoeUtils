@@ -30,7 +30,7 @@ public class SlimeUtilsModule extends ModuleBase {
         );
     }
 
-    @Override public boolean canEnable() {
+    @Override public boolean checkRequirement() {
         return true;
     }
 

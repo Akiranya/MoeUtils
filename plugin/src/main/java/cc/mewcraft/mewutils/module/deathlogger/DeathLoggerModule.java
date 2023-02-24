@@ -103,7 +103,7 @@ public class DeathLoggerModule extends ModuleBase implements AutoCloseableListen
         };
     }
 
-    @Override public boolean canEnable() {
+    @Override public boolean checkRequirement() {
         return true;
     }
 

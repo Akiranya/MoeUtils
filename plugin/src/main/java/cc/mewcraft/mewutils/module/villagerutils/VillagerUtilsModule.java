@@ -189,7 +189,7 @@ public class VillagerUtilsModule extends ModuleBase {
         );
     }
 
-    @Override public boolean canEnable() {
+    @Override public boolean checkRequirement() {
         return true;
     }
 

@@ -107,7 +107,7 @@ public abstract class ModuleBase
     }
 
     public final void onEnable() throws Exception {
-        if (!canEnable()) {
+        if (!checkRequirement()) {
             warn(getId() + " is not enabled due to requirement not met");
             return;
         }

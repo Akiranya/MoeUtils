@@ -89,7 +89,7 @@ public class ElytraLimiterModule extends ModuleBase {
     }
 
     @Override
-    public boolean canEnable() {
+    public boolean checkRequirement() {
         return true;
     }
 }

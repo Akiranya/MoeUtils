@@ -17,7 +17,7 @@ public class BetterBeehiveModule extends ModuleBase {
     }
 
     @Override
-    public boolean canEnable() {
+    public boolean checkRequirement() {
         return true;
     }
 

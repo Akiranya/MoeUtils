@@ -88,7 +88,7 @@ public class FireballUtilsModule extends ModuleBase {
         Schedulers.sync().runLater(projectile::remove, 100).bindWith(this);
     }
 
-    @Override public boolean canEnable() {
+    @Override public boolean checkRequirement() {
         return true;
     }
 

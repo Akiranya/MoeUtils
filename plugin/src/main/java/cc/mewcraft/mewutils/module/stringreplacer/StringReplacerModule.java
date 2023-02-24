@@ -48,7 +48,7 @@ public class StringReplacerModule extends ModuleBase implements AutoCloseableLis
         new ProtocolLibHook(this).bindWith(this);
     }
 
-    @Override public boolean canEnable() {
+    @Override public boolean checkRequirement() {
         return isPluginPresent("ProtocolLib");
     }
 
