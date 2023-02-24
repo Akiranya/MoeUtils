@@ -1,4 +1,4 @@
-package cc.mewcraft.mewutils.module.villagerutility;
+package cc.mewcraft.mewutils.module.villagerutils;
 
 import cc.mewcraft.lib.commandframework.Command;
 import cc.mewcraft.lib.commandframework.arguments.standard.EnumArgument;
@@ -23,10 +23,10 @@ import org.bukkit.inventory.MerchantRecipe;
 import java.util.HashMap;
 import java.util.Optional;
 
-public class VillagerUtilityModule extends ModuleBase {
+public class VillagerUtilsModule extends ModuleBase {
 
     @Inject
-    public VillagerUtilityModule(final MewPlugin parent) {
+    public VillagerUtilsModule(final MewPlugin parent) {
         super(parent);
     }
 
@@ -187,10 +187,6 @@ public class VillagerUtilityModule extends ModuleBase {
             restock,
             view
         );
-    }
-
-    @Override public String getId() {
-        return "villagerutil";
     }
 
     @Override public boolean canEnable() {

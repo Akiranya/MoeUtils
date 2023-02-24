@@ -1,7 +1,7 @@
 package cc.mewcraft.mewutils.module.oreannouncer;
 
-import cc.mewcraft.mewutils.api.MewPlugin;
 import cc.mewcraft.mewcore.listener.AutoCloseableListener;
+import cc.mewcraft.mewutils.api.MewPlugin;
 import cc.mewcraft.mewutils.api.module.ModuleBase;
 import com.google.inject.Inject;
 import me.lucko.helper.metadata.Metadata;
@@ -15,6 +15,7 @@ import org.checkerframework.framework.qual.DefaultQualifier;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @DefaultQualifier(NonNull.class)
 public class OreAnnouncerModule extends ModuleBase implements AutoCloseableListener {
@@ -37,7 +38,7 @@ public class OreAnnouncerModule extends ModuleBase implements AutoCloseableListe
         this.enabledMaterials = getConfigNode().node("blocks")
             .getList(String.class, List.of())
             .stream()
-            .map(Material::matchMaterial)
+            .flatMap(name -> Stream.ofNullable(Material.matchMaterial(name)))
             .collect(Collectors.toCollection(() -> EnumSet.noneOf(Material.class)));
     }
 
@@ -80,10 +81,6 @@ public class OreAnnouncerModule extends ModuleBase implements AutoCloseableListe
 
     public boolean shouldAnnounce(Block block) {
         return this.enabledMaterials.contains(block.getType()) && this.enabledWorlds.contains(block.getWorld().getName()) && !this.blockCounter.isDiscovered(block.getLocation());
-    }
-
-    @Override public String getId() {
-        return "oreannouncer";
     }
 
     @Override public boolean canEnable() {

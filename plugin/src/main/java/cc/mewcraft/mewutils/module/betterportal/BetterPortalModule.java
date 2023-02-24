@@ -29,10 +29,6 @@ public class BetterPortalModule extends ModuleBase implements AutoCloseableListe
         getLang().of("cancelled").send(player);
     }
 
-    @Override public String getId() {
-        return "betterportal";
-    }
-
     @Override public boolean canEnable() {
         return true;
     }

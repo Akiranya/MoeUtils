@@ -1,4 +1,4 @@
-package cc.mewcraft.mewutils.module.fireballutility;
+package cc.mewcraft.mewutils.module.fireballutils;
 
 import cc.mewcraft.lib.commandframework.arguments.standard.BooleanArgument;
 import cc.mewcraft.lib.commandframework.arguments.standard.DoubleArgument;
@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-public class FireballUtilityModule extends ModuleBase {
+public class FireballUtilsModule extends ModuleBase {
 
     public static final String FIREBALL_META_KEY = "mew_fireball_projectile";
     public static final int MAX_SPEED = 8;
@@ -47,7 +47,7 @@ public class FireballUtilityModule extends ModuleBase {
     }
 
     @Inject
-    public FireballUtilityModule(final MewPlugin parent) {
+    public FireballUtilsModule(final MewPlugin parent) {
         super(parent);
     }
 
@@ -86,10 +86,6 @@ public class FireballUtilityModule extends ModuleBase {
         }
 
         Schedulers.sync().runLater(projectile::remove, 100).bindWith(this);
-    }
-
-    @Override public String getId() {
-        return "fireballutil";
     }
 
     @Override public boolean canEnable() {

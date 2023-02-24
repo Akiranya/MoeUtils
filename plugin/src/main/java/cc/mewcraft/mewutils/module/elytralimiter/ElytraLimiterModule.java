@@ -89,11 +89,6 @@ public class ElytraLimiterModule extends ModuleBase {
     }
 
     @Override
-    public String getId() {
-        return "elytralimiter";
-    }
-
-    @Override
     public boolean canEnable() {
         return true;
     }

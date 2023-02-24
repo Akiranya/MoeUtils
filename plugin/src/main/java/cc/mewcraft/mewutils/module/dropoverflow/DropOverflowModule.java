@@ -46,10 +46,6 @@ public class DropOverflowModule extends ModuleBase implements AutoCloseableListe
         }
     }
 
-    @Override public String getId() {
-        return "dropoverflow";
-    }
-
     @Override public boolean canEnable() {
         return true;
     }

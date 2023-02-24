@@ -103,10 +103,6 @@ public class DeathLoggerModule extends ModuleBase implements AutoCloseableListen
         };
     }
 
-    @Override public String getId() {
-        return "deathlogger";
-    }
-
     @Override public boolean canEnable() {
         return true;
     }

@@ -17,11 +17,6 @@ public class BetterBeehiveModule extends ModuleBase {
     }
 
     @Override
-    public String getId() {
-        return "betterbeehive";
-    }
-
-    @Override
     public boolean canEnable() {
         return true;
     }

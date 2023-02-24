@@ -24,10 +24,6 @@ public class FurnitureDyeModule extends ModuleBase {
         return this.dyeHandler;
     }
 
-    @Override public String getId() {
-        return "furnituredye";
-    }
-
     @Override public boolean canEnable() {
         return HookChecker.hasItemsAdder();
     }
