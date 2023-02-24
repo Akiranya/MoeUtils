@@ -100,10 +100,10 @@ public abstract class ModuleBase
         this.configNode = this.config.load();
 
         // dedicated language files for this module
-        Path langPath = Path.of("modules").resolve(getId()).resolve("lang");
-        if (langPath.toFile().mkdirs())
+        Path langDirectory = this.plugin.getDataFolder().toPath().resolve("modules").resolve(getId()).resolve("lang");
+        if (langDirectory.toFile().mkdirs())
             info("translation directory does not exist - creating one");
-        this.lang = new Translations(this.plugin, langPath.toString(), "zh");
+        this.lang = new Translations(this.plugin, Path.of("modules").resolve(getId()).resolve("lang").toString(), "zh");
 
         // call subclass
         load();
