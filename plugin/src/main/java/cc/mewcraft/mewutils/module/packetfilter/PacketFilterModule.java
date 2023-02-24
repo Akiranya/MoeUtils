@@ -4,6 +4,7 @@ import cc.mewcraft.mewcore.listener.AutoCloseableListener;
 import cc.mewcraft.mewutils.api.MewPlugin;
 import cc.mewcraft.mewutils.api.module.ModuleBase;
 import com.comphenix.protocol.PacketType;
+import com.google.inject.Inject;
 import org.bukkit.entity.EntityType;
 
 import java.util.*;
@@ -16,6 +17,7 @@ public class PacketFilterModule extends ModuleBase implements AutoCloseableListe
     EnumSet<EntityType> filteredEntityTypes; // allowed entity packet types
     Set<PacketType> blockedPacketTypes; // packet types to be blocked // TODO don't import ProtocolLib classes here
 
+    @Inject
     public PacketFilterModule(final MewPlugin parent) {
         super(parent);
     }
