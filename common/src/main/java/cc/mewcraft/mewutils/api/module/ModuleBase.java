@@ -3,17 +3,18 @@ package cc.mewcraft.mewutils.api.module;
 import cc.mewcraft.lib.commandframework.Command;
 import cc.mewcraft.lib.configurate.CommentedConfigurationNode;
 import cc.mewcraft.lib.configurate.yaml.YamlConfigurationLoader;
+import cc.mewcraft.mewcore.listener.AutoCloseableListener;
 import cc.mewcraft.mewcore.message.Translations;
 import cc.mewcraft.mewcore.util.UtilFile;
 import cc.mewcraft.mewutils.api.MewPlugin;
 import cc.mewcraft.mewutils.api.command.CommandRegistry;
-import cc.mewcraft.mewutils.api.listener.AutoCloseableListener;
 import com.google.inject.Inject;
 import me.lucko.helper.Schedulers;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.composite.CompositeTerminable;
 import me.lucko.helper.terminable.module.TerminableModule;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -66,10 +67,33 @@ public abstract class ModuleBase
             .build();
     }
 
+    /**
+     * This runs before {@link #enable()}. Initialisation should be done here.
+     *
+     * @throws Exception any exceptions
+     */
     protected void load() throws Exception {}
 
+    /**
+     * This runs after {@link #load()}
+     *
+     * @throws Exception any exceptions
+     */
     protected void enable() throws Exception {}
 
+    /**
+     * This runs after the console prints "Done!", which means all the plugins are loaded at that time. It's useful if
+     * you only, for example, need to register listeners of other plugins.
+     *
+     * @throws Exception any exceptions
+     */
+    protected void postLoad() throws Exception {}
+
+    /**
+     * This runs when the server shutdown.
+     *
+     * @throws Exception any exceptions
+     */
     protected void disable() throws Exception {}
 
     public final void onLoad() throws Exception {
@@ -102,6 +126,15 @@ public abstract class ModuleBase
             .appendSpace().append(text("is enabled!"))
             .build()
         );
+
+        Schedulers.bukkit().runTask(this.plugin, () -> {
+            try {
+                postLoad();
+            } catch (Throwable e) {
+                this.plugin.getLogger().severe("Errors occurred in postLoad()");
+                e.printStackTrace();
+            }
+        });
     }
 
     public final void onDisable() throws Exception {
@@ -151,6 +184,10 @@ public abstract class ModuleBase
         registry.prepareCommand(
             command.apply(registry).build()
         );
+    }
+
+    public final boolean hasPlugin(String name) {
+        return Bukkit.getServer().getPluginManager().getPlugin(name) != null;
     }
 
     @Override

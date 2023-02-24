@@ -1,7 +1,7 @@
 package cc.mewcraft.mewutils.module.oreannouncer;
 
 import cc.mewcraft.mewutils.MewUtils;
-import cc.mewcraft.mewutils.api.listener.AutoCloseableListener;
+import cc.mewcraft.mewcore.listener.AutoCloseableListener;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;

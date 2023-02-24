@@ -1,7 +1,7 @@
 package cc.mewcraft.mewutils.module.elytralimiter;
 
 import cc.mewcraft.mewcore.cooldown.ChargeBasedCooldown;
-import cc.mewcraft.mewutils.api.listener.AutoCloseableListener;
+import cc.mewcraft.mewcore.listener.AutoCloseableListener;
 import cc.mewcraft.mewutils.util.Log;
 import com.destroystokyo.paper.event.player.PlayerElytraBoostEvent;
 import me.lucko.helper.Schedulers;

@@ -14,8 +14,12 @@ dependencies {
 
     // 3rd party plugins
     compileOnly("net.luckperms", "api", "5.4")
-    compileOnly("com.github.MilkBowl", "VaultAPI", "1.7") { isTransitive = false }
-    compileOnly("me.clip", "placeholderapi", "2.11.2") { isTransitive = false }
+    compileOnly("com.github.MilkBowl", "VaultAPI", "1.7") {
+        exclude("net.bytebuddy")
+    }
+    compileOnly("me.clip", "placeholderapi", "2.11.2") {
+        exclude("org.jetbrains")
+    }
     compileOnly("com.github.LoneDev6", "API-ItemsAdder", "3.2.5")
 
     // To be shaded
@@ -37,19 +41,6 @@ bukkit {
         register("mew.admin") {
             description = "Permission nodes for operators."
             default = Permission.Default.OP
-            children = listOf(
-                "mew.reload",
-                "mew.magic.reset",
-                "mew.magic.status"
-            )
-        }
-        register("mew.user") {
-            description = "Basic permission nodes for players."
-            default = Permission.Default.OP
-            children = listOf(
-                "mew.magic.time",
-                "mew.magic.weather"
-            )
         }
     }
 }
@@ -62,6 +53,8 @@ tasks {
         dependsOn(shadowJar)
     }
     shadowJar {
+        // TODO with paper plugin API, we might don't need shadow anymore
+
         archiveFileName.set("MewUtils-${project.version}.jar")
 
         val path = "cc.mewcraft.shade."
@@ -78,10 +71,12 @@ tasks {
     }
     processResources {
         filesMatching("**/paper-plugin.yml") {
-            expand(mapOf(
-                "version" to "${project.version}",
-                "description" to project.description
-            ))
+            expand(
+                mapOf(
+                    "version" to "${project.version}",
+                    "description" to project.description
+                )
+            )
         }
     }
     register("deployJar") {

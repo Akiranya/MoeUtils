@@ -1,7 +1,7 @@
 package cc.mewcraft.mewutils.module.betterbeehive;
 
 import cc.mewcraft.mewcore.message.Translations;
-import cc.mewcraft.mewutils.api.listener.AutoCloseableListener;
+import cc.mewcraft.mewcore.listener.AutoCloseableListener;
 import me.lucko.helper.cooldown.Cooldown;
 import me.lucko.helper.cooldown.CooldownMap;
 import org.bukkit.Material;

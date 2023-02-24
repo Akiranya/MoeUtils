@@ -1,7 +1,7 @@
 package cc.mewcraft.mewutils.module.oreannouncer;
 
 import cc.mewcraft.mewutils.api.MewPlugin;
-import cc.mewcraft.mewutils.api.listener.AutoCloseableListener;
+import cc.mewcraft.mewcore.listener.AutoCloseableListener;
 import cc.mewcraft.mewutils.api.module.ModuleBase;
 import com.google.inject.Inject;
 import me.lucko.helper.metadata.Metadata;

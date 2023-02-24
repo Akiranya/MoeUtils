@@ -1,6 +1,6 @@
 package cc.mewcraft.mewutils.module.furnituredye;
 
-import cc.mewcraft.mewutils.api.listener.AutoCloseableListener;
+import cc.mewcraft.mewcore.listener.AutoCloseableListener;
 import dev.lone.itemsadder.api.Events.FurnitureInteractEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
