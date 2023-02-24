@@ -22,10 +22,8 @@ import cc.mewcraft.mewutils.util.Log;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import me.lucko.helper.Services;
 import me.lucko.helper.plugin.ExtendedJavaPlugin;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -44,7 +42,7 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
     private Translations translations; // main translations
 
     // --- 3rd party ---
-    private Economy economy;
+    // private Economy economy;
 
     // --- modules ---
     private List<ModuleBase> modules;
@@ -55,17 +53,17 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
     // --- variables ---
     private boolean debug;
 
+    public static Translations lang() {
+        return INSTANCE.translations;
+    }
+
     public static ConfigurationNode config() {
         return INSTANCE.configNode;
     }
 
-    public static Translations translations() {
-        return INSTANCE.translations;
-    }
-
-    public static Economy economy() {
-        return INSTANCE.economy;
-    }
+    // public static Economy economy() {
+    //     return INSTANCE.economy;
+    // }
 
     public boolean devMode() {
         return this.debug;
@@ -73,9 +71,9 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
 
     @Override
     protected void enable() {
-        getComponentLogger().info(text("Enabling...").color(NamedTextColor.AQUA));
-
         INSTANCE = this;
+
+        getComponentLogger().info(text("Enabling...").color(NamedTextColor.AQUA));
 
         // --- Load main translations ---
 
@@ -105,12 +103,12 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
 
         // --- Hook 3rd party ---
 
-        try {
-            this.economy = Services.load(Economy.class);
-        } catch (Exception e) {
-            Log.severe("Failed to hook into Vault! See the stacktrace below for more details");
-            e.printStackTrace();
-        }
+        // try {
+        //     this.economy = Services.load(Economy.class);
+        // } catch (Exception e) {
+        //     Log.severe("Failed to hook into Vault! See the stacktrace below for more details");
+        //     e.printStackTrace();
+        // }
 
         // --- Configure guice ---
 
@@ -197,7 +195,7 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
             .handler(context -> {
                 CommandSender sender = context.getSender();
                 reload();
-                MewUtils.translations().of("reloaded").send(sender);
+                MewUtils.lang().of("reloaded").send(sender);
             }).build()
         );
     }
