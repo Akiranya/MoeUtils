@@ -15,16 +15,20 @@ public class ProtocolLibHook implements Terminable {
     private final StringReplacerModule module;
     private final ProtocolManager protocolManager;
 
+    // packet listeners
+    private final PacketAdapter inventoryTitleReplacer;
+
     public ProtocolLibHook(final StringReplacerModule module) {
         this.module = module;
         this.protocolManager = ProtocolLibrary.getProtocolManager();
 
-        this.protocolManager.addPacketListener(new PacketAdapter(
+        // --- define packet listeners ---
+        this.inventoryTitleReplacer = new PacketAdapter(
             module.getParentPlugin(), ListenerPriority.HIGHEST, PacketType.Play.Server.OPEN_WINDOW
         ) {
             @Override public void onPacketSending(final PacketEvent event) {
                 PacketContainer packet = event.getPacket();
-                WrappedChatComponent component = packet.getChatComponents().read(0);
+                WrappedChatComponent component = packet.getChatComponents().readSafely(0);
                 if (component == null)
                     return;
                 String oldValue = component.getJson();
@@ -36,11 +40,14 @@ public class ProtocolLibHook implements Terminable {
                     packet.getChatComponents().write(0, component);
                 }
             }
-        });
+        };
+
+        // --- register packet listeners ---
+        this.protocolManager.addPacketListener(this.inventoryTitleReplacer);
     }
 
     @Override public void close() {
-        this.protocolManager.removePacketListeners(this.module.getParentPlugin());
+        this.protocolManager.removePacketListener(this.inventoryTitleReplacer);
     }
 
 }
