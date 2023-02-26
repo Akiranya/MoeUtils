@@ -13,7 +13,7 @@ import cc.mewcraft.mewutils.module.death_logger.DeathLoggerModule;
 import cc.mewcraft.mewutils.module.drop_overflow.DropOverflowModule;
 import cc.mewcraft.mewutils.module.elytra_limiter.ElytraLimiterModule;
 import cc.mewcraft.mewutils.module.fireball_utils.FireballUtilsModule;
-import cc.mewcraft.mewutils.module.furniture_dye.FurnitureDyeModule;
+import cc.mewcraft.mewutils.module.color_palette.ColorPaletteModule;
 import cc.mewcraft.mewutils.module.ore_announcer.OreAnnouncerModule;
 import cc.mewcraft.mewutils.module.packet_filter.PacketFilterModule;
 import cc.mewcraft.mewutils.module.slime_utils.SlimeUtilsModule;
@@ -140,7 +140,7 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
         this.modules.add(injector.getInstance(DeathLoggerModule.class));
         this.modules.add(injector.getInstance(ElytraLimiterModule.class));
         this.modules.add(injector.getInstance(FireballUtilsModule.class));
-        this.modules.add(injector.getInstance(FurnitureDyeModule.class));
+        this.modules.add(injector.getInstance(ColorPaletteModule.class));
         this.modules.add(injector.getInstance(DropOverflowModule.class));
         this.modules.add(injector.getInstance(OreAnnouncerModule.class));
         this.modules.add(injector.getInstance(SlimeUtilsModule.class));

@@ -57,7 +57,7 @@ dependencies {
     compileOnly("io.papermc.paper", "paper-api", "1.19.3-R0.1-SNAPSHOT")
 
     // Plugin libs
-    compileOnly("cc.mewcraft", "MewCore", "5.13.1")
+    compileOnly("cc.mewcraft", "MewCore", "5.14.0", classifier = "shaded")
     compileOnly("me.lucko", "helper", "5.6.13")
 
     // To be shaded

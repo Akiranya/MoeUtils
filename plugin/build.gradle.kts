@@ -7,10 +7,14 @@ plugins {
 }
 
 group = "cc.mewcraft"
-version = "1.20.0".decorateVersion()
+version = "1.20.1".decorateVersion()
 description = "A plugin consisting of many small features"
 
 dependencies {
+    implementation(project(":common"))
+    compileOnly("net.wesjd", "anvilgui", "1.6.3-SNAPSHOT")
+    compileOnly("com.google.inject", "guice", "5.1.0")
+
     // 3rd party plugins
     compileOnly("net.luckperms", "api", "5.4")
     compileOnly("com.github.MilkBowl", "VaultAPI", "1.7") {
@@ -22,11 +26,6 @@ dependencies {
     compileOnly("com.github.LoneDev6", "API-ItemsAdder", "3.2.5")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.0.0-SNAPSHOT")
     compileOnly("net.essentialsx", "EssentialsX", "2.19.0") { isTransitive = false }
-
-    // To be shaded
-    implementation(project(":common"))
-    implementation("net.wesjd", "anvilgui", "1.6.3-SNAPSHOT")
-    implementation("com.google.inject", "guice", "5.1.0")
 }
 
 bukkit {
@@ -54,23 +53,8 @@ tasks {
         dependsOn(shadowJar)
     }
     shadowJar {
-        // TODO with paper plugin API, we might don't need shadow anymore
-
+        // Shadow is only used to include classes from other modules
         archiveFileName.set("MewUtils-${project.version}.jar")
-
-        val path = "cc.mewcraft.shade."
-
-        // AnvilGui
-        relocate("net.wesjd.anvilgui", path + "anvilgui")
-
-        // Guice
-        relocate("javax", path + "javax")
-        relocate("com.google", path + "google")
-        relocate("org.aopalliance", path + "aopalliance")
-
-        minimize {
-            exclude(dependency("net.wesjd:.*:.*"))
-        }
     }
     processResources {
         filesMatching("**/paper-plugin.yml") {
