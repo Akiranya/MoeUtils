@@ -77,7 +77,7 @@ public abstract class PaletteHandler<E extends Entity> {
 
             // Validate input
             TextColor inputColor = TextColor.fromHexString(text);
-            if (inputColor == null) {
+            if (text.length() != 7 || inputColor == null) {
                 this.module.getLang().of("msg_incorrect_rgb").replace("input", text).send(player);
                 return List.of(AnvilGUI.ResponseAction.close());
             }
