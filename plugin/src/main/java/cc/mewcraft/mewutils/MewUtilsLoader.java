@@ -15,6 +15,7 @@ public class MewUtilsLoader implements PluginLoader {
         MavenLibraryResolver resolver = new MavenLibraryResolver();
         resolver.addRepository(new RemoteRepository.Builder("codemc", "default", "https://repo.codemc.io/repository/maven-snapshots/").build());
         resolver.addDependency(new Dependency(new DefaultArtifact("net.wesjd:anvilgui:1.6.3-SNAPSHOT"), null));
+        resolver.addRepository(new RemoteRepository.Builder("central", "default", "https://repo1.maven.org/maven2/").build());
         resolver.addDependency(new Dependency(new DefaultArtifact("com.google.inject:guice:5.1.0"), null));
         builder.addLibrary(resolver);
     }
