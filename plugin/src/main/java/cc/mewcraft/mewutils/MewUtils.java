@@ -9,11 +9,12 @@ import cc.mewcraft.mewutils.api.command.CommandRegistry;
 import cc.mewcraft.mewutils.api.module.ModuleBase;
 import cc.mewcraft.mewutils.module.better_beehive.BetterBeehiveModule;
 import cc.mewcraft.mewutils.module.better_portal.BetterPortalModule;
+import cc.mewcraft.mewutils.module.case_insensitive_commands.CaseInsensitiveCommandsModule;
+import cc.mewcraft.mewutils.module.color_palette.ColorPaletteModule;
 import cc.mewcraft.mewutils.module.death_logger.DeathLoggerModule;
 import cc.mewcraft.mewutils.module.drop_overflow.DropOverflowModule;
 import cc.mewcraft.mewutils.module.elytra_limiter.ElytraLimiterModule;
 import cc.mewcraft.mewutils.module.fireball_utils.FireballUtilsModule;
-import cc.mewcraft.mewutils.module.color_palette.ColorPaletteModule;
 import cc.mewcraft.mewutils.module.ore_announcer.OreAnnouncerModule;
 import cc.mewcraft.mewutils.module.packet_filter.PacketFilterModule;
 import cc.mewcraft.mewutils.module.slime_utils.SlimeUtilsModule;
@@ -147,6 +148,7 @@ public final class MewUtils extends ExtendedJavaPlugin implements MewPlugin {
         this.modules.add(injector.getInstance(VillagerUtilsModule.class));
         this.modules.add(injector.getInstance(PacketFilterModule.class));
         this.modules.add(injector.getInstance(StringReplacerModule.class));
+        this.modules.add(injector.getInstance(CaseInsensitiveCommandsModule.class));
 
         for (ModuleBase module : this.modules) {
             if (!isModuleOn(module)) {
