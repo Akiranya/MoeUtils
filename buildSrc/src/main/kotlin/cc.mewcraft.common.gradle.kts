@@ -60,8 +60,8 @@ dependencies {
     compileOnly("cc.mewcraft", "MewCore", "5.14.0", classifier = "shaded")
     compileOnly("me.lucko", "helper", "5.6.13")
 
-    // To be shaded
-    implementation("com.google.inject", "guice", "5.1.0")
+    // Dependency Injection framework
+    compileOnly("com.google.inject", "guice", "5.1.0")
 }
 
 indra {
