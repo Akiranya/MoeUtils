@@ -4,7 +4,8 @@ gui:
   right_item_name: '<input>'
   closed: '<gray>染色界面已关闭.'
 
-msg_no_permission: '<#ff9999>你没有权限修改这个家具.'
-msg_unsupported: '<#ff9999>这个家具不支持该操作.'
-msg_incorrect_rgb: '<#ff9999><input> 不是一个有效的 RGB Hex. 正确范例: #149abf'
-msg_prop_dyed: '<#99ff99>染色完成！现在的颜色为：<<input>>█ (<input>)'
+msg:
+  unsupported_operation: '<#ff9999>这个家具不支持该操作.'
+  no_permission: '<#ff9999>你没有权限修改这个家具.'
+  incorrect_rgb: '<#ff9999><input> 不是一个有效的 RGB Hex. 正确范例: #149abf'
+  prop_dyed: '<#99ff99>染色完成！现在的颜色为：<<input>>█ (<input>)'

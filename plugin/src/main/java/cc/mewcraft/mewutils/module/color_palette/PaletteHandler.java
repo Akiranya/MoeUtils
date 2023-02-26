@@ -78,7 +78,7 @@ public abstract class PaletteHandler<E extends Entity> {
             // Validate input
             TextColor inputColor = TextColor.fromHexString(text);
             if (text.length() != 7 || inputColor == null) {
-                this.module.getLang().of("msg_incorrect_rgb").replace("input", text).send(player);
+                this.module.getLang().of("msg.incorrect_rgb").replace("input", text).send(player);
                 return List.of(AnvilGUI.ResponseAction.close());
             }
 
@@ -89,7 +89,7 @@ public abstract class PaletteHandler<E extends Entity> {
 
                     PDCUtils.set(base, PaletteConstants.OWNER, player.getUniqueId()); // Update the owner of the item
 
-                    this.module.getLang().of("msg_prop_dyed").replace("input", inputColor.asHexString()).send(player);
+                    this.module.getLang().of("msg.prop_dyed").replace("input", inputColor.asHexString()).send(player);
                 }),
                 AnvilGUI.ResponseAction.close()
             );

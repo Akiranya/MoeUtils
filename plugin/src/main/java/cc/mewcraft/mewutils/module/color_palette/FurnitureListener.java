@@ -22,7 +22,7 @@ public class FurnitureListener implements AutoCloseableListener {
 
             // check access
             if (!PaletteHandler.hasAccess(player, bukkitEntity)) {
-                this.module.getLang().of("msg_no_permission").send(player);
+                this.module.getLang().of("msg.no_permission").send(player);
                 return;
             }
 
@@ -34,7 +34,7 @@ public class FurnitureListener implements AutoCloseableListener {
                 }
             }
 
-            this.module.getLang().of("msg_unsupported").send(player);
+            this.module.getLang().of("msg.unsupported_operation").send(player);
         }
     }
 
